@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Sped up glyph rasterization with the `swash` feature by letting swash reuse
+  its scaler and hinting caches across glyphs.
 - Fixed a layer's shadow missing the shadow of content outside the scissor
   (or the canvas): the capture now takes in whatever reaches into view once
   shifted by the shadow offset and spread by its blur, so an SVG
