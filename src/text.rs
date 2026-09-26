@@ -436,11 +436,144 @@ pub struct GlyphDrawCommands {
     pub color_glyphs: Vec<DrawCommand>,
 }
 
+/// Identifies a hinted glyph outline by every scaler input that varies. Subpixel
+/// offsets are applied only when rasterizing, so they are not part of it.
+#[cfg(feature = "swash")]
+#[derive(Debug, Hash, PartialEq, Eq)]
+struct GlyphOutlineId {
+    font: swash::CacheKey,
+    glyph_id: u16,
+    font_size: u32,
+    normalized_coords: Vec<i16>,
+}
+
+/// Several times the glyph and size pairs one text-heavy frame hints. An entry costs about 8 bytes per outline
+/// point; full, the cache held 0.4 to 0.6 MB with the bundled fonts.
+#[cfg(feature = "swash")]
+const GLYPH_OUTLINE_CACHE_CAPACITY: usize = 512;
+
+/// Hinted glyph outlines shared by every subpixel offset of a glyph.
+#[cfg(feature = "swash")]
+#[derive(Default)]
+struct GlyphOutlineCache {
+    outlines: RefCell<FnvHashMap<GlyphOutlineId, swash::scale::outline::Outline>>,
+    scratch: RefCell<swash::zeno::Scratch>,
+}
+
+#[cfg(feature = "swash")]
+impl GlyphOutlineCache {
+    /// Returns the image `render_swash_sources` produces for the glyph.
+    fn render(
+        &self,
+        scale_context: &RefCell<swash::scale::ScaleContext>,
+        font_ref: swash::FontRef<'_>,
+        font_size: f32,
+        glyph_id: u16,
+        subpixel_x: f32,
+        normalized_coords: &[i16],
+    ) -> Option<swash::scale::image::Image> {
+        let id = GlyphOutlineId {
+            font: font_ref.key,
+            glyph_id,
+            font_size: font_size.to_bits(),
+            normalized_coords: normalized_coords.to_vec(),
+        };
+        let mut outlines = self.outlines.borrow_mut();
+        if let Some(outline) = outlines.get(&id) {
+            return Some(self.rasterize(outline, subpixel_x));
+        }
+
+        let mut scale_context = scale_context.borrow_mut();
+        let mut scaler = swash_scaler(&mut scale_context, font_ref, font_size, normalized_coords);
+        let mut outline = swash::scale::outline::Outline::new();
+        // Only plain outlines are cached; color glyphs and glyphs without an outline take `Render` each time.
+        if scaler.has_color_outlines()
+            || scaler.has_color_bitmaps()
+            || !scaler.has_outlines()
+            || !scaler.scale_outline_into(glyph_id, &mut outline)
+        {
+            return render_swash_sources(&mut scaler, glyph_id, subpixel_x);
+        }
+        let image = self.rasterize(&outline, subpixel_x);
+
+        // Clearing instead of evicting keeps this a plain map; each outline is then hinted once more.
+        if outlines.len() >= GLYPH_OUTLINE_CACHE_CAPACITY {
+            outlines.clear();
+        }
+        outlines.insert(id, outline);
+        Some(image)
+    }
+
+    /// Rasterizes the outline as `Render::render_into` does for `Source::Outline`
+    /// with `Format::Alpha` and no transform or embolden.
+    fn rasterize(&self, outline: &swash::scale::outline::Outline, subpixel_x: f32) -> swash::scale::image::Image {
+        use swash::scale::image::{Content, Image};
+        use swash::zeno::{Format, Mask, Origin, Style, Vector};
+
+        let offset = Vector::new(subpixel_x, 0.0);
+        let mut scratch = self.scratch.borrow_mut();
+        let mut image = Image::new();
+        image.placement = Mask::with_scratch(outline.path(), &mut scratch)
+            .format(Format::Alpha)
+            .origin(Origin::BottomLeft)
+            .style(Style::default())
+            .offset(offset)
+            .render_offset(offset)
+            .inspect(|fmt, w, h| {
+                image.data.resize(fmt.buffer_size(w, h), 0);
+            })
+            .render_into(&mut image.data[..], None);
+        image.content = Content::Mask;
+        image.source = swash::scale::Source::Outline;
+        image
+    }
+
+    fn clear(&self) {
+        self.outlines.borrow_mut().clear();
+    }
+}
+
+#[cfg(feature = "swash")]
+fn swash_scaler<'a>(
+    scale_context: &'a mut swash::scale::ScaleContext,
+    font_ref: swash::FontRef<'a>,
+    font_size: f32,
+    normalized_coords: &[i16],
+) -> swash::scale::Scaler<'a> {
+    scale_context
+        .builder(font_ref)
+        .size(font_size)
+        .hint(true)
+        .normalized_coords(normalized_coords)
+        .build()
+}
+
+#[cfg(feature = "swash")]
+fn render_swash_sources(
+    scaler: &mut swash::scale::Scaler<'_>,
+    glyph_id: u16,
+    subpixel_x: f32,
+) -> Option<swash::scale::image::Image> {
+    use swash::scale::{Render, Source, StrikeWith};
+    use swash::zeno::Format;
+
+    Render::new(&[
+        Source::ColorOutline(0),
+        Source::ColorBitmap(StrikeWith::BestFit),
+        Source::Outline,
+    ])
+    .format(Format::Alpha)
+    .offset(swash::zeno::Vector::new(subpixel_x, 0.0))
+    .render(scaler, glyph_id)
+}
+
 pub struct GlyphAtlas {
     pub rendered_glyphs: RefCell<FnvHashMap<RenderedGlyphId, Option<RenderedGlyph>>>,
     pub glyph_textures: RefCell<Vec<FontTexture>>,
     #[cfg(feature = "swash")]
     swash_scale_context: Rc<RefCell<swash::scale::ScaleContext>>,
+    #[cfg(feature = "swash")]
+    glyph_outlines: GlyphOutlineCache,
 }
 
 impl GlyphAtlas {
@@ -450,6 +583,8 @@ impl GlyphAtlas {
             glyph_textures: RefCell::default(),
             #[cfg(feature = "swash")]
             swash_scale_context: (**_text_context).borrow().swash_scale_context(),
+            #[cfg(feature = "swash")]
+            glyph_outlines: GlyphOutlineCache::default(),
         }
     }
 }
@@ -746,32 +881,19 @@ impl GlyphAtlas {
         subpixel_x: f32,
         normalized_coords: &[i16],
     ) -> Result<Option<RenderedGlyph>, ErrorKind> {
-        use swash::scale::{Render, Source, StrikeWith};
-        use swash::zeno::Format;
-
         let font_ref = match font.swash_font_ref() {
             Some(f) => f,
             None => return Ok(None),
         };
 
-        let image = {
-            let mut scale_context = self.swash_scale_context.borrow_mut();
-            let scaler_builder = scale_context
-                .builder(font_ref)
-                .size(font_size)
-                .hint(true)
-                .normalized_coords(normalized_coords);
-            let mut scaler = scaler_builder.build();
-
-            Render::new(&[
-                Source::ColorOutline(0),
-                Source::ColorBitmap(StrikeWith::BestFit),
-                Source::Outline,
-            ])
-            .format(Format::Alpha)
-            .offset(swash::zeno::Vector::new(subpixel_x, 0.0))
-            .render(&mut scaler, glyph_id)
-        };
+        let image = self.glyph_outlines.render(
+            &self.swash_scale_context,
+            font_ref,
+            font_size,
+            glyph_id,
+            subpixel_x,
+            normalized_coords,
+        );
 
         let image = match image {
             // Guard against glyphs with no visual (spaces)
@@ -934,6 +1056,8 @@ impl GlyphAtlas {
         image_ids.for_each(|id| canvas.delete_image(id));
 
         self.rendered_glyphs.borrow_mut().clear();
+        #[cfg(feature = "swash")]
+        self.glyph_outlines.clear();
     }
 }
 
@@ -1019,4 +1143,134 @@ pub fn render_direct<T: Renderer>(
     }
 
     Ok(())
+}
+
+#[cfg(all(test, feature = "swash"))]
+mod tests {
+    use super::*;
+    use swash::scale::image::Image;
+
+    fn asset_font(name: &str) -> Vec<u8> {
+        let path = format!("{}/examples/assets/{name}", env!("CARGO_MANIFEST_DIR"));
+        fs::read(&path).unwrap_or_else(|err| panic!("{path}: {err}"))
+    }
+
+    fn assert_same_image(actual: Option<Image>, expected: Option<Image>, case: &str) {
+        let (actual, expected) = match (actual, expected) {
+            (None, None) => return,
+            (Some(actual), Some(expected)) => (actual, expected),
+            (actual, expected) => panic!("{case}: image {} vs Render {}", actual.is_some(), expected.is_some()),
+        };
+        let placement = |image: &Image| {
+            let p = image.placement;
+            (p.left, p.top, p.width, p.height)
+        };
+        assert_eq!(placement(&actual), placement(&expected), "{case}");
+        assert_eq!(actual.content, expected.content, "{case}");
+        assert_eq!(
+            format!("{:?}", actual.source),
+            format!("{:?}", expected.source),
+            "{case}"
+        );
+        assert!(actual.data == expected.data, "{case}: coverage differs");
+    }
+
+    /// A cached outline must rasterize exactly as swash's `Render` does at every
+    /// subpixel offset `render_atlas` passes (-0.9 through 1.0; negative for glyphs
+    /// at negative x), for a variable face at default and non-default coordinates,
+    /// a static face, a face skrifa autohints (entypo has no instructions) and a
+    /// missing glyph. Without `render_offset`, coverage differed at offset -0.9;
+    /// keyed without the size, `A` at 11.5 px came back 6x7 instead of 8x9; keyed
+    /// without the coordinates, 6x7 at left -1 instead of 8x7 at left -2; keyed
+    /// without the font, Amiri's glyph 36 came back as Roboto Flex's.
+    #[test]
+    fn cached_outlines_rasterize_like_render_at_every_subpixel_offset() {
+        let fonts = ["RobotoFlex-VariableFont.ttf", "amiri-regular.ttf", "entypo.ttf"].map(asset_font);
+        // One `FontRef`, and so one cache key, per face, as `Font::swash_font_ref` hands out.
+        let [roboto, amiri, entypo] = fonts
+            .each_ref()
+            .map(|data| swash::FontRef::from_index(data, 0).unwrap());
+        let cases: [(swash::FontRef<'_>, &str, &[i16]); 4] = [
+            (roboto, "AaBgjQW@%m1., ", &[]),
+            (roboto, "AaBgjQW@%m1., ", &[6144, -4096]),
+            (amiri, "Aag,\u{628}\u{633}\u{645}", &[]),
+            (entypo, "\u{2016}\u{2139}\u{2190}\u{221E}\u{2295}", &[]),
+        ];
+        let sizes = [9.0, 11.5, 12.0, 13.37];
+        let cache = GlyphOutlineCache::default();
+        let cache_context = RefCell::new(swash::scale::ScaleContext::new());
+        let mut reference_context = swash::scale::ScaleContext::new();
+
+        for (font_ref, chars, coords) in cases {
+            let charmap = font_ref.charmap();
+            let glyph_ids = chars.chars().map(|c| charmap.map(c)).chain([u16::MAX]);
+            for glyph_id in glyph_ids {
+                for font_size in sizes {
+                    for bucket in -9..=10 {
+                        let subpixel_x = bucket as f32 / 10.0;
+                        let actual = cache.render(&cache_context, font_ref, font_size, glyph_id, subpixel_x, coords);
+                        let mut scaler = swash_scaler(&mut reference_context, font_ref, font_size, coords);
+                        let expected = render_swash_sources(&mut scaler, glyph_id, subpixel_x);
+                        let case = format!("glyph {glyph_id} coords {coords:?} size {font_size} offset {subpixel_x}");
+                        assert_same_image(actual, expected, &case);
+                    }
+                }
+            }
+        }
+    }
+
+    /// Every subpixel offset of a glyph at one size rasterizes the outline hinted
+    /// first: once it is swapped for an empty one, no offset renders coverage.
+    /// With the offset in the key, offset 0.1 had coverage; with hits hinted
+    /// again, offset 0 did.
+    #[test]
+    fn subpixel_offsets_share_one_hinted_outline() {
+        let data = asset_font("RobotoFlex-VariableFont.ttf");
+        let font_ref = swash::FontRef::from_index(&data, 0).unwrap();
+        let glyph_id = font_ref.charmap().map('g');
+        let cache = GlyphOutlineCache::default();
+        let context = RefCell::new(swash::scale::ScaleContext::new());
+
+        let first = cache.render(&context, font_ref, 13.37, glyph_id, 0.0, &[]).unwrap();
+        assert!(first.data.iter().any(|&c| c != 0));
+        for outline in cache.outlines.borrow_mut().values_mut() {
+            *outline = swash::scale::outline::Outline::new();
+        }
+
+        for bucket in 0..=10 {
+            let subpixel_x = bucket as f32 / 10.0;
+            let image = cache
+                .render(&context, font_ref, 13.37, glyph_id, subpixel_x, &[])
+                .unwrap();
+            assert!(
+                image.data.iter().all(|&c| c == 0),
+                "offset {subpixel_x} did not reuse the cached outline"
+            );
+        }
+    }
+
+    /// The cache holds `GLYPH_OUTLINE_CACHE_CAPACITY` outlines and is cleared
+    /// by the insertion that would exceed that, leaving only the new outline.
+    /// Clearing one insertion late left 513 entries; one early, 1 instead of 512.
+    #[test]
+    fn outline_cache_clears_when_an_insertion_would_exceed_capacity() {
+        let data = asset_font("amiri-regular.ttf");
+        let font_ref = swash::FontRef::from_index(&data, 0).unwrap();
+        let cache = GlyphOutlineCache::default();
+        let context = RefCell::new(swash::scale::ScaleContext::new());
+        let render = |glyph_id: usize| {
+            cache.render(&context, font_ref, 16.0, glyph_id as u16, 0.0, &[]);
+            cache.outlines.borrow().len()
+        };
+
+        for glyph_id in 0..GLYPH_OUTLINE_CACHE_CAPACITY - 2 {
+            render(glyph_id);
+        }
+        assert_eq!(
+            render(GLYPH_OUTLINE_CACHE_CAPACITY - 2),
+            GLYPH_OUTLINE_CACHE_CAPACITY - 1
+        );
+        assert_eq!(render(GLYPH_OUTLINE_CACHE_CAPACITY - 1), GLYPH_OUTLINE_CACHE_CAPACITY);
+        assert_eq!(render(GLYPH_OUTLINE_CACHE_CAPACITY), 1);
+    }
 }

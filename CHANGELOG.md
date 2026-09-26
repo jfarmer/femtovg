@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Sped up glyph rasterization with the `swash` feature by hinting each glyph
+  outline once per size instead of once per subpixel offset.
 - Sped up glyph rasterization with the `swash` feature by letting swash reuse
   its scaler and hinting caches across glyphs.
 - Fixed a layer's shadow missing the shadow of content outside the scissor
