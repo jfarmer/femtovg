@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
   and hard-light groups in Firefox, BuseyBench, and WPT reference examples.
 - Fixed the WGPU backend building the same render pipelines again for each
   paint type (color, gradient, image) and for text.
+- Fixed the WGPU backend re-creating render pipelines after a flush that did
+  not use them. Up to 64 unused pipelines are now kept.
 - Added `Canvas::with_render_target`: a side pass on another target that goes
   back to the one that was current, an open layer's store included.
 - Added `ImageFilter::Blend`: blends the filtered image over a second image

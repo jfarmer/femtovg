@@ -251,10 +251,64 @@ const SAMPLER_FLAGS: crate::ImageFlags = crate::ImageFlags::REPEAT_X
 
 type SamplerCache = Rc<RefCell<HashMap<crate::ImageFlags, wgpu::Sampler>>>;
 
+/// Retention target after a flush; pipelines used in that flush are always kept.
+/// Sized well above a frame's distinct states, so flushes that skip some of them don't evict them.
+const PIPELINE_CACHE_CAPACITY: usize = 64;
+
 #[derive(Debug)]
 struct CachedPipeline {
     pipeline: wgpu::RenderPipeline,
-    accessed: bool,
+    last_used: u64,
+}
+
+/// Evicts the entries whose `last_used` flush is oldest until at most `PIPELINE_CACHE_CAPACITY` remain, but none
+/// used in `flush`: a flush that binds more states than that keeps them all.
+fn evict_least_recently_used<K: Clone + Eq + std::hash::Hash, V>(
+    cache: &mut HashMap<K, V>,
+    flush: u64,
+    last_used: impl Fn(&V) -> u64,
+) {
+    if cache.len() <= PIPELINE_CACHE_CAPACITY {
+        return;
+    }
+    let excess = cache.len() - PIPELINE_CACHE_CAPACITY;
+    let mut unused: Vec<(u64, K)> = cache
+        .iter()
+        .filter(|(_, value)| last_used(value) != flush)
+        .map(|(key, value)| (last_used(value), key.clone()))
+        .collect();
+    unused.sort_unstable_by_key(|&(stamp, _)| stamp);
+    for (_, key) in unused.into_iter().take(excess) {
+        cache.remove(&key);
+    }
+}
+
+#[cfg(test)]
+mod pipeline_eviction_tests {
+    use super::{evict_least_recently_used, PIPELINE_CACHE_CAPACITY};
+    use std::collections::HashMap;
+
+    /// Up to capacity a flush evicts nothing, one past it evicts the pipeline used longest ago, and a flush never
+    /// evicts what it bound itself.
+    #[test]
+    fn pipelines_are_evicted_only_past_capacity_least_recently_used_first() {
+        for len in PIPELINE_CACHE_CAPACITY - 1..=PIPELINE_CACHE_CAPACITY + 1 {
+            // Pipeline `i` was last bound in flush `i`; the current flush, a lone clear, rebinds only pipeline 0.
+            let flush = len as u64;
+            let mut cache: HashMap<usize, u64> = (0..len).map(|i| (i, i as u64)).collect();
+            cache.insert(0, flush);
+            evict_least_recently_used(&mut cache, flush, |&last_used| last_used);
+            assert_eq!(cache.len(), len.min(PIPELINE_CACHE_CAPACITY), "pipelines kept of {len}");
+            if len > PIPELINE_CACHE_CAPACITY {
+                assert!(!cache.contains_key(&1), "pipeline 1, used longest ago, was kept");
+            }
+        }
+
+        let len = PIPELINE_CACHE_CAPACITY + 1;
+        let mut cache: HashMap<usize, u64> = (0..len).map(|i| (i, 1)).collect();
+        evict_least_recently_used(&mut cache, 1, |&last_used| last_used);
+        assert_eq!(cache.len(), len, "a flush binding {len} states evicted some of them");
+    }
 }
 
 /// WGPU renderer.
@@ -278,6 +332,7 @@ pub struct WGPURenderer {
     viewport_bind_group_layout: wgpu::BindGroupLayout,
     pipeline_layout: wgpu::PipelineLayout,
     pipeline_cache: Rc<RefCell<HashMap<PipelineState, CachedPipeline>>>,
+    flush_count: u64,
 }
 
 /// Rasterizes an image element into an offscreen canvas at the given size.
@@ -486,6 +541,7 @@ impl WGPURenderer {
             viewport_bind_group_layout,
             pipeline_layout,
             pipeline_cache: Default::default(),
+            flush_count: 0,
         }
     }
 }
@@ -509,6 +565,7 @@ impl Renderer for WGPURenderer {
         if commands.is_empty() {
             return None;
         }
+        self.flush_count += 1;
 
         // The bind groups recorded below hold this buffer, so it cannot grow mid-frame.
         let needed_slots = commands.len() as u64 * UNIFORM_SLOTS_PER_COMMAND;
@@ -596,6 +653,7 @@ impl Renderer for WGPURenderer {
             self.bind_group_layout.clone(),
             self.pipeline_layout.clone(),
             self.pipeline_cache.clone(),
+            self.flush_count,
         );
 
         let mut current_render_target = RenderTarget::Screen;
@@ -730,9 +788,11 @@ impl Renderer for WGPURenderer {
 
         let command_buffer = encoder.finish();
 
-        self.pipeline_cache
-            .borrow_mut()
-            .retain(|_, cached_pipeline| std::mem::replace(&mut cached_pipeline.accessed, false));
+        evict_least_recently_used(
+            &mut self.pipeline_cache.borrow_mut(),
+            self.flush_count,
+            |cached_pipeline| cached_pipeline.last_used,
+        );
 
         Some(command_buffer)
     }
@@ -2232,6 +2292,7 @@ struct CommandToPipelineAndBindGroupMapper {
     bind_group_layout: wgpu::BindGroupLayout,
     pipeline_cache: Rc<RefCell<HashMap<PipelineState, CachedPipeline>>>,
     pipeline_layout: wgpu::PipelineLayout,
+    flush_count: u64,
 }
 
 impl CommandToPipelineAndBindGroupMapper {
@@ -2245,6 +2306,7 @@ impl CommandToPipelineAndBindGroupMapper {
         bind_group_layout: wgpu::BindGroupLayout,
         pipeline_layout: wgpu::PipelineLayout,
         pipeline_cache: Rc<RefCell<HashMap<PipelineState, CachedPipeline>>>,
+        flush_count: u64,
     ) -> Self {
         Self {
             device: device.clone(),
@@ -2260,6 +2322,7 @@ impl CommandToPipelineAndBindGroupMapper {
             bind_group_layout,
             pipeline_cache,
             pipeline_layout,
+            flush_count,
         }
     }
 
@@ -2328,17 +2391,17 @@ impl CommandToPipelineAndBindGroupMapper {
             render_pass_builder.stencil_buffer.is_some(),
         );
 
-        // An unchanged pipeline was looked up, and marked accessed, when it was bound.
+        // An unchanged pipeline was looked up, and stamped with this flush, when it was bound.
         if render_pass_builder.current_pipeline_state.as_ref() != Some(&pipeline_state) {
             let mut pipeline_cache = self.pipeline_cache.borrow_mut();
             let render_pipeline = pipeline_cache.entry(pipeline_state.clone()).or_insert_with(|| {
                 let pipeline = pipeline_state.materialize(&self.device, &self.pipeline_layout, &self.shader_module);
                 CachedPipeline {
                     pipeline,
-                    accessed: false,
+                    last_used: self.flush_count,
                 }
             });
-            render_pipeline.accessed = true;
+            render_pipeline.last_used = self.flush_count;
             render_pass.set_pipeline(&render_pipeline.pipeline);
             render_pass_builder.current_pipeline_state = Some(pipeline_state);
         }
