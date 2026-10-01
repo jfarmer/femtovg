@@ -59,6 +59,12 @@ Run with `cargo run --example text`
 * [x] WGPU backend
 * [x] Color fonts
 
+With the `swash` feature, text rasterization reuses hinted glyph outlines across
+horizontal subpixel positions. Its 1 MiB soft accounting budget per shared text
+context includes cache geometry capacities, entry metadata, and logical outline
+scratch. It excludes Swash's private buffers, spare map storage, allocator
+overhead, and transient working memory.
+
 ## Not supported
 * [ ] Custom shaders
 * [ ] 3D transforms
@@ -86,3 +92,4 @@ Fonts used in examples:
 - Roboto licensed under [Apache license](http://www.apache.org/licenses/LICENSE-2.0)
 - Entypo licensed under CC BY-SA 4.0.
 - Amiri licensed under [SIL Open Font License, Version 1.1](http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
+- Bungee Color (a subset, used in tests) licensed under [SIL Open Font License, Version 1.1](examples/assets/LICENSE-BungeeColor)

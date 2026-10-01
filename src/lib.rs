@@ -2104,7 +2104,7 @@ where
         // TODO: Early out if text is outside the canvas bounds, or maybe even check for each character in layout.
 
         let text_context = self.text_context.clone();
-        let mut text_context = text_context.borrow_mut();
+        let text_context = text_context.borrow();
 
         // How this glyph run is rasterized for the current canvas transform.
         #[derive(Clone, Copy)]
@@ -2167,7 +2167,7 @@ where
         let mut stroke = paint.stroke.clone();
         stroke.line_width *= effective_scale;
 
-        let Some(font) = text_context.font_mut(font_id) else {
+        let Some(font) = text_context.font(font_id) else {
             return Err(ErrorKind::NoFontFound);
         };
 
@@ -2175,15 +2175,32 @@ where
 
         // TODO: create on demand
 
+        // A Swash atlas fill determines its source and color content while
+        // rasterizing. Classify generic PNG glyphs with the same bitmap metadata
+        // lookup as Font::glyph, avoiding its unhinted outline construction while
+        // preserving the existing two-batch order for mixed PNG/COLR runs.
+        // Direct paths, strokes and renderer fallback keep their glyph paths.
+        let classify_before_rendering =
+            !cfg!(feature = "swash") || need_direct_rendering || render_mode != RenderMode::Fill;
         let mut color_glyphs = Vec::new();
 
         let glyphs_it = glyphs.into_iter();
         let non_color_glyphs = glyphs_it
             .filter(|glyph| {
-                if font
-                    .glyph(&font_face, glyph.glyph_id, normalized_coords)
-                    .is_some_and(|glyph| glyph.path.is_none())
-                {
+                let is_color_bitmap = if classify_before_rendering {
+                    font.glyph(&font_face, glyph.glyph_id, normalized_coords)
+                        .is_some_and(|glyph| glyph.path.is_none())
+                } else {
+                    #[cfg(feature = "swash")]
+                    {
+                        font.glyph_has_png_bitmap(&font_face, glyph.glyph_id)
+                    }
+                    #[cfg(not(feature = "swash"))]
+                    {
+                        false
+                    }
+                };
+                if is_color_bitmap {
                     color_glyphs.push(glyph.clone());
 
                     false
@@ -2444,6 +2461,12 @@ pub struct RecordingRenderer {
     pub max_texture_size: usize,
     /// Makes image allocation fail for resource-pressure tests.
     pub fail_image_allocations: bool,
+    /// Makes image updates fail for glyph-atlas error recovery tests.
+    pub fail_image_updates: bool,
+    /// Records uploaded mask coverage for glyph rasterization tests.
+    pub record_image_masks: bool,
+    /// Width, height and red-channel coverage of recorded image updates.
+    pub image_masks: Vec<(usize, usize, Vec<u8>)>,
     /// Number of image allocation attempts.
     pub image_allocation_attempts: usize,
     /// Number of backend images released.
@@ -2502,7 +2525,25 @@ impl Renderer for RecordingRenderer {
         x: usize,
         y: usize,
     ) -> Result<(), ErrorKind> {
-        data.check_update(&image.info, x, y)
+        data.check_update(&image.info, x, y)?;
+        if self.fail_image_updates {
+            return Err(ErrorKind::UnknownError);
+        }
+        if self.record_image_masks {
+            let size = data.dimensions();
+            let coverage = match data {
+                ImageSource::Rgba(image) => image.rows().flat_map(|row| row.iter().map(|pixel| pixel.r)).collect(),
+                ImageSource::Rgb(image) => image.rows().flat_map(|row| row.iter().map(|pixel| pixel.r)).collect(),
+                ImageSource::Gray(image) => image
+                    .rows()
+                    .flat_map(|row| row.iter().map(|pixel| pixel.value()))
+                    .collect(),
+                #[allow(unreachable_patterns)]
+                _ => unreachable!("mask upload must contain pixels"),
+            };
+            self.image_masks.push((size.width, size.height, coverage));
+        }
+        Ok(())
     }
 
     fn delete_image(&mut self, _image: Self::Image, _image_id: crate::ImageId) {

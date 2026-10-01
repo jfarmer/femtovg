@@ -18,6 +18,17 @@ mod font;
 use font::{Font, GlyphRendering};
 pub use font::{FontMetrics, VariationAxisInfo};
 
+#[cfg(feature = "swash")]
+mod swash_rasterizer;
+#[cfg(feature = "swash")]
+use swash_rasterizer::{HintedGlyphRun, SwashRasterizer};
+
+#[cfg(all(test, feature = "swash"))]
+mod glyph_atlas_tests;
+
+#[cfg(all(test, any(feature = "textlayout", feature = "swash")))]
+mod glyph_atlas_fallback_tests;
+
 #[cfg(feature = "textlayout")]
 mod textlayout;
 #[cfg(feature = "textlayout")]
@@ -132,6 +143,9 @@ pub struct RenderedGlyph {
     atlas_x: u32,
     atlas_y: u32,
     color_glyph: bool,
+    // Only native outline sources rasterize a fractional horizontal offset.
+    #[cfg(feature = "swash")]
+    uses_subpixel_positioning: bool,
 }
 
 #[derive(Debug)]
@@ -221,8 +235,11 @@ pub struct TextContextImpl {
     shaping_run_cache: textlayout::ShapingRunCache<fnv::FnvBuildHasher>,
     #[cfg(feature = "textlayout")]
     shaped_words_cache: textlayout::ShapedWordsCache<fnv::FnvBuildHasher>,
-    #[cfg(feature = "swash")]
+    // Without textlayout, `Font` takes its glyph paths and metrics from swash too.
+    #[cfg(all(feature = "swash", not(feature = "textlayout")))]
     swash_scale_context: Rc<RefCell<swash::scale::ScaleContext>>,
+    #[cfg(feature = "swash")]
+    swash_rasterizer: Rc<RefCell<SwashRasterizer>>,
 }
 
 impl std::fmt::Debug for TextContextImpl {
@@ -237,6 +254,8 @@ impl Default for TextContextImpl {
         let fnv_run = fnv::FnvBuildHasher::default();
         #[cfg(feature = "textlayout")]
         let fnv_words = fnv::FnvBuildHasher::default();
+        #[cfg(feature = "swash")]
+        let swash_scale_context = Rc::new(RefCell::new(swash::scale::ScaleContext::new()));
 
         Self {
             fonts: SlotMap::default(),
@@ -251,15 +270,22 @@ impl Default for TextContextImpl {
                 fnv_words,
             ),
             #[cfg(feature = "swash")]
-            swash_scale_context: Rc::new(RefCell::new(swash::scale::ScaleContext::new())),
+            swash_rasterizer: Rc::new(RefCell::new(SwashRasterizer::new(Rc::clone(&swash_scale_context)))),
+            #[cfg(all(feature = "swash", not(feature = "textlayout")))]
+            swash_scale_context,
         }
     }
 }
 
 impl TextContextImpl {
-    #[cfg(feature = "swash")]
+    #[cfg(all(feature = "swash", not(feature = "textlayout")))]
     pub(crate) fn swash_scale_context(&self) -> Rc<RefCell<swash::scale::ScaleContext>> {
         self.swash_scale_context.clone()
+    }
+
+    #[cfg(feature = "swash")]
+    pub(crate) fn swash_rasterizer(&self) -> Rc<RefCell<SwashRasterizer>> {
+        self.swash_rasterizer.clone()
     }
 
     pub fn add_font_dir<T: AsRef<FilePath>>(&mut self, path: T) -> Result<Vec<FontId>, ErrorKind> {
@@ -332,6 +358,7 @@ impl TextContextImpl {
         self.fonts.get(id.0)
     }
 
+    #[cfg(feature = "textlayout")]
     pub fn font_mut(&mut self, id: FontId) -> Option<&mut Font> {
         self.fonts.get_mut(id.0)
     }
@@ -440,7 +467,7 @@ pub struct GlyphAtlas {
     pub rendered_glyphs: RefCell<FnvHashMap<RenderedGlyphId, Option<RenderedGlyph>>>,
     pub glyph_textures: RefCell<Vec<FontTexture>>,
     #[cfg(feature = "swash")]
-    swash_scale_context: Rc<RefCell<swash::scale::ScaleContext>>,
+    swash_rasterizer: Rc<RefCell<SwashRasterizer>>,
 }
 
 impl GlyphAtlas {
@@ -449,7 +476,7 @@ impl GlyphAtlas {
             rendered_glyphs: RefCell::default(),
             glyph_textures: RefCell::default(),
             #[cfg(feature = "swash")]
-            swash_scale_context: (**_text_context).borrow().swash_scale_context(),
+            swash_rasterizer: (**_text_context).borrow().swash_rasterizer(),
         }
     }
 }
@@ -477,6 +504,24 @@ impl GlyphAtlas {
         mode: RenderMode,
         normalized_coords: &[i16],
     ) -> Result<GlyphDrawCommands, ErrorKind> {
+        #[cfg(feature = "swash")]
+        if mode == RenderMode::Fill {
+            if let Some(font_ref) = font.swash_font_ref() {
+                return self.render_atlas_swash(
+                    canvas,
+                    font_id,
+                    font,
+                    font_face,
+                    font_ref,
+                    glyphs,
+                    font_size,
+                    line_width,
+                    mode,
+                    normalized_coords,
+                );
+            }
+        }
+
         let mut alpha_cmd_map = FnvHashMap::default();
         let mut color_cmd_map = FnvHashMap::default();
 
@@ -488,90 +533,248 @@ impl GlyphAtlas {
 
         let initial_render_target = canvas.current_render_target;
 
-        for glyph in glyphs {
-            let subpixel_location = crate::geometry::quantize(glyph.x.fract(), 0.1) * 10.0;
+        canvas.with_render_target(initial_render_target, |canvas| {
+            for glyph in glyphs {
+                let subpixel_location = crate::geometry::quantize(glyph.x.fract(), 0.1) * 10.0;
 
-            let id = RenderedGlyphId::new(
-                glyph.glyph_id,
-                font_id,
-                font_size,
-                line_width,
-                mode,
-                subpixel_location as u8,
-                normalized_coords,
-            );
+                let id = RenderedGlyphId::new(
+                    glyph.glyph_id,
+                    font_id,
+                    font_size,
+                    line_width,
+                    mode,
+                    subpixel_location as u8,
+                    normalized_coords,
+                );
 
-            let mut rendered_glyphs = self.rendered_glyphs.borrow_mut();
-            let glyph_cache_entry = rendered_glyphs.entry(id);
-            let glyph_cache_entry = match glyph_cache_entry {
-                std::collections::hash_map::Entry::Occupied(occupied_entry) => occupied_entry,
-                std::collections::hash_map::Entry::Vacant(_) => {
-                    let result = self.render_glyph(
-                        canvas,
-                        font_size,
-                        line_width,
-                        mode,
-                        font,
-                        font_face,
-                        glyph.glyph_id,
-                        subpixel_location / 10.0,
-                        normalized_coords,
-                    )?;
-                    glyph_cache_entry.insert_entry(result)
-                }
-            };
-
-            let Some(rendered) = glyph_cache_entry.get() else {
-                continue;
-            };
-
-            if let Some(texture) = self.glyph_textures.borrow().get(rendered.texture_index) {
-                let image_id = texture.image_id;
-                let size = texture.atlas.size();
-                let itw = 1.0 / size.0 as f32;
-                let ith = 1.0 / size.1 as f32;
-
-                let cmd_map = if rendered.color_glyph {
-                    &mut color_cmd_map
-                } else {
-                    &mut alpha_cmd_map
+                let mut rendered_glyphs = self.rendered_glyphs.borrow_mut();
+                let glyph_cache_entry = rendered_glyphs.entry(id);
+                let glyph_cache_entry = match glyph_cache_entry {
+                    std::collections::hash_map::Entry::Occupied(occupied_entry) => occupied_entry,
+                    std::collections::hash_map::Entry::Vacant(_) => {
+                        let result = self.render_glyph_fallback(
+                            canvas,
+                            font_size,
+                            line_width,
+                            mode,
+                            font,
+                            font_face,
+                            glyph.glyph_id,
+                            normalized_coords,
+                        )?;
+                        glyph_cache_entry.insert_entry(result)
+                    }
                 };
 
-                let cmd = cmd_map.entry(rendered.texture_index).or_insert_with(|| DrawCommand {
-                    image_id,
-                    quads: Vec::new(),
-                });
+                let Some(rendered) = glyph_cache_entry.get() else {
+                    continue;
+                };
 
-                let mut q = Quad::default();
+                if let Some(texture) = self.glyph_textures.borrow().get(rendered.texture_index) {
+                    let image_id = texture.image_id;
+                    let size = texture.atlas.size();
+                    let itw = 1.0 / size.0 as f32;
+                    let ith = 1.0 / size.1 as f32;
 
-                let line_width_offset = if rendered.color_glyph { 0. } else { line_width_offset };
+                    let cmd_map = if rendered.color_glyph {
+                        &mut color_cmd_map
+                    } else {
+                        &mut alpha_cmd_map
+                    };
 
-                q.x0 = glyph.x.trunc() + rendered.bearing_x as f32 - line_width_offset - GLYPH_PADDING as f32;
-                q.y0 = glyph.y.round() - rendered.bearing_y as f32 - line_width_offset - GLYPH_PADDING as f32;
-                q.x1 = q.x0 + rendered.width as f32;
-                q.y1 = q.y0 + rendered.height as f32;
+                    let cmd = cmd_map.entry(rendered.texture_index).or_insert_with(|| DrawCommand {
+                        image_id,
+                        quads: Vec::new(),
+                    });
 
-                q.s0 = rendered.atlas_x as f32 * itw;
-                q.t0 = rendered.atlas_y as f32 * ith;
-                q.s1 = (rendered.atlas_x + rendered.width) as f32 * itw;
-                q.t1 = (rendered.atlas_y + rendered.height) as f32 * ith;
+                    let mut q = Quad::default();
 
-                cmd.quads.push(q);
+                    let line_width_offset = if rendered.color_glyph { 0. } else { line_width_offset };
+
+                    q.x0 = glyph.x.trunc() + rendered.bearing_x as f32 - line_width_offset - GLYPH_PADDING as f32;
+                    q.y0 = glyph.y.round() - rendered.bearing_y as f32 - line_width_offset - GLYPH_PADDING as f32;
+                    q.x1 = q.x0 + rendered.width as f32;
+                    q.y1 = q.y0 + rendered.height as f32;
+
+                    q.s0 = rendered.atlas_x as f32 * itw;
+                    q.t0 = rendered.atlas_y as f32 * ith;
+                    q.s1 = (rendered.atlas_x + rendered.width) as f32 * itw;
+                    q.t1 = (rendered.atlas_y + rendered.height) as f32 * ith;
+
+                    cmd.quads.push(q);
+                }
             }
-        }
 
-        canvas.set_render_target(initial_render_target);
-
-        Ok(GlyphDrawCommands {
-            alpha_glyphs: alpha_cmd_map.drain().map(|(_, cmd)| cmd).collect(),
-            color_glyphs: color_cmd_map.drain().map(|(_, cmd)| cmd).collect(),
+            Ok(GlyphDrawCommands {
+                alpha_glyphs: alpha_cmd_map.drain().map(|(_, cmd)| cmd).collect(),
+                color_glyphs: color_cmd_map.drain().map(|(_, cmd)| cmd).collect(),
+            })
         })
     }
 
-    // Renders the glyph into the atlas and returns the RenderedGlyph struct for it.
-    // Returns Ok(None) if there exists no path or image for the glyph in the font (missing glyph).
+    // Keep this helper inlined into native runs; the generic loop retains its
+    // existing quad construction so enabling the cache does not affect its codegen.
+    #[cfg(feature = "swash")]
+    #[inline(always)]
+    fn add_glyph_quad(
+        &self,
+        alpha_cmd_map: &mut FnvHashMap<usize, DrawCommand>,
+        color_cmd_map: &mut FnvHashMap<usize, DrawCommand>,
+        glyph: &PositionedGlyph,
+        glyph_origin: f32,
+        rendered: &RenderedGlyph,
+        line_width_offset: f32,
+    ) {
+        if let Some(texture) = self.glyph_textures.borrow().get(rendered.texture_index) {
+            let image_id = texture.image_id;
+            let size = texture.atlas.size();
+            let itw = 1.0 / size.0 as f32;
+            let ith = 1.0 / size.1 as f32;
+
+            let cmd_map = if rendered.color_glyph {
+                color_cmd_map
+            } else {
+                alpha_cmd_map
+            };
+
+            let cmd = cmd_map.entry(rendered.texture_index).or_insert_with(|| DrawCommand {
+                image_id,
+                quads: Vec::new(),
+            });
+
+            let mut q = Quad::default();
+
+            let line_width_offset = if rendered.color_glyph { 0. } else { line_width_offset };
+
+            q.x0 = glyph_origin + rendered.bearing_x as f32 - line_width_offset - GLYPH_PADDING as f32;
+            q.y0 = glyph.y.round() - rendered.bearing_y as f32 - line_width_offset - GLYPH_PADDING as f32;
+            q.x1 = q.x0 + rendered.width as f32;
+            q.y1 = q.y0 + rendered.height as f32;
+
+            q.s0 = rendered.atlas_x as f32 * itw;
+            q.t0 = rendered.atlas_y as f32 * ith;
+            q.s1 = (rendered.atlas_x + rendered.width) as f32 * itw;
+            q.t1 = (rendered.atlas_y + rendered.height) as f32 * ith;
+
+            cmd.quads.push(q);
+        }
+    }
+
+    #[cfg(feature = "swash")]
     #[allow(clippy::too_many_arguments)]
-    fn render_glyph<T: Renderer>(
+    fn render_atlas_swash<T: Renderer>(
+        &self,
+        canvas: &mut Canvas<T>,
+        font_id: FontId,
+        font: &Font,
+        font_face: &font::FontFaceRef<'_>,
+        font_ref: swash::FontRef<'_>,
+        mut glyphs: impl Iterator<Item = PositionedGlyph>,
+        font_size: f32,
+        line_width: f32,
+        mode: RenderMode,
+        normalized_coords: &[i16],
+    ) -> Result<GlyphDrawCommands, ErrorKind> {
+        let mut alpha_cmd_map = FnvHashMap::default();
+        let mut color_cmd_map = FnvHashMap::default();
+        let initial_render_target = canvas.current_render_target;
+        let context = self.swash_rasterizer.as_ref().borrow().scale_context();
+
+        canvas.with_render_target(initial_render_target, |canvas| {
+            loop {
+                // The context is borrowed for this segment, but a Scaler is built
+                // only when the first outline-cache miss actually needs one.
+                // A fallback terminates the segment so it can safely use the same
+                // shared context after this scaler and its borrow have been dropped.
+                let mut fallback = None;
+                {
+                    let mut context_borrow = context.borrow_mut();
+                    let mut run = HintedGlyphRun::new(&mut context_borrow, font_ref, font_size, normalized_coords);
+                    for glyph in glyphs.by_ref() {
+                        // Round a nonnegative fraction so integer translations
+                        // select the same mask, including positions left of zero.
+                        let origin = glyph.x.floor();
+                        let phase = (crate::geometry::quantize(glyph.x - origin, 0.1) * 10.0) as u8;
+                        let (subpixel_location, origin) = if phase == 10 {
+                            (0, origin + 1.0)
+                        } else {
+                            (phase, origin)
+                        };
+                        let id = RenderedGlyphId::new(
+                            glyph.glyph_id,
+                            font_id,
+                            font_size,
+                            line_width,
+                            mode,
+                            subpixel_location,
+                            normalized_coords,
+                        );
+                        let mut rendered_glyphs = self.rendered_glyphs.borrow_mut();
+                        let rendered = match rendered_glyphs.entry(id) {
+                            std::collections::hash_map::Entry::Occupied(entry) => *entry.get(),
+                            std::collections::hash_map::Entry::Vacant(entry) => {
+                                let image = self.swash_rasterizer.borrow_mut().render_glyph(
+                                    &mut run,
+                                    glyph.glyph_id,
+                                    f32::from(subpixel_location) / 10.0,
+                                );
+                                let rendered = self.upload_glyph_swash_image(canvas, image)?;
+                                if rendered.is_none() {
+                                    fallback = Some((glyph, id));
+                                    break;
+                                }
+                                *entry.insert(rendered)
+                            }
+                        };
+                        drop(rendered_glyphs);
+                        if let Some(rendered) = rendered {
+                            // Bitmap and generic fallback entries retain their
+                            // integer placement on both cold and warm draws.
+                            let origin = if rendered.uses_subpixel_positioning {
+                                origin
+                            } else {
+                                glyph.x.trunc()
+                            };
+                            self.add_glyph_quad(&mut alpha_cmd_map, &mut color_cmd_map, &glyph, origin, &rendered, 0.0);
+                        }
+                    }
+                }
+                let Some((glyph, id)) = fallback else {
+                    break;
+                };
+                let rendered = self.render_glyph_fallback(
+                    canvas,
+                    font_size,
+                    line_width,
+                    mode,
+                    font,
+                    font_face,
+                    glyph.glyph_id,
+                    normalized_coords,
+                )?;
+                self.rendered_glyphs.borrow_mut().insert(id, rendered);
+                if let Some(rendered) = rendered {
+                    self.add_glyph_quad(
+                        &mut alpha_cmd_map,
+                        &mut color_cmd_map,
+                        &glyph,
+                        glyph.x.trunc(),
+                        &rendered,
+                        0.0,
+                    );
+                }
+            }
+            Ok(GlyphDrawCommands {
+                alpha_glyphs: alpha_cmd_map.into_values().collect(),
+                color_glyphs: color_cmd_map.into_values().collect(),
+            })
+        })
+    }
+
+    // Renders a generic path or bitmap into the atlas, returning None for a
+    // glyph without either representation. Native Swash fills use the run path.
+    #[allow(clippy::too_many_arguments)]
+    fn render_glyph_fallback<T: Renderer>(
         &self,
         canvas: &mut Canvas<T>,
         font_size: f32,
@@ -580,18 +783,8 @@ impl GlyphAtlas {
         font: &Font,
         font_face: &font::FontFaceRef<'_>,
         glyph_id: u16,
-        _subpixel_x: f32,
         normalized_coords: &[i16],
     ) -> Result<Option<RenderedGlyph>, ErrorKind> {
-        #[cfg(feature = "swash")]
-        if mode == RenderMode::Fill {
-            if let Some(result) =
-                self.render_glyph_swash(canvas, font, font_size, glyph_id, _subpixel_x, normalized_coords)?
-            {
-                return Ok(Some(result));
-            }
-        }
-
         let padding = GLYPH_PADDING + GLYPH_MARGIN;
 
         let (mut glyph_representation, glyph_metrics, scale) = {
@@ -647,6 +840,8 @@ impl GlyphAtlas {
             atlas_y: dst_y as u32 + GLYPH_MARGIN,
             texture_index: dst_index,
             color_glyph,
+            #[cfg(feature = "swash")]
+            uses_subpixel_positioning: false,
         };
 
         match glyph_representation {
@@ -737,42 +932,11 @@ impl GlyphAtlas {
     }
 
     #[cfg(feature = "swash")]
-    fn render_glyph_swash<T: Renderer>(
+    fn upload_glyph_swash_image<T: Renderer>(
         &self,
         canvas: &mut Canvas<T>,
-        font: &Font,
-        font_size: f32,
-        glyph_id: u16,
-        subpixel_x: f32,
-        normalized_coords: &[i16],
+        image: Option<swash::scale::image::Image>,
     ) -> Result<Option<RenderedGlyph>, ErrorKind> {
-        use swash::scale::{Render, Source, StrikeWith};
-        use swash::zeno::Format;
-
-        let font_ref = match font.swash_font_ref() {
-            Some(f) => f,
-            None => return Ok(None),
-        };
-
-        let image = {
-            let mut scale_context = self.swash_scale_context.borrow_mut();
-            let scaler_builder = scale_context
-                .builder(font_ref)
-                .size(font_size)
-                .hint(true)
-                .normalized_coords(normalized_coords);
-            let mut scaler = scaler_builder.build();
-
-            Render::new(&[
-                Source::ColorOutline(0),
-                Source::ColorBitmap(StrikeWith::BestFit),
-                Source::Outline,
-            ])
-            .format(Format::Alpha)
-            .offset(swash::zeno::Vector::new(subpixel_x, 0.0))
-            .render(&mut scaler, glyph_id)
-        };
-
         let image = match image {
             // Guard against glyphs with no visual (spaces)
             Some(img) if img.placement.width > 0 && img.placement.height > 0 => img,
@@ -834,6 +998,10 @@ impl GlyphAtlas {
             atlas_x: dst_x as u32 + GLYPH_MARGIN,
             atlas_y: dst_y as u32 + GLYPH_MARGIN,
             color_glyph: is_color,
+            uses_subpixel_positioning: matches!(
+                image.source,
+                swash::scale::Source::Outline | swash::scale::Source::ColorOutline(_)
+            ),
         }))
     }
 

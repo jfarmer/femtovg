@@ -14,6 +14,15 @@ All notable changes to this project will be documented in this file.
   paint type (color, gradient, image) and for text.
 - Sped up glyph rasterization with the `swash` feature by letting swash reuse
   its scaler and hinting caches across glyphs.
+- Sped up glyph rasterization with the `swash` feature further by hinting a
+  glyph's outline once per size and reusing it for each subpixel position the
+  glyph is drawn at.
+- Fixed a panic during the first rotated or oversized PNG glyph draw with
+  the `swash` and `textlayout` features.
+- Fixed filled outline glyphs at negative fractional x positions using the
+  wrong subpixel bitmap with the `swash` feature. Bitmap glyphs and generic
+  glyph rendering retain their placement.
+- Fixed a glyph-atlas error leaving the atlas image as the active render target.
 - Added `Canvas::with_render_target`: a side pass on another target that goes
   back to the one that was current, an open layer's store included.
 - Added `ImageFilter::Blend`: blends the filtered image over a second image

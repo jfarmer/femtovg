@@ -373,6 +373,11 @@ pub struct Font {
 }
 
 impl Font {
+    #[cfg(all(test, feature = "swash"))]
+    pub(crate) fn glyph_cache_len(&self) -> usize {
+        self.glyphs.borrow().len()
+    }
+
     #[cfg(feature = "textlayout")]
     pub fn new_with_data<T: AsRef<[u8]> + 'static>(
         data: T,
@@ -793,6 +798,28 @@ impl Font {
     }
 
     #[cfg(feature = "textlayout")]
+    fn glyph_png_bitmap<'a>(face: &'a FontFaceRef<'_>, codepoint: u16) -> Option<ttf_parser::RasterGlyphImage<'a>> {
+        face.0
+            .glyph_raster_image(GlyphId(codepoint), u16::MAX)
+            .filter(|image| image.format == ttf_parser::RasterImageFormat::PNG)
+    }
+
+    // PNG glyphs form the second atlas batch even when they also have COLR
+    // layers. Other bitmap formats stay with outline glyphs in the first batch.
+    #[cfg(feature = "swash")]
+    pub(crate) fn glyph_has_png_bitmap(&self, face: &FontFaceRef<'_>, codepoint: u16) -> bool {
+        #[cfg(feature = "textlayout")]
+        {
+            Self::glyph_png_bitmap(face, codepoint).is_some()
+        }
+        #[cfg(not(feature = "textlayout"))]
+        {
+            let _ = (face, codepoint);
+            false
+        }
+    }
+
+    #[cfg(feature = "textlayout")]
     pub(crate) fn glyph(
         &self,
         face: &FontFaceRef<'_>,
@@ -806,11 +833,7 @@ impl Font {
 
             let id = GlyphId(codepoint);
 
-            let maybe_glyph = if let Some(image) = face
-                .0
-                .glyph_raster_image(id, u16::MAX)
-                .filter(|img| img.format == ttf_parser::RasterImageFormat::PNG)
-            {
+            let maybe_glyph = if let Some(image) = Self::glyph_png_bitmap(face, codepoint) {
                 let scale = if image.pixels_per_em != 0 {
                     self.units_per_em as f32 / image.pixels_per_em as f32
                 } else {
