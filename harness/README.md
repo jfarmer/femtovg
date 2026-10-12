@@ -680,6 +680,8 @@ run that has such a text.
   and fallback fonts are already fontdb's and usvg's defaults.
 * Not mapped: `paint-order` (the fill is drawn first, as for a path), and a
   text inside a `clipPath` (still ignored).
+* `corpus/text-probes` has twelve files written for this mode; its README
+  says what each draws.
 * A dashed stroke on text does not compare: femtovg cuts the dashes of a
   glyph it draws as an outline in font units, and strokes a glyph from the
   atlas without dashes and with the default cap and join.

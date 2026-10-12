@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- Gradient text in a turned, a skewed, a stretched and a mirrored group: the gradient is in the group's coordinates -->
+  <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="-30" y1="0" x2="30" y2="0"><stop offset="0" stop-color="#e02000"/><stop offset="0.5" stop-color="#0040d0"/><stop offset="1" stop-color="#009040"/></linearGradient>
+  <g transform="translate(55 60) rotate(-20)"><text x="0" y="10" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="30" fill="url(#g)">Abc</text></g>
+  <g transform="translate(145 60) skewX(-25)"><text x="0" y="10" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="30" fill="url(#g)">Abc</text></g>
+  <g transform="translate(55 140) scale(1.5 0.7)"><text x="0" y="10" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="30" fill="url(#g)">Abc</text></g>
+  <g transform="translate(145 140) scale(-1 1)"><text x="0" y="10" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="30" fill="url(#g)">Abc</text></g>
+</svg>

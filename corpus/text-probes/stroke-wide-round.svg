@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- A wide stroke with round joins on text that femtovg draws as outlines at every framing from the fit up -->
+  <text x="100" y="136" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="100" fill="none" stroke="#205080" stroke-width="10" stroke-linejoin="round">Rk</text>
+</svg>

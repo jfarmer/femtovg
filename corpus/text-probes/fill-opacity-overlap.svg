@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- Glyphs that overlap, filled at half opacity. A glyph run fills each glyph on its own and covers an overlap twice; usvg's outlines of the line are one path and cover it once -->
+  <text x="18" y="124" font-family="Arial" font-weight="bold" font-size="64" letter-spacing="-10" fill="#0050c0" fill-opacity="0.5">AVAW</text>
+</svg>
