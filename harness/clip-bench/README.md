@@ -59,8 +59,10 @@ builds A and B:
 - `glpaired.py A B PAIRS FRAMES scene...`: frame time of `gl_fill_bench`, alternating, with the paired difference.
 - `gl_instr.py A B -- scene...`: instructions retired a frame (a long run minus a short one; macOS `/usr/bin/time -l`).
 - `gl_clip_check_A` and `gl_clip_check_B`: each prints the clip checks; diff the two outputs.
-- `gl_svg_dump_A OUT.ppm SCALE FILE.svg`: the OpenGL backend's pixels for an SVG's solid fills and strokes, to
+- `gl_svg_dump_A OUT.ppm SCALE FILE.svg`: the OpenGL backend's pixels for an SVG's fills, strokes and text, to
   compare two builds byte for byte.
+- `gl_dump_ab.py A B SCALE[,SCALE...] FILE.svg...`: does that for each file and scale, and for a dump that differs
+  says how far each build's is from its own with the text drawn as paths (`TEXT_AS_PATHS=1`).
 
 `paired.py` does the wgpu harness's pages the same way; `draw_cost.rs` and `mask_cost.rs` are Void-renderer
 benches of the canvas side.
