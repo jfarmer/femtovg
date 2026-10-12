@@ -156,3 +156,141 @@ gradient-transformed-groups at 0.1953125: beyond 20/255 of its text as paths, m3
 
 ## clip-bench/gl_dump_ab.py m389 p389 2 corpus/babylon/gui-gradient-linear.svg
 gui-gradient-linear at 2: beyond 20/255 of its text as paths, m389 0.16 %, p389 0.00 %
+
+## md5 of the binaries
+bb6a34d193896b2843e1dc6ea1cdb416 _logos_full_m389g
+95725a5338d9b442a47e6abd2b4f70e1 _logos_full_p389g
+02c6269761aa9eaad85a6ab6921b9d28 _logos_full_m389pc
+b591481818c272a8f7eee3d4117d660c _logos_full_p389pc
+f95d2c9d9edd1904cedaf64a380afae9 _logos_full_m389ac
+45b59b4e749e8e83f64cf47f33fc612e _logos_full_p389ac
+b9881b436e246f0945b9d7e522ff9b6c gl_svg_dump_m389
+7a745fefa0a6f6eac76144f052076ef0 gl_svg_dump_p389
+
+## run.py memory m389g,p389g (134 frames) and m389g_notext,p389g_notext (501 frames): summary of memory.jsonl
+text on:  transient, layers, pass_through identical on 134 of 134 frames; peak_footprint MiB master median 464.3 max 763.9, #389 median 464.3 max 758.7; paired #389-master median -0.02, 10th -0.22, 90th +0.17
+text off: transient, layers, pass_through identical on 501 of 501 frames; peak_footprint MiB master median 456.0 max 3982.0, #389 median 456.0 max 3982.3; paired #389-master median +0.03, 10th -0.23, 90th +0.22
+
+## soak.py run (three passes over 1,279 files on one canvas), then soak.py report
+m389g_notext zooms rc 0 ['1343963136  maximum resident set size', '4241002816  peak memory footprint']
+p389g_notext zooms rc 0 ['1374568448  maximum resident set size', '4180562240  peak memory footprint']
+m389g_notext hd rc 0 ['1312636928  maximum resident set size', '4569927856  peak memory footprint']
+p389g_notext hd rc 0 ['1310048256  maximum resident set size', '4399878368  peak memory footprint']
+m389g zooms rc 0 ['1689419776  maximum resident set size', '4482601544  peak memory footprint']
+p389g zooms rc 0 ['1640611840  maximum resident set size', '4540830256  peak memory footprint']
+m389g hd rc 0 ['1543553024  maximum resident set size', '4750594176  peak memory footprint']
+p389g hd rc 0 ['1521942528  maximum resident set size', '5281190256  peak memory footprint']
+m389g_hd               frames  3837  wall   10.2 s  cpu    9.6 s  frame ms p50   1.07 p99    32.3 max   178.9
+                       peak footprint   4530 MiB (graphics   3963, cpu   930); render passes max 0
+                       pass 0: peak   4530 MiB, held after a frame median   3909, held after the last frame   1275,   3.6 s
+                       pass 1: peak   4522 MiB, held after a frame median   4114, held after the last frame   1578,   3.3 s
+                       pass 2: peak   4448 MiB, held after a frame median   2809, held after the last frame   1588,   3.3 s
+m389g_notext_hd        frames  3837  wall   10.1 s  cpu    9.5 s  frame ms p50   1.11 p99    33.3 max   181.9
+                       peak footprint   4358 MiB (graphics   3777, cpu   695); render passes max 0
+                       pass 0: peak   4202 MiB, held after a frame median   3770, held after the last frame   1135,   3.4 s
+                       pass 1: peak   4358 MiB, held after a frame median   3988, held after the last frame   1352,   3.3 s
+                       pass 2: peak   4228 MiB, held after a frame median   4042, held after the last frame   1410,   3.4 s
+m389g_notext_zooms     frames 11511  wall   17.4 s  cpu   17.7 s  frame ms p50   0.56 p99    21.9 max   187.8
+                       peak footprint   4045 MiB (graphics   3392, cpu   654); render passes max 0
+                       pass 0: peak   3721 MiB, held after a frame median   1103, held after the last frame   1019,   5.6 s
+                       pass 1: peak   4012 MiB, held after a frame median   2742, held after the last frame   1329,   5.5 s
+                       pass 2: peak   4045 MiB, held after a frame median   1580, held after the last frame   1328,   6.3 s
+m389g_zooms            frames 11511  wall   26.1 s  cpu   23.7 s  frame ms p50   0.82 p99    31.5 max   181.1
+                       peak footprint   4275 MiB (graphics   3428, cpu   876); render passes max 0
+                       pass 0: peak   4033 MiB, held after a frame median   2604, held after the last frame   1191,   6.8 s
+                       pass 1: peak   4173 MiB, held after a frame median   1536, held after the last frame   1452,   6.8 s
+                       pass 2: peak   4275 MiB, held after a frame median   1540, held after the last frame   1561,  12.5 s
+p389g_hd               frames  3837  wall   11.0 s  cpu   10.2 s  frame ms p50   1.21 p99    34.8 max   184.0
+                       peak footprint   5037 MiB (graphics   4200, cpu   839); render passes max 0
+                       pass 0: peak   4138 MiB, held after a frame median   3965, held after the last frame   1331,   3.6 s
+                       pass 1: peak   4292 MiB, held after a frame median   4100, held after the last frame   1471,   3.6 s
+                       pass 2: peak   5037 MiB, held after a frame median   4188, held after the last frame   1494,   3.8 s
+p389g_notext_hd        frames  3837  wall   12.3 s  cpu   11.0 s  frame ms p50   1.40 p99    33.8 max   188.9
+                       peak footprint   4196 MiB (graphics   3536, cpu   672); render passes max 0
+                       pass 0: peak   3942 MiB, held after a frame median   1240, held after the last frame   1137,   4.5 s
+                       pass 1: peak   4066 MiB, held after a frame median   1341, held after the last frame   1181,   4.0 s
+                       pass 2: peak   4196 MiB, held after a frame median   3584, held after the last frame   1315,   3.8 s
+p389g_notext_zooms     frames 11511  wall   19.2 s  cpu   19.7 s  frame ms p50   0.62 p99    24.3 max   188.5
+                       peak footprint   3987 MiB (graphics   3391, cpu   597); render passes max 0
+                       pass 0: peak   3789 MiB, held after a frame median   1297, held after the last frame   1046,   6.7 s
+                       pass 1: peak   3937 MiB, held after a frame median   1311, held after the last frame   1226,   6.2 s
+                       pass 2: peak   3987 MiB, held after a frame median   1357, held after the last frame   1271,   6.3 s
+p389g_zooms            frames 11511  wall   17.7 s  cpu   18.0 s  frame ms p50   0.59 p99    23.1 max   185.5
+                       peak footprint   4330 MiB (graphics   3449, cpu   882); render passes max 0
+                       pass 0: peak   3899 MiB, held after a frame median   2240, held after the last frame   1225,   6.3 s
+                       pass 1: peak   4175 MiB, held after a frame median   1745, held after the last frame   1460,   5.8 s
+                       pass 2: peak   4330 MiB, held after a frame median   1684, held after the last frame   1562,   5.7 s
+
+## pass_time.py m389g p389g frames=50 repeats=3 framings=z1,hd env=FRAME_DRIFT=0.37 (67 files with text)
+134 frames of 67 files; 134 timed with both builds
+steady-state frame time summed over them: 164 ms -> 164 ms (+0.1 %); 23 frames more than 2 % faster, 23 more than 2 % slower
+  z1: 67 frames, 73 -> 73 ms (+0.3 %)
+  hd: 67 frames, 91 -> 91 ms (-0.1 %)
+  text-probes: 24 frames, 20 -> 20 ms (-0.1 %)
+  wpt: 12 frames, 15 -> 15 ms (-0.0 %)
+  babylon: 98 frames, 129 -> 129 ms (+0.1 %)
+  render passes over 134 frames: 0 -> 0; 0 frames with fewer, 0 with more
+  encoding (recording and encoding a frame, before the submit) over 134 frames: 62 -> 62 ms (+0.2 %); median frame -0.1 %
+  median frame: +0.0 %; a tenth of the frames beyond -2.5 % and +2.8 %
+  largest savings: [('-6 %', 'gradient-transformed-groups', 'hd'), ('-6 %', 'ui-unaffected-by-post-process', 'z1'), ('-5 %', 'framegraph-gui-bloom', 'z1'), ('-5 %', 'gui-force-resize-width', 'hd'), ('-5 %', '7', 'z1')]
+  smallest: [('+4 %', 'gui-horizontal-stack-panel-and-text-block-with-resizetofit-a', 'hd'), ('+5 %', '3', 'z1'), ('+6 %', '3', 'hd'), ('+7 %', '2', 'z1'), ('+13 %', '1', 'hd')]
+
+## pass_time.py m389g_notext p389g_notext frames=50 repeats=3 framings=hd env=FRAME_DRIFT=0.37 (501 files)
+501 frames of 501 files; 501 timed with both builds
+steady-state frame time summed over them: 1600 ms -> 1595 ms (-0.3 %); 144 frames more than 2 % faster, 122 more than 2 % slower
+  hd: 501 frames, 1600 -> 1595 ms (-0.3 %)
+  shadow-merge: 5 frames, 19 -> 17 ms (-10.3 %)
+  buseybench: 27 frames, 872 -> 870 ms (-0.2 %)
+  resvg-mix-blend: 23 frames, 58 -> 57 ms (-1.9 %)
+  reductions: 8 frames, 31 -> 30 ms (-2.8 %)
+  firefox: 14 frames, 29 -> 28 ms (-2.6 %)
+  firefox-com: 34 frames, 75 -> 74 ms (-1.0 %)
+  resvg-feblend: 10 frames, 25 -> 24 ms (-2.5 %)
+  probes: 5 frames, 14 -> 14 ms (-4.2 %)
+  wpt-blend-reftests: 12 frames, 14 -> 14 ms (-2.6 %)
+  icons: 3 frames, 14 -> 13 ms (-2.6 %)
+  wpt-fill-blur-reftests: 30 frames, 43 -> 43 ms (-0.7 %)
+  shadow-edges: 6 frames, 11 -> 11 ms (-2.2 %)
+  wpt-blend-reftests-2: 26 frames, 20 -> 20 ms (-1.1 %)
+  wpt-clip-path-reftests: 25 frames, 19 -> 18 ms (-1.1 %)
+  wpt-pservers-reftests: 10 frames, 7 -> 7 ms (-2.3 %)
+  pressure: 5 frames, 6 -> 6 ms (-1.3 %)
+  tiger: 1 frames, 4 -> 4 ms (-0.9 %)
+  nyt: 11 frames, 11 -> 11 ms (+0.1 %)
+  blur-idioms: 3 frames, 9 -> 9 ms (+0.2 %)
+  clip-probes: 21 frames, 15 -> 15 ms (+0.2 %)
+  text-probes: 12 frames, 8 -> 8 ms (+0.6 %)
+  wpt: 18 frames, 47 -> 47 ms (+0.3 %)
+  wpt-layer-blur-reftests: 5 frames, 10 -> 10 ms (+1.8 %)
+  wpt-feoffset-reftests: 25 frames, 18 -> 18 ms (+1.3 %)
+  wpt-femorphology-reftests: 25 frames, 18 -> 18 ms (+1.6 %)
+  svgenius: 75 frames, 79 -> 80 ms (+0.4 %)
+  resvg-probes: 1 frames, 3 -> 3 ms (+16.8 %)
+  wpt-fegaussianblur-reftests: 25 frames, 43 -> 44 ms (+1.3 %)
+  blend-probes: 9 frames, 33 -> 33 ms (+1.9 %)
+  logos: 10 frames, 18 -> 18 ms (+4.4 %)
+  babylon: 17 frames, 28 -> 30 ms (+7.0 %)
+  render passes over 501 frames: 0 -> 0; 0 frames with fewer, 0 with more
+  encoding (recording and encoding a frame, before the submit) over 501 frames: 472 -> 471 ms (-0.2 %); median frame -0.4 %
+  median frame: -0.3 %; a tenth of the frames beyond -5.4 % and +5.0 %
+  largest savings: [('-34 %', 'winding-overflow', 'hd'), ('-22 %', 'spinner', 'hd'), ('-21 %', 'blur-variation-1-3-18-ref', 'hd'), ('-21 %', 'linear-merge-swatches', 'hd'), ('-20 %', 'blur-variation-4-4-15-ref', 'hd')]
+  smallest: [('+26 %', 'page_72_32位像素风emoji_39823_icon_13', 'hd'), ('+38 %', 'mr-settodefault', 'hd'), ('+42 %', 'blur-variation-5-3-22-ref', 'hd'), ('+45 %', 'mastercard', 'hd'), ('+70 %', 'blur-variation-5-3-46-ref', 'hd')]
+
+## render passes: pass_time.py m389pc p389pc frames=3 repeats=1 (pass_count.py builds)
+134 frames of 67 files; 134 timed with both builds
+  render passes over 134 frames: 777 -> 777; 0 frames with fewer, 0 with more
+501 frames of 501 files; 501 timed with both builds
+  render passes over 501 frames: 15630 -> 15630; 0 frames with fewer, 0 with more
+
+## heap allocations, --cfg harness_alloc_count builds m389ac and p389ac, FRAMES=6
+text on, 134 frames: calls identical on 134; one frame of each added up, 193872 -> 193872 calls; bytes 79484049 -> 79483390
+text off, 501 frames: calls identical on 500; one frame of each added up, 1174656 -> 1174657 calls; bytes 369242858 -> 369245277
+
+## ab_refs.py m389g p389g refs=chr,ff (67 files with text, four framings; Firefox 157.0)
+m389g -> p389g: 268 frames of 67 files with both builds; 235 bit-identical, 33 changed in 10 files
+
+Chromium (software): 33 changed frames compared; toward 32, away 0, level 1; by more than 0.1 points: toward 30, away 0; median -4.169
+   of 1127690 pixels that differ between the builds: 1111936 nearer the reference, 4057 farther, 11697 as far; mean distance 105.6 -> 4.7 of 255
+
+Firefox: 33 changed frames compared; toward 32, away 0, level 1; by more than 0.1 points: toward 30, away 0; median -4.193
+   of 1127690 pixels that differ between the builds: 1117371 nearer the reference, 2257 farther, 8062 as far; mean distance 103.9 -> 2.5 of 255

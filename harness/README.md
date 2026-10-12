@@ -744,6 +744,14 @@ The other 20 are in the italic word of `gradient-across-runs`, where the glyph
 runs are up to 59/255 lighter than the paths. Both builds draw those runs
 alike, and #389 is farther there by 3/255 at most.
 
-Timing of the two builds, by instructions per frame and by frame time, and
-the two on the OpenGL backend, are in `pr389-timing-2026-10-12.md`: no
-difference beyond the spread of the runs.
+Against Firefox 157.0 on the same pages, over the 55 files and the 12 probes
+at the four framings: Chromium and Firefox differ structurally by 0.015 % of
+a frame on average and by more than 0.05 % on 10 of the 268 frames. 44 of
+master's frames are above 0.05 % structural against Chromium and above the
+two browsers' own difference, and 17 of #389's, all 17 among the 44. The 27
+that #389 clears are frames of gradient text. Of the 33 frames the builds
+differ on, 32 move toward Firefox and none away.
+
+What #389 costs is in `pr389-timing-2026-10-12.md`: instructions per frame,
+frame time, peak memory, a soak, render passes and heap allocations, and the
+two builds on the OpenGL backend. None differs beyond the spread of the runs.
