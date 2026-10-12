@@ -700,3 +700,22 @@ frame is blank on the white page in every build and in Chromium.
     not at all         0.40 / 0.055     1.20 / 0.388     2.24 / 1.255     0.42 / 0.247
     as glyph runs      0.31 / 0.004     0.77 / 0.033     0.85 / 0.026     0.16 / 0.015
     as paths           0.33 / 0.017     0.70 / 0.021     0.73 / 0.014     0.13 / 0.001
+
+**First use: femtovg/femtovg#389**, which applies a gradient across the whole
+run when text is drawn directly. On master `render_direct` sets each glyph's
+transform on the canvas, and the canvas transform also maps the paint, so a
+gradient starts again at every glyph. Two corpus files fill text with a
+gradient: `babylon/native-canvas` ("Gradient Text!", 60 px) and
+`babylon/gui-gradient-linear` (two labels). master d70ffeb (`m389g`) and #389
+at 86cb3de (`p389g`) render 15 of the 11,403 corpus frames differently, all
+of them in these two files, and none with `TEXT_AS_PATHS=1`. `native-canvas`
+against Chromium 131:
+
+    build              z1               z2               z4               hd
+    master d70ffeb     2.88 / 0.110     7.13 / 1.312     6.24 / 0.460     1.55 / 0.706
+    #389 86cb3de       2.39 / 0.051     5.21 / 0.231     6.24 / 0.460     0.68 / 0.000
+
+At z4 the gradient line is outside the frame. With #389 no pixel of the
+gradient line is left in the structural difference at z1, z2 or hd; what
+remains at z1 and z2 is the file's other text. Evidence:
+`pr389-gradient-text.png`.
