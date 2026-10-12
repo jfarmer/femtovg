@@ -643,3 +643,60 @@ the source drawn raw, and credited the passes with what the chain does (WPT
 `offset-triple-chain-rgb-shadow` 0 vs 1.3 %). The exception stays: a chain
 that stops at an `feBlend` counts as run, as the mapping section's rule 1
 set out. `PARTIAL_CHAINS=1` restores the earlier policy for comparison.
+
+## Text as glyph runs (2026-10-12)
+
+Before this the harness drew no text: `draw_nodes` had no arm for
+`usvg::Node::Text`. 55 corpus files have a `<text>` element (49 of the 66
+Babylon canvases and six WPT files), and their frames were compared with the
+browsers without it.
+
+A build with `--cfg harness_text` draws a text as glyph runs. `build.sh` sets
+the cfg for a checkout whose `Canvas::fill_glyph_run` takes normalized
+coordinates (femtovg 0.23 and later). usvg has already laid the text out:
+`Text::layouted()` gives each span's glyphs with their font, glyph id and
+position. Each stretch of a span's glyphs that is in one font goes to
+`Canvas::fill_glyph_run` or `Canvas::stroke_glyph_run` with the span's paint
+and font size, under the text's `abs_transform`. The font is the face usvg
+chose, loaded from the tree's fontdb into the canvas's `TextContext`. So
+femtovg's text code draws the glyphs, from the glyph atlas or as outlines in
+`render_direct`, as it does for `fill_text`. femtovg's own shaping and line
+layout are not used: the positions are usvg's.
+
+`draw_glyph_run` decides between the two from the canvas scale rounded to a
+sixteenth. Text above 92 px on the target is drawn as outlines. Below that, a
+solid colour comes from the atlas, and a gradient or an image paint is drawn
+as outlines unless the rounded scale is 1, which it is for no frame of this
+run that has such a text.
+
+* `TEXT_AS_PATHS=1` draws usvg's outlines of the text (`Text::flattened()`)
+  with `fill_path` and `stroke_path`: the same glyphs, positions and paints,
+  without femtovg's text code. A text is also drawn this way when a glyph run
+  cannot hold it: a glyph that usvg turned or stretched (`rotate`, text on a
+  path, vertical text, `lengthAdjust`), or a variable font, which usvg lays
+  out at the style's weight and optical size and a run here would draw at the
+  font's defaults. `LAYER_STATS=1` counts those texts.
+* `NO_TEXT=1` draws no text. A text build then renders every corpus frame as
+  the harness did before (11,403 of 11,403 frames bit for bit,
+  `identity.py m389 m389g_notext`), and so does a build without the cfg.
+* On macOS the generic `monospace` family is Menlo, as in the reference
+  Chromium; fontdb's default is Courier New. Chromium's `serif`, `sans-serif`
+  and fallback fonts are already fontdb's and usvg's defaults.
+* Not mapped: `paint-order` (the fill is drawn first, as for a path), and a
+  text inside a `clipPath` (still ignored).
+* A dashed stroke on text does not compare: femtovg cuts the dashes of a
+  glyph it draws as an outline in font units, and strokes a glyph from the
+  atlas without dashes and with the default cap and join.
+* The first frame that draws a face loads it, and the harness copies the
+  whole font file to do so (192 MB for Apple Color Emoji). `MEM_PEAKS`, soak
+  and frame-time figures of a file with text include that; take them with
+  `NO_TEXT=1` or `TEXT_AS_PATHS=1`.
+
+The 55 files against Chromium 131 with master d70ffeb, mean px>20 /
+structural. In 14 of them the text is white on a transparent canvas, so the
+frame is blank on the white page in every build and in Chromium.
+
+    text drawn         z1               z2               z4               hd
+    not at all         0.40 / 0.055     1.20 / 0.388     2.24 / 1.255     0.42 / 0.247
+    as glyph runs      0.31 / 0.004     0.77 / 0.033     0.85 / 0.026     0.16 / 0.015
+    as paths           0.33 / 0.017     0.70 / 0.021     0.73 / 0.014     0.13 / 0.001

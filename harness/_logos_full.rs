@@ -12,6 +12,8 @@
 //! `--cfg harness_mix_blend` `LayerEffects::with_blend` (#356) and
 //! `--cfg harness_blur_xy` `ImageFilter::GaussianBlur { sigma_x, sigma_y }` (#362);
 //! without it an `feGaussianBlur` with two values blurs both axes by the larger.
+//! `--cfg harness_text` draws `<text>` as glyph runs (`Canvas::fill_glyph_run`,
+//! `Canvas::stroke_glyph_run`); without it no text is drawn.
 //! `--cfg harness_slices` `WGPURenderer::set_submission_slicing` (#368):
 //! `cargo rustc --release --example _logos_full --features wgpu -- --cfg harness_clip --cfg harness_turbulence --cfg harness_blend --cfg harness_mix_blend`
 //! (or the same cfgs in RUSTFLAGS, which also rebuilds every dependency).
@@ -120,6 +122,28 @@ fn to_paint(p: &usvg::Paint) -> Option<Paint> {
     }
     if std::env::var("FORCE_SOLID").is_ok() && !matches!(p, usvg::Paint::Color(_)) {
         return Some(Paint::color(Color::rgb(200, 0, 200)));
+    }
+    Some(paint)
+}
+
+/// A stroke's paint with its line width, cap, join, miter limit and dashes.
+fn stroke_paint(stroke: &usvg::Stroke) -> Option<Paint> {
+    let mut paint = to_paint(stroke.paint())?;
+    paint.set_line_width(stroke.width().get());
+    paint.set_line_cap(match stroke.linecap() {
+        usvg::LineCap::Butt => femtovg::LineCap::Butt,
+        usvg::LineCap::Round => femtovg::LineCap::Round,
+        usvg::LineCap::Square => femtovg::LineCap::Square,
+    });
+    paint.set_line_join(match stroke.linejoin() {
+        usvg::LineJoin::Miter | usvg::LineJoin::MiterClip => femtovg::LineJoin::Miter,
+        usvg::LineJoin::Round => femtovg::LineJoin::Round,
+        usvg::LineJoin::Bevel => femtovg::LineJoin::Bevel,
+    });
+    paint.set_miter_limit(stroke.miterlimit().get());
+    if let Some(dashes) = stroke.dasharray() {
+        paint.set_line_dash(dashes);
+        paint.set_line_dash_offset(stroke.dashoffset());
     }
     Some(paint)
 }
@@ -1843,6 +1867,10 @@ static FILTERS_SKIPPED: std::sync::atomic::AtomicUsize = std::sync::atomic::Atom
 static TURBULENCE_UNSUPPORTED: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 /// Clip paths drawn unclipped by a build without `harness_clip`.
 static CLIPS_UNSUPPORTED: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+/// Text nodes left undrawn by a build without `harness_text`.
+static TEXT_UNSUPPORTED: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+/// Text nodes drawn as usvg's outlines of their glyphs and not as glyph runs.
+static TEXT_AS_OUTLINES: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
 /// LAYER_LOG=1: one line per layer with what a pool simulator needs.
 /// Under LAYER_LOG, which layer could not open: its kind and the group's
@@ -2083,6 +2111,222 @@ fn draw_group_body(
     }
 }
 
+/// While a shadow copy is drawn, moves what the canvas draws next by the
+/// copy's offset.
+fn shift_shadow_copy(canvas: &mut Canvas<WGPURenderer>) {
+    if let Some((_, dx, dy)) = *SHADOW_COPY.lock().unwrap() {
+        // The offset applies after every transform: a translation
+        // added to the composed matrix's own.
+        let mut shifted = canvas.transform();
+        shifted.0[4] += dx;
+        shifted.0[5] += dy;
+        canvas.reset_transform();
+        canvas.set_transform(&shifted);
+    }
+}
+
+/// What `text_font` loads fonts from and into.
+#[cfg(harness_text)]
+#[derive(Default)]
+struct TextFonts {
+    /// The canvas's text context. `Canvas` loads only the first face of a font
+    /// file; `TextContext::add_shared_font_with_index` loads any face.
+    context: femtovg::TextContext,
+    /// `usvg::Tree::fontdb` of the tree being drawn. usvg's layout names the
+    /// face of each glyph by its id in this database.
+    fontdb: Option<std::sync::Arc<usvg::fontdb::Database>>,
+    /// The femtovg font of each face asked for so far, None for a face that
+    /// `text_font` does not load.
+    loaded: std::collections::HashMap<usvg::fontdb::ID, Option<femtovg::FontId>>,
+}
+
+// A thread local and not a static behind a mutex like the rest of the
+// harness's state, because a `TextContext` is not `Send`.
+#[cfg(harness_text)]
+thread_local! {
+    static TEXT_FONTS: std::cell::RefCell<TextFonts> = std::cell::RefCell::default();
+}
+
+/// Makes `fontdb` the database `text_font` loads from and returns the one it
+/// was. The fonts loaded so far are dropped from the map when the database
+/// changes, because an id names a different face in another database.
+#[cfg(harness_text)]
+fn use_fontdb(fontdb: &std::sync::Arc<usvg::fontdb::Database>) -> Option<std::sync::Arc<usvg::fontdb::Database>> {
+    TEXT_FONTS.with_borrow_mut(|fonts| {
+        let outer = fonts.fontdb.replace(fontdb.clone());
+        if !matches!(&outer, Some(outer) if std::sync::Arc::ptr_eq(outer, fontdb)) {
+            fonts.loaded.clear();
+        }
+        outer
+    })
+}
+
+/// The femtovg font for a face of the current database, loaded when it is
+/// first asked for. None if the face cannot be read, if femtovg does not take
+/// it, or if it is a variable font: usvg lays a variable font out at the
+/// weight, width and optical size the text's style asks for, and `draw_text`
+/// draws its glyph runs at the font's defaults.
+#[cfg(harness_text)]
+fn text_font(id: usvg::fontdb::ID) -> Option<femtovg::FontId> {
+    TEXT_FONTS.with_borrow_mut(|fonts| {
+        if let Some(font) = fonts.loaded.get(&id) {
+            return *font;
+        }
+        let context = &fonts.context;
+        let font = fonts
+            .fontdb
+            .as_ref()
+            .and_then(|fontdb| {
+                fontdb.with_face_data(id, |data, index| {
+                    context.add_shared_font_with_index(data.to_vec(), index).ok()
+                })
+            })
+            .flatten()
+            .filter(|font| context.font_variation_axes(*font).is_ok_and(|axes| axes.is_empty()));
+        fonts.loaded.insert(id, font);
+        font
+    })
+}
+
+/// The glyphs of one span as femtovg glyph runs: each stretch of glyphs that
+/// is in one font, in the text's own coordinates.
+#[cfg(harness_text)]
+type SpanRuns = Vec<(femtovg::FontId, Vec<femtovg::PositionedGlyph>)>;
+
+/// The glyph runs of each span of `text`, or None if a glyph run cannot hold
+/// one of its glyphs. A glyph run places a glyph by its origin and draws it
+/// upright at one font size, so a glyph that usvg turned or stretched
+/// (`rotate`, text on a path, vertical text, `lengthAdjust`) does not fit, and
+/// neither does a glyph of a font that `text_font` does not load.
+#[cfg(harness_text)]
+fn glyph_runs(text: &usvg::Text) -> Option<Vec<SpanRuns>> {
+    text.layouted()
+        .iter()
+        .map(|span| {
+            let mut runs = SpanRuns::new();
+            let mut run_font = None;
+            for glyph in &span.positioned_glyphs {
+                // Maps the glyph's outline, in font units, into the text's
+                // coordinates.
+                let t = glyph.transform();
+                let slack = 1e-6 * t.sx;
+                if t.sx <= 0.0 || t.kx.abs() > slack || t.ky.abs() > slack || (t.sx - t.sy).abs() > slack {
+                    return None;
+                }
+                if run_font != Some(glyph.font) {
+                    runs.push((text_font(glyph.font)?, Vec::new()));
+                    run_font = Some(glyph.font);
+                }
+                runs.last_mut()?.1.push(femtovg::PositionedGlyph {
+                    x: t.tx,
+                    y: t.ty,
+                    glyph_id: u16::try_from(glyph.id.0).ok()?,
+                });
+            }
+            Some(runs)
+        })
+        .collect()
+}
+
+/// Draws usvg's outlines of a text, `Text::flattened()`. usvg gives a path of
+/// glyph outlines the text's absolute transform, which is where `draw_nodes`
+/// draws a path. A decoration is a path in the text's coordinates with no
+/// transform of its own, and a colour, SVG or bitmap glyph is a group under
+/// the group's transform, so the canvas is given the text's transform for
+/// those.
+#[cfg(harness_text)]
+fn draw_text_outlines(canvas: &mut Canvas<WGPURenderer>, text: &usvg::Text, scale: f32, masks: &MaskMap) {
+    for node in text.flattened().children() {
+        let glyph_outlines = match node {
+            usvg::Node::Path(path) if !path.is_visible() => continue,
+            usvg::Node::Path(path) => path.abs_transform() == text.abs_transform(),
+            _ => false,
+        };
+        if glyph_outlines {
+            draw_nodes(canvas, std::slice::from_ref(node), scale, masks);
+            continue;
+        }
+        canvas.save();
+        canvas.set_transform(&ts_to_t2d(text.abs_transform()));
+        if let usvg::Node::Group(group) = node {
+            canvas.set_transform(&ts_to_t2d(group.transform()));
+            draw_nodes(canvas, group.children(), scale, masks);
+        } else {
+            draw_nodes(canvas, std::slice::from_ref(node), scale, masks);
+        }
+        canvas.restore();
+    }
+}
+
+/// Draws a text as glyph runs, so that it is drawn by femtovg's text code:
+/// the glyph atlas or `render_direct`, as `Canvas::fill_text` is. usvg's layout
+/// gives each glyph's font, id and position. TEXT_AS_PATHS=1 draws usvg's
+/// outlines of the text as paths, which is also how a text that `glyph_runs`
+/// cannot hold is drawn. NO_TEXT=1 draws no text, as the harness did before it
+/// drew any.
+#[cfg(harness_text)]
+fn draw_text(canvas: &mut Canvas<WGPURenderer>, text: &usvg::Text, scale: f32, masks: &MaskMap) {
+    if std::env::var("NO_TEXT").is_ok() {
+        return;
+    }
+    let runs = if std::env::var("TEXT_AS_PATHS").is_ok() {
+        None
+    } else {
+        glyph_runs(text)
+    };
+    let Some(runs) = runs else {
+        TEXT_AS_OUTLINES.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        draw_text_outlines(canvas, text, scale, masks);
+        return;
+    };
+    // A decoration is a path in the text's coordinates with no transform of
+    // its own.
+    let decoration = |canvas: &mut Canvas<WGPURenderer>, path: &Option<usvg::Path>| {
+        if let Some(path) = path {
+            draw_nodes(canvas, &[usvg::Node::Path(Box::new(path.clone()))], scale, masks);
+        }
+    };
+    canvas.save();
+    canvas.set_transform(&ts_to_t2d(text.abs_transform()));
+    for (span, runs) in text.layouted().iter().zip(runs) {
+        if !span.visible {
+            continue;
+        }
+        // usvg's order for a span: overline, underline, glyphs, line-through.
+        decoration(canvas, &span.overline);
+        decoration(canvas, &span.underline);
+        canvas.save();
+        shift_shadow_copy(canvas);
+        let fill = span
+            .fill
+            .as_ref()
+            .and_then(|fill| to_paint(fill.paint()).map(|paint| (false, paint, fill.opacity())));
+        let stroke = span
+            .stroke
+            .as_ref()
+            .and_then(|stroke| stroke_paint(stroke).map(|paint| (true, paint, stroke.opacity())));
+        for (stroked, paint, opacity) in [fill, stroke].into_iter().flatten() {
+            let paint = paint.with_font_size(span.font_size.get());
+            canvas.set_global_alpha(opacity.get());
+            for (font, glyphs) in &runs {
+                let glyphs = glyphs.iter().cloned();
+                let drawn = if stroked {
+                    canvas.stroke_glyph_run(*font, &[], glyphs, &paint)
+                } else {
+                    canvas.fill_glyph_run(*font, &[], glyphs, &paint)
+                };
+                if let Err(error) = drawn {
+                    eprintln!("glyph run not drawn: {error:?}");
+                }
+            }
+            canvas.set_global_alpha(1.0);
+        }
+        canvas.restore();
+        decoration(canvas, &span.line_through);
+    }
+    canvas.restore();
+}
+
 fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale: f32, masks: &MaskMap) {
     use usvg::tiny_skia_path::PathSegment;
     for node in children {
@@ -2289,15 +2533,7 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                 }
                 canvas.save();
                 canvas.set_transform(&ts_to_t2d(svg_path.abs_transform()));
-                if let Some((_, dx, dy)) = *SHADOW_COPY.lock().unwrap() {
-                    // The offset applies after every transform: a translation
-                    // added to the composed matrix's own.
-                    let mut shifted = canvas.transform();
-                    shifted.0[4] += dx;
-                    shifted.0[5] += dy;
-                    canvas.reset_transform();
-                    canvas.set_transform(&shifted);
-                }
+                shift_shadow_copy(canvas);
                 if let Some(fill) = svg_path.fill() {
                     if let Some(mut paint) = to_paint(fill.paint()) {
                         paint.set_fill_rule(match fill.rule() {
@@ -2316,23 +2552,7 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                     }
                 }
                 if let Some(stroke) = svg_path.stroke() {
-                    if let Some(mut paint) = to_paint(stroke.paint()) {
-                        paint.set_line_width(stroke.width().get());
-                        paint.set_line_cap(match stroke.linecap() {
-                            usvg::LineCap::Butt => femtovg::LineCap::Butt,
-                            usvg::LineCap::Round => femtovg::LineCap::Round,
-                            usvg::LineCap::Square => femtovg::LineCap::Square,
-                        });
-                        paint.set_line_join(match stroke.linejoin() {
-                            usvg::LineJoin::Miter | usvg::LineJoin::MiterClip => femtovg::LineJoin::Miter,
-                            usvg::LineJoin::Round => femtovg::LineJoin::Round,
-                            usvg::LineJoin::Bevel => femtovg::LineJoin::Bevel,
-                        });
-                        paint.set_miter_limit(stroke.miterlimit().get());
-                        if let Some(dashes) = stroke.dasharray() {
-                            paint.set_line_dash(dashes);
-                            paint.set_line_dash_offset(stroke.dashoffset());
-                        }
+                    if let Some(paint) = stroke_paint(stroke) {
                         canvas.set_global_alpha(stroke.opacity().get());
                         canvas.stroke_path(&path, &paint);
                         canvas.set_global_alpha(1.0);
@@ -2368,13 +2588,27 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                             canvas.fill_path(&rect, &paint);
                         }
                     }
-                    usvg::ImageKind::SVG(tree) => draw_nodes(canvas, tree.root().children(), scale, masks),
+                    usvg::ImageKind::SVG(tree) => {
+                        // The nested tree's glyphs name their faces in its own database.
+                        #[cfg(harness_text)]
+                        let outer = use_fontdb(tree.fontdb());
+                        draw_nodes(canvas, tree.root().children(), scale, masks);
+                        #[cfg(harness_text)]
+                        if let Some(outer) = outer {
+                            use_fontdb(&outer);
+                        }
+                    }
                     // The harness decodes only PNG and JPEG.
                     usvg::ImageKind::GIF(_) | usvg::ImageKind::WEBP(_) => {}
                 }
                 canvas.restore();
             }
-            _ => {}
+            #[cfg(harness_text)]
+            usvg::Node::Text(text) => draw_text(canvas, text, scale, masks),
+            #[cfg(not(harness_text))]
+            usvg::Node::Text(_) => {
+                TEXT_UNSUPPORTED.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+            }
         }
     }
 }
@@ -2386,6 +2620,8 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
 static FRAME_INDEX: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
 fn render_scene(canvas: &mut Canvas<WGPURenderer>, tree: &usvg::Tree, scale: f32, bg: Color) {
+    #[cfg(harness_text)]
+    use_fontdb(tree.fontdb());
     canvas.clear_rect(0, 0, frame_w(), frame_h(), bg);
     // A blend mode reads the backdrop under its group, the page background
     // included (Chromium blends a top-level child with the page: a gray
@@ -2465,6 +2701,32 @@ fn render_scene(canvas: &mut Canvas<WGPURenderer>, tree: &usvg::Tree, scale: f32
     for image in FRAME_IMAGES.lock().unwrap().drain(..) {
         canvas.delete_image(image);
     }
+}
+
+/// The harness's canvas. With `harness_text` its text context is the one
+/// `text_font` loads fonts into.
+fn new_canvas(renderer: WGPURenderer) -> Canvas<WGPURenderer> {
+    #[cfg(harness_text)]
+    let canvas = Canvas::new_with_text_context(renderer, TEXT_FONTS.with_borrow(|fonts| fonts.context.clone()));
+    #[cfg(not(harness_text))]
+    let canvas = Canvas::new(renderer);
+    canvas.unwrap()
+}
+
+/// usvg's options with the system fonts loaded, for every tree the harness
+/// parses.
+fn svg_options() -> usvg::Options<'static> {
+    let mut opt = usvg::Options::default();
+    opt.fontdb_mut().load_system_fonts();
+    // On macOS the reference Chromium (131) draws the generic `monospace`
+    // family in Menlo, and fontdb's default for it is Courier New. Its `serif`,
+    // its `sans-serif` and its font for a missing family are fontdb's and
+    // usvg's defaults. Only a build that draws text takes this, so that the
+    // others still give a text the bounding box it had.
+    if cfg!(all(harness_text, target_os = "macos")) && std::env::var("NO_TEXT").is_err() {
+        opt.fontdb_mut().set_monospace_family("Menlo");
+    }
+    opt
 }
 
 /// SOAK mode: `_logos_full soak <out.csv> <list.txt>` renders every SVG in
@@ -2672,7 +2934,7 @@ fn soak(device: &wgpu::Device, queue: &wgpu::Queue, out_csv: &str, list: &str) {
     if std::env::var_os("NO_SLICES").is_none() {
         renderer.set_submission_slicing(Some(slicing_from_env()));
     }
-    let mut canvas = Canvas::new(renderer).unwrap();
+    let mut canvas = new_canvas(renderer);
     canvas.set_size(frame_w(), frame_h(), 1.0);
     let zooms: Vec<f32> = std::env::var("SOAK_ZOOMS")
         .unwrap_or_else(|_| "1,2,4".into())
@@ -2687,8 +2949,7 @@ fn soak(device: &wgpu::Device, queue: &wgpu::Queue, out_csv: &str, list: &str) {
         .filter(|l| !l.is_empty())
         .map(String::from)
         .collect();
-    let mut opt = usvg::Options::default();
-    opt.fontdb_mut().load_system_fonts();
+    let opt = svg_options();
     let trees: Vec<(String, usvg::Tree)> = files
         .iter()
         .filter_map(|f| {
@@ -2803,7 +3064,7 @@ fn main() {
     if std::env::var_os("NO_SLICES").is_none() {
         renderer.set_submission_slicing(Some(slicing_from_env()));
     }
-    let mut canvas = Canvas::new(renderer).unwrap();
+    let mut canvas = new_canvas(renderer);
     canvas.set_size(frame_w(), frame_h(), 1.0);
     // CLIP_MASK_BUDGET_MB: the budget of the coverage masks that antialias
     // path clips (MiB; 0 takes every such clip on the stencil).
@@ -2855,8 +3116,7 @@ fn main() {
     }
 
     let tree = {
-        let mut opt = usvg::Options::default();
-        opt.fontdb_mut().load_system_fonts();
+        let opt = svg_options();
         let text = std::fs::read_to_string(svg_path).unwrap();
         let text = if std::env::var("KEEP_INVALID_FILTERS").is_ok() {
             std::borrow::Cow::Borrowed(text.as_str())
@@ -3009,7 +3269,7 @@ fn main() {
             PASS_THROUGH.load(std::sync::atomic::Ordering::Relaxed)
         );
         eprintln!(
-            "harness cfgs: clip={} turbulence={} blend={} mix_blend={} slices={} blur_xy={} morph={} clip_paths={} crop={}",
+            "harness cfgs: clip={} turbulence={} blend={} mix_blend={} slices={} blur_xy={} morph={} clip_paths={} crop={} text={}",
             cfg!(harness_clip),
             cfg!(harness_turbulence),
             cfg!(harness_blend),
@@ -3018,7 +3278,8 @@ fn main() {
             cfg!(harness_blur_xy),
             cfg!(harness_morph),
             cfg!(harness_clip_paths),
-            cfg!(harness_crop)
+            cfg!(harness_crop),
+            cfg!(harness_text)
         );
         eprintln!(
             "filters skipped (SKIP_UNSUPPORTED_FILTERS): {}",
@@ -3031,6 +3292,14 @@ fn main() {
         eprintln!(
             "clip paths drawn unclipped (no harness_clip): {}",
             CLIPS_UNSUPPORTED.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "text nodes not drawn (no harness_text): {}",
+            TEXT_UNSUPPORTED.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "text nodes drawn as outlines (TEXT_AS_PATHS, or not glyph runs): {}",
+            TEXT_AS_OUTLINES.load(std::sync::atomic::Ordering::Relaxed)
         );
         eprintln!(
             "filter attributes with invalid references dropped (Filter Effects 5): {}",
