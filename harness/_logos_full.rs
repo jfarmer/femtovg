@@ -14,6 +14,9 @@
 //! without it an `feGaussianBlur` with two values blurs both axes by the larger.
 //! `--cfg harness_text` draws `<text>` as glyph runs (`Canvas::fill_glyph_run`,
 //! `Canvas::stroke_glyph_run`); without it no text is drawn.
+//! `--cfg harness_alloc_count` counts heap allocations and prints the `ALLOC`
+//! line for runs of more than one frame; it wraps the global allocator, so a
+//! build with it is not one to time.
 //! `--cfg harness_slices` `WGPURenderer::set_submission_slicing` (#368):
 //! `cargo rustc --release --example _logos_full --features wgpu -- --cfg harness_clip --cfg harness_turbulence --cfg harness_blend --cfg harness_mix_blend`
 //! (or the same cfgs in RUSTFLAGS, which also rebuilds every dependency).
@@ -2764,6 +2767,46 @@ fn rusage() -> (f64, u64) {
     (cpu_ms, r.ru_maxrss as u64)
 }
 
+/// Heap allocations of the process, counted under `--cfg harness_alloc_count`
+/// for the `ALLOC` line: the allocator calls and the bytes asked for while a
+/// frame is recorded and encoded.
+#[cfg(harness_alloc_count)]
+mod alloc_count {
+    use std::alloc::{GlobalAlloc, Layout, System};
+    use std::sync::atomic::{AtomicU64, Ordering::Relaxed};
+
+    static CALLS: AtomicU64 = AtomicU64::new(0);
+    static BYTES: AtomicU64 = AtomicU64::new(0);
+
+    struct Counting;
+
+    unsafe impl GlobalAlloc for Counting {
+        unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+            CALLS.fetch_add(1, Relaxed);
+            BYTES.fetch_add(layout.size() as u64, Relaxed);
+            unsafe { System.alloc(layout) }
+        }
+
+        unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
+            unsafe { System.dealloc(ptr, layout) }
+        }
+
+        unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
+            CALLS.fetch_add(1, Relaxed);
+            BYTES.fetch_add(new_size as u64, Relaxed);
+            unsafe { System.realloc(ptr, layout, new_size) }
+        }
+    }
+
+    #[global_allocator]
+    static COUNTING: Counting = Counting;
+
+    /// Allocator calls (`alloc` and `realloc`) and bytes asked for so far.
+    pub fn so_far() -> (u64, u64) {
+        (CALLS.load(Relaxed), BYTES.load(Relaxed))
+    }
+}
+
 /// Peak memory while frames render, for `MEM_PEAKS=1`: a thread samples the
 /// task's ledgers (`task_info(TASK_VM_INFO)`) a few times per millisecond
 /// and keeps the maxima since the last `reset`. `footprint` is what jetsam
@@ -3157,13 +3200,24 @@ fn main() {
     // The part of a frame spent recording and encoding it, before the
     // submit: what the CPU pays, apart from the wait for the GPU.
     let mut encoding = std::time::Duration::ZERO;
+    // Allocator calls and bytes of the frames after the first, which also
+    // fills caches and grows buffers that the later frames reuse.
+    #[cfg(harness_alloc_count)]
+    let mut allocated = (0, 0);
     for frame in 0..frames {
         FRAME_INDEX.store(frame, std::sync::atomic::Ordering::Relaxed);
+        #[cfg(harness_alloc_count)]
+        let before = alloc_count::so_far();
         let frame_started = std::time::Instant::now();
         render_scene(&mut canvas, &tree, scale, bg);
         TRANSIENT_AT_FLUSH.store(canvas.transient_image_bytes(), std::sync::atomic::Ordering::Relaxed);
         let commands = canvas.flush_to_output(&target);
         encoding += frame_started.elapsed();
+        #[cfg(harness_alloc_count)]
+        if frame > 0 {
+            let now = alloc_count::so_far();
+            allocated = (allocated.0 + now.0 - before.0, allocated.1 + now.1 - before.1);
+        }
         queue.submit(commands);
         if std::env::var_os("MEM_DEBUG").is_some() {
             mem::dump("after submit");
@@ -3179,6 +3233,15 @@ fn main() {
             canvas.clip_mask_budget(),
             FILLS.load(std::sync::atomic::Ordering::Relaxed),
             MASKED_FILLS.load(std::sync::atomic::Ordering::Relaxed)
+        );
+    }
+    #[cfg(harness_alloc_count)]
+    if frames > 1 {
+        let later = (frames - 1) as u64;
+        eprintln!(
+            "ALLOC frames={later} calls_per_frame={} bytes_per_frame={}",
+            allocated.0 / later,
+            allocated.1 / later
         );
     }
     if sampling {
