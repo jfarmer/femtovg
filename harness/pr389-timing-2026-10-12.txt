@@ -119,3 +119,18 @@ widget-privacy-kit               p389g_notext instructions/frame   33.307 M (spr
 ## instr.py m389g_notext p389g_notext -- corpus/icons/wasm_speed_benchmark_master_suck.svg, REPEATS=7
 wasm_speed_benchmark_master_suck m389g_notext instructions/frame   24.652 M (spread 0.91 %)  cycles/frame    9.849 M
 wasm_speed_benchmark_master_suck p389g_notext instructions/frame   24.643 M (spread 0.34 %)  cycles/frame    9.802 M
+
+## OpenGL: gl_instr.py m389 p389 -- none paths_none cards cards_rounded rounded, REPEATS=5 (m389, p389: the two checkouts built with build.sh --gl)
+GL none               m389   instructions/frame    1.158 M (spread 13.10 %)  cycles/frame    0.290 M
+GL none               p389   instructions/frame    1.134 M (spread 4.75 %)  cycles/frame    0.272 M
+GL paths_none         m389   instructions/frame    1.341 M (spread 11.93 %)  cycles/frame    0.299 M
+GL paths_none         p389   instructions/frame    1.330 M (spread 17.65 %)  cycles/frame    0.307 M
+GL cards              m389   instructions/frame    9.138 M (spread 1.34 %)  cycles/frame    1.740 M
+GL cards              p389   instructions/frame    9.124 M (spread 1.27 %)  cycles/frame    1.719 M
+GL cards_rounded      m389   instructions/frame   14.318 M (spread 0.46 %)  cycles/frame    2.614 M
+GL cards_rounded      p389   instructions/frame   14.319 M (spread 0.93 %)  cycles/frame    2.606 M
+GL rounded            m389   instructions/frame    1.313 M (spread 5.74 %)  cycles/frame    0.313 M
+GL rounded            p389   instructions/frame    1.254 M (spread 7.65 %)  cycles/frame    0.309 M
+
+## OpenGL: gl_svg_dump of each of the 1,279 corpus files at scales 1 and 3 with gl_svg_dump_m389 and gl_svg_dump_p389, hashes compared
+2558 dumps per build: 2558 same, 0 differ, 0 failed; 238 of the same ones are blank

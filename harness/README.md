@@ -722,5 +722,6 @@ gradient line is left in the structural difference at z1, z2 or hd; what
 remains at z1 and z2 is the file's other text. Evidence:
 `pr389-gradient-text.png`.
 
-Timing of the two builds, by instructions per frame and by frame time, is in
-`pr389-timing-2026-10-12.md`: no difference beyond the spread of the runs.
+Timing of the two builds, by instructions per frame and by frame time, and
+the two on the OpenGL backend, are in `pr389-timing-2026-10-12.md`: no
+difference beyond the spread of the runs.
