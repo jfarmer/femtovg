@@ -209,3 +209,11 @@ BUILDS['pf2'] = (f'{BIN}/_logos_full_pf', {'SINGLE_SHADOW_LAYER': '1'})  # point
 BUILDS['m8'] = (f'{BIN}/_logos_full_m8', {'SINGLE_SHADOW_LAYER': '1'})  # upstream master d70ffeb (#390), all cfgs incl crop + clip_paths
 BUILDS['pr1'] = (f'{BIN}/_logos_full_pr1', {'SINGLE_SHADOW_LAYER': '1'})  # fill-point-costs on d70ffeb, all cfgs incl crop + clip_paths
 BUILDS['pr2'] = (f'{BIN}/_logos_full_pr2', {'SINGLE_SHADOW_LAYER': '1'})  # straddled-chords on fill-point-costs (d70ffeb), all cfgs
+# 2026-10-12, text as glyph runs (harness README, "Text as glyph runs"), on master d70ffeb: m389 master with the harness
+# before it drew text, m389g master and p389g femtovg/femtovg#389 (86cb3de) with --cfg harness_text. _paths is the same
+# binary drawing text as usvg's outlines, _notext drawing none.
+BUILDS['m389'] = (f'{BIN}/_logos_full_m389', {'SINGLE_SHADOW_LAYER': '1'})
+for _b in ('m389g', 'p389g'):
+    BUILDS[_b] = (f'{BIN}/_logos_full_{_b}', {'SINGLE_SHADOW_LAYER': '1'})
+    BUILDS[f'{_b}_paths'] = (f'{BIN}/_logos_full_{_b}', {'SINGLE_SHADOW_LAYER': '1', 'TEXT_AS_PATHS': '1'})
+    BUILDS[f'{_b}_notext'] = (f'{BIN}/_logos_full_{_b}', {'SINGLE_SHADOW_LAYER': '1', 'NO_TEXT': '1'})
