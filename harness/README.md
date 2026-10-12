@@ -721,3 +721,6 @@ At z4 the gradient line is outside the frame. With #389 no pixel of the
 gradient line is left in the structural difference at z1, z2 or hd; what
 remains at z1 and z2 is the file's other text. Evidence:
 `pr389-gradient-text.png`.
+
+Timing of the two builds, by instructions per frame and by frame time, is in
+`pr389-timing-2026-10-12.md`: no difference beyond the spread of the runs.

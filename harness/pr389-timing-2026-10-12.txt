@@ -1,0 +1,121 @@
+# Raw output of the timing runs of 2026-10-12: master d70ffeb (m389g) against femtovg/femtovg#389 at 86cb3de (p389g).
+# Apple M4 Max, macOS 26.6.2, wgpu on Metal. _notext is the same binary with NO_TEXT=1.
+
+## instr.py m389g_notext p389g_notext -- (eight files), REPEATS=3
+Ghostscript_Tiger                m389g_notext instructions/frame   28.886 M (spread 0.13 %)  cycles/frame    6.383 M
+Ghostscript_Tiger                p389g_notext instructions/frame   28.845 M (spread 0.06 %)  cycles/frame    6.438 M
+NYT-strands                      m389g_notext instructions/frame    1.838 M (spread 6.06 %)  cycles/frame    0.579 M
+NYT-strands                      p389g_notext instructions/frame    1.842 M (spread 0.28 %)  cycles/frame    0.585 M
+NYTSiteLogoBlack                 m389g_notext instructions/frame    1.485 M (spread 0.49 %)  cycles/frame    0.520 M
+NYTSiteLogoBlack                 p389g_notext instructions/frame    1.476 M (spread 0.34 %)  cycles/frame    0.511 M
+kit                              m389g_notext instructions/frame   11.575 M (spread 0.07 %)  cycles/frame    4.628 M
+kit                              p389g_notext instructions/frame   11.584 M (spread 0.19 %)  cycles/frame    4.589 M
+duckduckgo-com_2x                m389g_notext instructions/frame    4.864 M (spread 0.39 %)  cycles/frame    1.973 M
+duckduckgo-com_2x                p389g_notext instructions/frame    4.870 M (spread 0.14 %)  cycles/frame    1.983 M
+google-workspace-48px            m389g_notext instructions/frame   19.294 M (spread 0.06 %)  cycles/frame    7.830 M
+google-workspace-48px            p389g_notext instructions/frame   19.300 M (spread 0.04 %)  cycles/frame    7.878 M
+page_103_华为云服务图标_43259_icon_264  m389g_notext instructions/frame    1.337 M (spread 8.25 %)  cycles/frame    0.473 M
+page_103_华为云服务图标_43259_icon_264  p389g_notext instructions/frame    1.335 M (spread 0.32 %)  cycles/frame    0.478 M
+rounded-clip-path-cover          m389g_notext instructions/frame    0.911 M (spread 1.27 %)  cycles/frame    0.366 M
+rounded-clip-path-cover          p389g_notext instructions/frame    0.916 M (spread 1.66 %)  cycles/frame    0.380 M
+
+## the same with LO=20 HI=120 -- (three files)
+gpt-6-astra                      m389g_notext instructions/frame  315.234 M (spread 0.11 %)  cycles/frame  123.475 M
+gpt-6-astra                      p389g_notext instructions/frame  315.030 M (spread 0.21 %)  cycles/frame  122.413 M
+claude-opus-5                    m389g_notext instructions/frame  417.659 M (spread 0.11 %)  cycles/frame  177.436 M
+claude-opus-5                    p389g_notext instructions/frame  418.291 M (spread 1.04 %)  cycles/frame  176.450 M
+hole-strip-evenodd               m389g_notext instructions/frame    0.979 M (spread 5.95 %)  cycles/frame    0.349 M
+hole-strip-evenodd               p389g_notext instructions/frame    1.002 M (spread 8.93 %)  cycles/frame    0.594 M
+
+## instr.py m389g p389g -- (ten files with text), REPEATS=3
+native-canvas                    m389g      instructions/frame   71.216 M (spread 0.36 %)  cycles/frame   24.302 M
+native-canvas                    p389g      instructions/frame   71.307 M (spread 0.13 %)  cycles/frame   24.358 M
+gui-gradient-linear              m389g      instructions/frame    3.307 M (spread 0.14 %)  cycles/frame    1.095 M
+gui-gradient-linear              p389g      instructions/frame    3.304 M (spread 0.44 %)  cycles/frame    1.095 M
+default-render-pipeline          m389g      instructions/frame   12.779 M (spread 0.09 %)  cycles/frame    3.951 M
+default-render-pipeline          p389g      instructions/frame   12.775 M (spread 0.36 %)  cycles/frame    3.959 M
+sliders                          m389g      instructions/frame   87.322 M (spread 0.34 %)  cycles/frame   32.551 M
+sliders                          p389g      instructions/frame   87.127 M (spread 1.74 %)  cycles/frame   33.943 M
+gradient-size-threshold          m389g      instructions/frame    1.497 M (spread 2.94 %)  cycles/frame    0.852 M
+gradient-size-threshold          p389g      instructions/frame    1.494 M (spread 6.59 %)  cycles/frame    0.686 M
+gradient-transformed-groups      m389g      instructions/frame    2.448 M (spread 0.49 %)  cycles/frame    0.873 M
+gradient-transformed-groups      p389g      instructions/frame    2.456 M (spread 0.25 %)  cycles/frame    0.890 M
+solid-transformed-groups         m389g      instructions/frame    2.671 M (spread 3.93 %)  cycles/frame    0.970 M
+solid-transformed-groups         p389g      instructions/frame    2.660 M (spread 0.15 %)  cycles/frame    0.933 M
+stroke-wide-round                m389g      instructions/frame    0.970 M (spread 6.97 %)  cycles/frame    0.590 M
+stroke-wide-round                p389g      instructions/frame    0.960 M (spread 3.92 %)  cycles/frame    0.398 M
+gradient-across-runs             m389g      instructions/frame    2.082 M (spread 4.29 %)  cycles/frame    0.734 M
+gradient-across-runs             p389g      instructions/frame    2.112 M (spread 10.20 %)  cycles/frame    0.760 M
+gradient-in-layers               m389g      instructions/frame    4.921 M (spread 2.39 %)  cycles/frame    1.974 M
+gradient-in-layers               p389g      instructions/frame    4.904 M (spread 2.44 %)  cycles/frame    1.956 M
+
+## pass_time.py m389g p389g frames=200 repeats=5 framings=z1,hd keys=(the 67 files with a text element)
+134 frames of 67 files; 134 timed with both builds
+steady-state frame time summed over them: 91 ms -> 91 ms (+0.4 %); 23 frames more than 2 % faster, 23 more than 2 % slower
+  z1: 67 frames, 41 -> 41 ms (-0.1 %)
+  hd: 67 frames, 49 -> 50 ms (+0.8 %)
+  text-probes: 24 frames, 9 -> 9 ms (+0.1 %)
+  wpt: 12 frames, 9 -> 9 ms (+0.3 %)
+  babylon: 98 frames, 72 -> 73 ms (+0.4 %)
+  render passes over 134 frames: 0 -> 0; 0 frames with fewer, 0 with more
+  encoding (recording and encoding a frame, before the submit) over 134 frames: 37 -> 36 ms (-0.2 %); median frame -0.2 %
+  median frame: -0.2 %; a tenth of the frames beyond -2.9 % and +3.2 %
+  largest savings: [('-9 %', '3', 'hd'), ('-8 %', '0', 'hd'), ('-7 %', 'gui-gradient-linear', 'z1'), ('-6 %', 'gui-input-test', 'hd'), ('-6 %', 'stroke-wide-round', 'hd')]
+  smallest: [('+4 %', '2', 'hd'), ('+4 %', '2', 'hd'), ('+6 %', 'solid-transformed-groups', 'hd'), ('+8 %', 'solid-transformed-groups', 'z1'), ('+9 %', '0', 'hd')]
+
+## pass_time.py m389g_notext p389g_notext frames=50 repeats=5 framings=hd keys=(501 files: every file of a group of up to 40, every fourth of a larger one)
+501 frames of 501 files; 501 timed with both builds
+steady-state frame time summed over them: 1476 ms -> 1479 ms (+0.2 %); 81 frames more than 2 % faster, 81 more than 2 % slower
+  hd: 501 frames, 1476 -> 1479 ms (+0.2 %)
+  babylon: 17 frames, 26 -> 25 ms (-2.9 %)
+  firefox-com: 34 frames, 64 -> 63 ms (-1.1 %)
+  buseybench: 27 frames, 822 -> 822 ms (-0.0 %)
+  shadow-edges: 6 frames, 11 -> 11 ms (-3.0 %)
+  resvg-feblend: 10 frames, 22 -> 22 ms (-1.2 %)
+  wpt: 18 frames, 44 -> 43 ms (-0.4 %)
+  blur-idioms: 3 frames, 8 -> 8 ms (-1.7 %)
+  wpt-blend-reftests-2: 26 frames, 19 -> 19 ms (-0.7 %)
+  wpt-layer-blur-reftests: 5 frames, 10 -> 9 ms (-1.4 %)
+  wpt-blend-reftests: 12 frames, 14 -> 14 ms (-0.5 %)
+  probes: 5 frames, 13 -> 13 ms (-0.5 %)
+  logos: 10 frames, 17 -> 17 ms (-0.3 %)
+  clip-probes: 21 frames, 14 -> 14 ms (-0.4 %)
+  blend-probes: 9 frames, 28 -> 28 ms (-0.1 %)
+  wpt-femorphology-reftests: 25 frames, 16 -> 16 ms (-0.2 %)
+  text-probes: 12 frames, 8 -> 8 ms (-0.5 %)
+  wpt-fegaussianblur-reftests: 25 frames, 34 -> 34 ms (-0.1 %)
+  nyt: 11 frames, 10 -> 10 ms (-0.3 %)
+  resvg-probes: 1 frames, 3 -> 3 ms (-0.3 %)
+  wpt-clip-path-reftests: 25 frames, 17 -> 17 ms (+0.1 %)
+  wpt-fill-blur-reftests: 30 frames, 43 -> 43 ms (+0.0 %)
+  pressure: 5 frames, 6 -> 6 ms (+0.4 %)
+  wpt-feoffset-reftests: 25 frames, 17 -> 17 ms (+0.2 %)
+  tiger: 1 frames, 4 -> 4 ms (+0.9 %)
+  wpt-pservers-reftests: 10 frames, 7 -> 7 ms (+0.6 %)
+  shadow-merge: 5 frames, 14 -> 14 ms (+0.3 %)
+  resvg-mix-blend: 23 frames, 48 -> 48 ms (+0.8 %)
+  reductions: 8 frames, 29 -> 29 ms (+1.8 %)
+  svgenius: 75 frames, 75 -> 75 ms (+0.7 %)
+  icons: 3 frames, 12 -> 14 ms (+23.5 %)
+  firefox: 14 frames, 22 -> 25 ms (+12.4 %)
+  render passes over 501 frames: 0 -> 0; 0 frames with fewer, 0 with more
+  encoding (recording and encoding a frame, before the submit) over 501 frames: 435 -> 435 ms (+0.0 %); median frame -0.1 %
+  median frame: -0.1 %; a tenth of the frames beyond -3.2 % and +3.2 %
+  largest savings: [('-15 %', 'page_396_电脑图标_6377_icon_86', 'hd'), ('-13 %', 'devices-cropped.width-400', 'hd'), ('-11 %', 'luminosity', 'hd'), ('-11 %', 'native-canvas', 'hd'), ('-11 %', 'crossing-top', 'hd')]
+  smallest: [('+27 %', 'page_92_线性游戏兴趣爱好_35314_icon_5', 'hd'), ('+30 %', 'wasm_speed_benchmark_master_suck', 'hd'), ('+33 %', 'firefox-mascot-prop-heart-light-narrow', 'hd'), ('+41 %', 'wasm_speed_benchmark_master', 'hd'), ('+49 %', 'widget-privacy-star', 'hd')]
+
+## instr.py m389g_notext p389g_notext -- (the five files with the largest frame-time increase above), REPEATS=3
+widget-privacy-star              m389g_notext instructions/frame    8.380 M (spread 1.29 %)  cycles/frame    3.573 M
+widget-privacy-star              p389g_notext instructions/frame    8.367 M (spread 0.29 %)  cycles/frame    3.524 M
+wasm_speed_benchmark_master      m389g_notext instructions/frame   21.419 M (spread 0.60 %)  cycles/frame    8.036 M
+wasm_speed_benchmark_master      p389g_notext instructions/frame   21.430 M (spread 0.49 %)  cycles/frame    8.000 M
+firefox-mascot-prop-heart-light-narrow m389g_notext instructions/frame    6.962 M (spread 0.28 %)  cycles/frame    2.720 M
+firefox-mascot-prop-heart-light-narrow p389g_notext instructions/frame    6.858 M (spread 1.58 %)  cycles/frame    2.664 M
+wasm_speed_benchmark_master_suck m389g_notext instructions/frame   24.595 M (spread 0.42 %)  cycles/frame    9.843 M
+wasm_speed_benchmark_master_suck p389g_notext instructions/frame   24.770 M (spread 0.64 %)  cycles/frame    9.847 M
+widget-privacy-kit               m389g_notext instructions/frame   33.291 M (spread 0.92 %)  cycles/frame   12.899 M
+widget-privacy-kit               p389g_notext instructions/frame   33.307 M (spread 0.39 %)  cycles/frame   12.857 M
+
+## instr.py m389g_notext p389g_notext -- corpus/icons/wasm_speed_benchmark_master_suck.svg, REPEATS=7
+wasm_speed_benchmark_master_suck m389g_notext instructions/frame   24.652 M (spread 0.91 %)  cycles/frame    9.849 M
+wasm_speed_benchmark_master_suck p389g_notext instructions/frame   24.643 M (spread 0.34 %)  cycles/frame    9.802 M
