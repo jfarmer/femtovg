@@ -722,6 +722,28 @@ gradient line is left in the structural difference at z1, z2 or hd; what
 remains at z1 and z2 is the file's other text. Evidence:
 `pr389-gradient-text.png`.
 
+No frame is farther from Chromium with #389 than on master, here or among
+the text probes (`corpus/text-probes/README.md`). Some pixels are. Over the 33
+frames that the builds differ on and that have a reference (7 of these files'
+and 26 of the probes'), taking a pixel's distance as its largest channel
+difference, 1,111,936 pixels are nearer Chromium with #389 and 4,057 farther.
+The 4,057 are antialiased pixels on glyph edges: 3,708 differ from a neighbour
+by more than 40/255 in #389's own frame. 2,790 are farther by 4/255 or less,
+20 by more than 20/255, and the largest is 34/255.
+
+#389 does not put them there. On 4,020 of the 4,057 its frame is identical to
+the same build's frame with `TEXT_AS_PATHS=1`, and on 4,037 within 2/255: it
+draws those pixels as femtovg draws any path. The two builds also cover each
+glyph alike, since the probes without a gradient are bit for bit the same on
+them, so only the colour differs. femtovg's coverage at an edge is not
+Chromium's, and master's wrong colour sometimes lands nearer. In
+`gradient-fade` master draws almost no text, which is nearer than #389's edge
+where Chromium has a trace of ink.
+
+The other 20 are in the italic word of `gradient-across-runs`, where the glyph
+runs are up to 59/255 lighter than the paths. Both builds draw those runs
+alike, and #389 is farther there by 3/255 at most.
+
 Timing of the two builds, by instructions per frame and by frame time, and
 the two on the OpenGL backend, are in `pr389-timing-2026-10-12.md`: no
 difference beyond the spread of the runs.
