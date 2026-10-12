@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- A dashed stroke on text. femtovg cuts the dashes of an outline glyph in font units and strokes an atlas glyph without dashes, so this differs from a browser on every build -->
+  <text x="100" y="136" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="100" fill="none" stroke="#000000" stroke-width="3" stroke-dasharray="12 6">Da</text>
+</svg>

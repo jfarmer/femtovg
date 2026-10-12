@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- Gradients in bounding-box units, SVG's default: each spans its own line of text. The second is turned by a gradientTransform -->
+  <linearGradient id="a"><stop offset="0" stop-color="#00a060"/><stop offset="1" stop-color="#7000d0"/></linearGradient>
+  <linearGradient id="b" gradientTransform="rotate(60 0.5 0.5)"><stop offset="0" stop-color="#00a060"/><stop offset="1" stop-color="#7000d0"/></linearGradient>
+  <text x="100" y="96" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="36" fill="url(#a)">Bounding</text>
+  <text x="100" y="134" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="36" fill="url(#b)">box units</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- One gradient on a line of 88 px and a line of 96 px: at the fit femtovg takes the first from the glyph atlas and draws the second as outlines -->
+  <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="135" y2="0"><stop offset="0" stop-color="#e02000"/><stop offset="0.5" stop-color="#0040d0"/><stop offset="1" stop-color="#009040"/></linearGradient>
+  <text x="8" y="78" font-family="Arial" font-weight="bold" font-size="88" fill="url(#g)">Ag</text>
+  <text x="8" y="176" font-family="Arial" font-weight="bold" font-size="96" fill="url(#g)">Ag</text>
+</svg>

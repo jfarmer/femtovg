@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- One gradient across a line whose glyphs are in two fonts and three tspans: three glyph runs share it -->
+  <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="15" y1="0" x2="185" y2="0"><stop offset="0" stop-color="#e02000"/><stop offset="0.5" stop-color="#0040d0"/><stop offset="1" stop-color="#009040"/></linearGradient>
+  <text x="12" y="110" font-size="28" fill="url(#g)"><tspan font-family="Arial" font-weight="bold">Two</tspan><tspan font-family="Times New Roman" font-style="italic"> fonts </tspan><tspan font-family="Arial" font-weight="bold">one</tspan></text>
+</svg>
