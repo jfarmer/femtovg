@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Full-corpus run over files.json x four framings.
 
-  run.py pixels            parallel: builds pre369 and noslices, frame hash only  -> pixels.jsonl
-  run.py memory [filter]   sequential: builds base and slices with MEM_PEAKS: hash, layer stats,
-                           peak memory, and the slices frame against Chromium (and Firefox at z1)
-                           -> memory.jsonl
+  run.py pixels BUILD,BUILD...            parallel: frame hash only  -> pixels.jsonl
+  run.py memory BUILD,BUILD... [FRAMES]   sequential, with MEM_PEAKS: hash, layer stats, peak memory, and
+                                          the last build's frame against Chromium (and Firefox at z1)
+                                          -> memory.jsonl. FRAMES is a file of "key framing" lines, the
+                                          frames to run.
 Both append and resume: a (key, framing, build) already in the output is skipped."""
 import hashlib, json, os, re, subprocess, sys, threading
 from concurrent.futures import ThreadPoolExecutor
@@ -134,7 +135,7 @@ def memory(builds, frames=None):
                 if (f['key'], framing, build) in done:
                     continue
                 row, ppm = render(f, framing, build, memory=True)
-                if ppm and build == 'slices':
+                if ppm and build == builds[-1]:
                     a = load(ppm)
                     chr_png = ref_png('chr', f['key'], framing)
                     if os.path.exists(chr_png):
