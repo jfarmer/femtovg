@@ -11,6 +11,7 @@ a, b = sys.argv[1], sys.argv[2]
 opts = dict(x.split('=', 1) for x in sys.argv[3:])
 workers = int(opts.get('workers', 3))
 TMP = f'{OUT}/tmp'
+os.makedirs(TMP, exist_ok=True)
 
 
 def render(f, framing, build):

@@ -9,19 +9,23 @@ so a number in a PR body means something.
 From a checkout of this branch (a worktree of the femtovg repository, so
 `build.sh` finds the sources), with Python 3, numpy and Pillow:
 
-    harness/build.sh master:../femtovg mine:../my-femtovg-branch
+    harness/build.sh theirs:../femtovg mine:../my-femtovg-branch
     export CORPUS_RUN_OUT=~/corpus-run
     harness/corpus_run/files.py                 # the corpus: corpus/**, *.svg
-    harness/corpus_run/refs.py                  # Chromium references; `refs.py firefox` for Firefox,
+    harness/corpus_run/refs.py chromium         # Chromium references; `refs.py firefox` for Firefox,
                                                 # refs_ideal.py for the area reference
-    harness/corpus_run/sweep.py master          # renders and compares every frame
-    harness/corpus_run/sweep.py mine base=master
-    harness/corpus_run/identity.py master mine  # or: are the two bit for bit the same?
-    harness/corpus_run/sheet.py out.png master mine --refs=chr tiger__Ghostscript_Tiger:hd
+    harness/corpus_run/sweep.py theirs          # renders and compares every frame
+    harness/corpus_run/sweep.py mine base=theirs
+    harness/corpus_run/identity.py theirs mine  # or: are the two bit for bit the same?
+    harness/corpus_run/sheet.py out.png theirs mine --refs=chr tiger__Ghostscript_Tiger:hd
 
 A build name is a binary `$HARNESS_BIN/_logos_full_<name>`; `build.sh` makes
 it with every harness cfg the checkout supports and prints the `harness cfgs:`
 line to check. `corpus_run/common.py` keeps the builds of past runs by name.
+Use names it does not register for two builds that are to be compared: a
+registered name runs with the environment of its run (`master` and `base`
+without `SINGLE_SHADOW_LAYER`), and any other name runs with
+`SINGLE_SHADOW_LAYER=1`.
 
 | environment | what | default |
 |---|---|---|

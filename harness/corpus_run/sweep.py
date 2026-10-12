@@ -22,6 +22,8 @@ base = opts.get('base', builds[0])
 WPT_GROUPS = {'wpt-blend-reftests-2', 'wpt-fegaussianblur-reftests', 'wpt-clip-path-reftests', 'wpt-feoffset-reftests',
               'wpt-femorphology-reftests', 'wpt-blend-reftests', 'wpt-fill-blur-reftests'}
 TMP = f'{OUT}/tmp'
+for kept in (TMP, f'{OUT}/png_wpt', f'{OUT}/png_changed'):
+    os.makedirs(kept, exist_ok=True)
 STATS = {
     'layers': r'layers begun: (\d+)',
     'pass_through': r'layers passed through: (\d+)',
@@ -92,7 +94,7 @@ def render(f, framing, build):
 
 base_hash, done = {}, set()
 path = f'{OUT}/accuracy.jsonl'
-for line in open(path):
+for line in open(path) if os.path.exists(path) else ():
     try:
         r = json.loads(line)
     except Exception:
