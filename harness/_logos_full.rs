@@ -182,7 +182,13 @@ fn capture_mask(
 }
 
 /// All mask images are captured before any drawing so no capture has to
-/// restore into a live layer.
+/// restore into a live layer, and so are the coverage images of clips that
+/// no set of paths expresses (`precapture_clip_coverage`). `base` is the
+/// transform of the root the children's `abs_transform` is relative to:
+/// identity for the tree, the referencing group's for mask content, that
+/// and the clipPath's own for clip content - usvg gives a mask's or a
+/// clipPath's content transforms from its own root - so a mask captured for
+/// a group nested in either lands where the capture draws the group.
 fn precapture_masks(
     canvas: &mut Canvas<WGPURenderer>,
     children: &[usvg::Node],
@@ -190,20 +196,127 @@ fn precapture_masks(
     canvas_h: usize,
     scale: f32,
     out: &mut MaskMap,
+    base: usvg::Transform,
 ) {
     for node in children {
         if let usvg::Node::Group(group) = node {
+            let at = base.pre_concat(group.abs_transform());
             if let Some(mask) = group.mask() {
-                precapture_masks(canvas, mask.root().children(), canvas_w, canvas_h, scale, out);
-                if let Some(captured) =
-                    capture_mask(canvas, mask, group.abs_transform(), canvas_w, canvas_h, scale, out)
-                {
+                precapture_masks(canvas, mask.root().children(), canvas_w, canvas_h, scale, out, at);
+                if let Some(captured) = capture_mask(canvas, mask, at, canvas_w, canvas_h, scale, out) {
                     out.insert(&**group as *const usvg::Group as usize, captured);
                 }
             }
-            precapture_masks(canvas, group.children(), canvas_w, canvas_h, scale, out);
+            #[cfg(harness_clip)]
+            precapture_clip_coverage(canvas, group, at, canvas_w, canvas_h, scale, out);
+            precapture_masks(canvas, group.children(), canvas_w, canvas_h, scale, out, base);
         }
     }
+}
+
+/// Coverage images of the clips that are no union of paths, by referencing
+/// group and place in its clip chain (0 the group's own clipPath, 1 that
+/// clipPath's clip-path, ...): drawn before the frame, applied as alpha
+/// layer masks (`push_clip`), cleared with the frame.
+static CLIP_COVERAGE: std::sync::Mutex<Option<std::collections::HashMap<(usize, usize), femtovg::ImageId>>> =
+    std::sync::Mutex::new(None);
+
+/// Whether a clipPath is a union of paths: no child carries a `clip-path`
+/// of its own and none is text. A child that does clips to its own
+/// intersection, and the region is the union of those intersections, which
+/// no `clip_paths` call (an intersection of unions) can express. Browsers
+/// paint such a clip as a mask: Blink's `ClipPathClipper` falls back to
+/// mask-based clipping when the clipPath cannot be a single path, Gecko's
+/// `SVGClipPathFrame` paints the children into a mask surface, each under
+/// its own clip.
+#[cfg(harness_clip)]
+fn clip_needs_coverage(clip: &usvg::ClipPath) -> bool {
+    fn walk(nodes: &[usvg::Node]) -> bool {
+        nodes.iter().any(|node| match node {
+            usvg::Node::Group(g) => g.clip_path().is_some() || walk(g.children()),
+            usvg::Node::Text(_) => true,
+            _ => false,
+        })
+    }
+    walk(clip.root().children())
+}
+
+/// Captures the coverage of every clip in `group`'s chain that needs one,
+/// after whatever the clip content itself needs (its children's clips, their
+/// masks), innermost first.
+#[cfg(harness_clip)]
+fn precapture_clip_coverage(
+    canvas: &mut Canvas<WGPURenderer>,
+    group: &usvg::Group,
+    at: usvg::Transform,
+    canvas_w: usize,
+    canvas_h: usize,
+    scale: f32,
+    out: &mut MaskMap,
+) {
+    if std::env::var("NO_CLIP_COVERAGE").is_ok() {
+        return;
+    }
+    let mut chain = group.clip_path();
+    let mut depth = 0;
+    while let Some(clip) = chain {
+        let clip_base = at.pre_concat(clip.transform());
+        precapture_masks(
+            canvas,
+            clip.root().children(),
+            canvas_w,
+            canvas_h,
+            scale,
+            out,
+            clip_base,
+        );
+        if clip_needs_coverage(clip) {
+            if let Some(image) = capture_clip_coverage(canvas, clip, clip_base, canvas_w, canvas_h, scale, out) {
+                CLIP_COVERAGE
+                    .lock()
+                    .unwrap()
+                    .get_or_insert_with(Default::default)
+                    .insert((group as *const usvg::Group as usize, depth), image);
+            }
+        }
+        chain = clip.clip_path();
+        depth += 1;
+    }
+}
+
+/// Paints a clipPath's content into a canvas-sized image: each child as
+/// usvg converted it (opaque black, under its clip-rule) and under its own
+/// clip, which `push_clip` applies as for any group, so the image's alpha is
+/// the union of the children's intersections, antialiased as a fill is.
+#[cfg(harness_clip)]
+fn capture_clip_coverage(
+    canvas: &mut Canvas<WGPURenderer>,
+    clip: &usvg::ClipPath,
+    clip_base: usvg::Transform,
+    canvas_w: usize,
+    canvas_h: usize,
+    scale: f32,
+    masks: &MaskMap,
+) -> Option<femtovg::ImageId> {
+    let image = track_image(
+        canvas
+            .create_image_empty(
+                canvas_w,
+                canvas_h,
+                femtovg::PixelFormat::Rgba8,
+                femtovg::ImageFlags::PREMULTIPLIED | femtovg::ImageFlags::FLIP_Y,
+            )
+            .ok()?,
+    );
+    canvas.save();
+    with_target(canvas, RenderTarget::Image(image), |canvas| {
+        canvas.clear_rect(0, 0, canvas_w as u32, canvas_h as u32, Color::rgbaf(0.0, 0.0, 0.0, 0.0));
+        // Clip content lives in the referencing group's user space, under the clipPath's transform.
+        canvas.set_transform(&ts_to_t2d(clip_base));
+        draw_nodes(canvas, clip.root().children(), scale, masks);
+    });
+    canvas.restore();
+    Some(image)
 }
 
 fn group_effects(
@@ -608,6 +721,8 @@ fn layer_chain(group: &usvg::Group, scale: f32) -> LayerChain {
             }
         }
         chain.passes.push(pass);
+        #[cfg(harness_crop)]
+        chain.passes.extend(primitive_crop(group, f, prim));
         previous = Some(prim.result());
     }
     // A chain this backend cannot finish does not run at all: its first
@@ -691,6 +806,45 @@ fn color_matrix(_kind: &usvg::filter::ColorMatrixKind) -> Option<ImageFilter> {
 #[cfg(not(harness_turbulence))]
 fn alpha_transfer_matrix(_ct: &usvg::filter::ComponentTransfer) -> Option<ImageFilter> {
     None
+}
+
+/// The crop a primitive's result takes (`ImageFilter::Crop`, --cfg
+/// harness_crop): its subregion within the filter region, in root device
+/// pixels, which every primitive's result is clipped to - not the chain's
+/// last only. `NO_CROP` leaves the intermediate results whole.
+#[cfg(harness_crop)]
+fn primitive_crop(
+    group: &usvg::Group,
+    f: &usvg::filter::Filter,
+    prim: &usvg::filter::Primitive,
+) -> Option<ImageFilter> {
+    if std::env::var("NO_FILTER_REGION").is_ok() || std::env::var("NO_CROP").is_ok() {
+        return None;
+    }
+    let ts = group.abs_transform();
+    let (region, subregion) = (f.rect().transform(ts)?, prim.rect().transform(ts)?);
+    let Some(r) = region.to_rect().intersect(&subregion.to_rect()) else {
+        // Nothing of the result is inside both.
+        return Some(ImageFilter::Crop {
+            x: 0.0,
+            y: 0.0,
+            width: 0.0,
+            height: 0.0,
+        });
+    };
+    let root = *ROOT_DEVICE.lock().unwrap();
+    let corners = [(r.x(), r.y()), (r.right(), r.y()), (r.x(), r.bottom()), (r.right(), r.bottom())]
+        .map(|(x, y)| root.transform_point(x, y));
+    let x0 = corners.iter().map(|c| c.0).fold(f32::INFINITY, f32::min);
+    let y0 = corners.iter().map(|c| c.1).fold(f32::INFINITY, f32::min);
+    let x1 = corners.iter().map(|c| c.0).fold(f32::NEG_INFINITY, f32::max);
+    let y1 = corners.iter().map(|c| c.1).fold(f32::NEG_INFINITY, f32::max);
+    Some(ImageFilter::Crop {
+        x: x0,
+        y: y0,
+        width: x1 - x0,
+        height: y1 - y0,
+    })
 }
 
 /// The rects a browser hard-clips a filtered group to, in root space: the
@@ -1093,9 +1247,7 @@ fn draw_shadow_only(
     *SHADOW_COPY.lock().unwrap() = None;
     canvas.end_layer();
     canvas.restore();
-    if clipped {
-        canvas.restore();
-    }
+    pop_clip(canvas, clipped);
 }
 
 /// An `feTurbulence` chain this backend runs as a whole: the noise passes,
@@ -1709,6 +1861,113 @@ fn dump(children: &[usvg::Node], depth: usize) {
     }
 }
 
+/// Fills drawn through a coverage mask by the FILL_MASKS experiment, and all fills, over the run.
+static MASKED_FILLS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+static FILLS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
+/// Experiment (FILL_MASKS=T, device pixels; FILL_MASKS_MAX=N, the most pixels the fill's bounds may span, 65536 by
+/// default): a fill whose mean width on the target - twice its area over its perimeter - is under T is drawn as a
+/// rect over its bounds under the path as a clip, which the library takes as a coverage mask: each pixel by its
+/// share inside the path, where the fringes of a fill thinner than a pixel over-ink it (femtovg/femtovg#327).
+#[cfg(harness_clip_paths)]
+fn fill_through_mask<T: femtovg::Renderer>(
+    canvas: &mut Canvas<T>,
+    svg_path: &usvg::Path,
+    path: &Path,
+    paint: &Paint,
+    rule: usvg::FillRule,
+) -> bool {
+    use usvg::tiny_skia_path::PathSegment;
+    static LIMITS: std::sync::OnceLock<Option<(f32, f32)>> = std::sync::OnceLock::new();
+    let limits = LIMITS.get_or_init(|| {
+        let threshold = std::env::var("FILL_MASKS").ok()?.parse().ok()?;
+        let most = std::env::var("FILL_MASKS_MAX").ok().and_then(|v| v.parse().ok()).unwrap_or(65536.0);
+        Some((threshold, most))
+    });
+    let Some((threshold, most)) = *limits else {
+        return false;
+    };
+    FILLS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    let t = canvas.transform();
+    let scale = (t[0] * t[3] - t[1] * t[2]).abs().sqrt();
+    // The path as chords, eight a curve, in its own units: the signed area of every contour - a fill closes each -
+    // and their length.
+    let (mut area, mut perimeter) = (0.0f32, 0.0f32);
+    let (mut start, mut last) = ((0.0f32, 0.0f32), (0.0f32, 0.0f32));
+    let mut edge = |from: (f32, f32), to: (f32, f32)| {
+        area += (from.0 * to.1 - to.0 * from.1) * 0.5;
+        perimeter += (to.0 - from.0).hypot(to.1 - from.1);
+    };
+    for seg in svg_path.data().segments() {
+        match seg {
+            PathSegment::MoveTo(p) => {
+                edge(last, start);
+                (start, last) = ((p.x, p.y), (p.x, p.y));
+            }
+            PathSegment::LineTo(p) => {
+                edge(last, (p.x, p.y));
+                last = (p.x, p.y);
+            }
+            PathSegment::QuadTo(a, p) => {
+                let from = last;
+                for i in 1..=8 {
+                    let (t, s) = (i as f32 / 8.0, 1.0 - i as f32 / 8.0);
+                    let at = (
+                        s * s * from.0 + 2.0 * s * t * a.x + t * t * p.x,
+                        s * s * from.1 + 2.0 * s * t * a.y + t * t * p.y,
+                    );
+                    edge(last, at);
+                    last = at;
+                }
+            }
+            PathSegment::CubicTo(a, b, p) => {
+                let from = last;
+                for i in 1..=8 {
+                    let (t, s) = (i as f32 / 8.0, 1.0 - i as f32 / 8.0);
+                    let at = (
+                        s * s * s * from.0 + 3.0 * s * s * t * a.x + 3.0 * s * t * t * b.x + t * t * t * p.x,
+                        s * s * s * from.1 + 3.0 * s * s * t * a.y + 3.0 * s * t * t * b.y + t * t * t * p.y,
+                    );
+                    edge(last, at);
+                    last = at;
+                }
+            }
+            PathSegment::Close => {
+                edge(last, start);
+                last = start;
+            }
+        }
+    }
+    edge(last, start);
+    let width = 2.0 * area.abs() / perimeter.max(f32::MIN_POSITIVE) * scale;
+    let bounds = svg_path.data().bounds();
+    let spans = (bounds.width() * scale + 2.0) * (bounds.height() * scale + 2.0);
+    if !(width < threshold && spans <= most) {
+        return false;
+    }
+    MASKED_FILLS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    // Two pixels around the path's bounds: the rect's own fringe stays clear of the mask.
+    let margin = 2.0 / scale.max(f32::MIN_POSITIVE);
+    let mut rect = Path::new();
+    rect.rect(
+        bounds.left() - margin,
+        bounds.top() - margin,
+        bounds.width() + 2.0 * margin,
+        bounds.height() + 2.0 * margin,
+    );
+    canvas.save();
+    canvas.clip_path(
+        path,
+        match rule {
+            usvg::FillRule::NonZero => FillRule::NonZero,
+            usvg::FillRule::EvenOdd => FillRule::EvenOdd,
+        },
+    );
+    canvas.fill_path(&rect, paint);
+    canvas.restore();
+    true
+}
+
 static PATH_COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 static LAYERS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 static DEPTH: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
@@ -1805,29 +2064,101 @@ fn replaces_source(f: &usvg::filter::Filter) -> bool {
     })
 }
 
-/// Pushes the group's clip path (#324's `Canvas::clip_path`) and reports
-/// whether a matching `restore` is owed.
+/// What `push_clip` took, in order: `false` a clip on the canvas (a
+/// `restore` is owed), `true` a coverage layer (an `end_layer`).
+#[derive(Default)]
+struct ClipTaken(Vec<bool>);
+
+impl ClipTaken {
+    fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+}
+
+fn pop_clip(canvas: &mut Canvas<WGPURenderer>, taken: ClipTaken) {
+    for layer in taken.0.into_iter().rev() {
+        if layer {
+            canvas.end_layer();
+            DEPTH.fetch_sub(1, std::sync::atomic::Ordering::Relaxed);
+        } else {
+            canvas.restore();
+        }
+    }
+}
+
+/// Coverage layers begun for clips that are no union of paths.
+static CLIP_COVERAGE_LAYERS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
+/// Pushes the group's clip path (#324's `Canvas::clip_path`, #390's
+/// `clip_paths`) and what `pop_clip` owes for it. A clipPath may itself
+/// carry `clip-path` (usvg's `ClipPath::clip_path`): the region is the
+/// intersection of the chain, each clipPath in the group's user space under
+/// its own transform, so each is taken in turn. One whose children carry
+/// clips of their own is taken as a layer under its captured coverage
+/// (`precapture_clip_coverage`).
 #[cfg(harness_clip)]
-fn push_clip(canvas: &mut Canvas<WGPURenderer>, group: &usvg::Group) -> bool {
-    let Some(clip) = group.clip_path().filter(|_| std::env::var("NO_CLIP").is_err()) else {
-        return false;
-    };
-    canvas.save();
-    let mut combined = Path::new();
-    let mut rule = FillRule::NonZero;
+fn push_clip(canvas: &mut Canvas<WGPURenderer>, group: &usvg::Group) -> ClipTaken {
+    let mut taken = ClipTaken::default();
+    if std::env::var("NO_CLIP").is_ok() {
+        return taken;
+    }
+    let chain_off = std::env::var("NO_CLIP_CHAIN").is_ok();
+    let mut chain = group.clip_path();
+    let mut depth = 0;
+    while let Some(clip) = chain {
+        let coverage = CLIP_COVERAGE
+            .lock()
+            .unwrap()
+            .as_ref()
+            .and_then(|m| m.get(&(group as *const usvg::Group as usize, depth)).copied());
+        if let Some(image) = coverage {
+            let (w, h) = (frame_w() as f32, frame_h() as f32);
+            LAYERS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+            CLIP_COVERAGE_LAYERS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+            log_layer(canvas, group, 1.0, "clip-coverage");
+            DEPTH.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+            if !canvas.begin_layer(&LayerEffects::new().with_mask(image, MaskKind::Alpha, 0.0, 0.0, w, h)) {
+                PASS_THROUGH.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                log_pass_through(canvas, group, "clip-coverage");
+            }
+            taken.0.push(true);
+        } else {
+            canvas.save();
+            clip_to(canvas, clip, group.abs_transform().pre_concat(clip.transform()));
+            taken.0.push(false);
+        }
+        if chain_off {
+            break;
+        }
+        chain = clip.clip_path();
+        depth += 1;
+    }
+    taken
+}
+
+/// Clips to one clipPath's children, their transforms baked in from `base`.
+#[cfg(harness_clip)]
+fn clip_to(canvas: &mut Canvas<WGPURenderer>, clip: &usvg::ClipPath, base: usvg::Transform) {
     // Clip content may be nested in groups (usvg wraps a
     // <use> inside <clipPath> in a Group); walk the whole
-    // subtree and bake every path's absolute transform.
-    fn collect_clip(nodes: &[usvg::Node], base: usvg::Transform, combined: &mut Path, rule: &mut FillRule) {
+    // subtree and bake every path's absolute transform. With
+    // `Canvas::clip_paths` (--cfg harness_clip_paths, unless CLIP_JOINED is
+    // set) each child is a path of its own under its own clip-rule, and the
+    // clip is their union; without it the children are one path, even-odd
+    // if any of them is.
+    fn collect_clip(nodes: &[usvg::Node], base: usvg::Transform, children: &mut Vec<(Path, FillRule)>, apart: bool) {
         use usvg::tiny_skia_path::PathSegment;
         for node in nodes {
             match node {
-                usvg::Node::Group(g) => collect_clip(g.children(), base, combined, rule),
+                usvg::Node::Group(g) => collect_clip(g.children(), base, children, apart),
                 usvg::Node::Path(p) => {
-                    if let Some(f) = p.fill() {
-                        if matches!(f.rule(), usvg::FillRule::EvenOdd) {
-                            *rule = FillRule::EvenOdd;
-                        }
+                    let even_odd = p.fill().is_some_and(|f| matches!(f.rule(), usvg::FillRule::EvenOdd));
+                    if apart || children.is_empty() {
+                        children.push((Path::new(), FillRule::NonZero));
+                    }
+                    let (combined, rule) = children.last_mut().unwrap();
+                    if even_odd {
+                        *rule = FillRule::EvenOdd;
                     }
                     let ct = base.pre_concat(p.abs_transform());
                     let map = |x: f32, y: f32| (ct.sx * x + ct.kx * y + ct.tx, ct.ky * x + ct.sy * y + ct.ty);
@@ -1860,31 +2191,39 @@ fn push_clip(canvas: &mut Canvas<WGPURenderer>, group: &usvg::Group) -> bool {
             }
         }
     }
-    collect_clip(
-        clip.root().children(),
-        group.abs_transform().pre_concat(clip.transform()),
-        &mut combined,
-        &mut rule,
-    );
+    let apart = cfg!(harness_clip_paths) && std::env::var("CLIP_JOINED").is_err();
+    let mut children = Vec::new();
+    collect_clip(clip.root().children(), base, &mut children, apart);
     if std::env::var("CLIP_SHOW").is_ok() {
         // Debug: paint the clip region instead of clipping with it.
-        let mut show = Paint::color(Color::rgba(200, 0, 200, 90));
-        show.set_fill_rule(rule);
-        canvas.fill_path(&combined, &show);
-    } else {
-        canvas.clip_path(&combined, rule);
+        for (child, rule) in &children {
+            let mut show = Paint::color(Color::rgba(200, 0, 200, 90));
+            show.set_fill_rule(*rule);
+            canvas.fill_path(child, &show);
+        }
+        return;
     }
-    true
+    #[cfg(harness_clip_paths)]
+    if apart {
+        let children: Vec<(&Path, FillRule)> = children.iter().map(|(child, rule)| (child, *rule)).collect();
+        canvas.clip_paths(&children);
+        return;
+    }
+    match children.first() {
+        Some((combined, rule)) => canvas.clip_path(combined, *rule),
+        // A clipPath without children clips everything out.
+        None => canvas.clip_path(&Path::new(), FillRule::NonZero),
+    }
 }
 
 /// Without `--cfg harness_clip` (a tree without #324) the group is drawn
 /// unclipped and counted, so LAYER_STATS shows what the build left out.
 #[cfg(not(harness_clip))]
-fn push_clip(_canvas: &mut Canvas<WGPURenderer>, group: &usvg::Group) -> bool {
+fn push_clip(_canvas: &mut Canvas<WGPURenderer>, group: &usvg::Group) -> ClipTaken {
     if group.clip_path().is_some() && std::env::var("NO_CLIP").is_err() {
         CLIPS_UNSUPPORTED.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
     }
-    false
+    ClipTaken::default()
 }
 
 /// The adapter's limits, with `MAX_TEXTURE_SIZE` lowering the texture
@@ -2026,7 +2365,15 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                     frame_h() as usize,
                     scale,
                     masks,
-                    shadowed || stencil || isolating,
+                    // CLIP_GROUP_LAYERS: a clipped group is drawn into a layer
+                    // and the clip cuts the composite, so its edge takes the
+                    // clip's coverage once whatever is stacked inside - where
+                    // each draw under the clip takes it for itself, the lower
+                    // ones show through along the edge.
+                    shadowed
+                        || stencil
+                        || isolating
+                        || (!clipped.is_empty() && std::env::var("CLIP_GROUP_LAYERS").is_ok()),
                     shadowed || inner.is_some(),
                     merge.as_ref().is_some_and(|m| !m.to_merge_space.is_empty()),
                 ) {
@@ -2105,9 +2452,7 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                     }
                 }
                 canvas.restore();
-                if clipped {
-                    canvas.restore();
-                }
+                pop_clip(canvas, clipped);
             }
             usvg::Node::Path(svg_path) => {
                 if let Ok(range) = std::env::var("PATH_RANGE") {
@@ -2158,7 +2503,13 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                             usvg::FillRule::EvenOdd => FillRule::EvenOdd,
                         });
                         canvas.set_global_alpha(fill.opacity().get());
-                        canvas.fill_path(&path, &paint);
+                        #[cfg(harness_clip_paths)]
+                        let masked = fill_through_mask(canvas, svg_path, &path, &paint, fill.rule());
+                        #[cfg(not(harness_clip_paths))]
+                        let masked = false;
+                        if !masked {
+                            canvas.fill_path(&path, &paint);
+                        }
                         canvas.set_global_alpha(1.0);
                     }
                 }
@@ -2221,6 +2572,12 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                 }
                 canvas.restore();
             }
+            // Text as usvg lays it out: its glyph outlines as paths
+            // (`Text::flattened`, transforms and paints resolved), the fonts'
+            // own outlines as a browser draws them.
+            usvg::Node::Text(text) if std::env::var("NO_TEXT").is_err() => {
+                draw_nodes(canvas, text.flattened().children(), scale, masks)
+            }
             _ => {}
         }
     }
@@ -2229,6 +2586,9 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
 /// Draws the whole scene once into the canvas under the pivot zoom: the
 /// clear, the framing transform, the mask pre-capture and the node walk.
 /// Both the frame loop and the soak drive it; flushing is the caller's.
+/// The frame being drawn, counted from zero (see FRAME_DRIFT).
+static FRAME_INDEX: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
 fn render_scene(canvas: &mut Canvas<WGPURenderer>, tree: &usvg::Tree, scale: f32, bg: Color) {
     canvas.clear_rect(0, 0, frame_w(), frame_h(), bg);
     // A blend mode reads the backdrop under its group, the page background
@@ -2250,6 +2610,13 @@ fn render_scene(canvas: &mut Canvas<WGPURenderer>, tree: &usvg::Tree, scale: f32
         canvas.fill_path(&page, &paint);
     }
     canvas.save();
+        // FRAME_DRIFT=d moves the scene d pixels right and half of that down
+        // with every frame: content that never comes to rest on the pixel
+        // grid, which nothing cached for a frame serves in the next.
+        if let Some(drift) = std::env::var("FRAME_DRIFT").ok().and_then(|v| v.parse::<f32>().ok()) {
+            let frame = FRAME_INDEX.load(std::sync::atomic::Ordering::Relaxed) as f32;
+            canvas.translate(drift * frame, drift * frame * 0.5);
+        }
         let (px, py) = std::env::var("PIVOT")
             .ok()
             .and_then(|s| s.split_once(',').map(|(a, b)| (a.parse().unwrap(), b.parse().unwrap())))
@@ -2282,6 +2649,7 @@ fn render_scene(canvas: &mut Canvas<WGPURenderer>, tree: &usvg::Tree, scale: f32
             frame_h() as usize,
             scale * fit,
             &mut masks,
+            usvg::Transform::identity(),
         );
         #[cfg(harness_blend)]
         precapture_blend_sources(
@@ -2296,6 +2664,7 @@ fn render_scene(canvas: &mut Canvas<WGPURenderer>, tree: &usvg::Tree, scale: f32
 
     canvas.restore();
     *BLEND_SOURCES.lock().unwrap() = None;
+    *CLIP_COVERAGE.lock().unwrap() = None;
     if page_layer {
         canvas.end_layer();
     }
@@ -2484,7 +2853,16 @@ fn frame_passes(canvas: &Canvas<WGPURenderer>) -> (u32, usize) {
     (slices.iter().sum(), slices.len())
 }
 
-#[cfg(not(harness_slices))]
+/// On a tree with `corpus_run/pass_count.py` applied (--cfg
+/// harness_pass_count): the render passes begun since the process started,
+/// which the caller divides by the frames drawn.
+#[cfg(all(not(harness_slices), harness_pass_count))]
+fn frame_passes(_canvas: &Canvas<WGPURenderer>) -> (u32, usize) {
+    let frames: usize = std::env::var("FRAMES").ok().and_then(|v| v.parse().ok()).unwrap_or(1);
+    ((femtovg::renderer::render_passes_begun() / frames.max(1)) as u32, 1)
+}
+
+#[cfg(all(not(harness_slices), not(harness_pass_count)))]
 fn frame_passes(_canvas: &Canvas<WGPURenderer>) -> (u32, usize) {
     (0, 0)
 }
@@ -2633,6 +3011,37 @@ fn main() {
     }
     let mut canvas = Canvas::new(renderer).unwrap();
     canvas.set_size(frame_w(), frame_h(), 1.0);
+    // CLIP_MASK_BUDGET_MB: the budget of the coverage masks that antialias
+    // path clips (MiB; 0 takes every such clip on the stencil).
+    #[cfg(harness_clip_paths)]
+    if let Some(mb) = std::env::var("CLIP_MASK_BUDGET_MB")
+        .ok()
+        .and_then(|v| v.parse::<usize>().ok())
+    {
+        canvas.set_clip_mask_budget(mb << 20);
+    }
+    // DUMMY_IMAGES=n,format,size: n images that nothing draws, alive for the
+    // whole run - what a long-lived texture of that kind costs the frames.
+    if let Ok(spec) = std::env::var("DUMMY_IMAGES") {
+        let parts: Vec<&str> = spec.split(',').collect();
+        let count: usize = parts.first().and_then(|v| v.parse().ok()).unwrap_or(0);
+        let format = match parts.get(1) {
+            Some(&"gray") => PixelFormat::Gray8,
+            _ => PixelFormat::Rgba8,
+        };
+        let size: usize = parts.get(2).and_then(|v| v.parse().ok()).unwrap_or(64);
+        // A fourth part, the side of the square uploaded into each image's corner.
+        let upload: usize = parts.get(3).and_then(|v| v.parse().ok()).unwrap_or(0);
+        for _ in 0..count {
+            let Ok(image) = canvas.create_image_empty(size, size, format, ImageFlags::NEAREST) else {
+                continue;
+            };
+            if upload > 0 && format == PixelFormat::Gray8 {
+                let pixels = vec![femtovg::rgb::alt::Gray::<u8>::new(255); upload * upload];
+                let _ = canvas.update_image(image, femtovg::imgref::Img::new(&pixels[..], upload, upload), 0, 0);
+            }
+        }
+    }
     // Experiments: lift the transient-image budget (MiB), and report layer counts.
     if let Some(mb) = std::env::var("TRANSIENT_BUDGET_MB")
         .ok()
@@ -2665,6 +3074,12 @@ fn main() {
     if std::env::var("TREE_DUMP").is_ok() {
         dump(tree.root().children(), 0);
     }
+    // TREE_SIZE: the root's size as usvg resolved it (for a root without
+    // width, height and viewBox, the content's bounding box), and stop.
+    if std::env::var("TREE_SIZE").is_ok() {
+        println!("tree size {} {}", tree.size().width(), tree.size().height());
+        return;
+    }
 
     let target = device.create_texture(&wgpu::TextureDescriptor {
         label: None,
@@ -2691,15 +3106,32 @@ fn main() {
     let baseline = mem::now();
     mem::reset();
     let started = std::time::Instant::now();
-    for _frame in 0..frames {
+    // The part of a frame spent recording and encoding it, before the
+    // submit: what the CPU pays, apart from the wait for the GPU.
+    let mut encoding = std::time::Duration::ZERO;
+    for frame in 0..frames {
+        FRAME_INDEX.store(frame, std::sync::atomic::Ordering::Relaxed);
+        let frame_started = std::time::Instant::now();
         render_scene(&mut canvas, &tree, scale, bg);
         TRANSIENT_AT_FLUSH.store(canvas.transient_image_bytes(), std::sync::atomic::Ordering::Relaxed);
         let commands = canvas.flush_to_output(&target);
+        encoding += frame_started.elapsed();
         queue.submit(commands);
         if std::env::var_os("MEM_DEBUG").is_some() {
             mem::dump("after submit");
         }
         device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+    }
+    // What the clips' coverage masks hold after the last frame, and their budget.
+    #[cfg(harness_clip_paths)]
+    if std::env::var_os("MASK_STATS").is_some() {
+        eprintln!(
+            "MASKS bytes={} budget={} fills={} through_masks={}",
+            canvas.clip_mask_bytes(),
+            canvas.clip_mask_budget(),
+            FILLS.load(std::sync::atomic::Ordering::Relaxed),
+            MASKED_FILLS.load(std::sync::atomic::Ordering::Relaxed)
+        );
     }
     if sampling {
         let frame_ms = started.elapsed().as_secs_f64() * 1000.0 / frames as f64;
@@ -2708,7 +3140,7 @@ fn main() {
         eprintln!(
             "MEM baseline_footprint={} baseline_graphics={} peak_footprint={} peak_graphics={} peak_cpu={} \
              lifetime_peak={} after_footprint={} after_graphics={} frame_ms={frame_ms:.3} passes={passes} \
-             command_buffers={command_buffers}",
+             command_buffers={command_buffers} encode_ms={:.4}",
             baseline.footprint,
             baseline.graphics,
             peak.footprint,
@@ -2716,7 +3148,8 @@ fn main() {
             peak.cpu,
             peak.lifetime,
             after.footprint,
-            after.graphics
+            after.graphics,
+            encoding.as_secs_f64() * 1000.0 / frames as f64
         );
         // MEM_SETTLE_MS=n: what is still held n ms after the frame, with the
         // device polled again - memory the driver returns when idle is gone.
@@ -2788,14 +3221,20 @@ fn main() {
             PASS_THROUGH.load(std::sync::atomic::Ordering::Relaxed)
         );
         eprintln!(
-            "harness cfgs: clip={} turbulence={} blend={} mix_blend={} slices={} blur_xy={} morph={}",
+            "clip coverage layers: {}",
+            CLIP_COVERAGE_LAYERS.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "harness cfgs: clip={} turbulence={} blend={} mix_blend={} slices={} blur_xy={} morph={} clip_paths={} crop={}",
             cfg!(harness_clip),
             cfg!(harness_turbulence),
             cfg!(harness_blend),
             cfg!(harness_mix_blend),
             cfg!(harness_slices),
             cfg!(harness_blur_xy),
-            cfg!(harness_morph)
+            cfg!(harness_morph),
+            cfg!(harness_clip_paths),
+            cfg!(harness_crop)
         );
         eprintln!(
             "filters skipped (SKIP_UNSUPPORTED_FILTERS): {}",
