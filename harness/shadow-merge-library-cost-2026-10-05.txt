@@ -53,3 +53,21 @@ hd          18 |                   33414    32726 0.979 |                      1
   lost at default: corpus/buseybench/qwen3-8-2-4t-a95b.svg hd: master_lsm LOST, master_sab LOST (held 182.9 / 170.1 MiB, passed through 117 / 30)
   lost at default: corpus/buseybench/qwen3-8-flash.svg hd: master_lsm LOST, master_sab LOST (held 205.1 / 187.7 MiB, passed through 93 / 96)
   lost at default: corpus/buseybench/qwen3-8-max.svg hd: master_lsm LOST, master_sab kept (held 129.7 / 117.0 MiB, passed through 0 / 0)
+
+## 2026-10-14, upstream master 9f5ad26: m9 against sab (shadow-after-blur 6ad8709), the 18 portraits at 1080p, rule 4a's
+## merge layers, three frames per run, the faster of two runs, builds alternating
+framing frames | frame ms (sum)       m9      sab ratio | held MiB mean / max            m9           sab | over 128 MiB m9/sab | lost at default m9/sab | passed through at default
+hd          18 |                   24799    25080 1.011 |                      143.5 / 205.9  127.6 / 188.5 |    12/7     |    13/8     | 549 -> 318
+  lost at default: corpus/buseybench/claude-fable-5-1.svg hd: m9 LOST, sab LOST (held 194.5 / 178.0 MiB, passed through 183 / 165)
+  lost at default: corpus/buseybench/claude-opus-5.svg hd: m9 LOST, sab LOST (held 178.7 / 167.6 MiB, passed through 15 / 9)
+  lost at default: corpus/buseybench/fugu-ultra.svg hd: m9 LOST, sab kept (held 124.3 / 107.5 MiB, passed through 0 / 0)
+  lost at default: corpus/buseybench/gemini-3-1-pro-preview-custom-tools.svg hd: m9 LOST, sab kept (held 136.5 / 119.3 MiB, passed through 0 / 0)
+  lost at default: corpus/buseybench/gemini-3-1-pro-preview.svg hd: m9 LOST, sab LOST (held 180.9 / 146.0 MiB, passed through 30 / 0)
+  lost at default: corpus/buseybench/glm-5-3-flash.svg hd: m9 LOST, sab LOST (held 143.2 / 133.3 MiB, passed through 6 / 0)
+  lost at default: corpus/buseybench/glm-5v-turbo.svg hd: m9 LOST, sab kept (held 133.2 / 121.6 MiB, passed through 3 / 0)
+  lost at default: corpus/buseybench/gpt-5-2-pro.svg hd: m9 LOST, sab LOST (held 194.4 / 160.3 MiB, passed through 105 / 18)
+  lost at default: corpus/buseybench/kimi-k3.svg hd: m9 LOST, sab LOST (held 131.8 / 124.8 MiB, passed through 0 / 0)
+  lost at default: corpus/buseybench/nex-n2-pro.svg hd: m9 LOST, sab kept (held 147.0 / 122.0 MiB, passed through 0 / 0)
+  lost at default: corpus/buseybench/qwen3-8-2-4t-a95b.svg hd: m9 LOST, sab LOST (held 183.3 / 170.4 MiB, passed through 114 / 30)
+  lost at default: corpus/buseybench/qwen3-8-flash.svg hd: m9 LOST, sab LOST (held 205.9 / 188.5 MiB, passed through 93 / 96)
+  lost at default: corpus/buseybench/qwen3-8-max.svg hd: m9 LOST, sab kept (held 130.0 / 117.3 MiB, passed through 0 / 0)

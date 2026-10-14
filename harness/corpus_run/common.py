@@ -215,3 +215,10 @@ BUILDS['pf2'] = (f'{BIN}/_logos_full_pf', {'SINGLE_SHADOW_LAYER': '1'})  # point
 BUILDS['m8'] = (f'{BIN}/_logos_full_m8', {'SINGLE_SHADOW_LAYER': '1'})  # upstream master d70ffeb (#390), all cfgs incl crop + clip_paths
 BUILDS['pr1'] = (f'{BIN}/_logos_full_pr1', {'SINGLE_SHADOW_LAYER': '1'})  # fill-point-costs on d70ffeb, all cfgs incl crop + clip_paths
 BUILDS['pr2'] = (f'{BIN}/_logos_full_pr2', {'SINGLE_SHADOW_LAYER': '1'})  # straddled-chords on fill-point-costs (d70ffeb), all cfgs
+# 2026-10-14, the shadow-after-blur PR on upstream master 9f5ad26 (#386), all cfgs incl crop + clip_paths:
+# m9 = master, sab = shadow-after-blur 6ad8709. The _lsm builds keep rule 4a's merge layers, which shadow_merge/ab.py
+# and cost.py run by binary name (shadow-merge-library-2026-10-05.md, "Upstream").
+BUILDS['m9'] = (f'{BIN}/_logos_full_m9', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['sab'] = (f'{BIN}/_logos_full_sab', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m9_lsm'] = (f'{BIN}/_logos_full_m9', {})
+BUILDS['sab_lsm'] = (f'{BIN}/_logos_full_sab', {})

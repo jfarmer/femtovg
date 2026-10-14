@@ -161,6 +161,64 @@ with the builds alternating, frame time goes 33.4 → 32.7 s summed (-2.1 %), an
 faster. The per-file ratios run from 0.92 to 1.04, which is about lavapipe's run-to-run spread. On a
 GPU, the passes saved are two full-layer fills and two render-target switches per merged shadow.
 
+## Upstream (2026-10-14)
+
+The change is rebased on upstream master 9f5ad26 (#386) as `shadow-after-blur` (6ad8709), the branch of the
+upstream PR. Upstream's clip coverage (#390) took `frag[13].y`, where the image paint's transfer sat, and the rows
+after it. The transfer now rides in `paint_mat[0].w` (`frag[3].w`), which no image paint reads, so the uniform block
+stays at 256 bytes; it is written only for a paint that has one, since a filter pass keeps its own values there.
+The half-level mip bias upstream gave image sampling stays on both paths through `paintTexel`.
+
+`m9` is master and `sab` the branch, built with `harness/build.sh m9:<9f5ad26> sab:<shadow-after-blur>`, with every
+cfg, crop and clip_paths included. The harness is the same for both, so the A/B measures the library alone (`shadow-merge-library-ab-upstream-2026-10-14.txt`). With
+rule 4a's merge layers (`ab.py builds=m9,sab`), on the same 156 frames: 26 better, 119 level, 11 with something
+worse, the same frames and reasons as above.
+
+| framing | vs Chromium px > 8 | mean delta | vs Firefox px > 8 | mean delta |
+|---|---|---|---|---|
+| z1 | 0.807 → 0.807 % | 0.411 → 0.409 | 0.668 → 0.667 % | 0.391 → 0.390 |
+| z2 | 1.357 → 1.352 % | 0.863 → 0.857 | 1.218 → 1.219 % | 0.862 → 0.860 |
+| z4 | 1.425 → 1.400 % | 1.081 → 1.068 | 1.165 → 1.155 % | 1.008 → 1.000 |
+| hd | 0.284 → 0.278 % | 0.376 → 0.371 | 0.407 → 0.403 % | 0.427 → 0.425 |
+
+In demo-assets' default of one shadow layer (`SINGLE_SHADOW_LAYER=1`, the merge in sRGB), the merge layers never
+form, so only the shadow's colouring changes: 16 better, 131 level, 9 worse, every framing slightly closer to both
+browsers. The largest move away is gpt-5-2-pro at 4x, px > 8 against Chromium 5.07 → 5.23 %. There the sRGB merge
+already lays the shadow 1.8 levels darker than Chromium over the pixels that change, and the shadow coloured after
+its blur keeps the 0.3 levels of alpha the old pass lost blurring the pre-scaled coverage. With the merge layers the
+same frame sits within 0.2 levels of Chromium either way.
+
+`pr-shadow-after-blur-probe.png` is the probe at 1x from the two builds. In both `feDropShadow` rows the branch
+follows Chromium's bands where master's are blocky: master rounds the coloured coverage at every blur pass, and the
+branch rounds once. In the `feFlood` + `feComposite` row master keeps its rounded-up colour, (50, 27, 27) down to
+(67, 0, 0), and the branch follows Chromium's chain: (40, 27, 27), (44, 30, 0), (36, 0, 0), (0, 0, 0).
+`pr-shadow-after-blur-corpus.png` (`shadow_merge/pr_sheet.py`) holds the three portraits at 1080p that come back
+inside the browsers' range the most:
+
+| 1080p | vs Chromium px > 8 | vs Firefox px > 8 | outside both by > 8 |
+|---|---|---|---|
+| claude-fable-5-1 | 0.46 → 0.35 % | 0.35 → 0.24 % | 0.20 → 0.12 % |
+| claude-opus-5 | 0.30 → 0.23 % | 0.38 → 0.31 % | 0.22 → 0.16 % |
+| kimi-k3 | 0.74 → 0.68 % | 0.30 → 0.31 % | 0.09 → 0.09 % |
+
+With rule 4a's merge layers, over the 18 portraits at 1080p (`shadow-merge-library-cost-2026-10-05.txt`):
+
+| 1080p, 18 portraits | m9 | sab |
+|---|---|---|
+| pool at flush, mean / max | 143.5 / 205.9 MiB | 127.6 / 188.5 MiB |
+| frames the default budget changes | 13 | 8 |
+| layers passed through at the default budget | 549 | 318 |
+
+Frame time on lavapipe is level, within its run-to-run spread. Summed over the 18, it goes from 24.8 to 25.1 s
+(+1.1 %), with 7 of the 18 faster and per-file ratios of 0.90 to 1.10. On 9d574e0 it had gone 2.1 % the other way.
+With one shadow layer no lone-conversion layer forms, so the cost does not move.
+
+On lavapipe, the branch passes 552 tests and fails the same 12 as master: `restore_underflow_is_a_no_op`, seven
+`layer_state_wgpu` tests and four new clip and mask tests, all exact values that lavapipe rounds differently.
+Upstream's CI matrix passes, including the wasm demo with wgpu and the `debug_inspector` tests, and so do fmt and
+clippy, with master's 11 warnings and no new one. The headless GL check passes too (Mesa's software EGL device,
+GLES 2 and 3).
+
 ## Validation
 
 - **Library tests on lavapipe.** 441 pass and 8 fail. The 8 fail on master too:
@@ -186,12 +244,17 @@ GPU, the passes saved are two full-layer fills and two render-target switches pe
 ## Reproducing
 
     git -C <femtovg checkout of 9d574e0> apply <demo-assets>/harness/shadow_merge/library.patch
-    # build the harness against it as _logos_full_master_sab (corpus_run/common.py)
-    export HARNESS_BIN=<dir of _logos_full_TAG> CHROMIUM=<headless shell> FIREFOX=<firefox>
+    harness/build.sh master_sab:<that checkout>
+    harness/build.sh m9:<checkout of upstream 9f5ad26> sab:<checkout of shadow-after-blur>   # the upstream PR
+    export CHROMIUM=<headless shell> FIREFOX=<firefox>
     python3 harness/shadow_merge/ab.py out.json builds=master_lsm,master_sab
     python3 harness/shadow_merge/ab.py out.json builds=master_lsm,master_sab list=harness/shadow_merge/merged_shadow_files.json
     python3 harness/shadow_merge/cost.py cost.json builds=master_lsm,master_sab
     python3 harness/shadow_merge/tint_sheet.py CHR.png FF.png BEFORE.ppm AFTER.ppm shadow-tint-rounding-evidence.png
+    python3 harness/shadow_merge/ab.py out.json builds=m9,sab    # and list=..., as above
+    python3 harness/shadow_merge/pr_sheet.py pr-shadow-after-blur-corpus.png m9=master sab="this PR" \
+        --panels=refs,builds,chr,outside claude-fable-5-1:hd:size=200x130:zoom=2 claude-opus-5:hd:size=200x130:zoom=2 \
+        kimi-k3:hd:size=200x130:zoom=2
 
 `merged_shadow_files.json` lists the 26 files after the 13 with `feTurbulence`. `cost.py` finds the
 files with a merged shadow on its own. The sheet takes the probe's frames at 1x. The numbers above
