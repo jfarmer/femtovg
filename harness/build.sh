@@ -80,9 +80,9 @@ for spec in "$@"; do
     if (cd "$src" && cargo rustc --release --example _logos_full --features wgpu -- $cfgs ${EXTRA_CFGS:-}) > "$log" 2>&1; then
       out=${CARGO_TARGET_DIR:-$src/target}/release/examples/_logos_full
       cp "$out" "$HARNESS_BIN/_logos_full_$tag"
-      ppm=$(mktemp -t harness_cfgs).ppm
+      ppm=$(mktemp "${TMPDIR:-/tmp}/harness_cfgs.XXXXXX").ppm
       line=$(LAYER_STATS=1 "$HARNESS_BIN/_logos_full_$tag" 1 "$ppm" "$HARN/subpx.svg" 2>&1 | grep 'harness cfgs' || true)
-      rm -f "$ppm"
+      rm -f "$ppm" "${ppm%.ppm}"
       echo "built _logos_full_$tag from $src ($rev): ${line:-no harness cfgs line}"
     else
       echo "_logos_full_$tag FAILED (log: $log)" >&2
