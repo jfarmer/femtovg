@@ -104,6 +104,21 @@ impl ApplicationHandler for App {
                         &polygon(op[2].as_array().unwrap()),
                         &Paint::color(Color::hex(op[1].as_str().unwrap())),
                     ),
+                    "fillpath" => {
+                        let mut path = Path::new();
+                        for polygon in op[2].as_array().unwrap() {
+                            for (i, p) in polygon.as_array().unwrap().iter().enumerate() {
+                                let (x, y) = (p[0].as_f64().unwrap() as f32, p[1].as_f64().unwrap() as f32);
+                                if i == 0 {
+                                    path.move_to(x, y);
+                                } else {
+                                    path.line_to(x, y);
+                                }
+                            }
+                            path.close();
+                        }
+                        canvas.fill_path(&path, &Paint::color(Color::hex(op[1].as_str().unwrap())));
+                    }
                     other => panic!("unknown op {other}"),
                 }
             }

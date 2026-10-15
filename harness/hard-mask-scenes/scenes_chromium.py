@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""scenes_chromium.py OUT_DIR : draw every scene of scenes.json on a 2D canvas in headless Chromium 131 and save
+"""scenes_chromium.py OUT_DIR : draw every scene of SCENES (default scenes.json beside this script) on a 2D canvas in headless Chromium 131 and save
 each as OUT_DIR/<index>.png (the canvas over white)."""
 import json, os, subprocess, sys
 from PIL import Image
@@ -7,7 +7,7 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 CHR = os.path.expanduser('~/.cache/puppeteer/chrome-headless-shell/mac_arm-131.0.6778.204/'
                          'chrome-headless-shell-mac-arm64/chrome-headless-shell')
-spec = json.load(open(f'{HERE}/scenes.json'))
+spec = json.load(open(os.environ.get('SCENES', f'{HERE}/scenes.json')))
 out = sys.argv[1]
 os.makedirs(out, exist_ok=True)
 w, h = spec['width'], spec['height']
@@ -24,6 +24,7 @@ for (const op of ops) {{
   else if (op[0] === 'clip') {{ poly(op[1]); ctx.clip(); }}
   else if (op[0] === 'composite') ctx.globalCompositeOperation = op[1];
   else if (op[0] === 'fill') {{ ctx.fillStyle = op[1]; poly(op[2]); ctx.fill(); }}
+  else if (op[0] === 'fillpath') {{ ctx.fillStyle = op[1]; ctx.beginPath(); for (const p of op[2]) {{ ctx.moveTo(p[0][0], p[0][1]); for (const q of p.slice(1)) ctx.lineTo(q[0], q[1]); ctx.closePath(); }} ctx.fill(); }}
 }}
 </script></body></html>'''
     page = f'{out}/{i}.html'
