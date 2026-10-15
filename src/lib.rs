@@ -1949,6 +1949,18 @@ where
     /// using a custom font rasterizer/layout.
     pub fn draw_glyph_commands(&mut self, draw_commands: GlyphDrawCommands, paint: &Paint) {
         let transform = self.state().transform;
+        self.draw_glyph_quads(draw_commands, paint, &transform, &transform);
+    }
+
+    /// Draws `draw_commands` with their quads placed by `transform` and the
+    /// paint mapped onto the target by `paint_transform`.
+    fn draw_glyph_quads(
+        &mut self,
+        draw_commands: GlyphDrawCommands,
+        paint: &Paint,
+        transform: &Transform2D,
+        paint_transform: &Transform2D,
+    ) {
         let create_vertices = |quads: &Vec<text::Quad>| {
             let mut verts = Vec::with_capacity(quads.len() * 6);
 
@@ -1980,7 +1992,12 @@ where
         for cmd in draw_commands.alpha_glyphs {
             let verts = create_vertices(&cmd.quads);
 
-            self.render_triangles(&verts, &transform, &paint_flavor, GlyphTexture::AlphaMask(cmd.image_id));
+            self.render_triangles(
+                &verts,
+                paint_transform,
+                &paint_flavor,
+                GlyphTexture::AlphaMask(cmd.image_id),
+            );
         }
 
         for cmd in draw_commands.color_glyphs {
@@ -1988,7 +2005,7 @@ where
 
             self.render_triangles(
                 &verts,
-                &transform,
+                paint_transform,
                 &paint_flavor,
                 GlyphTexture::ColorTexture(cmd.image_id),
             );
@@ -2253,16 +2270,16 @@ where
                 } else if scale == 1.0 {
                     // Pure translation (within a quantization step): nothing to bake.
                     Rasterization::Atlas
-                } else if matches!(paint.flavor, PaintFlavor::Color(_)) {
+                } else if matches!(paint.flavor, PaintFlavor::Color(_)) || render_mode == RenderMode::Fill {
                     Rasterization::ScaledAtlas {
                         scale,
                         true_scale,
                         translation: (tx, ty),
                     }
                 } else {
-                    // Gradients/images map their coordinates through the canvas
-                    // transform that the atlas path swaps out for a translation,
-                    // which would shift them; keep those direct.
+                    // The atlas strokes a glyph with its default join and no
+                    // dashes. A gradient or image stroke keeps the outline
+                    // route, which honours the paint's stroke settings.
                     Rasterization::Path
                 }
             }
@@ -2396,9 +2413,10 @@ where
         // For the scaled-atlas path, present the pre-scaled glyph quads with a
         // translation-only transform so the bitmap shows at its on-screen pixel
         // size. render_atlas already emitted quads in the scaled glyph space, so
-        // only draw_glyph_commands (which applies the canvas transform) needs the
-        // swap — and since it is infallible, the transform is always restored even
-        // though the fallible rendering above used `?`.
+        // only the quads leave the baked scale out. The paint keeps the canvas
+        // transform: a gradient's or an image's coordinates are in user space,
+        // whatever scale the glyphs were baked at.
+        let transform = self.state().transform;
         match rasterization {
             Rasterization::ScaledAtlas {
                 scale,
@@ -2412,12 +2430,10 @@ where
                 // as vector geometry under any zoom, instead of snapping by the
                 // quantization error times the glyph's distance from the origin.
                 let residual = true_scale / scale;
-                let saved = self.state().transform;
-                self.state_mut().transform = Transform2D::new(residual, 0.0, 0.0, residual, tx, ty);
-                self.draw_glyph_commands(draw_commands, paint);
-                self.state_mut().transform = saved;
+                let quads = Transform2D::new(residual, 0.0, 0.0, residual, tx, ty);
+                self.draw_glyph_quads(draw_commands, paint, &quads, &transform);
             }
-            _ => self.draw_glyph_commands(draw_commands, paint),
+            _ => self.draw_glyph_quads(draw_commands, paint, &transform, &transform),
         }
 
         Ok(())
@@ -3129,13 +3145,12 @@ fn fill_text_selects_atlas_or_path_rendering() {
             PaintKind::Solid,
             Expect::Atlas,
         ),
-        // Gradients can't bake scale (their coords map through the swapped-out
-        // transform), so a scaled gradient falls back to outlines.
+        // Scaled gradient fills keep the canvas transform for their paint.
         (
             "uniform scale, gradient",
             Transform2D::scaling(2.0, 2.0),
             PaintKind::Gradient,
-            Expect::Path,
+            Expect::Atlas,
         ),
         // Rotation isn't a uniform scale + translation: outlines.
         (
@@ -3198,6 +3213,64 @@ fn fill_text_selects_atlas_or_path_rendering() {
     }
 }
 
+/// Baked glyph scale changes the quad placement, but the paint stays in the
+/// same user space as an ordinary path under the original canvas transform.
+#[cfg(feature = "textlayout")]
+#[test]
+fn scaled_atlas_fills_keep_the_canvas_paint_transform() {
+    use renderer::CommandType;
+
+    for scale in [1.3, 2.0] {
+        for image_paint in [false, true] {
+            let renderer = RecordingRenderer::default();
+            let recorded = renderer.last_commands.clone();
+            let mut canvas = Canvas::new(renderer).unwrap();
+            canvas.set_size(400, 400, 1.0);
+            let font = canvas
+                .add_font_mem(include_bytes!("../examples/assets/amiri-regular.ttf"))
+                .unwrap();
+            let image = canvas
+                .create_image_empty(64, 64, PixelFormat::Rgba8, ImageFlags::empty())
+                .unwrap();
+            let paint = if image_paint {
+                Paint::image(image, 3.0, 7.0, 64.0, 64.0, 0.2, 1.0)
+            } else {
+                Paint::linear_gradient(3.0, 7.0, 100.0, 20.0, Color::black(), Color::white())
+            }
+            .with_font(&[font]);
+            canvas.translate(13.0, 19.0);
+            canvas.scale(scale, scale);
+            let saved = canvas.state().transform;
+            let mut path = Path::new();
+            path.circle(50.0, 50.0, 20.0);
+            canvas.fill_path(&path, &paint);
+            canvas.flush_to_output(());
+            let path_paint = recorded
+                .borrow()
+                .iter()
+                .find_map(|c| match c.cmd_type {
+                    CommandType::ConvexFill { params } => Some(params.paint_mat),
+                    _ => None,
+                })
+                .unwrap();
+            canvas.fill_text(10.0, 40.0, "MI", &paint).unwrap();
+            assert_eq!(canvas.state().transform, saved);
+            canvas.flush_to_output(());
+            let commands = recorded.borrow();
+            let atlas_paints: Vec<_> = commands
+                .iter()
+                .filter(|c| matches!(c.glyph_texture, GlyphTexture::AlphaMask(_)))
+                .map(|c| match c.cmd_type {
+                    CommandType::Triangles { params } => params.paint_mat,
+                    _ => panic!("expected glyph triangles"),
+                })
+                .collect();
+            assert!(!atlas_paints.is_empty());
+            assert!(atlas_paints.iter().all(|p| *p == path_paint));
+        }
+    }
+}
+
 /// Every glyph of text drawn as outlines gets the paint matrix that a path
 /// drawn under the same transform gets, so a gradient or image paint continues
 /// across the text and does not start again in each glyph.
@@ -3206,9 +3279,8 @@ fn fill_text_selects_atlas_or_path_rendering() {
 fn text_drawn_as_outlines_uses_one_paint_matrix_for_the_run() {
     use renderer::CommandType;
 
-    // The paint matrices of the fills and strokes that `draw` records under a
-    // scale of 2. With a gradient or image paint under a scale, `draw_glyph_run`
-    // draws each glyph's outline instead of using the glyph atlas.
+    // The paint matrices of outline fills and strokes under a scale of 2.
+    // The text is over the atlas size limit.
     fn paint_matrices(draw: impl FnOnce(&mut Canvas<RecordingRenderer>, FontId, ImageId)) -> Vec<[f32; 12]> {
         let renderer = RecordingRenderer::default();
         let recorded = renderer.last_commands.clone();
@@ -3257,7 +3329,7 @@ fn text_drawn_as_outlines_uses_one_paint_matrix_for_the_run() {
             // "M" is a concave outline and "I" a convex one, which a fill draws
             // with different commands.
             let on_text = paint_matrices(|canvas, font, image| {
-                let paint = make_paint(image).with_font(&[font]);
+                let paint = make_paint(image).with_font(&[font]).with_font_size(100.0);
                 if stroke {
                     canvas.stroke_text(10.0, 40.0, "MI", &paint).unwrap();
                 } else {
@@ -3286,9 +3358,7 @@ fn text_drawn_as_outlines_uses_one_paint_matrix_for_the_run() {
 fn shadow_of_a_glyph_drawn_as_an_outline_uses_the_paint_of_the_run() {
     use renderer::CommandType;
 
-    // The scale of the canvas transform. With an image paint under a scale,
-    // `draw_glyph_run` draws each glyph's outline instead of using the glyph
-    // atlas.
+    // The font size times this scale is over the atlas size limit.
     const SCALE: f32 = 2.0;
     // How far, in image pixels, the position a draw samples may be from the
     // vertex's position in user space. The two draws of a glyph go through
@@ -3320,6 +3390,7 @@ fn shadow_of_a_glyph_drawn_as_an_outline_uses_the_paint_of_the_run() {
         // point is sampled at its own user-space coordinates.
         let paint = Paint::image(image, 0.0, 0.0, 64.0, 64.0, 0.0, 1.0)
             .with_font(&[font])
+            .with_font_size(100.0)
             .with_line_dash(dash);
         let glyphs = canvas.measure_text(10.0, 40.0, "MI", &paint).unwrap().glyphs;
         let glyphs: Vec<_> = glyphs
@@ -4916,8 +4987,8 @@ fn decoration_metrics_fall_back_without_os2_and_post() {
 
 /// Glyphs are drawn directly instead of through the shared atlas when the
 /// transform is more than a uniform scale and translation, when they are too
-/// large to cache, or when a gradient or image paint is scaled. PNG glyphs
-/// have no outline to draw, so they go through an atlas that lives from the
+/// large to cache. PNG glyphs have no outline to draw, so they go through an
+/// atlas that lives from the
 /// first such draw of a frame until the flush.
 #[cfg(feature = "textlayout")]
 #[test]
@@ -4927,7 +4998,6 @@ fn png_glyphs_drawn_directly_use_an_ephemeral_atlas() {
 
     let font_data = png_glyph_font();
     let solid = Paint::color(Color::black());
-    let gradient = Paint::linear_gradient(0.0, 0.0, 100.0, 0.0, Color::black(), Color::white());
     // `draw_glyph_run` draws a run directly when its font size times the scale
     // of the canvas transform is above 92.
     let small = 24.0;
@@ -4935,7 +5005,6 @@ fn png_glyphs_drawn_directly_use_an_ephemeral_atlas() {
     let cases = [
         ("rotated", Transform2D::rotation(0.2), &solid, small),
         ("oversized", Transform2D::identity(), &solid, oversized),
-        ("scaled gradient", Transform2D::scaling(2.0, 2.0), &gradient, small),
     ];
     // A frame fills the glyph this many times and strokes it after each fill.
     let fills_per_frame = 2;
