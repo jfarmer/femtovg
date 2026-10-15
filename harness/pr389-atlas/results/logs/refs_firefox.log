@@ -1,0 +1,6 @@
+
+COMMAND ['/Users/jesse/.asdf/installs/python/3.12.11/bin/python3', '/private/tmp/femtovg-poc2389-20261015/harness/harness/corpus_run/refs.py', 'firefox', 'keys=/private/tmp/femtovg-poc2389-20261015/results/text_keys.json', 'framings=z01,z025,z05,z1,z2,z4,zt2,zt4,hd']
+firefox: 200/612 {'made': 200}
+firefox: 400/612 {'made': 400}
+firefox: 600/612 {'made': 600}
+firefox done: {'made': 612}

@@ -1,0 +1,5 @@
+
+COMMAND ['bash', '/private/tmp/femtovg-poc2389-20261015/harness/harness/build.sh', 'm15sw:/private/tmp/femtovg-poc2389-20261015/src/master', 'p15sw:/private/tmp/femtovg-poc2389-20261015/src/p389', 'a15sw:/private/tmp/femtovg-poc2389-20261015/src/poc2389']
+built _logos_full_m15sw from /private/tmp/femtovg-poc2389-20261015/src/master (9f5ad26): harness cfgs: clip=true turbulence=true blend=true mix_blend=true slices=false blur_xy=true morph=true clip_paths=true crop=true text=true
+built _logos_full_p15sw from /private/tmp/femtovg-poc2389-20261015/src/p389 (828c7a0): harness cfgs: clip=true turbulence=true blend=true mix_blend=true slices=false blur_xy=true morph=true clip_paths=true crop=true text=true
+built _logos_full_a15sw from /private/tmp/femtovg-poc2389-20261015/src/poc2389 (828c7a0): harness cfgs: clip=true turbulence=true blend=true mix_blend=true slices=false blur_xy=true morph=true clip_paths=true crop=true text=true

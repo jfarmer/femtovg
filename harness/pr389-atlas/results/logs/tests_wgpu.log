@@ -1,0 +1,870 @@
+
+COMMAND ['cargo', 'test', '--release', '--features', 'wgpu', '--no-fail-fast']
+   Compiling femtovg v0.27.0 (/private/tmp/femtovg-poc2389-20261015/src/poc2389)
+warning: unused import: `geometry::Transform2D`
+    --> src/paint.rs:1644:17
+     |
+1644 |     use crate::{geometry::Transform2D, Color};
+     |                 ^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+   --> tests/shadow_wgpu.rs:475:9
+    |
+475 |     let mut check = |font_size: f32, label: &str| {
+    |         ----^^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: `femtovg` (test "shadow_wgpu") generated 1 warning (run `cargo fix --test "shadow_wgpu" -p femtovg` to apply 1 suggestion)
+warning: `femtovg` (lib test) generated 1 warning (run `cargo fix --lib -p femtovg --tests` to apply 1 suggestion)
+    Finished `release` profile [optimized] target(s) in 27.38s
+     Running unittests src/lib.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/femtovg-352cc2fdbb814889)
+
+running 246 tests
+test budgets::a_bounded_pad_never_pushes_a_store_past_the_limit ... ok
+test budgets::a_blur_reach_matches_the_layer_and_shadow_pads ... ok
+test budgets::a_chain_reach_adds_dilations_and_offsets_to_the_blur_reach ... ok
+test a_path_extended_after_a_fill_is_filled_as_the_extended_path ... ok
+test a_large_shadow_blur_runs_down_the_pyramid ... ok
+test budgets::a_deleted_image_cannot_be_reselected_after_flush ... ok
+test budgets::a_layer_at_the_texture_limit_keeps_its_blur_with_a_bounded_pad ... ok
+test arc_tessellation_is_stable_across_render_target_switches ... ok
+test budgets::a_reach_takes_only_the_room_the_limit_leaves ... ok
+test budgets::a_store_span_rounds_clamps_and_reaches ... ok
+test budgets::a_blends_placement_is_recorded_at_and_past_the_depth_limit ... ok
+test clip::a_box_clip_is_a_shape_on_the_draws_under_it ... ok
+test budgets::a_layer_past_the_depth_limit_is_suppressed_and_keeps_its_boundary ... ok
+test clip::a_clip_asked_for_as_before_has_its_mask_by_the_request ... ok
+test arc_tessellation_is_deterministic_across_threads ... ok
+test clip::a_draw_coverage_cannot_bound_moves_the_shapes_to_the_stencil ... ok
+test clip::a_draw_coverage_cannot_bound_takes_a_mask_whole ... ok
+test clip::a_draw_the_shape_holds_carries_no_shape ... ok
+test clip::a_draw_under_a_shape_is_bounded_by_the_pixels_the_shape_reaches ... ok
+test clip::a_path_clip_is_a_mask_found_again_by_its_outline ... ok
+test clip::a_mask_the_budget_has_no_room_for_goes_to_the_stencil ... ok
+test budgets::end_layer_past_the_depth_limit_without_a_layer_pops_nothing ... ok
+test budgets::a_mask_applies_at_the_depth_limit ... ok
+test clip::a_scissor_and_the_shape_reach_a_draw_as_one_box ... ok
+test clip::a_rect_that_cuts_a_rounded_clip_clips_beside_it_in_the_scissors_place ... ok
+test clip::a_rounded_clip_nested_in_its_twin_stays_a_shape ... ok
+test clip::a_scissor_meets_a_draw_as_a_clip_shape_does ... ok
+test clip::a_scissor_takes_no_slack_from_the_clips_outline ... ok
+test clip::a_shape_clip_gates_only_draws_into_its_target ... ok
+test clip::a_suppressed_draw_does_not_consume_a_dirty_clip_replay ... ok
+test clip::a_vertex_takes_no_slack_from_the_paths_curves ... ok
+test clip::an_image_blit_under_a_shape_clip_takes_the_masked_path ... ok
+test clip::an_upright_rect_under_an_upright_clip_is_what_they_share_or_the_clip_it_covers ... ok
+test budgets::saves_past_the_depth_limit_stay_paired_and_bounded ... ok
+test clip::clear_rect_keeps_the_clip_plane_only_while_a_clip_is_armed ... ok
+test clip::clip_paths_take_one_mask_or_one_stencil_clip ... ok
+test clip::consecutive_clip_restores_replay_once_before_the_next_draw ... ok
+test clip::coverage::tests::masks_intersect_as_a_product ... ok
+test clip::coverage::tests::an_outline_past_the_mask_is_cut_at_its_sides ... ok
+test clip::coverage::tests::outlines_resolved_in_turn_come_to_their_union ... ok
+test clip::coverage::tests::the_fill_rule_folds_the_winding ... ok
+test clip::clips_past_the_depth_limit_cost_nothing_and_reset_clears_the_overflow ... ok
+test clip::filter_passes_are_not_gated_by_the_active_clip ... ok
+test clip::filtering_an_image_marks_its_clip_plane_for_replay ... ok
+test clip::many_contour_clip_uses_one_winding_drawable ... ok
+test clip::mask::tests::a_key_is_the_outline_from_its_masks_corner ... ok
+test clip::mask::tests::a_key_rasterizes_to_the_union_of_its_children ... ok
+test clip::mask::tests::a_request_finds_its_mask_while_both_are_kept ... ok
+test clip::mask::tests::masks_are_kept_up_to_the_budget_and_let_go_when_idle ... ok
+test clip::masks_nest_and_ride_beside_a_shape ... ok
+test clip::nested_clip_resolve_is_bounded_by_the_outer_clip ... ok
+test clip::coverage::tests::a_pixel_gets_the_area_inside_it ... ok
+test clip::nested_shape_clips_keep_one_shape_in_force ... ok
+test clip::reallocating_an_image_marks_its_clip_plane_for_replay ... ok
+test clip::same_size_set_size_does_not_replay_a_clip ... ok
+test clip::shape::tests::a_box_holds_its_own_outline_and_a_stroke_set_in_from_it ... ok
+test clip::shape::tests::a_box_thinner_than_a_pixel_has_no_coverage ... ok
+test clip::shape::tests::a_corner_under_half_a_pixel_is_square ... ok
+test clip::shape::tests::a_draw_is_held_when_its_bounds_stay_inside ... ok
+test bidi_controls_are_invisible_and_zero_width ... ok
+test clip::shape::tests::a_fit_does_not_depend_on_scale ... ok
+test clip::shape::tests::a_fit_tells_how_far_the_outline_strays_outside_the_box ... ok
+test clip::shape::tests::a_frame_skewed_to_a_sliver_has_no_coverage ... ok
+test clip::shape::tests::a_rect_and_any_parallelogram_fit_with_their_own_frame ... ok
+test clip::shape::tests::a_scissor_and_a_clip_make_one_box_when_one_holds_the_other_or_both_are_rects ... ok
+test clip::shape::tests::a_scissor_keeps_only_the_sides_that_cut_into_the_box ... ok
+test clip::shape::tests::an_outline_cut_by_a_box_is_what_lies_inside_it ... ok
+test clip::shape::tests::an_outlines_stray_gives_no_way_past_a_straight_side ... ok
+test clip::shape::tests::an_upright_rect_fill_is_what_it_shares_with_the_clip_or_the_clip_it_covers ... ok
+test clip::shape::tests::boxes_with_round_corners_intersect_as_one_when_one_all_but_holds_the_other ... ok
+test clip::shape::tests::containment_needs_the_margin_on_every_corner ... ok
+test clip::shape::tests::corner_distance_counts_device_pixels_under_a_skew ... ok
+test clip::shape::tests::a_rect_rounded_on_one_side_is_a_rounded_box_and_a_cut ... ok
+test clip::shape::tests::corner_distance_is_exact_for_a_circle_and_first_order_for_an_ellipse ... ok
+test clip::shape::tests::coverage_counts_device_pixels_across_each_side ... ok
+test clip::shape::tests::ellipses_and_rounded_rects_fit_whatever_they_are_built_from ... ok
+test clip::shape::tests::only_a_point_between_chords_stands_off_by_the_straddle ... ok
+test clip::shape::tests::other_outlines_do_not_fit ... ok
+test clip::shape::tests::parallelograms_with_parallel_sides_intersect_as_one ... ok
+test clip::shape::tests::uniform_rows_carry_the_corners_centers_and_the_sides_ramps ... ok
+test conic_gradient_start_angle_is_plumbed_into_params ... ok
+test brackets_mirror_in_rtl_runs_even_after_ltr_caching ... ok
+test failed_image_reallocation_preserves_the_existing_image ... ok
+test filter_chain_bounds_transient_images ... ok
+test filters::a_blur_above_the_bound_runs_down_the_pyramid ... ok
+test filters::a_blur_within_the_shader_bound_stays_one_pass ... ok
+test filters::a_blur_halves_each_axis_by_its_own_depth ... ok
+test filters::a_crop_rides_the_pass_before_it_and_passes_fold_across_it_where_one_crop_does ... ok
+test filters::a_chain_copies_only_when_its_target_reads_the_other_way ... ok
+test filters::a_matrix_rides_the_pyramid_halving_or_scale_back_up ... ok
+test filters::a_morphology_splits_in_whole_pixels_and_an_offset_is_one_pass ... ok
+test filters::a_plan_follows_the_image_through_its_passes ... ok
+test filters::a_pyramid_blur_shrinks_its_scratches ... ok
+test clip::shape::tests::a_coverage_reaches_as_far_as_its_ramps_and_no_further ... ok
+test filters::a_cropped_pass_carries_the_rect_in_the_rows_it_stores ... ok
+test filters::filter_work_matches_shader_sampling_and_resets_at_flush ... ok
+test filters::the_matrices_beside_a_two_draw_filter_ride_its_draws ... ok
+test filters::chained_blurs_pad_in_quadrature ... ok
+test geometry::tests::uniform_scale_translation ... ok
+test gradient_store::tests::ramp_pads_past_the_last_stop ... ok
+test gradient_store::tests::transparent_last_stop_pads_transparent ... ok
+test image::filter_fold_tests::blur_does_not_fold ... ok
+test image::filter_fold_tests::fold_guard_rejects_range_unsafe_first ... ok
+test decoration_metrics_fall_back_without_os2_and_post ... ok
+test decoration_rect_tracks_scaled_atlas_transform ... ok
+test image::filter_fold_tests::folding_matches_sequential_application ... ok
+test image::filter_fold_tests::folding_respects_order_and_identity ... ok
+test image::filter_fold_tests::luminance_to_alpha_moves_luminance_into_alpha_only ... ok
+test bidi_browser_regression_cases ... ok
+test intersect_rounded_scissor_partial_overlap_falls_back_to_rectangular_intersection ... ok
+test intersect_rounded_scissor_uses_inner_radius_when_contained ... ok
+test intersect_scissor_inside_rounded_clip_uses_rectangular_inner_clip ... ok
+test glyph_scissor_ramp_matches_fill_at_high_dpi ... ok
+test intersect_scissor_preserves_contained_rounded_clip ... ok
+test layers::a_blend_backdrop_deleted_while_its_layer_is_open_outlives_the_composite ... ok
+test layers::a_blend_mode_layer_is_admitted_at_the_edge_of_the_work_budget ... ok
+test layers::a_blending_layer_reserves_its_backdrop_scratch ... ok
+test layers::a_blend_mode_layer_reserves_its_backdrop_and_result ... ok
+test layers::a_discarded_masked_layer_returns_its_coverage_images ... ok
+test layers::a_layer_pads_by_a_dilation_and_an_offset ... ok
+test layers::a_filtered_layer_reserves_its_chain_images_by_pass_plan ... ok
+test layers::a_layer_pads_each_axis_by_its_own_reach ... ok
+test layers::a_layer_pads_by_the_true_blur_reach ... ok
+test fill_text_emits_decoration_rects ... ok
+test layers::a_layer_short_of_its_chain_scratch_budget_keeps_its_capture ... ok
+test layers::a_masked_layer_without_room_for_its_coverage_fails_closed ... ok
+test layers::a_layers_store_is_not_the_callers_to_delete_or_change ... ok
+test layers::a_rounded_scissor_clips_a_layer_once_at_its_composite ... ok
+test layers::a_shadowed_layer_the_budget_cannot_reach_keeps_its_visible_capture ... ok
+test layers::a_shadowed_layer_at_the_texture_limit_keeps_its_visible_capture ... ok
+test layers::a_suppressed_layer_reissues_an_image_target_across_flush ... ok
+test layers::a_transparent_layer_skips_its_filter_plan ... ok
+test layers::a_wide_blur_fits_the_default_work_budget ... ok
+test layers::an_open_layer_keeps_a_pending_mask_alive_through_its_composite ... ok
+test layers::capture_failure_suppresses_masks_but_keeps_an_opacity_fallback ... ok
+test layers::default_layer_effects_are_the_no_op_effects_new_describes ... ok
+test layers::a_filtered_layer_reads_its_result_through_the_flag_its_passes_need ... ok
+test layers::explicit_image_filters_are_not_suppressed_with_layer_draws ... ok
+test layers::layer_bounds_follow_a_scaled_scissor ... ok
+test layers::filter_plans_bound_total_work_and_fail_layers_atomically ... ok
+test layers::layer_bounds_follow_the_scissor ... ok
+test layers::layers_past_the_texture_limit_pass_through ... ok
+test layers::masked_siblings_reuse_mask_transients ... ok
+test layers::open_layer_filter_work_survives_a_flush_until_recorded ... ok
+test decoration_rect_spans_the_run_advance_box ... ok
+test layers::over_budget_layers_preserve_safe_fallbacks ... ok
+test layers::set_size_keeps_an_open_layer_across_a_frame ... ok
+test layers::set_size_resize_discards_open_layers ... ok
+test layers::with_render_target_goes_back_to_the_layers_store ... ok
+test layers::sibling_layers_reuse_backing_stores ... ok
+test layers::a_budget_for_one_layer_fits_a_frame_of_them ... ok
+test layout_stores_the_run_baseline ... ok
+test measure_font_is_transform_independent ... ok
+test nested_layers_accumulate_their_root_origin ... ok
+test letter_spacing_does_not_collide_in_the_shaping_cache ... ok
+test paint::tests::conic_gradient_non_finite_start_angle_is_treated_as_zero ... ok
+test paint::tests::line_dash_all_zero_pattern_is_stored ... ok
+test paint::tests::line_dash_empty_pattern_clears ... ok
+test paint::tests::line_dash_invalid_pattern_preserves_current_pattern ... ok
+test paint::tests::line_dash_odd_pattern_repeats ... ok
+test fill_text_selects_atlas_or_path_rendering ... ok
+test path::cache::tests::a_fill_hands_a_reversed_contour_back_as_it_found_it ... ok
+test path::cache::tests::a_mirrored_rect_fill_is_still_a_rect ... ok
+test outline_text_shadow_pass_count_is_glyph_count_invariant ... ok
+test path::cache::tests::self_intersecting_polygon_is_concave ... ok
+test path::cache::tests::winding_triangles_do_not_classify_contour_nesting ... ok
+test path::tests::arc_to_degenerate_corner_emits_only_the_line ... ok
+test path::tests::arc_with_no_sweep_stays_finite ... ok
+test path::tests::dashed_line_applies_offset ... ok
+test path::cache::tests::reversing_gives_the_directions_worked_out_again ... ok
+test path::tests::dashed_line_splits_visible_intervals ... ok
+test path::tests::invalid_dash_pattern_keeps_path_solid ... ok
+test path::tests::odd_dash_pattern_repeats ... ok
+test path::tests::svg_arc_angle_collinear_opposite_is_positive_pi ... ok
+test path::tests::svg_arc_control_points_match_the_web_platform_test ... ok
+test path::tests::svg_arc_endpoint_is_exact ... ok
+test path::tests::svg_arc_flag_combinations_are_distinct ... ok
+test path::tests::svg_arc_flags_select_sweep_angle_and_direction ... ok
+test path::tests::svg_arc_huge_coordinates_stay_finite ... ok
+test path::tests::svg_arc_identical_endpoints_add_nothing ... ok
+test path::tests::svg_arc_lambda_is_measured_in_the_rotated_frame ... ok
+test path::tests::svg_arc_large_flag_selects_longer_sweep ... ok
+test path::tests::svg_arc_large_semicircle_sweeps_the_long_way ... ok
+test path::tests::svg_arc_negative_radii_use_absolute_value ... ok
+test path::tests::svg_arc_non_finite_arguments_leave_path_unchanged ... ok
+test path::tests::svg_arc_on_empty_path_starts_at_origin ... ok
+test path::tests::svg_arc_out_of_range_radii_are_scaled ... ok
+test path::tests::svg_arc_out_of_range_radii_scale_by_exactly_sqrt_lambda ... ok
+test path::tests::svg_arc_points_lie_on_axis_aligned_ellipse ... ok
+test path::tests::svg_arc_points_lie_on_rotated_ellipse ... ok
+test path::tests::svg_arc_quarter_turn_uses_the_shared_kappa ... ok
+test path::tests::svg_arc_radii_far_larger_than_the_chord_stay_put ... ok
+test path::tests::svg_arc_small_semicircle_reaches_apex_both_directions ... ok
+test path::tests::svg_arc_spec_example_with_a_negative_radicand_stays_finite ... ok
+test paragraph_base_direction_follows_first_strong_character ... ok
+test path::tests::svg_arc_sweep_flag_selects_the_other_centre ... ok
+test path::tests::svg_arc_tiny_radii_scale_up_without_overflow ... ok
+test path::tests::svg_arc_two_half_turns_close_a_circle ... ok
+test path::tests::svg_arc_unrepresentable_geometry_degrades_to_chord ... ok
+test path::tests::svg_arc_zero_radius_is_straight_line ... ok
+test renderer::opengl::transient_cost_tests::charges_color_and_stencil ... ok
+test renderer::tests::fan_indices_take_each_fills_fans_in_turn ... ok
+test renderer::wgpu::transient_cost_tests::charges_color_and_stencil ... ok
+test renderer::wgpu::pipeline_eviction_tests::pipelines_are_evicted_only_past_capacity_least_recently_used_first ... ok
+test rounded_scissor_and_conic_start_angle_coexist_in_params ... ok
+test rounded_scissor_captures_transform_at_clip_time ... ok
+test rounded_scissor_radius_is_clamped_into_render_params ... ok
+test shadow::an_unrepresentably_large_shadow_is_skipped_without_overflow ... ok
+test shadow::shadow_attribute_defaults_match_spec ... ok
+test shadow::shadow_blur_rejects_invalid_values ... ok
+test shadow::shadow_offset_rejects_non_finite_values ... ok
+test shadow::a_shadowed_draw_past_the_depth_limit_records_nothing ... ok
+test shadow::shadow_state_is_saved_and_restored ... ok
+test shadow::a_shadowed_draw_at_the_depth_limit_casts_as_at_the_root ... ok
+test shadow::opaque_shadow_emits_offscreen_blur_pass ... ok
+test shadow::transparent_shadow_emits_no_offscreen_work ... ok
+test shadow::shadow_stores_round_to_eight_pixels ... ok
+test png_glyphs_drawn_directly_use_an_ephemeral_atlas ... ok
+test shadow::shadow_enable_rule_requires_blur_or_offset ... ok
+test shared_arc_path_across_canvases_keeps_tessellation_isolated ... ok
+test test_image_blit_fast_path ... ok
+test sub_pixel_stroke_alpha_scales_linearly_with_width ... ok
+test shadow::shadow_passes_reuse_their_images ... ok
+test text::font::tests::missing_optional_tables_fall_back_to_documented_ratios ... ok
+test text::font::tests::real_font_typographic_metrics_are_plausible ... ok
+test shadow_of_a_glyph_drawn_as_an_outline_uses_the_paint_of_the_run ... ok
+test transient::tests::round_up_saturates_instead_of_wrapping ... ok
+test turbulence::tests::lattice_is_a_permutation_of_unit_gradients ... ok
+test text_metrics_box_brackets_the_drawn_ink ... ok
+test turbulence::tests::slots_carry_the_inverse_transform_and_the_image_as_tile ... ok
+test scaled_atlas_fills_keep_the_canvas_paint_transform ... ok
+test turbulence::tests::prng_matches_the_specifications_check_value ... ok
+test turbulence::tests::stitching_snaps_frequency_to_whole_periods_across_the_tile ... ok
+test text::glyph_atlas_tests::a_run_spilling_into_a_second_atlas_texture_draws_each_mask_on_its_own ... ok
+test text::glyph_atlas_tests::a_cold_run_visits_the_atlas_once ... ok
+test text_drawn_as_outlines_uses_one_paint_matrix_for_the_run ... ok
+test turbulence::tests::texels_resolve_the_composed_permutation ... ok
+test filters::turbulence_lattice_cache_is_bounded ... ok
+test text::glyph_atlas_tests::a_failed_png_glyph_upload_fails_the_draw_and_keeps_the_callers_state ... ok
+test text::glyph_atlas_tests::stroking_text_keeps_the_callers_state ... ok
+test text::glyph_atlas_tests::stroking_text_at_the_depth_limit_draws_the_mask_and_keeps_the_callers_state ... ok
+test text::glyph_atlas_tests::a_failed_draw_keeps_the_callers_state_and_the_masks_placed_before_it ... ok
+test a_contour_longer_than_a_fan_goes_as_several ... ok
+test random_api_sequences_keep_one_consistent_stack ... ok
+test path::tests::svg_arc_deterministic_property_fuzz ... ok
+test path::cache::tests::the_loop_flattens_a_cubic_as_the_recursion_did ... ok
+
+test result: ok. 246 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/blend_filter_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/blend_filter_wgpu-2f7111e5363edd42)
+
+running 6 tests
+test a_missing_backdrop_is_an_error_for_a_chain ... ok
+test the_backdrop_is_transparent_outside_its_rect ... ok
+test the_backdrop_keeps_its_orientation_against_an_upload ... ok
+test a_layer_blends_over_a_backdrop_placed_in_device_space ... ok
+test a_blend_after_another_pass_keeps_the_backdrop_upright ... ok
+test blend_modes_match_the_specification ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests/blit_scissor_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/blit_scissor_wgpu-0c7b66e09c442701)
+
+running 2 tests
+test partially_scissored_image_blit_is_clipped_by_rounded_scissor ... ok
+test contained_image_blit_is_clipped_by_rounded_scissor ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/blur_axes_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/blur_axes_wgpu-f73b29b6b0b4c1cf)
+
+running 2 tests
+test a_halved_axis_follows_its_profile_while_the_other_stays_sharp ... ok
+test a_layer_blurs_each_axis_by_its_own_sigma ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/clip_abuse_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/clip_abuse_wgpu-65c52f8ed88bb3f9)
+
+running 2 tests
+test deleting_a_queued_image_target_does_not_poison_the_frame ... ok
+test restore_underflow_is_a_no_op ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests/clip_mask_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/clip_mask_wgpu-ceb5d7be3b24abe5)
+
+running 9 tests
+test an_operation_coverage_cannot_bound_takes_a_mask_whole_or_not_at_all ... ok
+test a_fill_under_a_small_mask_leaves_the_rest_of_the_target_alone ... ok
+test a_mask_belongs_to_the_target_it_was_taken_on ... ok
+test a_mask_is_found_again_and_needs_a_budget ... ok
+test clip_children_clip_to_their_union ... ok
+test a_mask_gates_every_kind_of_draw ... ok
+test a_path_clip_covers_each_pixel_by_the_area_inside_it ... ok
+test a_curved_path_clip_stays_close_to_the_area_inside_it ... ok
+test masks_nest_and_meet_shapes ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running tests/clip_shape_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/clip_shape_wgpu-443497b10b730bf8)
+
+running 15 tests
+test an_operation_coverage_cannot_bound_stays_inside_the_shape ... ok
+test a_twin_of_the_clip_is_drawn_as_without_it ... ok
+test nested_frames_that_nearly_coincide_clip_to_what_both_cover ... ok
+test a_fill_under_a_small_shape_leaves_the_rest_of_the_target_alone ... ok
+test a_clip_multiplies_the_coverage_of_a_fill_that_shares_part_of_its_edge ... ok
+test clip_coverage_is_the_share_of_the_pixel_inside ... ok
+test a_shape_clip_gates_every_kind_of_draw ... ok
+test a_shape_clip_belongs_to_the_target_it_was_taken_on ... ok
+test a_clip_thinner_than_a_pixel_leaves_no_ghost_of_the_fill ... ok
+test a_rounded_clip_cut_by_a_rect_covers_each_pixel_by_its_share_inside_both ... ok
+test a_draw_inside_the_clip_is_drawn_as_without_it ... ok
+test clip_coverage_holds_under_a_skew_and_down_to_a_pixel ... ok
+test a_shape_clip_covers_its_edge_as_the_fill_of_the_shape_does ... ok
+test shape_clips_nest_and_intersect ... ok
+test an_edge_shared_with_the_clip_takes_coverage_once ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+
+     Running tests/color_matrix_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/color_matrix_wgpu-c92c565dae15e128)
+
+running 2 tests
+test filter_preserves_source_orientation ... ok
+test color_matrix_filter_properties ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running tests/color_transfer_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/color_transfer_wgpu-723bffa5610ec2ef)
+
+running 3 tests
+test transfer_round_trip_folds_to_identity ... ok
+test transfer_is_on_unpremultiplied_color_and_keeps_alpha ... ok
+test transfer_curves_match_iec_61966 ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/conic_scissor_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/conic_scissor_wgpu-9ded140b5dab523e)
+
+running 1 test
+test conic_gradient_is_clipped_by_rounded_scissor ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests/evenodd_stencil_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/evenodd_stencil_wgpu-564eadbbff2ae560)
+
+running 2 tests
+test evenodd_overlap_leaves_stencil_clean ... ok
+test evenodd_single_contour_leaves_stencil_clean_both_windings ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/fill_fans_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/fill_fans_wgpu-bba674da881d39bc)
+
+running 1 test
+test fills_longer_than_any_before_cover_their_area ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running tests/fill_winding_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/fill_winding_wgpu-b0d4947fb1964b34)
+
+running 7 tests
+test a_reversed_concave_contour_covers_its_own_area ... ok
+test winding_still_decides_holes_under_nonzero ... ok
+test clockwise_and_counter_clockwise_fills_cover_the_same_area ... ok
+test even_odd_fills_match_whichever_way_the_hole_is_wound ... ok
+test solids_beside_and_inside_holes_keep_their_exact_areas ... ok
+test a_stroke_after_a_fill_still_sees_the_path_as_written ... ok
+test a_hole_keeps_its_exact_edge ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests/filter_chain_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/filter_chain_wgpu-25e725b04f7ac67d)
+
+running 14 tests
+test direct_blur_converts_straight_alpha_only_on_its_first_pass ... ok
+test semitransparent_content_survives_chains ... ok
+test alpha_amplifying_matrix_clamps_between_passes ... ok
+test a_layer_crops_its_chain_in_root_space ... ok
+test matrices_fused_into_a_blur_match_the_separate_passes ... ok
+test chained_color_matrices_match_sequential ... ok
+test range_unsafe_first_matrix_matches_sequential_not_fold ... ok
+test degenerate_blur_parameters_stay_bounded ... ok
+test an_in_place_chain_runs_through_a_scratch ... ok
+test chain_order_is_preserved_across_pass_boundaries ... ok
+test what_a_crop_clips_away_does_not_come_back ... ok
+test a_crop_before_a_wide_blur_is_taken_at_full_size ... ok
+test a_crop_clips_a_pass_whichever_way_its_image_is_stored ... ok
+test chain_orientation_is_stable_across_shapes ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests/gradient_dither_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/gradient_dither_wgpu-204414506e1d0082)
+
+running 1 test
+test gradients_are_dithered_to_break_banding ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/gradient_paint_conformance_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/gradient_paint_conformance_wgpu-69d47f5c89ab71a0)
+
+running 18 tests
+test gradient_is_positioned_in_absolute_user_space ... ok
+test two_point_radial_selects_largest_offset ... ok
+test anisotropic_gradient_transform_keeps_exact_iso_lines ... ok
+test two_point_radial_focus_outside_the_end_circle_is_a_cone ... ok
+test radial_gradient_clamps_to_stop_colors ... ok
+test gradient_transform_makes_a_radial_gradient_elliptical ... ok
+test two_point_radial_focal_matches_reference ... ok
+test two_point_radial_identical_circles_take_the_last_stop ... ok
+test two_point_radial_degenerate_linear_branch ... ok
+test two_point_radial_leaves_uncovered_transparent ... ok
+test gradient_stroke_uses_user_space_like_fill ... ok
+test multi_stop_linear_interpolates_like_canvas ... ok
+test two_point_radial_degenerate_test_is_scale_invariant ... ok
+test two_point_radial_shrinking_contained_circle_uses_the_other_root ... ok
+test two_point_radial_reduces_to_concentric ... ok
+test two_point_radial_zero_radius_centre_is_painted ... ok
+test huge_gradient_transform_translation_stays_smooth ... ok
+test gradient_text_is_continuous_across_the_run ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/gradient_stop_interpolation_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/gradient_stop_interpolation_wgpu-b05e941f162c3ede)
+
+running 4 tests
+test conic_two_stop_interpolates_straight ... ok
+test two_stop_transparent_stop_keeps_hue ... ok
+test two_point_radial_transparent_stop_keeps_hue ... ok
+test two_stop_matches_multi_stop_lut ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/gradient_stress_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/gradient_stress_wgpu-8c8499861d95ca4a)
+
+running 2 tests
+test semi_transparent_gradient_fades_to_background_without_fringe ... ok
+test multi_stop_conic_renders_distinct_hues ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/gradient_tail_pad_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/gradient_tail_pad_wgpu-7e465f6ace6c4b79)
+
+running 1 test
+test multi_stop_gradient_pads_past_last_stop ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/hairline_stroke_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/hairline_stroke_wgpu-3a062b23686a625d)
+
+running 2 tests
+test sub_pixel_coverage_is_linear_in_width ... ok
+test sub_pixel_strokes_cover_their_area ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/image_blit_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/image_blit_wgpu-b6ecb9c97fae9ed3)
+
+running 1 test
+test a_rect_image_fill_draws_mirrored_under_a_flipped_transform ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/image_update_bounds_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/image_update_bounds_wgpu-2c92f841545770e9)
+
+running 4 tests
+test update_image_with_a_different_format_is_rejected ... ok
+test update_image_within_bounds_still_succeeds ... ok
+test update_image_larger_than_destination_is_rejected ... ok
+test update_image_past_the_edge_is_rejected ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/image_update_contract.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/image_update_contract-ce8c7f864c9f124a)
+
+running 5 tests
+test a_source_in_another_format_is_reported ... ok
+test a_source_larger_than_the_destination_is_reported ... ok
+test an_origin_that_would_overflow_is_reported ... ok
+test a_copy_reaching_past_the_destination_is_reported ... ok
+test copies_that_fit_are_left_alone ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/integration.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/integration-a3caa5df48370e3a)
+
+running 26 tests
+test font_variation_italic_and_slant_api ... ok
+test path_with_close_points ... ok
+test path_contains_point ... ok
+test degenerate_arc ... ok
+test font_variation_hash_stability ... ok
+test degenerate_arc_to ... ok
+test degenerate_stroke ... ok
+test font_measure_without_canvas ... ok
+test font_metrics_report_typographic_metrics ... ok
+test font_metrics_scale_linearly_with_font_size ... ok
+test path_edited_after_use_is_hit_tested_as_edited ... ok
+test path_with_points_around_zero ... ok
+test font_metrics_report_underline_and_strikeout ... ok
+test path_with_single_move_to ... ok
+test path_with_two_lines ... ok
+test path_with_points_at_limits ... ok
+test text_location_respects_scale ... ok
+test zeroed_os2_script_metrics_fall_back ... ok
+test text_layout_preserves_fractional_baseline_y ... ok
+test break_text_without_canvas ... ok
+test font_variation_generic_api_matches_named_weight ... ok
+test text_measure_without_canvas ... ok
+test variable_font_weight_affects_measurement ... ok
+test font_italic_falls_back_to_slnt_axis ... ok
+test variable_font_slant_affects_measurement ... ok
+test conic_gradient_start_angle_matches_canvas_convention ... ok
+
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/large_blur_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/large_blur_wgpu-f0e5119eb5870658)
+
+running 5 tests
+test a_blurred_image_fades_at_its_edge ... ok
+test a_large_shadow_blur_matches_the_gaussian_profile ... ok
+test a_pyramid_blur_layer_matches_the_gaussian_profile ... ok
+test a_pyramid_blur_chain_matches_the_gaussian_profile ... ok
+test a_blur_within_the_bound_is_bit_identical_to_its_single_pass ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/layer_effects_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/layer_effects_wgpu-ca456611a78c8e85)
+
+running 22 tests
+test a_layer_without_shadow_state_casts_none ... ok
+test layer_composite_honors_outer_scissor ... ok
+test filtered_layer_is_not_mirrored ... ok
+test declared_blur_applies_and_pads ... ok
+test a_layer_casts_its_shadow_once ... ok
+test nested_layers_multiply_opacity ... ok
+test group_opacity_does_not_double_blend ... ok
+test luminance_mask_multiplies_alpha ... ok
+test mask_placement_is_device_space_under_a_scale ... ok
+test a_reset_inside_a_masked_layer_returns_its_images_to_the_budget ... ok
+test layers_degrade_past_the_transient_budget ... ok
+test open_layer_survives_a_flush ... ok
+test masked_filtered_layer_keeps_orientation ... ok
+test luminance_mask_uses_luminance_not_alpha ... ok
+test open_alpha_masked_layer_survives_a_flush ... ok
+test luminance_mask_gates_the_layer ... ok
+test uploaded_mask_is_upright ... ok
+test open_luminance_masked_layer_survives_a_flush ... ok
+test shadow_set_inside_a_layer_shadows_each_draw ... ok
+test luminance_mask_weights_are_rec709 ... ok
+test alpha_mask_reads_alpha_and_luminance_mask_reads_luminance ... ok
+test reused_layer_backings_start_clear_and_fit_a_small_budget ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/layer_masks_review_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/layer_masks_review_wgpu-ac1de80fe0e83753)
+
+running 13 tests
+test a_rounded_scissor_clips_a_blurred_layer_where_it_was_set ... ok
+test a_rotated_scissor_clips_a_blurred_layer_where_it_was_set ... ok
+test a_blurred_layer_survives_a_flush ... ok
+test an_alpha_masked_layer_survives_a_flush ... ok
+test a_luminance_masked_layer_survives_a_flush ... ok
+test a_reset_inside_a_masked_layer_frees_its_mask_images ... ok
+test a_rounded_or_rotated_scissor_clips_an_unfiltered_layer_where_it_was_set ... ok
+test a_rounded_scissor_edge_is_covered_once_through_a_layer ... ok
+test a_resize_inside_a_masked_layer_frees_its_mask_images ... ok
+test default_layer_effects_composite_at_full_opacity ... ok
+test a_mask_rect_stays_root_device_space_under_two_enclosing_layers ... ok
+test a_nested_layers_mask_rect_is_root_device_space ... ok
+test a_layer_degrades_in_safe_effect_order ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/layer_state_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/layer_state_wgpu-2b2158cbfc0d16b6)
+
+running 10 tests
+test a_layer_past_the_depth_limit_draws_nothing ... ok
+test a_stray_restore_closes_the_layer_and_end_layer_is_then_a_no_op ... ok
+test a_stray_restore_in_a_nested_layer_closes_only_the_inner_layer ... ok
+test a_stray_restore_after_a_target_switch_closes_the_layer_onto_its_own_target ... ok
+test restore_inside_a_layer_closes_the_layer_and_keeps_the_outer_save ... ok
+test end_layer_discards_saves_left_open_inside_the_layer ... ok
+test reset_inside_a_layer_discards_it ... ok
+test a_stray_restore_after_a_same_size_frame_boundary_closes_the_layer ... ok
+test a_clip_before_the_save_survives_a_restore_inside_the_layer ... ok
+test a_clip_inside_the_layer_ends_with_the_layer ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/mipmaps_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/mipmaps_wgpu-2203778ba4eca4dc)
+
+running 4 tests
+test nearest_with_mipmaps_picks_a_minified_level ... ok
+test a_mipmapped_image_minifies_to_the_box_average ... ok
+test a_fractional_level_leans_toward_the_larger_mip ... ok
+test the_levels_follow_an_update ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/mix_blend_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/mix_blend_wgpu-37a4c938df09a577)
+
+running 11 tests
+test on_the_screen_the_layer_composites_source_over ... ok
+test opacity_applies_before_the_blend ... ok
+test the_backdrop_is_the_enclosing_layer_at_its_origin ... ok
+test the_composite_operation_is_the_blend ... ok
+test a_mask_applies_before_the_blend ... ok
+test the_outer_scissor_bounds_the_blend ... ok
+test the_blend_lands_upright_with_and_without_a_chain ... ok
+test a_blend_the_budget_cannot_fit_composites_source_over ... ok
+test a_clip_on_the_backdrop_bounds_the_blend ... ok
+test a_blend_request_composites_source_over_in_every_path ... ok
+test every_mode_composites_like_the_specification ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running tests/morphology_offset_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/morphology_offset_wgpu-d1eaa5242e93e379)
+
+running 4 tests
+test an_erosion_eats_into_the_image_border ... ok
+test a_spread_shadow_chain_renders_the_shadow_alone ... ok
+test an_offset_moves_a_square_whichever_way_up_its_source_is ... ok
+test a_morphology_grows_or_shrinks_a_square_by_its_radius ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/path_clip_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/path_clip_wgpu-b0f4cb7ee9bb2c11)
+
+running 17 tests
+test active_clip_survives_a_resize ... ok
+test reset_drops_the_clips_of_its_level ... ok
+test evenodd_clip_rule_respects_holes ... ok
+test circle_clip_cuts_corners ... ok
+test clipped_concave_fill_keeps_winding_and_clip_separate ... ok
+test nested_clips_intersect_and_restore_replays ... ok
+test restore_with_an_image_current_reconciles_the_screen_clip ... ok
+test image_blit_respects_the_clip ... ok
+test restore_with_another_target_current_reconciles_the_image_clip ... ok
+test a_clip_inside_a_layer_clips_its_content ... ok
+test last_clip_popped_with_another_target_current_disarms_the_image_plane ... ok
+test rect_clip_matches_scissor ... ok
+test complex_multi_contour_clip_replays_for_both_fill_rules ... ok
+test nested_translated_and_disjoint_clips_keep_parent_bounds ... ok
+test strokes_respect_the_clip ... ok
+test reset_keeps_the_clips_of_outer_levels ... ok
+test clear_rect_is_unclipped_and_destination_out_is_the_clipped_clear ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/pipeline_cache_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/pipeline_cache_wgpu-cd543ba5010c05f0)
+
+running 2 tests
+test alternating_flushes_reuse_their_pipelines_after_the_first_round ... ok
+test pipelines_stay_alive_across_flushes_that_do_not_use_them ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.05s
+
+     Running tests/pipeline_key_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/pipeline_key_wgpu-c17f30d1310a9d6f)
+
+running 3 tests
+test glyph_quads_share_the_pipeline_of_a_plain_fill ... ok
+test fills_that_differ_only_in_paint_share_their_pipelines ... ok
+test a_fill_under_a_clip_shape_has_pipelines_of_its_own ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/rounded_rect_radii.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/rounded_rect_radii-0861cbf16773567c)
+
+running 17 tests
+test a_scalar_radius_never_produces_an_ellipse ... ok
+test a_degenerate_box_produces_finite_geometry ... ok
+test a_radius_larger_than_the_box_stays_circular ... ok
+test gecko_border_reduce_height_scales_the_wide_axis_too ... ok
+test enormous_radii_round_as_far_as_they_fit ... ok
+test radii_that_fit_are_not_reduced ... ok
+test one_large_corner_beside_a_square_one_keeps_its_radius ... ok
+test gecko_corner_3_keeps_full_width_radii ... ok
+test overflow_on_one_side_scales_every_corner ... ok
+test reversed_rectangles_keep_their_radii_inside ... ok
+test the_scale_comes_from_the_most_overflowing_side ... ok
+test wpt_a_factor_of_exactly_one_reduces_nothing ... ok
+test small_radii_still_round_the_corner ... ok
+test unusable_radii_leave_the_corner_square ... ok
+test wpt_canvas_intersecting_radii_reduce_to_a_circle ... ok
+test wpt_css_border_radius_sum_of_radii ... ok
+test wpt_negative_extents_round_the_origin_corner ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/shadow_pressure_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/shadow_pressure_wgpu-4bc7200dfc1e226b)
+
+running 2 tests
+test a_full_width_layer_with_a_one_pixel_shadow_offset_keeps_its_opacity ... ok
+test a_full_hd_layer_with_a_wide_blur_keeps_its_opacity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/shadow_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/shadow_wgpu-04c3a4fbef00d4c7)
+
+running 12 tests
+test offscreen_shape_with_offset_still_casts_shadow ... ok
+test shadow_color_alpha_is_respected ... ok
+test shadow_blur_falloff_width_matches_spec_sigma ... ok
+test shadow_offset_is_not_scaled_by_transform ... ok
+test shadow_renders_into_image_target ... ok
+test blur_spreads_coverage_beyond_edge ... ok
+test opaque_shadow_paints_offset_pixels ... ok
+test text_casts_drop_shadow ... ok
+test shadow_strength_follows_source_alpha ... ok
+test text_shadow_alpha_never_exceeds_shadow_color_alpha ... ok
+test a_layer_casts_the_shadow_of_content_outside_its_scissor ... ok
+test decoration_shares_the_single_text_shadow ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/text_in_layer_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/text_in_layer_wgpu-ed327651c4dde466)
+
+running 1 test
+test stroked_text_in_a_layer_draws_alike_on_a_cold_and_a_warm_atlas ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/text_scale_position_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/text_scale_position_wgpu-231a916bef7adac2)
+
+running 3 tests
+test scaled_atlas_text_does_not_drift_horizontally ... ok
+test scaled_atlas_text_does_not_drift_vertically ... ok
+test scaled_atlas_text_tracks_vector_geometry ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/transform2D.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/transform2D-3d1ef6a760acd751)
+
+running 8 tests
+test test_multiplication ... ok
+test test_division ... ok
+test test_division_assignment ... ok
+test test_multiplication_assignment ... ok
+test test_rotation ... ok
+test test_translation ... ok
+test test_scaling ... ok
+test test_premultiply ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/turbulence_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/turbulence_wgpu-08a2f08e447ac739)
+
+running 11 tests
+test prng_matches_the_specifications_check_value ... ok
+test lattice_is_deterministic_and_well_formed ... ok
+test reference_noise_has_the_expected_range ... ok
+test turbulence_matches_the_reference ... ok
+test fractal_noise_matches_the_reference ... ok
+test chain_with_matrix_and_transfer_matches_the_reference ... ok
+test zero_octaves_is_the_constant_the_spec_gives ... ok
+test stitching_matches_the_stitched_reference_and_is_periodic ... ok
+test transform_scales_and_moves_the_noise ... ok
+test seed_selects_the_lattice ... ok
+test a_noise_chain_reads_upright_whatever_its_source_and_target ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/uniform_slots_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/uniform_slots_wgpu-3cd80bdfa72e0ac5)
+
+running 1 test
+test the_frame_uniform_buffer_covers_every_command_shape ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/wpt_clip_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/wpt_clip_wgpu-a9d2db355ed78d01)
+
+running 9 tests
+test wpt_clip_intersect ... ok
+test wpt_clip_winding_successive ... ok
+test wpt_clip_scale ... ok
+test wpt_saverestore_clip ... ok
+test wpt_clip_basic ... ok
+test wpt_clear_rect_clip_as_destination_out ... ok
+test wpt_clip_empty ... ok
+test wpt_clip_winding_evenodd ... ok
+test wpt_clip_winding_nonzero_hole ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests/wpt_layers_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/wpt_layers_wgpu-ca5959802b59d713)
+
+running 16 tests
+test wpt_non_invertible_matrix ... ok
+test wpt_nested ... ok
+test wpt_restore_style ... ok
+test wpt_ctm_drop_shadow_in_transformed_layers ... ok
+test wpt_nested_drop_shadows ... ok
+test wpt_ctm_shadow_in_transformed_layer ... ok
+test wpt_clear_rect_in_layer ... ok
+test wpt_ctm_set_and_reset_transform ... ok
+test wpt_reset_discards_pending_layers ... ok
+test wpt_blur_from_outside_canvas ... ok
+test wpt_several_complex ... ok
+test wpt_valid_calls ... ok
+test wpt_css_filters ... ok
+test wpt_clip_and_filtered_layers ... ok
+test wpt_global_composite_operation ... ok
+test wpt_global_states ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running tests/zero_area_fill_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/zero_area_fill_wgpu-7625ee266a7aa1b8)
+
+running 4 tests
+test shapes_that_enclose_area_still_fill ... ok
+test a_degenerate_strip_does_not_reclassify_a_hole ... ok
+test a_square_on_a_retraced_tail_still_fills ... ok
+test a_collinear_contour_fills_nothing_at_any_zoom ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/zoom_invariance_wgpu.rs (/private/tmp/femtovg-poc2389-20261015/target/release/deps/zoom_invariance_wgpu-b2bee1ec63a8af01)
+
+running 3 tests
+test zoom_round_trip_reproduces_the_original_frame ... ok
+test stroke_text_width_is_linear_in_the_zoom ... ok
+test stroke_text_width_matches_stroke_path_at_every_zoom ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+   Doc-tests femtovg
+
+running 10 tests
+test src/path.rs - path::Path (line 100) - compile fail ... ok
+test src/paint.rs - paint::Paint::radial_gradient (line 768) ... ok
+test src/paint.rs - paint::Paint::elliptical_gradient (line 815) ... ok
+test src/paint.rs - paint::Paint::box_gradient (line 717) ... ok
+test src/paint.rs - paint::Paint::linear_gradient_stops (line 675) ... ok
+test src/paint.rs - paint::Paint::elliptical_gradient_stops (line 913) ... ok
+test src/paint.rs - paint::Paint::radial_gradient_stops (line 866) ... ok
+test src/paint.rs - paint::Paint (line 526) ... ok
+test src/paint.rs - paint::Paint::linear_gradient (line 645) ... ok
+test src/paint.rs - paint::Paint::image (line 604) ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.90s
+

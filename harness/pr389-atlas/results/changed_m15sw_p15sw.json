@@ -1,0 +1,310 @@
+[
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "z1"
+  },
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "zt4"
+  },
+  {
+    "key": "corpus__babylon__gui-gradient-linear",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__babylon__native-canvas",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__babylon__native-canvas",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__babylon__native-canvas",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__babylon__native-canvas",
+    "framing": "z1"
+  },
+  {
+    "key": "corpus__babylon__native-canvas",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__babylon__native-canvas",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__text-probes__gradient-across-runs",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__text-probes__gradient-across-runs",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__text-probes__gradient-across-runs",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__text-probes__gradient-across-runs",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-across-runs",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-across-runs",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-across-runs",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__text-probes__gradient-bbox-units",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__text-probes__gradient-bbox-units",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__text-probes__gradient-bbox-units",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__text-probes__gradient-bbox-units",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-bbox-units",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-bbox-units",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-bbox-units",
+    "framing": "zt4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-bbox-units",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__text-probes__gradient-fade",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__text-probes__gradient-fade",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__text-probes__gradient-fade",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__text-probes__gradient-fade",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-fade",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-fade",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-fade",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__text-probes__gradient-in-layers",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__text-probes__gradient-in-layers",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__text-probes__gradient-in-layers",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__text-probes__gradient-in-layers",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-in-layers",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-in-layers",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-in-layers",
+    "framing": "zt4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-in-layers",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__text-probes__gradient-radial",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__text-probes__gradient-radial",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__text-probes__gradient-radial",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__text-probes__gradient-radial",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-radial",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-radial",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-radial",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "z1"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "zt4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-size-threshold",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__text-probes__gradient-stroke",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__text-probes__gradient-stroke",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__text-probes__gradient-stroke",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__text-probes__gradient-stroke",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-stroke",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-stroke",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-stroke",
+    "framing": "hd"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "z01"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "z025"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "z05"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "z1"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "z2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "z4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "zt2"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "zt4"
+  },
+  {
+    "key": "corpus__text-probes__gradient-transformed-groups",
+    "framing": "hd"
+  }
+]

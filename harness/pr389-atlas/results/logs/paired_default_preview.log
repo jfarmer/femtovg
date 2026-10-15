@@ -1,0 +1,228 @@
+
+timing_p15_a15_short: frame_ms, mean of 20 frames with the first
+  route changes: 9 frames
+    gui-gradient-linear      hd    1.597 ->   1.746  paired +0.099 (+0.029..+0.183)   +6.2 %  one sign spread mbase 18 % poc 11 %
+    gui-gradient-linear      z1    1.561 ->   1.680  paired +0.117 (+0.095..+0.185)   +7.5 %  one sign spread mbase 5 % poc 2 %
+    gui-gradient-linear      z2    1.553 ->   1.658  paired +0.109 (+0.096..+0.150)   +7.0 %  one sign spread mbase 6 % poc 5 %
+    gui-gradient-linear      z4    1.461 ->   1.492  paired +0.031 (-0.041..+0.076)   +2.1 %  mixed    spread mbase 12 % poc 6 %
+    native-canvas            z1    7.672 ->   7.178  paired -0.434 (-2.067..-0.372)   -5.7 %  one sign spread mbase 19 % poc 8 %
+    native-canvas            z2    7.783 ->   7.474  paired -0.286 (-0.312..-0.222)   -3.7 %  one sign spread mbase 7 % poc 9 %
+    gradient-across-runs     z2    1.241 ->   1.251  paired +0.030 (-0.091..+0.091)   +2.4 %  mixed    spread mbase 18 % poc 7 %
+    gradient-bbox-units      z2    1.217 ->   1.178  paired -0.004 (-0.056..+0.027)   -0.3 %  mixed    spread mbase 11 % poc 8 %
+    gradient-in-layers       z2    1.595 ->   1.506  paired -0.131 (-0.154..-0.051)   -8.2 %  one sign spread mbase 8 % poc 9 %
+  route does not change (noise floor): 43 frames
+    gui-input-test           hd    1.914 ->   1.901  paired +0.032 (-0.130..+0.048)   +1.7 %  mixed    spread mbase 16 % poc 7 %
+    gui-input-test           z1    1.790 ->   1.754  paired -0.014 (-0.046..+0.174)   -0.8 %  mixed    spread mbase 12 % poc 15 %
+    gui-input-test           z2    1.803 ->   1.774  paired +0.014 (-0.059..+0.041)   +0.8 %  mixed    spread mbase 13 % poc 17 %
+    gui-input-test           z4    1.794 ->   1.749  paired -0.054 (-0.076..+0.016)   -3.0 %  mixed    spread mbase 10 % poc 5 %
+    native-canvas            hd    9.979 ->   9.557  paired -0.526 (-3.258..+0.512)   -5.3 %  mixed    spread mbase 32 % poc 13 %
+    native-canvas            z4    7.876 ->   7.594  paired +0.060 (-1.658..+0.161)   +0.8 %  mixed    spread mbase 25 % poc 6 %
+    fill-opacity-overlap     hd    1.246 ->   1.231  paired -0.003 (-0.041..+0.039)   -0.2 %  mixed    spread mbase 22 % poc 19 %
+    fill-opacity-overlap     z1    1.138 ->   1.172  paired +0.011 (-0.040..+0.068)   +1.0 %  mixed    spread mbase 24 % poc 25 %
+    fill-opacity-overlap     z2    1.087 ->   1.103  paired +0.018 (-0.006..+0.040)   +1.7 %  mixed    spread mbase 19 % poc 16 %
+    fill-opacity-overlap     z4    1.104 ->   1.140  paired +0.018 (+0.006..+0.092)   +1.6 %  one sign spread mbase 19 % poc 18 %
+    gradient-across-runs     hd    1.327 ->   1.314  paired +0.008 (-0.070..+0.035)   +0.6 %  mixed    spread mbase 19 % poc 16 %
+    gradient-across-runs     z1    1.201 ->   1.234  paired -0.005 (-0.130..+0.107)   -0.4 %  mixed    spread mbase 10 % poc 17 %
+    gradient-across-runs     z4    1.175 ->   1.196  paired +0.008 (-0.080..+0.063)   +0.7 %  mixed    spread mbase 10 % poc 8 %
+    gradient-bbox-units      hd    1.349 ->   1.326  paired -0.030 (-0.041..+0.036)   -2.2 %  mixed    spread mbase 6 % poc 8 %
+    gradient-bbox-units      z1    1.195 ->   1.179  paired -0.005 (-0.066..+0.058)   -0.4 %  mixed    spread mbase 13 % poc 13 %
+    gradient-bbox-units      z4    1.199 ->   1.159  paired -0.035 (-0.081..+0.073)   -2.9 %  mixed    spread mbase 11 % poc 10 %
+    gradient-fade            hd    1.396 ->   1.389  paired -0.011 (-0.077..+0.071)   -0.8 %  mixed    spread mbase 2 % poc 13 %
+    gradient-fade            z1    1.220 ->   1.157  paired -0.064 (-0.133..+0.035)   -5.2 %  mixed    spread mbase 17 % poc 5 %
+    gradient-fade            z2    1.200 ->   1.216  paired +0.001 (-0.014..+0.042)   +0.1 %  mixed    spread mbase 12 % poc 11 %
+    gradient-fade            z4    1.192 ->   1.208  paired -0.005 (-0.073..+0.044)   -0.4 %  mixed    spread mbase 3 % poc 13 %
+    gradient-in-layers       hd    1.977 ->   1.982  paired -0.005 (-0.171..+0.085)   -0.3 %  mixed    spread mbase 7 % poc 17 %
+    gradient-in-layers       z1    1.480 ->   1.463  paired -0.019 (-0.024..+0.098)   -1.3 %  mixed    spread mbase 4 % poc 10 %
+    gradient-in-layers       z4    1.568 ->   1.584  paired +0.027 (-0.097..+0.062)   +1.7 %  mixed    spread mbase 7 % poc 9 %
+    gradient-radial          hd    1.327 ->   1.322  paired -0.002 (-0.072..+0.013)   -0.2 %  mixed    spread mbase 6 % poc 2 %
+    gradient-radial          z1    1.187 ->   1.219  paired -0.003 (-0.091..+0.073)   -0.3 %  mixed    spread mbase 4 % poc 15 %
+    gradient-radial          z2    1.178 ->   1.238  paired +0.014 (-0.018..+0.067)   +1.2 %  mixed    spread mbase 13 % poc 11 %
+    gradient-radial          z4    1.188 ->   1.142  paired -0.051 (-0.068..+0.015)   -4.3 %  mixed    spread mbase 14 % poc 6 %
+    gradient-size-threshold  hd    1.269 ->   1.302  paired +0.000 (-0.131..+0.117)   +0.0 %  mixed    spread mbase 11 % poc 22 %
+    gradient-size-threshold  z1    1.267 ->   1.287  paired +0.017 (-0.014..+0.040)   +1.3 %  mixed    spread mbase 3 % poc 4 %
+    gradient-size-threshold  z2    1.159 ->   1.145  paired +0.020 (-0.068..+0.035)   +1.7 %  mixed    spread mbase 8 % poc 7 %
+    gradient-size-threshold  z4    1.167 ->   1.173  paired +0.014 (-0.110..+0.065)   +1.2 %  mixed    spread mbase 6 % poc 14 %
+    gradient-stroke          hd    1.315 ->   1.290  paired +0.013 (-0.061..+0.068)   +1.0 %  mixed    spread mbase 5 % poc 11 %
+    gradient-stroke          z1    1.202 ->   1.187  paired -0.015 (-0.073..+0.078)   -1.2 %  mixed    spread mbase 8 % poc 6 %
+    gradient-stroke          z2    1.201 ->   1.194  paired +0.009 (-0.031..+0.074)   +0.7 %  mixed    spread mbase 7 % poc 12 %
+    gradient-stroke          z4    1.161 ->   1.119  paired -0.055 (-0.086..+0.046)   -4.7 %  mixed    spread mbase 4 % poc 8 %
+    gradient-transformed-groups hd    1.353 ->   1.346  paired -0.003 (-0.041..+0.013)   -0.2 %  mixed    spread mbase 7 % poc 6 %
+    gradient-transformed-groups z1    1.195 ->   1.197  paired -0.003 (-0.062..+0.116)   -0.3 %  mixed    spread mbase 9 % poc 13 %
+    gradient-transformed-groups z2    1.228 ->   1.234  paired +0.008 (-0.066..+0.028)   +0.7 %  mixed    spread mbase 9 % poc 13 %
+    gradient-transformed-groups z4    1.148 ->   1.165  paired +0.013 (-0.055..+0.060)   +1.1 %  mixed    spread mbase 9 % poc 9 %
+    Ghostscript_Tiger        hd    3.834 ->   3.825  paired -0.051 (-0.092..+0.103)   -1.3 %  mixed    spread mbase 3 % poc 6 %
+    Ghostscript_Tiger        z1    3.198 ->   3.176  paired +0.024 (-0.122..+0.151)   +0.8 %  mixed    spread mbase 7 % poc 5 %
+    Ghostscript_Tiger        z2    3.185 ->   3.267  paired +0.017 (-0.056..+0.122)   +0.5 %  mixed    spread mbase 3 % poc 6 %
+    Ghostscript_Tiger        z4    3.073 ->   3.183  paired +0.110 (+0.102..+0.169)   +3.6 %  one sign spread mbase 6 % poc 5 %
+    noise floor: paired medians -5.3 % .. +3.6 %, median of their sizes 1.0 %, 2 of 43 with one sign
+
+timing_p15_a15_short: encode_ms
+  route changes: 9 frames
+    gui-gradient-linear      hd    0.573 ->   0.708  paired +0.140 (+0.131..+0.158)  +24.5 %  one sign spread mbase 20 % poc 12 %
+    gui-gradient-linear      z1    0.565 ->   0.717  paired +0.170 (+0.132..+0.178)  +30.1 %  one sign spread mbase 9 % poc 11 %
+    gui-gradient-linear      z2    0.572 ->   0.723  paired +0.156 (+0.140..+0.184)  +27.3 %  one sign spread mbase 8 % poc 10 %
+    gui-gradient-linear      z4    0.543 ->   0.579  paired +0.030 (-0.020..+0.050)   +5.5 %  mixed    spread mbase 19 % poc 5 %
+    native-canvas            z1    3.881 ->   3.491  paired -0.417 (-1.023..-0.350)  -10.8 %  one sign spread mbase 20 % poc 6 %
+    native-canvas            z2    3.970 ->   3.635  paired -0.349 (-0.393..-0.253)   -8.8 %  one sign spread mbase 7 % poc 11 %
+    gradient-across-runs     z2    0.303 ->   0.332  paired +0.032 (+0.023..+0.040)  +10.6 %  one sign spread mbase 8 % poc 7 %
+    gradient-bbox-units      z2    0.294 ->   0.309  paired +0.013 (-0.001..+0.023)   +4.5 %  mixed    spread mbase 9 % poc 2 %
+    gradient-in-layers       z2    0.569 ->   0.480  paired -0.081 (-0.117..-0.078)  -14.2 %  one sign spread mbase 7 % poc 4 %
+  route does not change (noise floor): 43 frames
+    gui-input-test           hd    0.789 ->   0.794  paired +0.003 (-0.060..+0.038)   +0.4 %  mixed    spread mbase 24 % poc 17 %
+    gui-input-test           z1    0.733 ->   0.728  paired -0.005 (-0.010..+0.058)   -0.7 %  mixed    spread mbase 19 % poc 21 %
+    gui-input-test           z2    0.743 ->   0.730  paired +0.002 (-0.013..+0.058)   +0.3 %  mixed    spread mbase 22 % poc 32 %
+    gui-input-test           z4    0.772 ->   0.766  paired -0.007 (-0.033..+0.012)   -1.0 %  mixed    spread mbase 22 % poc 21 %
+    native-canvas            hd    4.711 ->   4.494  paired -0.005 (-2.624..+0.379)   -0.1 %  mixed    spread mbase 62 % poc 24 %
+    native-canvas            z4    3.407 ->   3.231  paired -0.005 (-0.947..+0.071)   -0.1 %  mixed    spread mbase 35 % poc 11 %
+    fill-opacity-overlap     hd    0.249 ->   0.247  paired -0.002 (-0.008..+0.004)   -0.8 %  mixed    spread mbase 42 % poc 39 %
+    fill-opacity-overlap     z1    0.287 ->   0.282  paired -0.012 (-0.066..+0.009)   -4.2 %  mixed    spread mbase 49 % poc 26 %
+    fill-opacity-overlap     z2    0.242 ->   0.249  paired +0.002 (-0.008..+0.022)   +0.9 %  mixed    spread mbase 20 % poc 31 %
+    fill-opacity-overlap     z4    0.247 ->   0.245  paired -0.004 (-0.008..+0.012)   -1.7 %  mixed    spread mbase 27 % poc 26 %
+    gradient-across-runs     hd    0.309 ->   0.308  paired -0.001 (-0.013..-0.001)   -0.4 %  one sign spread mbase 31 % poc 29 %
+    gradient-across-runs     z1    0.336 ->   0.325  paired +0.008 (-0.018..+0.061)   +2.3 %  mixed    spread mbase 9 % poc 24 %
+    gradient-across-runs     z4    0.288 ->   0.289  paired -0.001 (-0.002..+0.006)   -0.4 %  mixed    spread mbase 6 % poc 7 %
+    gradient-bbox-units      hd    0.305 ->   0.298  paired -0.005 (-0.009..+0.012)   -1.7 %  mixed    spread mbase 11 % poc 3 %
+    gradient-bbox-units      z1    0.308 ->   0.308  paired +0.003 (-0.002..+0.009)   +1.0 %  mixed    spread mbase 5 % poc 3 %
+    gradient-bbox-units      z4    0.278 ->   0.280  paired +0.003 (-0.012..+0.008)   +0.9 %  mixed    spread mbase 6 % poc 4 %
+    gradient-fade            hd    0.320 ->   0.315  paired -0.001 (-0.019..+0.004)   -0.3 %  mixed    spread mbase 9 % poc 10 %
+    gradient-fade            z1    0.323 ->   0.318  paired -0.000 (-0.009..+0.002)   -0.0 %  mixed    spread mbase 7 % poc 7 %
+    gradient-fade            z2    0.309 ->   0.315  paired +0.009 (-0.017..+0.013)   +3.0 %  mixed    spread mbase 11 % poc 5 %
+    gradient-fade            z4    0.314 ->   0.309  paired +0.000 (-0.013..+0.010)   +0.1 %  mixed    spread mbase 5 % poc 9 %
+    gradient-in-layers       hd    0.589 ->   0.592  paired +0.009 (-0.005..+0.034)   +1.6 %  mixed    spread mbase 8 % poc 8 %
+    gradient-in-layers       z1    0.484 ->   0.484  paired +0.010 (-0.002..+0.013)   +2.0 %  mixed    spread mbase 5 % poc 4 %
+    gradient-in-layers       z4    0.576 ->   0.575  paired -0.006 (-0.011..+0.035)   -1.1 %  mixed    spread mbase 4 % poc 9 %
+    gradient-radial          hd    0.333 ->   0.328  paired +0.003 (-0.011..+0.007)   +1.0 %  mixed    spread mbase 6 % poc 8 %
+    gradient-radial          z1    0.312 ->   0.318  paired -0.000 (-0.004..+0.015)   -0.1 %  mixed    spread mbase 5 % poc 6 %
+    gradient-radial          z2    0.318 ->   0.310  paired -0.007 (-0.009..+0.005)   -2.1 %  mixed    spread mbase 1 % poc 5 %
+    gradient-radial          z4    0.277 ->   0.270  paired -0.012 (-0.014..+0.007)   -4.5 %  mixed    spread mbase 10 % poc 6 %
+    gradient-size-threshold  hd    0.274 ->   0.272  paired -0.004 (-0.008..+0.005)   -1.6 %  mixed    spread mbase 6 % poc 5 %
+    gradient-size-threshold  z1    0.374 ->   0.372  paired +0.001 (-0.012..+0.007)   +0.4 %  mixed    spread mbase 7 % poc 6 %
+    gradient-size-threshold  z2    0.262 ->   0.256  paired -0.008 (-0.011..+0.003)   -3.1 %  mixed    spread mbase 13 % poc 9 %
+    gradient-size-threshold  z4    0.277 ->   0.264  paired -0.013 (-0.039..+0.009)   -4.6 %  mixed    spread mbase 16 % poc 7 %
+    gradient-stroke          hd    0.262 ->   0.260  paired -0.001 (-0.004..+0.014)   -0.2 %  mixed    spread mbase 31 % poc 34 %
+    gradient-stroke          z1    0.316 ->   0.314  paired -0.001 (-0.030..+0.003)   -0.3 %  mixed    spread mbase 19 % poc 10 %
+    gradient-stroke          z2    0.263 ->   0.257  paired -0.003 (-0.027..+0.004)   -1.2 %  mixed    spread mbase 20 % poc 16 %
+    gradient-stroke          z4    0.265 ->   0.266  paired +0.005 (-0.013..+0.017)   +2.0 %  mixed    spread mbase 9 % poc 9 %
+    gradient-transformed-groups hd    0.326 ->   0.330  paired +0.003 (-0.004..+0.009)   +0.8 %  mixed    spread mbase 9 % poc 6 %
+    gradient-transformed-groups z1    0.311 ->   0.307  paired -0.002 (-0.021..+0.019)   -0.7 %  mixed    spread mbase 10 % poc 10 %
+    gradient-transformed-groups z2    0.315 ->   0.319  paired +0.005 (-0.011..+0.011)   +1.4 %  mixed    spread mbase 7 % poc 7 %
+    gradient-transformed-groups z4    0.306 ->   0.310  paired +0.000 (-0.003..+0.008)   +0.0 %  mixed    spread mbase 8 % poc 11 %
+    Ghostscript_Tiger        hd    1.961 ->   1.941  paired -0.006 (-0.035..+0.060)   -0.3 %  mixed    spread mbase 3 % poc 6 %
+    Ghostscript_Tiger        z1    1.656 ->   1.659  paired +0.021 (-0.015..+0.068)   +1.3 %  mixed    spread mbase 2 % poc 7 %
+    Ghostscript_Tiger        z2    1.679 ->   1.689  paired -0.004 (-0.019..+0.043)   -0.3 %  mixed    spread mbase 4 % poc 6 %
+    Ghostscript_Tiger        z4    1.536 ->   1.559  paired -0.003 (-0.026..+0.078)   -0.2 %  mixed    spread mbase 6 % poc 6 %
+    noise floor: paired medians -4.6 % .. +3.0 %, median of their sizes 0.9 %, 1 of 43 with one sign
+
+timing_p15_a15_short: frames 21..220 by difference, repeat i against repeat i
+  route changes: 9 frames
+    gui-gradient-linear      hd    0.376 ->   0.329  paired -0.049 (-0.065..-0.009)  -13.1 %  one sign spread mbase 18 % poc 9 %
+    gui-gradient-linear      z1    0.362 ->   0.286  paired -0.090 (-0.104..-0.077)  -24.7 %  one sign spread mbase 17 % poc 14 %
+    gui-gradient-linear      z2    0.360 ->   0.277  paired -0.083 (-0.096..-0.042)  -23.1 %  one sign spread mbase 12 % poc 8 %
+    gui-gradient-linear      z4    0.297 ->   0.257  paired -0.040 (-0.071..-0.020)  -13.4 %  one sign spread mbase 9 % poc 10 %
+    native-canvas            z1    4.583 ->   4.206  paired -0.381 (-0.543..+0.637)   -8.3 %  mixed    spread mbase 4 % poc 24 %
+    native-canvas            z2    4.808 ->   4.309  paired -0.498 (-0.559..-0.388)  -10.4 %  one sign spread mbase 4 % poc 6 %
+    gradient-across-runs     z2    0.263 ->   0.193  paired -0.070 (-0.130..-0.064)  -26.5 %  one sign spread mbase 51 % poc 46 %
+    gradient-bbox-units      z2    0.273 ->   0.201  paired -0.069 (-0.131..-0.050)  -25.4 %  one sign spread mbase 39 % poc 8 %
+    gradient-in-layers       z2    0.402 ->   0.352  paired -0.077 (-0.109..-0.042)  -19.1 %  one sign spread mbase 25 % poc 19 %
+  route does not change (noise floor): 43 frames
+    gui-input-test           hd    0.303 ->   0.305  paired +0.002 (-0.025..+0.016)   +0.8 %  mixed    spread mbase 24 % poc 14 %
+    gui-input-test           z1    0.286 ->   0.294  paired +0.014 (-0.021..+0.030)   +4.7 %  mixed    spread mbase 19 % poc 17 %
+    gui-input-test           z2    0.283 ->   0.281  paired -0.007 (-0.010..+0.086)   -2.4 %  mixed    spread mbase 7 % poc 44 %
+    gui-input-test           z4    0.279 ->   0.278  paired +0.006 (-0.011..+0.042)   +2.2 %  mixed    spread mbase 21 % poc 29 %
+    native-canvas            hd    6.889 ->   7.126  paired +0.237 (-0.309..+0.658)   +3.4 %  mixed    spread mbase 8 % poc 7 %
+    native-canvas            z4    5.406 ->   5.389  paired +0.051 (-0.403..+0.234)   +0.9 %  mixed    spread mbase 15 % poc 13 %
+    fill-opacity-overlap     hd    0.275 ->   0.268  paired +0.028 (-0.036..+0.050)  +10.1 %  mixed    spread mbase 94 % poc 91 %
+    fill-opacity-overlap     z1    0.194 ->   0.206  paired +0.011 (-0.009..+0.012)   +5.7 %  mixed    spread mbase 22 % poc 26 %
+    fill-opacity-overlap     z2    0.220 ->   0.221  paired +0.000 (-0.013..+0.011)   +0.0 %  mixed    spread mbase 36 % poc 33 %
+    fill-opacity-overlap     z4    0.221 ->   0.206  paired -0.011 (-0.020..+0.003)   -5.1 %  mixed    spread mbase 42 % poc 38 %
+    gradient-across-runs     hd    0.298 ->   0.296  paired +0.002 (-0.134..+0.027)   +0.5 %  mixed    spread mbase 88 % poc 60 %
+    gradient-across-runs     z1    0.200 ->   0.204  paired +0.001 (-0.021..+0.005)   +0.7 %  mixed    spread mbase 46 % poc 33 %
+    gradient-across-runs     z4    0.251 ->   0.255  paired +0.004 (-0.019..+0.028)   +1.6 %  mixed    spread mbase 40 % poc 52 %
+    gradient-bbox-units      hd    0.305 ->   0.309  paired -0.005 (-0.008..+0.019)   -1.5 %  mixed    spread mbase 70 % poc 59 %
+    gradient-bbox-units      z1    0.207 ->   0.200  paired +0.003 (-0.011..+0.017)   +1.6 %  mixed    spread mbase 15 % poc 19 %
+    gradient-bbox-units      z4    0.237 ->   0.253  paired +0.015 (-0.028..+0.018)   +6.2 %  mixed    spread mbase 47 % poc 27 %
+    gradient-fade            hd    0.280 ->   0.275  paired -0.007 (-0.014..+0.025)   -2.5 %  mixed    spread mbase 104 % poc 78 %
+    gradient-fade            z1    0.211 ->   0.211  paired +0.012 (-0.009..+0.015)   +5.5 %  mixed    spread mbase 33 % poc 29 %
+    gradient-fade            z2    0.277 ->   0.243  paired -0.011 (-0.049..+0.011)   -4.0 %  mixed    spread mbase 28 % poc 33 %
+    gradient-fade            z4    0.248 ->   0.237  paired -0.007 (-0.012..+0.011)   -2.7 %  mixed    spread mbase 37 % poc 41 %
+    gradient-in-layers       hd    0.593 ->   0.599  paired +0.002 (-0.059..+0.008)   +0.3 %  mixed    spread mbase 62 % poc 57 %
+    gradient-in-layers       z1    0.323 ->   0.334  paired -0.001 (-0.025..+0.012)   -0.4 %  mixed    spread mbase 30 % poc 21 %
+    gradient-in-layers       z4    0.419 ->   0.418  paired -0.005 (-0.098..+0.015)   -1.1 %  mixed    spread mbase 51 % poc 24 %
+    gradient-radial          hd    0.277 ->   0.274  paired -0.007 (-0.017..+0.035)   -2.5 %  mixed    spread mbase 110 % poc 123 %
+    gradient-radial          z1    0.209 ->   0.208  paired -0.003 (-0.014..+0.006)   -1.4 %  mixed    spread mbase 52 % poc 51 %
+    gradient-radial          z2    0.250 ->   0.249  paired -0.012 (-0.049..+0.016)   -4.9 %  mixed    spread mbase 70 % poc 44 %
+    gradient-radial          z4    0.241 ->   0.241  paired +0.006 (-0.005..+0.024)   +2.6 %  mixed    spread mbase 41 % poc 48 %
+    gradient-size-threshold  hd    0.303 ->   0.287  paired -0.023 (-0.029..-0.001)   -7.5 %  one sign spread mbase 81 % poc 87 %
+    gradient-size-threshold  z1    0.223 ->   0.213  paired -0.006 (-0.024..+0.007)   -2.7 %  mixed    spread mbase 21 % poc 36 %
+    gradient-size-threshold  z2    0.230 ->   0.239  paired +0.000 (-0.021..+0.011)   +0.1 %  mixed    spread mbase 30 % poc 25 %
+    gradient-size-threshold  z4    0.229 ->   0.257  paired +0.002 (-0.041..+0.028)   +1.0 %  mixed    spread mbase 56 % poc 36 %
+    gradient-stroke          hd    0.266 ->   0.271  paired +0.008 (-0.012..+0.026)   +2.9 %  mixed    spread mbase 77 % poc 88 %
+    gradient-stroke          z1    0.199 ->   0.203  paired -0.013 (-0.040..+0.022)   -6.7 %  mixed    spread mbase 44 % poc 32 %
+    gradient-stroke          z2    0.224 ->   0.214  paired -0.010 (-0.023..-0.008)   -4.3 %  one sign spread mbase 70 % poc 65 %
+    gradient-stroke          z4    0.238 ->   0.230  paired -0.010 (-0.019..+0.015)   -4.3 %  mixed    spread mbase 63 % poc 58 %
+    gradient-transformed-groups hd    0.312 ->   0.334  paired +0.004 (-0.002..+0.026)   +1.3 %  mixed    spread mbase 64 % poc 63 %
+    gradient-transformed-groups z1    0.291 ->   0.292  paired +0.001 (-0.025..+0.024)   +0.5 %  mixed    spread mbase 33 % poc 45 %
+    gradient-transformed-groups z2    0.278 ->   0.289  paired +0.010 (+0.006..+0.013)   +3.6 %  one sign spread mbase 29 % poc 31 %
+    gradient-transformed-groups z4    0.309 ->   0.310  paired +0.010 (-0.075..+0.015)   +3.1 %  mixed    spread mbase 61 % poc 31 %
+    Ghostscript_Tiger        hd    3.567 ->   2.967  paired -0.160 (-0.600..+0.033)   -4.5 %  mixed    spread mbase 73 % poc 63 %
+    Ghostscript_Tiger        z1    1.923 ->   1.909  paired +0.029 (-0.073..+0.084)   +1.5 %  mixed    spread mbase 54 % poc 61 %
+    Ghostscript_Tiger        z2    1.868 ->   1.859  paired -0.017 (-0.035..+0.006)   -0.9 %  mixed    spread mbase 41 % poc 41 %
+    Ghostscript_Tiger        z4    1.814 ->   1.814  paired -0.000 (-0.338..+0.037)   -0.0 %  mixed    spread mbase 39 % poc 18 %
+    noise floor: paired medians -7.5 % .. +10.1 %, median of their sizes 2.5 %, 3 of 43 with one sign
+
+timing_p15_a15_short: frames 21..220 by difference, against the short run's median (as analyze_q3.py)
+  route changes: 9 frames
+    gui-gradient-linear      hd    0.391 ->   0.329  paired -0.059 (-0.062..-0.014)  -15.0 %  one sign spread mbase 19 % poc 12 %
+    gui-gradient-linear      z1    0.364 ->   0.285  paired -0.089 (-0.102..-0.079)  -24.4 %  one sign spread mbase 15 % poc 14 %
+    gui-gradient-linear      z2    0.355 ->   0.276  paired -0.079 (-0.095..-0.042)  -22.2 %  one sign spread mbase 11 % poc 9 %
+    gui-gradient-linear      z4    0.302 ->   0.260  paired -0.041 (-0.067..-0.027)  -13.4 %  one sign spread mbase 4 % poc 14 %
+    native-canvas            z1    4.608 ->   4.215  paired -0.383 (-0.531..+0.480)   -8.3 %  mixed    spread mbase 4 % poc 23 %
+    native-canvas            z2    4.808 ->   4.321  paired -0.497 (-0.550..-0.388)  -10.3 %  one sign spread mbase 4 % poc 5 %
+    gradient-across-runs     z2    0.256 ->   0.192  paired -0.065 (-0.130..-0.061)  -25.3 %  one sign spread mbase 55 % poc 45 %
+    gradient-bbox-units      z2    0.271 ->   0.206  paired -0.069 (-0.131..-0.046)  -25.4 %  one sign spread mbase 42 % poc 7 %
+    gradient-in-layers       z2    0.404 ->   0.347  paired -0.075 (-0.115..-0.047)  -18.5 %  one sign spread mbase 27 % poc 19 %
+  route does not change (noise floor): 43 frames
+    gui-input-test           hd    0.298 ->   0.304  paired -0.009 (-0.020..+0.022)   -2.9 %  mixed    spread mbase 12 % poc 14 %
+    gui-input-test           z1    0.286 ->   0.302  paired +0.016 (-0.006..+0.034)   +5.5 %  mixed    spread mbase 16 % poc 10 %
+    gui-input-test           z2    0.282 ->   0.281  paired -0.003 (-0.007..+0.091)   -0.9 %  mixed    spread mbase 3 % poc 35 %
+    gui-input-test           z4    0.272 ->   0.280  paired +0.012 (-0.008..+0.039)   +4.5 %  mixed    spread mbase 18 % poc 27 %
+    native-canvas            hd    7.025 ->   7.126  paired +0.157 (-0.215..+0.554)   +2.2 %  mixed    spread mbase 6 % poc 6 %
+    native-canvas            z4    5.407 ->   5.380  paired +0.085 (-0.359..+0.180)   +1.6 %  mixed    spread mbase 14 % poc 13 %
+    fill-opacity-overlap     hd    0.274 ->   0.266  paired +0.029 (-0.030..+0.048)  +10.6 %  mixed    spread mbase 103 % poc 102 %
+    fill-opacity-overlap     z1    0.195 ->   0.196  paired +0.009 (-0.011..+0.015)   +4.5 %  mixed    spread mbase 33 % poc 33 %
+    fill-opacity-overlap     z2    0.225 ->   0.223  paired -0.002 (-0.013..+0.009)   -0.7 %  mixed    spread mbase 46 % poc 42 %
+    fill-opacity-overlap     z4    0.220 ->   0.207  paired -0.010 (-0.023..+0.003)   -4.6 %  mixed    spread mbase 53 % poc 48 %
+    gradient-across-runs     hd    0.292 ->   0.294  paired +0.004 (-0.132..+0.027)   +1.2 %  mixed    spread mbase 95 % poc 60 %
+    gradient-across-runs     z1    0.199 ->   0.207  paired -0.006 (-0.016..+0.008)   -2.8 %  mixed    spread mbase 43 % poc 37 %
+    gradient-across-runs     z4    0.255 ->   0.250  paired -0.001 (-0.018..+0.032)   -0.4 %  mixed    spread mbase 39 % poc 54 %
+    gradient-bbox-units      hd    0.303 ->   0.305  paired -0.005 (-0.010..+0.024)   -1.8 %  mixed    spread mbase 71 % poc 62 %
+    gradient-bbox-units      z1    0.205 ->   0.202  paired +0.005 (-0.010..+0.016)   +2.4 %  mixed    spread mbase 11 % poc 18 %
+    gradient-bbox-units      z4    0.235 ->   0.254  paired +0.012 (-0.032..+0.023)   +5.0 %  mixed    spread mbase 50 % poc 25 %
+    gradient-fade            hd    0.277 ->   0.277  paired +0.001 (-0.017..+0.024)   +0.3 %  mixed    spread mbase 103 % poc 78 %
+    gradient-fade            z1    0.208 ->   0.210  paired +0.008 (+0.001..+0.015)   +4.1 %  one sign spread mbase 31 % poc 26 %
+    gradient-fade            z2    0.275 ->   0.233  paired -0.013 (-0.049..+0.014)   -4.6 %  mixed    spread mbase 26 % poc 35 %
+    gradient-fade            z4    0.248 ->   0.230  paired -0.004 (-0.020..+0.008)   -1.5 %  mixed    spread mbase 34 % poc 39 %
+    gradient-in-layers       hd    0.589 ->   0.599  paired -0.001 (-0.076..+0.014)   -0.1 %  mixed    spread mbase 60 % poc 58 %
+    gradient-in-layers       z1    0.324 ->   0.331  paired -0.002 (-0.026..+0.016)   -0.5 %  mixed    spread mbase 31 % poc 17 %
+    gradient-in-layers       z4    0.419 ->   0.424  paired -0.007 (-0.093..+0.017)   -1.7 %  mixed    spread mbase 48 % poc 24 %
+    gradient-radial          hd    0.282 ->   0.274  paired -0.005 (-0.019..+0.037)   -1.8 %  mixed    spread mbase 105 % poc 123 %
+    gradient-radial          z1    0.208 ->   0.198  paired -0.007 (-0.010..-0.004)   -3.1 %  one sign spread mbase 50 % poc 53 %
+    gradient-radial          z2    0.250 ->   0.238  paired -0.012 (-0.057..+0.012)   -4.6 %  mixed    spread mbase 68 % poc 43 %
+    gradient-radial          z4    0.232 ->   0.239  paired +0.006 (-0.002..+0.022)   +2.5 %  mixed    spread mbase 42 % poc 49 %
+    gradient-size-threshold  hd    0.299 ->   0.272  paired -0.025 (-0.033..-0.004)   -8.5 %  one sign spread mbase 88 % poc 89 %
+    gradient-size-threshold  z1    0.225 ->   0.213  paired -0.008 (-0.025..+0.009)   -3.3 %  mixed    spread mbase 22 % poc 37 %
+    gradient-size-threshold  z2    0.231 ->   0.239  paired +0.002 (-0.016..+0.014)   +1.1 %  mixed    spread mbase 27 % poc 21 %
+    gradient-size-threshold  z4    0.231 ->   0.247  paired +0.004 (-0.035..+0.016)   +1.6 %  mixed    spread mbase 55 % poc 37 %
+    gradient-stroke          hd    0.262 ->   0.271  paired +0.009 (-0.003..+0.030)   +3.5 %  mixed    spread mbase 76 % poc 84 %
+    gradient-stroke          z1    0.200 ->   0.202  paired -0.004 (-0.031..+0.022)   -2.0 %  mixed    spread mbase 40 % poc 32 %
+    gradient-stroke          z2    0.222 ->   0.214  paired -0.010 (-0.015..-0.008)   -4.6 %  one sign spread mbase 66 % poc 68 %
+    gradient-stroke          z4    0.239 ->   0.230  paired -0.006 (-0.013..+0.013)   -2.4 %  mixed    spread mbase 62 % poc 57 %
+    gradient-transformed-groups hd    0.312 ->   0.330  paired +0.001 (-0.001..+0.028)   +0.2 %  mixed    spread mbase 63 % poc 62 %
+    gradient-transformed-groups z1    0.289 ->   0.287  paired +0.001 (-0.013..+0.023)   +0.3 %  mixed    spread mbase 30 % poc 41 %
+    gradient-transformed-groups z2    0.275 ->   0.282  paired +0.007 (+0.005..+0.014)   +2.6 %  one sign spread mbase 29 % poc 31 %
+    gradient-transformed-groups z4    0.309 ->   0.309  paired +0.008 (-0.075..+0.019)   +2.7 %  mixed    spread mbase 62 % poc 32 %
+    Ghostscript_Tiger        hd    3.572 ->   2.967  paired -0.149 (-0.605..+0.025)   -4.2 %  mixed    spread mbase 73 % poc 63 %
+    Ghostscript_Tiger        z1    1.911 ->   1.917  paired +0.026 (-0.056..+0.074)   +1.4 %  mixed    spread mbase 55 % poc 61 %
+    Ghostscript_Tiger        z2    1.868 ->   1.859  paired -0.015 (-0.031..-0.002)   -0.8 %  one sign spread mbase 40 % poc 40 %
+    Ghostscript_Tiger        z4    1.825 ->   1.826  paired +0.001 (-0.339..+0.036)   +0.1 %  mixed    spread mbase 39 % poc 18 %
+    noise floor: paired medians -8.5 % .. +10.6 %, median of their sizes 2.4 %, 6 of 43 with one sign

@@ -16,6 +16,7 @@
 #                     checkout's sources are touched first, so a library built from another one is never linked)
 #   HARNESS_LOGS      build logs (default: $HARNESS_BIN/logs)
 #   EXTRA_CFGS        more flags for rustc, e.g. "--cfg harness_slices"
+#   HARNESS_FEATURES  cargo features for the wgpu harness (default: wgpu)
 #
 # The example is copied into the checkout's examples/ for the build and removed after: left there, a wgpu-gated
 # example breaks the featureless `cargo build --examples` CI job.
@@ -78,7 +79,7 @@ for spec in "$@"; do
     cp "$HARN/_logos_full.rs" "$src/examples/_logos_full.rs"
     log=$HARNESS_LOGS/build_$tag.log
     # shellcheck disable=SC2086
-    if (cd "$src" && cargo rustc --release --example _logos_full --features wgpu -- $cfgs ${EXTRA_CFGS:-}) > "$log" 2>&1; then
+    if (cd "$src" && cargo rustc --release --example _logos_full --features "${HARNESS_FEATURES:-wgpu}" -- $cfgs ${EXTRA_CFGS:-}) > "$log" 2>&1; then
       out=${CARGO_TARGET_DIR:-$src/target}/release/examples/_logos_full
       cp "$out" "$HARNESS_BIN/_logos_full_$tag"
       ppm=$(mktemp "${TMPDIR:-/tmp}/harness_cfgs.XXXXXX").ppm

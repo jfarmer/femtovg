@@ -23,6 +23,8 @@ STATS = {
     'turb_not_run': r'feTurbulence chains not run \(no harness_turbulence\): (\d+)',
     'unclipped': r'clip paths drawn unclipped \(no harness_clip\): (\d+)',
     'invalid_dropped': r'filter attributes with invalid references dropped \(Filter Effects 5\): (\d+)',
+    'alloc_calls': r'ALLOC frames=\d+ calls_per_frame=(\d+)',
+    'alloc_bytes': r'ALLOC frames=\d+ calls_per_frame=\d+ bytes_per_frame=(\d+)',
 }
 
 

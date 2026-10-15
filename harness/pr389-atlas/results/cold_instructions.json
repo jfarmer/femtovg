@@ -1,0 +1,2158 @@
+[
+ {
+  "name": "corpus__babylon__gui-gradient-linear",
+  "framing": "hd",
+  "raw": {
+   "m15": {
+    "0": [
+     461895435,
+     462974619,
+     461522535
+    ],
+    "1": [
+     583685171,
+     587148097,
+     583226631
+    ],
+    "2": [
+     586329629,
+     591431102,
+     586984149
+    ],
+    "3": [
+     596611449,
+     593651086,
+     594596698
+    ]
+   },
+   "p15": {
+    "0": [
+     461632052,
+     462318122,
+     464963815
+    ],
+    "1": [
+     587054260,
+     589304839,
+     586357244
+    ],
+    "2": [
+     586840407,
+     587005927,
+     589516299
+    ],
+    "3": [
+     592976232,
+     590151739,
+     589424315
+    ]
+   },
+   "a15": {
+    "0": [
+     462641814,
+     461625373,
+     463148358
+    ],
+    "1": [
+     636060312,
+     631199705,
+     636069197
+    ],
+    "2": [
+     657271187,
+     651321407,
+     655296588
+    ],
+    "3": [
+     653167115,
+     660988309,
+     653584570
+    ]
+   },
+   "m15sw": {
+    "0": [
+     465458286,
+     465294361,
+     465591022
+    ],
+    "1": [
+     586421694,
+     586523273,
+     590409235
+    ],
+    "2": [
+     590284473,
+     595433528,
+     586635631
+    ],
+    "3": [
+     590359210,
+     590497860,
+     591718185
+    ]
+   },
+   "p15sw": {
+    "0": [
+     462426871,
+     463424535,
+     465902703
+    ],
+    "1": [
+     585741843,
+     583521849,
+     587450971
+    ],
+    "2": [
+     591201301,
+     590286144,
+     586414550
+    ],
+    "3": [
+     592902144,
+     594114040,
+     593151919
+    ]
+   },
+   "a15sw": {
+    "0": [
+     461904869,
+     466467697,
+     466180238
+    ],
+    "1": [
+     574349762,
+     575500302,
+     573426286
+    ],
+    "2": [
+     592317748,
+     583077917,
+     592447189
+    ],
+    "3": [
+     594878455,
+     594820582,
+     591450625
+    ]
+   }
+  },
+  "mem": {
+   "m15_1": {
+    "baseline_footprint": 7455224.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479281656.0,
+    "peak_graphics": 462831616.0,
+    "peak_cpu": 16450040.0,
+    "lifetime_peak": 479281656.0,
+    "after_footprint": 479281656.0,
+    "after_graphics": 462831616.0,
+    "frame_ms": 18.007,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 7.7804
+   },
+   "m15_200": {
+    "baseline_footprint": 7684600.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479691256.0,
+    "peak_graphics": 463011840.0,
+    "peak_cpu": 16679416.0,
+    "lifetime_peak": 479691256.0,
+    "after_footprint": 479511032.0,
+    "after_graphics": 462831616.0,
+    "frame_ms": 0.521,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1958
+   },
+   "p15_1": {
+    "baseline_footprint": 7586296.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479396344.0,
+    "peak_graphics": 462831616.0,
+    "peak_cpu": 16564728.0,
+    "lifetime_peak": 479396344.0,
+    "after_footprint": 479396344.0,
+    "after_graphics": 462831616.0,
+    "frame_ms": 17.697,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 7.5896
+   },
+   "p15_200": {
+    "baseline_footprint": 7684600.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479740432.0,
+    "peak_graphics": 463011840.0,
+    "peak_cpu": 16744976.0,
+    "lifetime_peak": 479756816.0,
+    "after_footprint": 479576592.0,
+    "after_graphics": 462831616.0,
+    "frame_ms": 0.54,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1936
+   },
+   "a15_1": {
+    "baseline_footprint": 7651832.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 492683792.0,
+    "peak_graphics": 474464256.0,
+    "peak_cpu": 18219536.0,
+    "lifetime_peak": 492683792.0,
+    "after_footprint": 492683792.0,
+    "after_graphics": 474464256.0,
+    "frame_ms": 22.238,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 10.8775
+   },
+   "a15_200": {
+    "baseline_footprint": 7733776.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 492945936.0,
+    "peak_graphics": 474480640.0,
+    "peak_cpu": 18514448.0,
+    "lifetime_peak": 492945936.0,
+    "after_footprint": 492765712.0,
+    "after_graphics": 474251264.0,
+    "frame_ms": 0.473,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1623
+   },
+   "m15sw_1": {
+    "baseline_footprint": 7684600.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479232504.0,
+    "peak_graphics": 462831616.0,
+    "peak_cpu": 16400888.0,
+    "lifetime_peak": 479232504.0,
+    "after_footprint": 479232504.0,
+    "after_graphics": 462831616.0,
+    "frame_ms": 17.896,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 7.5485
+   },
+   "m15sw_200": {
+    "baseline_footprint": 7832080.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479986192.0,
+    "peak_graphics": 463011840.0,
+    "peak_cpu": 16990736.0,
+    "lifetime_peak": 480002576.0,
+    "after_footprint": 479822352.0,
+    "after_graphics": 462831616.0,
+    "frame_ms": 0.535,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.2139
+   },
+   "p15sw_1": {
+    "baseline_footprint": 7471608.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479265272.0,
+    "peak_graphics": 462831616.0,
+    "peak_cpu": 16433656.0,
+    "lifetime_peak": 479265272.0,
+    "after_footprint": 479265272.0,
+    "after_graphics": 462831616.0,
+    "frame_ms": 19.301,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 7.9055
+   },
+   "p15sw_200": {
+    "baseline_footprint": 7619088.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 480297488.0,
+    "peak_graphics": 463683584.0,
+    "peak_cpu": 16826896.0,
+    "lifetime_peak": 480330256.0,
+    "after_footprint": 479658512.0,
+    "after_graphics": 462831616.0,
+    "frame_ms": 0.562,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.2159
+   },
+   "a15sw_1": {
+    "baseline_footprint": 7782928.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 482411024.0,
+    "peak_graphics": 465960960.0,
+    "peak_cpu": 16450064.0,
+    "lifetime_peak": 482411024.0,
+    "after_footprint": 482411024.0,
+    "after_graphics": 465960960.0,
+    "frame_ms": 17.344,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 6.818
+   },
+   "a15sw_200": {
+    "baseline_footprint": 7471632.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 482755088.0,
+    "peak_graphics": 466092032.0,
+    "peak_cpu": 16663056.0,
+    "lifetime_peak": 482755088.0,
+    "after_footprint": 482624016.0,
+    "after_graphics": 465960960.0,
+    "frame_ms": 0.455,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1447
+   }
+  }
+ },
+ {
+  "name": "corpus__babylon__gui-gradient-linear",
+  "framing": "z2",
+  "raw": {
+   "m15": {
+    "0": [
+     398260422,
+     405465300,
+     404319467
+    ],
+    "1": [
+     519750791,
+     528584567,
+     527677465
+    ],
+    "2": [
+     526669828,
+     531700368,
+     525721433
+    ],
+    "3": [
+     531838560,
+     532136099,
+     531345042
+    ]
+   },
+   "p15": {
+    "0": [
+     410059929,
+     406473820,
+     404890884
+    ],
+    "1": [
+     527830515,
+     522729183,
+     528210681
+    ],
+    "2": [
+     532056957,
+     528587782,
+     527576040
+    ],
+    "3": [
+     530417754,
+     526466579,
+     531268959
+    ]
+   },
+   "a15": {
+    "0": [
+     407992113,
+     398523553,
+     407860834
+    ],
+    "1": [
+     576415857,
+     568113386,
+     573266569
+    ],
+    "2": [
+     596565826,
+     591198545,
+     596017618
+    ],
+    "3": [
+     595402471,
+     598432308,
+     598450374
+    ]
+   },
+   "m15sw": {
+    "0": [
+     404704789,
+     404190705,
+     408602192
+    ],
+    "1": [
+     528270869,
+     522946900,
+     520660624
+    ],
+    "2": [
+     532268330,
+     526013948,
+     529725253
+    ],
+    "3": [
+     531067454,
+     535086289,
+     536783534
+    ]
+   },
+   "p15sw": {
+    "0": [
+     409048964,
+     405248076,
+     404951261
+    ],
+    "1": [
+     528418249,
+     522531278,
+     528090180
+    ],
+    "2": [
+     521764319,
+     522533767,
+     532357508
+    ],
+    "3": [
+     531287288,
+     534215224,
+     531990158
+    ]
+   },
+   "a15sw": {
+    "0": [
+     405504400,
+     408112041,
+     408755885
+    ],
+    "1": [
+     506555994,
+     514446195,
+     509835506
+    ],
+    "2": [
+     525445755,
+     524315909,
+     532340629
+    ],
+    "3": [
+     536822465,
+     536360887,
+     535939783
+    ]
+   }
+  },
+  "mem": {
+   "m15_1": {
+    "baseline_footprint": 7569912.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466354680.0,
+    "peak_graphics": 450052096.0,
+    "peak_cpu": 16302584.0,
+    "lifetime_peak": 466354680.0,
+    "after_footprint": 466354680.0,
+    "after_graphics": 450052096.0,
+    "frame_ms": 17.653,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 7.706
+   },
+   "m15_200": {
+    "baseline_footprint": 7635448.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466747896.0,
+    "peak_graphics": 450215936.0,
+    "peak_cpu": 16531960.0,
+    "lifetime_peak": 466747896.0,
+    "after_footprint": 466584056.0,
+    "after_graphics": 450052096.0,
+    "frame_ms": 0.505,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1858
+   },
+   "p15_1": {
+    "baseline_footprint": 7635448.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466420216.0,
+    "peak_graphics": 450052096.0,
+    "peak_cpu": 16368120.0,
+    "lifetime_peak": 466420216.0,
+    "after_footprint": 466420216.0,
+    "after_graphics": 450052096.0,
+    "frame_ms": 17.604,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 7.6582
+   },
+   "p15_200": {
+    "baseline_footprint": 7569936.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466977296.0,
+    "peak_graphics": 450428928.0,
+    "peak_cpu": 16613904.0,
+    "lifetime_peak": 467091984.0,
+    "after_footprint": 466666000.0,
+    "after_graphics": 450052096.0,
+    "frame_ms": 0.505,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1846
+   },
+   "a15_1": {
+    "baseline_footprint": 7701008.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479805968.0,
+    "peak_graphics": 461602816.0,
+    "peak_cpu": 18203152.0,
+    "lifetime_peak": 479805968.0,
+    "after_footprint": 479805968.0,
+    "after_graphics": 461602816.0,
+    "frame_ms": 21.321,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 10.634
+   },
+   "a15_200": {
+    "baseline_footprint": 7701008.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 480084496.0,
+    "peak_graphics": 461635584.0,
+    "peak_cpu": 18498064.0,
+    "lifetime_peak": 480182800.0,
+    "after_footprint": 479920656.0,
+    "after_graphics": 461422592.0,
+    "frame_ms": 0.433,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1571
+   },
+   "m15sw_1": {
+    "baseline_footprint": 7700984.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466551288.0,
+    "peak_graphics": 450052096.0,
+    "peak_cpu": 16499192.0,
+    "lifetime_peak": 466551288.0,
+    "after_footprint": 466551288.0,
+    "after_graphics": 450052096.0,
+    "frame_ms": 17.372,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 7.517
+   },
+   "m15sw_200": {
+    "baseline_footprint": 7668216.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466715128.0,
+    "peak_graphics": 450215936.0,
+    "peak_cpu": 16499192.0,
+    "lifetime_peak": 466715128.0,
+    "after_footprint": 466551288.0,
+    "after_graphics": 450052096.0,
+    "frame_ms": 0.502,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.185
+   },
+   "p15sw_1": {
+    "baseline_footprint": 7635472.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466469392.0,
+    "peak_graphics": 450052096.0,
+    "peak_cpu": 16417296.0,
+    "lifetime_peak": 466469392.0,
+    "after_footprint": 466469392.0,
+    "after_graphics": 450052096.0,
+    "frame_ms": 17.472,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 7.5248
+   },
+   "p15sw_200": {
+    "baseline_footprint": 7635472.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466895376.0,
+    "peak_graphics": 450215936.0,
+    "peak_cpu": 16695824.0,
+    "lifetime_peak": 466911760.0,
+    "after_footprint": 466747920.0,
+    "after_graphics": 450052096.0,
+    "frame_ms": 0.514,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1868
+   },
+   "a15sw_1": {
+    "baseline_footprint": 7881232.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469828112.0,
+    "peak_graphics": 453230592.0,
+    "peak_cpu": 16597520.0,
+    "lifetime_peak": 469828112.0,
+    "after_footprint": 469828112.0,
+    "after_graphics": 453230592.0,
+    "frame_ms": 16.657,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 6.7893
+   },
+   "a15sw_200": {
+    "baseline_footprint": 7701008.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 470073872.0,
+    "peak_graphics": 453361664.0,
+    "peak_cpu": 16712208.0,
+    "lifetime_peak": 470073872.0,
+    "after_footprint": 469942800.0,
+    "after_graphics": 453230592.0,
+    "frame_ms": 0.409,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1361
+   }
+  }
+ },
+ {
+  "name": "corpus__babylon__native-canvas",
+  "framing": "z2",
+  "raw": {
+   "m15": {
+    "0": [
+     440888305,
+     446480859,
+     548368933
+    ],
+    "1": [
+     1059861088,
+     1064469220,
+     1061481857
+    ],
+    "2": [
+     1124613090,
+     1119688808,
+     1122370853
+    ],
+    "3": [
+     1170705214,
+     1178850480,
+     1174855709
+    ]
+   },
+   "p15": {
+    "0": [
+     447643743,
+     446065367,
+     446567609
+    ],
+    "1": [
+     1056803048,
+     1051491594,
+     1057841221
+    ],
+    "2": [
+     1120341377,
+     1122116096,
+     1116765587
+    ],
+    "3": [
+     1172238570,
+     1169916184,
+     1171148186
+    ]
+   },
+   "a15": {
+    "0": [
+     444616499,
+     442718420,
+     446933345
+    ],
+    "1": [
+     1056881197,
+     1057982134,
+     1061060402
+    ],
+    "2": [
+     1113565160,
+     1112047380,
+     1119318642
+    ],
+    "3": [
+     1158402179,
+     1163441181,
+     1154940991
+    ]
+   },
+   "m15sw": {
+    "0": [
+     444055420,
+     443048533,
+     447858523
+    ],
+    "1": [
+     968023518,
+     966543789,
+     968006888
+    ],
+    "2": [
+     1035869664,
+     1036399028,
+     1032502068
+    ],
+    "3": [
+     1085717054,
+     1085078883,
+     1084753674
+    ]
+   },
+   "p15sw": {
+    "0": [
+     447381624,
+     442495735,
+     446770882
+    ],
+    "1": [
+     968168919,
+     970435249,
+     973569290
+    ],
+    "2": [
+     1035614932,
+     1034340065,
+     1031722145
+    ],
+    "3": [
+     1086608173,
+     1087039782,
+     1087071279
+    ]
+   },
+   "a15sw": {
+    "0": [
+     440851509,
+     439291581,
+     443252359
+    ],
+    "1": [
+     957138431,
+     956465046,
+     955465467
+    ],
+    "2": [
+     1011524777,
+     1010252023,
+     1008299087
+    ],
+    "3": [
+     1056281695,
+     1054124412,
+     1054429444
+    ]
+   }
+  },
+  "mem": {
+   "m15_1": {
+    "baseline_footprint": 8372752.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 794378984.0,
+    "peak_graphics": 730857472.0,
+    "peak_cpu": 63521512.0,
+    "lifetime_peak": 794411752.0,
+    "after_footprint": 794378984.0,
+    "after_graphics": 730857472.0,
+    "frame_ms": 55.803,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 32.3916
+   },
+   "m15_200": {
+    "baseline_footprint": 8389136.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 798229224.0,
+    "peak_graphics": 734035968.0,
+    "peak_cpu": 64586472.0,
+    "lifetime_peak": 798278376.0,
+    "after_footprint": 795050728.0,
+    "after_graphics": 730529792.0,
+    "frame_ms": 5.0,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.3429
+   },
+   "p15_1": {
+    "baseline_footprint": 8405496.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 794362576.0,
+    "peak_graphics": 730873856.0,
+    "peak_cpu": 63488720.0,
+    "lifetime_peak": 794378960.0,
+    "after_footprint": 794346192.0,
+    "after_graphics": 730857472.0,
+    "frame_ms": 56.389,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 32.9145
+   },
+   "p15_200": {
+    "baseline_footprint": 8454672.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 804307712.0,
+    "peak_graphics": 733986816.0,
+    "peak_cpu": 72958720.0,
+    "lifetime_peak": 804389632.0,
+    "after_footprint": 803488512.0,
+    "after_graphics": 730529792.0,
+    "frame_ms": 5.144,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.428
+   },
+   "a15_1": {
+    "baseline_footprint": 8405496.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 800637672.0,
+    "peak_graphics": 735920128.0,
+    "peak_cpu": 64717544.0,
+    "lifetime_peak": 800654056.0,
+    "after_footprint": 800621288.0,
+    "after_graphics": 735903744.0,
+    "frame_ms": 57.827,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 33.5345
+   },
+   "a15_200": {
+    "baseline_footprint": 8487440.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 803308264.0,
+    "peak_graphics": 738787328.0,
+    "peak_cpu": 65225448.0,
+    "lifetime_peak": 803406568.0,
+    "after_footprint": 800195304.0,
+    "after_graphics": 735412224.0,
+    "frame_ms": 4.589,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 1.9339
+   },
+   "m15sw_1": {
+    "baseline_footprint": 8602104.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 741540536.0,
+    "peak_graphics": 685752320.0,
+    "peak_cpu": 55788216.0,
+    "lifetime_peak": 741556920.0,
+    "after_footprint": 741524152.0,
+    "after_graphics": 685735936.0,
+    "frame_ms": 51.7,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 29.2637
+   },
+   "m15sw_200": {
+    "baseline_footprint": 8536592.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 744817336.0,
+    "peak_graphics": 688865280.0,
+    "peak_cpu": 56296120.0,
+    "lifetime_peak": 744915640.0,
+    "after_footprint": 741540536.0,
+    "after_graphics": 685752320.0,
+    "frame_ms": 5.021,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.3583
+   },
+   "p15sw_1": {
+    "baseline_footprint": 8290832.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 740917944.0,
+    "peak_graphics": 685752320.0,
+    "peak_cpu": 55165624.0,
+    "lifetime_peak": 740934328.0,
+    "after_footprint": 740901560.0,
+    "after_graphics": 685735936.0,
+    "frame_ms": 51.787,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 29.0545
+   },
+   "p15sw_200": {
+    "baseline_footprint": 8389136.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 750027472.0,
+    "peak_graphics": 688963584.0,
+    "peak_cpu": 63029968.0,
+    "lifetime_peak": 750093008.0,
+    "after_footprint": 748634832.0,
+    "after_graphics": 685752320.0,
+    "frame_ms": 5.116,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.4081
+   },
+   "a15sw_1": {
+    "baseline_footprint": 8438288.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 731579064.0,
+    "peak_graphics": 677756928.0,
+    "peak_cpu": 53822136.0,
+    "lifetime_peak": 731595448.0,
+    "after_footprint": 731562680.0,
+    "after_graphics": 677740544.0,
+    "frame_ms": 48.464,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 27.9502
+   },
+   "a15sw_200": {
+    "baseline_footprint": 8536568.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 741671608.0,
+    "peak_graphics": 680722432.0,
+    "peak_cpu": 63341240.0,
+    "lifetime_peak": 741671608.0,
+    "after_footprint": 741098168.0,
+    "after_graphics": 677756928.0,
+    "frame_ms": 4.641,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 1.9701
+   }
+  }
+ },
+ {
+  "name": "corpus__text-probes__gradient-across-runs",
+  "framing": "z2",
+  "raw": {
+   "m15": {
+    "0": [
+     408997182,
+     406381757,
+     402233624
+    ],
+    "1": [
+     460142378,
+     464142210,
+     465917610
+    ],
+    "2": [
+     465841855,
+     466527077,
+     465671487
+    ],
+    "3": [
+     467177905,
+     463601851,
+     466043264
+    ]
+   },
+   "p15": {
+    "0": [
+     406879842,
+     403756887,
+     406889362
+    ],
+    "1": [
+     464197571,
+     467316162,
+     459979606
+    ],
+    "2": [
+     463453742,
+     463453962,
+     461511735
+    ],
+    "3": [
+     468618108,
+     466032275,
+     467756387
+    ]
+   },
+   "a15": {
+    "0": [
+     405319393,
+     402867349,
+     408325467
+    ],
+    "1": [
+     488871408,
+     492018039,
+     489314086
+    ],
+    "2": [
+     495813440,
+     494084213,
+     493936737
+    ],
+    "3": [
+     595547389,
+     494985174,
+     494298188
+    ]
+   },
+   "m15sw": {
+    "0": [
+     405773071,
+     405253130,
+     406052790
+    ],
+    "1": [
+     460993136,
+     461134663,
+     464340195
+    ],
+    "2": [
+     456444283,
+     464341361,
+     460768640
+    ],
+    "3": [
+     468204651,
+     468325118,
+     465267788
+    ]
+   },
+   "p15sw": {
+    "0": [
+     407389930,
+     402836356,
+     406524092
+    ],
+    "1": [
+     461921527,
+     464073081,
+     465944224
+    ],
+    "2": [
+     464061954,
+     466994035,
+     463521626
+    ],
+    "3": [
+     467713041,
+     465369331,
+     462478863
+    ]
+   },
+   "a15sw": {
+    "0": [
+     406248619,
+     402221499,
+     405733319
+    ],
+    "1": [
+     449710584,
+     452113991,
+     446706253
+    ],
+    "2": [
+     448928109,
+     447005969,
+     444534758
+    ],
+    "3": [
+     443971484,
+     451747043,
+     461565174
+    ]
+   }
+  },
+  "mem": {
+   "m15_1": {
+    "baseline_footprint": 7438840.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466698744.0,
+    "peak_graphics": 450019328.0,
+    "peak_cpu": 16679416.0,
+    "lifetime_peak": 466698744.0,
+    "after_footprint": 466698744.0,
+    "after_graphics": 450019328.0,
+    "frame_ms": 14.266,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 4.0543
+   },
+   "m15_200": {
+    "baseline_footprint": 7586320.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 467091984.0,
+    "peak_graphics": 450183168.0,
+    "peak_cpu": 16908816.0,
+    "lifetime_peak": 467091984.0,
+    "after_footprint": 466928144.0,
+    "after_graphics": 450019328.0,
+    "frame_ms": 0.411,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1184
+   },
+   "p15_1": {
+    "baseline_footprint": 7504400.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466846224.0,
+    "peak_graphics": 450019328.0,
+    "peak_cpu": 16826896.0,
+    "lifetime_peak": 466846224.0,
+    "after_footprint": 466846224.0,
+    "after_graphics": 450019328.0,
+    "frame_ms": 14.26,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 3.8953
+   },
+   "p15_200": {
+    "baseline_footprint": 7389688.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 467272232.0,
+    "peak_graphics": 450347008.0,
+    "peak_cpu": 16925224.0,
+    "lifetime_peak": 467272232.0,
+    "after_footprint": 466944552.0,
+    "after_graphics": 450019328.0,
+    "frame_ms": 0.387,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1089
+   },
+   "a15_1": {
+    "baseline_footprint": 7651856.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 485720592.0,
+    "peak_graphics": 466354176.0,
+    "peak_cpu": 19366416.0,
+    "lifetime_peak": 485720592.0,
+    "after_footprint": 485720592.0,
+    "after_graphics": 466354176.0,
+    "frame_ms": 16.075,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 5.4861
+   },
+   "a15_200": {
+    "baseline_footprint": 7668240.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 485589544.0,
+    "peak_graphics": 466354176.0,
+    "peak_cpu": 19251752.0,
+    "lifetime_peak": 485720616.0,
+    "after_footprint": 485425704.0,
+    "after_graphics": 466173952.0,
+    "frame_ms": 0.302,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0638
+   },
+   "m15sw_1": {
+    "baseline_footprint": 7586320.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466829840.0,
+    "peak_graphics": 450019328.0,
+    "peak_cpu": 16810512.0,
+    "lifetime_peak": 466829840.0,
+    "after_footprint": 466829840.0,
+    "after_graphics": 450019328.0,
+    "frame_ms": 13.419,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 3.7585
+   },
+   "m15sw_200": {
+    "baseline_footprint": 7733752.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 467190264.0,
+    "peak_graphics": 450183168.0,
+    "peak_cpu": 17007096.0,
+    "lifetime_peak": 467190264.0,
+    "after_footprint": 467026424.0,
+    "after_graphics": 450019328.0,
+    "frame_ms": 0.369,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1038
+   },
+   "p15sw_1": {
+    "baseline_footprint": 7422480.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466878992.0,
+    "peak_graphics": 450019328.0,
+    "peak_cpu": 16859664.0,
+    "lifetime_peak": 466878992.0,
+    "after_footprint": 466878992.0,
+    "after_graphics": 450019328.0,
+    "frame_ms": 13.692,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 3.754
+   },
+   "p15sw_200": {
+    "baseline_footprint": 7553528.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 467108368.0,
+    "peak_graphics": 450183168.0,
+    "peak_cpu": 16941584.0,
+    "lifetime_peak": 467124752.0,
+    "after_footprint": 466960912.0,
+    "after_graphics": 450019328.0,
+    "frame_ms": 0.343,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1015
+   },
+   "a15sw_1": {
+    "baseline_footprint": 7635472.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469991952.0,
+    "peak_graphics": 453197824.0,
+    "peak_cpu": 16794128.0,
+    "lifetime_peak": 469991952.0,
+    "after_footprint": 469991952.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 12.577,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.86
+   },
+   "a15sw_200": {
+    "baseline_footprint": 7373328.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469959184.0,
+    "peak_graphics": 453328896.0,
+    "peak_cpu": 16630288.0,
+    "lifetime_peak": 469959184.0,
+    "after_footprint": 469828112.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 0.275,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0521
+   }
+  }
+ },
+ {
+  "name": "corpus__text-probes__gradient-bbox-units",
+  "framing": "z2",
+  "raw": {
+   "m15": {
+    "0": [
+     401011183,
+     402844843,
+     403619654
+    ],
+    "1": [
+     462684582,
+     463517053,
+     462613548
+    ],
+    "2": [
+     466965698,
+     461290018,
+     463985831
+    ],
+    "3": [
+     468079842,
+     466784195,
+     466687943
+    ]
+   },
+   "p15": {
+    "0": [
+     406464152,
+     404757492,
+     403361805
+    ],
+    "1": [
+     453340154,
+     459448189,
+     460879130
+    ],
+    "2": [
+     464426382,
+     465598166,
+     461399748
+    ],
+    "3": [
+     462616561,
+     466344632,
+     462730905
+    ]
+   },
+   "a15": {
+    "0": [
+     406404489,
+     403400514,
+     405368804
+    ],
+    "1": [
+     490327617,
+     484476466,
+     484530533
+    ],
+    "2": [
+     485051539,
+     488622723,
+     487367753
+    ],
+    "3": [
+     488539047,
+     485005166,
+     489652656
+    ]
+   },
+   "m15sw": {
+    "0": [
+     400354318,
+     407251079,
+     406470548
+    ],
+    "1": [
+     460512805,
+     464897011,
+     462572801
+    ],
+    "2": [
+     465841570,
+     462336730,
+     461719925
+    ],
+    "3": [
+     463909902,
+     466685389,
+     466931184
+    ]
+   },
+   "p15sw": {
+    "0": [
+     408449166,
+     403102017,
+     405915269
+    ],
+    "1": [
+     462892456,
+     458912960,
+     457328348
+    ],
+    "2": [
+     463875255,
+     465108506,
+     464804366
+    ],
+    "3": [
+     466470483,
+     463783954,
+     466615119
+    ]
+   },
+   "a15sw": {
+    "0": [
+     406587813,
+     408557700,
+     407158672
+    ],
+    "1": [
+     444713890,
+     448903494,
+     451556637
+    ],
+    "2": [
+     443964386,
+     451921667,
+     447027019
+    ],
+    "3": [
+     446821746,
+     450207975,
+     447263994
+    ]
+   }
+  },
+  "mem": {
+   "m15_1": {
+    "baseline_footprint": 7619064.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466272760.0,
+    "peak_graphics": 450068480.0,
+    "peak_cpu": 16204280.0,
+    "lifetime_peak": 466272760.0,
+    "after_footprint": 466272760.0,
+    "after_graphics": 450068480.0,
+    "frame_ms": 13.338,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 3.6077
+   },
+   "m15_200": {
+    "baseline_footprint": 7422480.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466420240.0,
+    "peak_graphics": 450248704.0,
+    "peak_cpu": 16171536.0,
+    "lifetime_peak": 466600464.0,
+    "after_footprint": 466240016.0,
+    "after_graphics": 450068480.0,
+    "frame_ms": 0.383,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1077
+   },
+   "p15_1": {
+    "baseline_footprint": 7471632.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466256400.0,
+    "peak_graphics": 450068480.0,
+    "peak_cpu": 16187920.0,
+    "lifetime_peak": 466256400.0,
+    "after_footprint": 466256400.0,
+    "after_graphics": 450068480.0,
+    "frame_ms": 13.57,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 3.6028
+   },
+   "p15_200": {
+    "baseline_footprint": 7340560.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466878992.0,
+    "peak_graphics": 450560000.0,
+    "peak_cpu": 16318992.0,
+    "lifetime_peak": 466928144.0,
+    "after_footprint": 466387472.0,
+    "after_graphics": 450068480.0,
+    "frame_ms": 0.375,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1067
+   },
+   "a15_1": {
+    "baseline_footprint": 7569912.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479642104.0,
+    "peak_graphics": 461651968.0,
+    "peak_cpu": 17990136.0,
+    "lifetime_peak": 479642104.0,
+    "after_footprint": 479642104.0,
+    "after_graphics": 461651968.0,
+    "frame_ms": 15.521,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 5.0308
+   },
+   "a15_200": {
+    "baseline_footprint": 7455248.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 479478288.0,
+    "peak_graphics": 461651968.0,
+    "peak_cpu": 17859088.0,
+    "lifetime_peak": 479609360.0,
+    "after_footprint": 479281680.0,
+    "after_graphics": 461422592.0,
+    "frame_ms": 0.324,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0633
+   },
+   "m15sw_1": {
+    "baseline_footprint": 7651856.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466289168.0,
+    "peak_graphics": 450068480.0,
+    "peak_cpu": 16220688.0,
+    "lifetime_peak": 466289168.0,
+    "after_footprint": 466289168.0,
+    "after_graphics": 450068480.0,
+    "frame_ms": 13.357,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 3.5347
+   },
+   "m15sw_200": {
+    "baseline_footprint": 7717392.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466584080.0,
+    "peak_graphics": 450248704.0,
+    "peak_cpu": 16335376.0,
+    "lifetime_peak": 466584080.0,
+    "after_footprint": 466403856.0,
+    "after_graphics": 450068480.0,
+    "frame_ms": 0.364,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1032
+   },
+   "p15sw_1": {
+    "baseline_footprint": 7422480.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466387472.0,
+    "peak_graphics": 450068480.0,
+    "peak_cpu": 16318992.0,
+    "lifetime_peak": 466387472.0,
+    "after_footprint": 466387472.0,
+    "after_graphics": 450068480.0,
+    "frame_ms": 13.105,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 3.6458
+   },
+   "p15sw_200": {
+    "baseline_footprint": 7553552.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466551312.0,
+    "peak_graphics": 450248704.0,
+    "peak_cpu": 16302608.0,
+    "lifetime_peak": 466551312.0,
+    "after_footprint": 466371088.0,
+    "after_graphics": 450068480.0,
+    "frame_ms": 0.342,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.1013
+   },
+   "a15sw_1": {
+    "baseline_footprint": 7504400.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469238288.0,
+    "peak_graphics": 453197824.0,
+    "peak_cpu": 16040464.0,
+    "lifetime_peak": 469238288.0,
+    "after_footprint": 469238288.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 12.23,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.7611
+   },
+   "a15sw_200": {
+    "baseline_footprint": 7520760.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469467640.0,
+    "peak_graphics": 453328896.0,
+    "peak_cpu": 16138744.0,
+    "lifetime_peak": 469467640.0,
+    "after_footprint": 469336568.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 0.289,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0517
+   }
+  }
+ },
+ {
+  "name": "corpus__text-probes__gradient-radial",
+  "framing": "z05",
+  "raw": {
+   "m15": {
+    "0": [
+     392790685,
+     398056730,
+     398169878
+    ],
+    "1": [
+     475057139,
+     469962089,
+     473981680
+    ],
+    "2": [
+     472533162,
+     473880200,
+     472491655
+    ],
+    "3": [
+     472672924,
+     471086817,
+     474545903
+    ]
+   },
+   "p15": {
+    "0": [
+     401232439,
+     397348205,
+     397484441
+    ],
+    "1": [
+     471095355,
+     469827927,
+     473924290
+    ],
+    "2": [
+     472939862,
+     467428851,
+     471352364
+    ],
+    "3": [
+     473246791,
+     471593698,
+     473424079
+    ]
+   },
+   "a15": {
+    "0": [
+     398083852,
+     401676902,
+     402342460
+    ],
+    "1": [
+     482930420,
+     478640665,
+     482484285
+    ],
+    "2": [
+     485239281,
+     479818291,
+     477949948
+    ],
+    "3": [
+     481612088,
+     480980949,
+     480814522
+    ]
+   },
+   "m15sw": {
+    "0": [
+     397948387,
+     398998280,
+     397720602
+    ],
+    "1": [
+     474688218,
+     475417849,
+     464412554
+    ],
+    "2": [
+     475677031,
+     475717240,
+     475817811
+    ],
+    "3": [
+     476635144,
+     477924165,
+     473399959
+    ]
+   },
+   "p15sw": {
+    "0": [
+     402233415,
+     399194739,
+     401687995
+    ],
+    "1": [
+     469896408,
+     471413735,
+     470965559
+    ],
+    "2": [
+     473815038,
+     473217751,
+     475784517
+    ],
+    "3": [
+     473660647,
+     477175584,
+     473883460
+    ]
+   },
+   "a15sw": {
+    "0": [
+     399026447,
+     401958667,
+     397148200
+    ],
+    "1": [
+     441302770,
+     439450997,
+     444015274
+    ],
+    "2": [
+     439839611,
+     440527567,
+     443763822
+    ],
+    "3": [
+     444474867,
+     441346433,
+     444375612
+    ]
+   }
+  },
+  "mem": {
+   "m15_1": {
+    "baseline_footprint": 7406096.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 465994256.0,
+    "peak_graphics": 449970176.0,
+    "peak_cpu": 16024080.0,
+    "lifetime_peak": 465994256.0,
+    "after_footprint": 465994256.0,
+    "after_graphics": 449970176.0,
+    "frame_ms": 14.457,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 4.5995
+   },
+   "m15_200": {
+    "baseline_footprint": 7324176.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466420240.0,
+    "peak_graphics": 450363392.0,
+    "peak_cpu": 16056848.0,
+    "lifetime_peak": 466420240.0,
+    "after_footprint": 466027024.0,
+    "after_graphics": 449970176.0,
+    "frame_ms": 0.362,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0835
+   },
+   "p15_1": {
+    "baseline_footprint": 7684624.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466092560.0,
+    "peak_graphics": 449970176.0,
+    "peak_cpu": 16122384.0,
+    "lifetime_peak": 466092560.0,
+    "after_footprint": 466092560.0,
+    "after_graphics": 449970176.0,
+    "frame_ms": 14.182,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 4.5934
+   },
+   "p15_200": {
+    "baseline_footprint": 7422480.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466190864.0,
+    "peak_graphics": 450101248.0,
+    "peak_cpu": 16089616.0,
+    "lifetime_peak": 466190864.0,
+    "after_footprint": 466059792.0,
+    "after_graphics": 449970176.0,
+    "frame_ms": 0.341,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0812
+   },
+   "a15_1": {
+    "baseline_footprint": 7373304.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 473301496.0,
+    "peak_graphics": 456392704.0,
+    "peak_cpu": 16908792.0,
+    "lifetime_peak": 473301496.0,
+    "after_footprint": 473301496.0,
+    "after_graphics": 456392704.0,
+    "frame_ms": 15.602,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 5.2227
+   },
+   "a15_200": {
+    "baseline_footprint": 7438864.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 473432592.0,
+    "peak_graphics": 456458240.0,
+    "peak_cpu": 16974352.0,
+    "lifetime_peak": 473465360.0,
+    "after_footprint": 473301520.0,
+    "after_graphics": 456327168.0,
+    "frame_ms": 0.289,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0603
+   },
+   "m15sw_1": {
+    "baseline_footprint": 7520760.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466239992.0,
+    "peak_graphics": 449970176.0,
+    "peak_cpu": 16269816.0,
+    "lifetime_peak": 466239992.0,
+    "after_footprint": 466239992.0,
+    "after_graphics": 449970176.0,
+    "frame_ms": 14.572,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 4.7005
+   },
+   "m15sw_200": {
+    "baseline_footprint": 7684624.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466354704.0,
+    "peak_graphics": 450101248.0,
+    "peak_cpu": 16253456.0,
+    "lifetime_peak": 466354704.0,
+    "after_footprint": 466223632.0,
+    "after_graphics": 449970176.0,
+    "frame_ms": 0.327,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0813
+   },
+   "p15sw_1": {
+    "baseline_footprint": 7438840.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 465994232.0,
+    "peak_graphics": 449970176.0,
+    "peak_cpu": 16024056.0,
+    "lifetime_peak": 465994232.0,
+    "after_footprint": 465994232.0,
+    "after_graphics": 449970176.0,
+    "frame_ms": 14.427,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 4.6624
+   },
+   "p15sw_200": {
+    "baseline_footprint": 7356944.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 466125328.0,
+    "peak_graphics": 450101248.0,
+    "peak_cpu": 16155152.0,
+    "lifetime_peak": 466125328.0,
+    "after_footprint": 465994256.0,
+    "after_graphics": 449970176.0,
+    "frame_ms": 0.324,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0795
+   },
+   "a15sw_1": {
+    "baseline_footprint": 7356944.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469123600.0,
+    "peak_graphics": 453197824.0,
+    "peak_cpu": 15925776.0,
+    "lifetime_peak": 469123600.0,
+    "after_footprint": 469123600.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 12.31,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.7227
+   },
+   "a15sw_200": {
+    "baseline_footprint": 7537144.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469402128.0,
+    "peak_graphics": 453328896.0,
+    "peak_cpu": 16073232.0,
+    "lifetime_peak": 469402128.0,
+    "after_footprint": 469271056.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 0.279,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0492
+   }
+  }
+ },
+ {
+  "name": "corpus__text-probes__fill-opacity-overlap",
+  "framing": "z1",
+  "raw": {
+   "m15": {
+    "0": [
+     390784416,
+     397869514,
+     395662189
+    ],
+    "1": [
+     472144136,
+     471813909,
+     471254479
+    ],
+    "2": [
+     468871603,
+     473175809,
+     472251996
+    ],
+    "3": [
+     467738753,
+     464588326,
+     471871705
+    ]
+   },
+   "p15": {
+    "0": [
+     401407989,
+     397044814,
+     399272207
+    ],
+    "1": [
+     462179385,
+     472581606,
+     473112317
+    ],
+    "2": [
+     467485845,
+     472471178,
+     474837449
+    ],
+    "3": [
+     474588625,
+     468909700,
+     469925043
+    ]
+   },
+   "a15": {
+    "0": [
+     397111998,
+     396282040,
+     390667770
+    ],
+    "1": [
+     468321679,
+     467878310,
+     471687483
+    ],
+    "2": [
+     473210074,
+     473432533,
+     470139334
+    ],
+    "3": [
+     467983646,
+     476168881,
+     473134310
+    ]
+   },
+   "m15sw": {
+    "0": [
+     396660238,
+     400699132,
+     396169922
+    ],
+    "1": [
+     443180318,
+     441793203,
+     440183175
+    ],
+    "2": [
+     438438130,
+     439232910,
+     439991447
+    ],
+    "3": [
+     442977866,
+     443430142,
+     439117263
+    ]
+   },
+   "p15sw": {
+    "0": [
+     400633245,
+     401121733,
+     400290001
+    ],
+    "1": [
+     442069735,
+     441307150,
+     445702744
+    ],
+    "2": [
+     434212577,
+     437015862,
+     439545126
+    ],
+    "3": [
+     439538144,
+     443154594,
+     437466623
+    ]
+   },
+   "a15sw": {
+    "0": [
+     396263639,
+     395425775,
+     400017719
+    ],
+    "1": [
+     436877568,
+     441676661,
+     442371087
+    ],
+    "2": [
+     442337984,
+     442606956,
+     442847756
+    ],
+    "3": [
+     443117747,
+     437792121,
+     442750984
+    ]
+   }
+  },
+  "mem": {
+   "m15_1": {
+    "baseline_footprint": 7275024.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 473006608.0,
+    "peak_graphics": 456261632.0,
+    "peak_cpu": 16744976.0,
+    "lifetime_peak": 473006608.0,
+    "after_footprint": 473006608.0,
+    "after_graphics": 456261632.0,
+    "frame_ms": 14.431,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 4.4733
+   },
+   "m15_200": {
+    "baseline_footprint": 7668216.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 473694712.0,
+    "peak_graphics": 456884224.0,
+    "peak_cpu": 16810488.0,
+    "lifetime_peak": 473694712.0,
+    "after_footprint": 473039352.0,
+    "after_graphics": 456228864.0,
+    "frame_ms": 0.329,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0587
+   },
+   "p15_1": {
+    "baseline_footprint": 7520784.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 473088528.0,
+    "peak_graphics": 456261632.0,
+    "peak_cpu": 16826896.0,
+    "lifetime_peak": 473088528.0,
+    "after_footprint": 473088528.0,
+    "after_graphics": 456261632.0,
+    "frame_ms": 14.559,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 4.397
+   },
+   "p15_200": {
+    "baseline_footprint": 7356920.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 473055736.0,
+    "peak_graphics": 456359936.0,
+    "peak_cpu": 16695800.0,
+    "lifetime_peak": 473055736.0,
+    "after_footprint": 472924664.0,
+    "after_graphics": 456228864.0,
+    "frame_ms": 0.316,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0583
+   },
+   "a15_1": {
+    "baseline_footprint": 7520760.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 473170424.0,
+    "peak_graphics": 456261632.0,
+    "peak_cpu": 16908792.0,
+    "lifetime_peak": 473170424.0,
+    "after_footprint": 473170424.0,
+    "after_graphics": 456261632.0,
+    "frame_ms": 14.565,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 4.445
+   },
+   "a15_200": {
+    "baseline_footprint": 7438840.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 473268728.0,
+    "peak_graphics": 456359936.0,
+    "peak_cpu": 16908792.0,
+    "lifetime_peak": 473268728.0,
+    "after_footprint": 473137656.0,
+    "after_graphics": 456228864.0,
+    "frame_ms": 0.308,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0576
+   },
+   "m15sw_1": {
+    "baseline_footprint": 7684600.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469402128.0,
+    "peak_graphics": 453197824.0,
+    "peak_cpu": 16204304.0,
+    "lifetime_peak": 469402128.0,
+    "after_footprint": 469402128.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 12.505,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.64
+   },
+   "m15sw_200": {
+    "baseline_footprint": 7504400.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469271056.0,
+    "peak_graphics": 453328896.0,
+    "peak_cpu": 15942160.0,
+    "lifetime_peak": 469271056.0,
+    "after_footprint": 469139984.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 0.286,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0479
+   },
+   "p15sw_1": {
+    "baseline_footprint": 7422480.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469107216.0,
+    "peak_graphics": 453197824.0,
+    "peak_cpu": 15909392.0,
+    "lifetime_peak": 469107216.0,
+    "after_footprint": 469107216.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 12.353,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.5564
+   },
+   "p15sw_200": {
+    "baseline_footprint": 7471632.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469467664.0,
+    "peak_graphics": 453328896.0,
+    "peak_cpu": 16138768.0,
+    "lifetime_peak": 469467664.0,
+    "after_footprint": 469336592.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 0.291,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0485
+   },
+   "a15sw_1": {
+    "baseline_footprint": 7586320.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469303824.0,
+    "peak_graphics": 453197824.0,
+    "peak_cpu": 16106000.0,
+    "lifetime_peak": 469303824.0,
+    "after_footprint": 469303824.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 12.357,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 2.6189
+   },
+   "a15sw_200": {
+    "baseline_footprint": 7684600.0,
+    "baseline_graphics": 196608.0,
+    "peak_footprint": 469615096.0,
+    "peak_graphics": 453328896.0,
+    "peak_cpu": 16286200.0,
+    "lifetime_peak": 469615096.0,
+    "after_footprint": 469484024.0,
+    "after_graphics": 453197824.0,
+    "frame_ms": 0.291,
+    "passes": 0.0,
+    "command_buffers": 0.0,
+    "encode_ms": 0.0481
+   }
+  }
+ }
+]

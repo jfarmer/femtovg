@@ -1,0 +1,13 @@
+
+COMMAND ['/private/tmp/femtovg-poc2389-20261015/bin/_logos_full_p15sw', '1', '/private/tmp/femtovg-poc2389-20261015/results/tmp/p15sw.ppm', '/private/tmp/femtovg-poc2389-20261015/harness/corpus/babylon/gui-gradient-linear.svg']
+layers begun: 0
+transient bytes held at flush: 0
+layers passed through: 0
+clip coverage layers: 0
+harness cfgs: clip=true turbulence=true blend=true mix_blend=true slices=false blur_xy=true morph=true clip_paths=true crop=true text=true
+filters skipped (SKIP_UNSUPPORTED_FILTERS): 0
+feTurbulence chains not run (no harness_turbulence): 0
+clip paths drawn unclipped (no harness_clip): 0
+text nodes not drawn (no harness_text): 0
+text nodes drawn as outlines (TEXT_AS_PATHS, or not glyph runs): 0
+filter attributes with invalid references dropped (Filter Effects 5): 0

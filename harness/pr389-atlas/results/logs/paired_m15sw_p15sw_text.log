@@ -1,0 +1,1539 @@
+ 7:00  up 5 days, 15:13, 10 users, load averages: 18.05 10.10 7.58
+  PID  %CPU COMM
+    1   1.2 /sbin/launchd
+  132   0.0 /usr/sbin/netbiosd
+  321   1.3 /usr/libexec/logd
+  322   0.0 /usr/libexec/smd
+  323   0.0 /usr/libexec/UserEventAgent
+  325  10.5 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+  326   0.0 /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoted
+  329   0.0 /usr/sbin/systemstats
+  331   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/Support/accessoryupdaterd
+  332   0.0 /usr/libexec/uarpassetmanagerd
+  333   0.1 /usr/libexec/configd
+  334   0.0 endpointsecurityd
+  335   0.0 /System/Library/CoreServices/powerd.bundle/powerd
+  336   0.0 /usr/libexec/IOMFB_bics_daemon
+  338   0.0 /usr/libexec/amfid
+  340   0.0 /usr/libexec/remoted
+  342   0.0 /usr/libexec/keybagd
+  343   0.0 /System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated
+  344   0.0 /System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd_system
+  346   0.0 /usr/libexec/watchdogd
+  350   2.4 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds
+  351   0.0 /System/Library/CoreServices/iconservicesd
+  352   0.0 /usr/libexec/kernelmanagerd
+  353   0.0 /usr/libexec/diskarbitrationd
+  356   0.0 /usr/libexec/coreduetd
+  357   0.0 /usr/sbin/syslogd
+  359   0.0 /usr/libexec/thermalmonitord
+  360   0.0 /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/contextstored
+  361   0.0 /usr/libexec/xprotectd
+  362   2.0 /usr/libexec/opendirectoryd
+  363   0.0 /System/Library/PrivateFrameworks/ApplePushService.framework/apsd
+  364   0.0 /System/Library/CoreServices/launchservicesd
+  365   0.0 /usr/libexec/timed
+  366   0.0 /System/Library/PrivateFrameworks/MobileDevice.framework/Versions/A/Resources/usbmuxd
+  367   0.0 /usr/sbin/securityd
+  369   0.0 /usr/libexec/locationd
+  370   0.0 /usr/libexec/nesessionmanager
+  372   0.0 autofsd
+  373   0.0 /usr/libexec/dasd
+  374   0.0 /System/Library/PrivateFrameworks/Heimdal.framework/Helpers/kdc
+  375   0.0 /usr/libexec/corerepaird
+  377   0.0 /usr/sbin/distnoted
+  378   0.0 /System/Library/PrivateFrameworks/AppleCredentialManager.framework/AppleCredentialManagerDaemon
+  380   0.0 /usr/libexec/dirhelper
+  381   0.0 /System/Library/CoreServices/logind
+  382   0.0 /System/Library/PrivateFrameworks/GenerationalStorage.framework/Versions/A/Support/revisiond
+  383   0.0 /usr/sbin/KernelEventAgent
+  384   0.0 /usr/libexec/peakpowermanagerd
+  385   0.0 /usr/libexec/usermanagerd
+  387   0.1 /usr/sbin/bluetoothd
+  388   1.0 /usr/sbin/notifyd
+  389   0.0 /usr/libexec/sandboxd
+  390   0.0 /usr/libexec/corebrightnessd
+  391   0.0 /usr/libexec/AirPlayXPCHelper
+  392   0.0 /System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/com.apple.cmio.registerassistantservice
+  393   0.0 aslmanager
+  394   0.0 /usr/libexec/logd_helper
+  395   9.4 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer
+  396   0.0 /System/Library/PrivateFrameworks/TCC.framework/Support/tccd
+  397   0.0 /usr/sbin/cfprefsd
+  398   0.0 /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow
+  399   0.0 /usr/libexec/fskitd
+  400   0.0 /usr/libexec/powerexperienced
+  401   0.0 /System/Library/CoreServices/coreservicesd
+  402   0.0 /usr/libexec/runningboardd
+  403   0.0 /usr/libexec/securityd_system
+  404   0.0 /usr/libexec/trustd
+  405   0.0 /usr/libexec/containermanagerd_system
+  406   0.4 /System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsd
+  408   0.0 /usr/libexec/lsd
+  409   0.0 /usr/libexec/trustdFileHelper
+  410   0.0 /usr/sbin/coreaudiod
+  411   0.0 /usr/sbin/mDNSResponder
+  412   0.0 /System/Library/CoreServices/liquiddetectiond.app/liquiddetectiond
+  413   0.0 /usr/libexec/apfsd
+  414   0.0 /System/Library/CoreServices/TimeMachine/backupd-helper
+  415   0.0 /System/Library/PrivateFrameworks/SystemStatusServer.framework/Support/systemstatusd
+  416   0.0 /usr/libexec/PowerUIAgent
+  417   0.0 /usr/libexec/nsurlsessiond
+  418   0.0 /usr/libexec/nehelper
+  419   0.0 /usr/libexec/biometrickitd
+  420   0.0 /usr/libexec/eligibilityd
+  421   0.0 /usr/libexec/hidd
+  424   0.0 /usr/libexec/mobileassetd
+  427   0.0 /usr/libexec/secinitd
+  430   0.0 /usr/libexec/airportd
+  432   0.0 /usr/libexec/symptomsd
+  433   0.0 /usr/libexec/ApplicationFirewall/socketfilterfw
+  434   0.0 /usr/sbin/distnoted
+  436   0.0 /usr/sbin/distnoted
+  437   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  438   0.0 /usr/sbin/mDNSResponderHelper
+  439   0.0 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/authd.xpc/Contents/MacOS/authd
+  440   0.0 /System/Library/PrivateFrameworks/BiomeStreams.framework/Support/biomed
+  442   0.0 /usr/libexec/syspolicyd
+  443   0.0 /usr/sbin/distnoted
+  452   0.0 /usr/libexec/cryptexd
+  453   0.0 /usr/libexec/tzd
+  479   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  494   0.0 /System/Library/Frameworks/SystemExtensions.framework/Versions/A/Helpers/sysextd
+  495   0.0 /usr/libexec/colorsync.displayservices
+  500   0.0 /System/Library/PrivateFrameworks/MobileAssetDaemon.framework/Versions/A/XPCServices/com.apple.MobileAsset.DownloadService.Builtin.xpc/Contents/MacOS/com.apple.MobileAsset.DownloadService.Builtin
+  501   0.0 /usr/sbin/WirelessRadioManagerd
+  502   0.0 /System/Library/CoreServices/TimeMachine/backupd
+  503   0.0 /usr/libexec/findmybeaconingd
+  504   0.0 /usr/libexec/triald_system
+  505   0.0 /System/Library/CoreServices/Software Update.app/Contents/Resources/softwareupdated
+  506   0.0 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/com.apple.CodeSigningHelper.xpc/Contents/MacOS/com.apple.CodeSigningHelper
+  507   0.0 /System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd
+  508   0.0 /usr/sbin/distnoted
+  509   0.0 /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Resources/backgroundtaskmanagementd
+  510   0.0 /System/Library/PrivateFrameworks/PowerLog.framework/Versions/A/XPCServices/PerfPowerTelemetryClientRegistrationService.xpc/Contents/MacOS/PerfPowerTelemetryClientRegistrationService
+  511   0.0 /usr/libexec/storagekitd
+  514   0.0 /Library/SystemExtensions/EEF93D38-FF99-4967-9558-CD822DC5535D/com.obsproject.obs-studio.mac-camera-extension.systemextension/Contents/MacOS/com.obsproject.obs-studio.mac-camera-extension
+  515   0.0 /Library/SystemExtensions/0FB05DD0-DC84-457F-B6FD-DC346A4CE317/com.reincubate.macos.cam.avextension.systemextension/Contents/MacOS/com.reincubate.macos.cam.avextension
+  516   0.0 /usr/libexec/com.apple.cmio.videodriverkithostextension.systemextension/Contents/MacOS/com.apple.cmio.videodriverkithostextension
+  517   0.0 /System/Library/Frameworks/ColorSync.framework/Versions/A/XPCServices/com.apple.ColorSyncXPCAgent.xpc/Contents/MacOS/com.apple.ColorSyncXPCAgent
+  519   0.0 /usr/libexec/colorsyncd
+  521   0.0 /usr/libexec/cameracaptured
+  522   0.0 /System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/UVCAssistant.systemextension/Contents/MacOS/UVCAssistant
+  523   0.0 /System/Library/CoreServices/Software Update.app/Contents/Resources/suhelperd
+  525   0.0 /usr/sbin/distnoted
+  527   0.0 Core Audio Driver (ARK.driver)
+  528   0.0 /System/Library/Frameworks/CoreAudio.framework/Versions/A/XPCServices/com.apple.audio.DriverHelper.xpc/Contents/MacOS/com.apple.audio.DriverHelper
+  529   0.0 /usr/libexec/audiomxd
+  530   0.0 /System/Library/Frameworks/AudioToolbox.framework/AudioComponentRegistrar
+  531   0.0 /usr/sbin/appleh16camerad
+  533   0.0 /usr/libexec/mobileactivationd
+  534   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+  535   0.0 /usr/libexec/secinitd
+  536   0.0 /usr/libexec/aneuserd
+  537   0.0 /usr/libexec/aned
+  538   0.0 /usr/libexec/online-auth-agent
+  539   0.0 /usr/libexec/audioclocksyncd
+  540   0.0 /System/Library/CoreServices/appleeventsd
+  541   0.0 Core Audio Driver (ParrotAudioPlugin.driver)
+  542   0.0 /usr/sbin/cfprefsd
+  544   0.0 Contents/XPCServices/com.bombich.ccc.helper.xpc/Contents/MacOS/com.bombich.ccc.helper
+  545   0.0 /usr/libexec/trustd
+  546   0.0 /usr/libexec/audioanalyticsd
+  547   0.0 /System/Library/PrivateFrameworks/AppleDeviceQuerySupport.framework/Versions/A/XPCServices/AppleDeviceQueryService.xpc/Contents/MacOS/AppleDeviceQueryService
+  549   0.0 /Applications/Mullvad VPN.app/Contents/Resources/mullvad-daemon
+  550   0.0 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+  551   0.0 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+  552   0.0 /usr/sbin/distnoted
+  553   0.0 /usr/libexec/modelmanagerd
+  554   0.0 /System/Library/PrivateFrameworks/ViewBridge.framework/Versions/A/XPCServices/ViewBridgeAuxiliary.xpc/Contents/MacOS/ViewBridgeAuxiliary
+  555   0.0 /System/Library/PrivateFrameworks/SystemAdministration.framework/XPCServices/writeconfig.xpc/Contents/MacOS/writeconfig
+  556   0.0 /System/Library/PrivateFrameworks/Categories.framework/Versions/A/XPCServices/CategoriesService.xpc/Contents/MacOS/CategoriesService
+  557   0.0 /usr/libexec/secinitd
+  558   0.0 /usr/libexec/containermanagerd
+  561   2.8 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+  562   0.0 /usr/sbin/distnoted
+  563   0.0 /usr/sbin/cfprefsd
+  565   0.0 /usr/libexec/trustd
+  566   0.0 /System/Library/PrivateFrameworks/ModelCatalogRuntime.framework/Versions/A/modelcatalogd
+  567   0.0 /usr/libexec/containermanagerd
+  568   0.0 /usr/libexec/bootinstalld
+  569   0.3 /System/Library/DriverExtensions/com.apple.DriverKit-AppleBCMWLAN.dext/com.apple.DriverKit-AppleBCMWLAN
+  570   0.0 /System/Library/DriverExtensions/com.apple.DriverKit-IOUserDockChannelSerial.dext/com.apple.DriverKit-IOUserDockChannelSerial
+  571   0.0 /System/Library/DriverExtensions/com.apple.AppleUserHIDDrivers.dext/com.apple.AppleUserHIDDrivers
+  575   0.1 /usr/libexec/searchpartyd
+  576   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  578   0.0 /usr/sbin/distnoted
+  581   0.0 /System/Library/Frameworks/GSS.framework/Helpers/GSSCred
+  589   0.0 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/XPCServices/com.apple.hiservices-xpcservice.xpc/Contents/MacOS/com.apple.hiservices-xpcservice
+  591   0.0 /usr/sbin/distnoted
+  592   0.0 /usr/libexec/rtcreportingd
+  594   0.0 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+  595   0.0 /usr/libexec/symptomsd-diag
+  597   0.0 /System/Library/CoreServices/osanalyticshelper
+  598   0.0 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+  599   0.0 /usr/libexec/applekeystored
+  600   0.0 /usr/sbin/distnoted
+  601   0.0 /usr/sbin/cfprefsd
+  602   0.0 /System/Library/PrivateFrameworks/CoreKDL.framework/Support/corekdld
+  603   0.0 /usr/libexec/secd
+  604   0.0 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/TrustedPeersHelper.xpc/Contents/MacOS/TrustedPeersHelper
+  605   0.0 /usr/libexec/UserEventAgent
+  606   0.0 /usr/libexec/gamecontrollerd
+  607   0.0 /usr/libexec/seld
+  608   0.0 /usr/libexec/uarpd
+  610   0.0 /usr/libexec/neagent
+  611   0.0 /usr/libexec/knowledge-agent
+  612   0.0 /System/Library/CoreServices/CoreServicesUIAgent.app/Contents/MacOS/CoreServicesUIAgent
+  613   0.0 /usr/sbin/universalaccessd
+  614   0.0 /usr/libexec/pboard
+  615   0.0 /usr/libexec/containermanagerd
+  616   0.0 /System/Library/CoreServices/WindowManager.app/Contents/MacOS/WindowManager
+  617   0.0 /usr/libexec/findmydeviced
+  619   0.0 /usr/libexec/lsd
+  620   0.0 /usr/libexec/linkd
+  621   0.0 /System/Library/CoreServices/audioaccessoryd
+  622   0.0 /System/Library/PrivateFrameworks/AccessibilitySupport.framework/Versions/A/Resources/AccessibilityVisualsAgent.app/Contents/MacOS/AccessibilityVisualsAgent
+  624   0.0 /System/Library/PrivateFrameworks/TCC.framework/Support/tccd
+  625   0.0 /System/Library/CoreServices/talagentd
+  626   0.0 /usr/sbin/distnoted
+  627   0.0 /usr/libexec/rapportd
+  628   0.0 /System/Library/PrivateFrameworks/NewDeviceOutreach.framework/ndoagent
+  629   0.0 /usr/libexec/findmydevice-user-agent
+  631   0.0 /usr/libexec/trustd
+  632   0.0 /usr/libexec/ContinuityCaptureAgent
+  634   0.0 /System/Library/PrivateFrameworks/IDS.framework/identityservicesd.app/Contents/MacOS/identityservicesd
+  635   0.0 /System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd
+  636   0.0 /System/Library/Frameworks/Accounts.framework/Versions/A/Support/accountsd
+  637   0.0 /usr/libexec/nsurlsessiond
+  639   0.0 /System/Library/PrivateFrameworks/ChronoCore.framework/Support/chronod
+  640   0.0 /usr/libexec/wifip2pd
+  641   0.0 /System/Library/CoreServices/CoreLocationAgent.app/Contents/MacOS/CoreLocationAgent
+  642   0.0 /usr/libexec/transparencyd
+  643   0.0 /System/Library/Frameworks/CryptoTokenKit.framework/ctkd
+  644   0.0 /System/Library/PrivateFrameworks/SyncedDefaults.framework/Support/syncdefaultsd
+  645   0.0 /System/Library/Frameworks/CryptoTokenKit.framework/ctkd
+  647   0.0 /usr/libexec/pkd
+  648   0.0 /System/Library/CoreServices/APFSUserAgent
+  650   0.0 /usr/sbin/usernoted
+  651   0.0 /System/Library/Frameworks/CoreTelephony.framework/Support/CommCenter
+  652   0.0 /usr/libexec/routined
+  653   0.0 /usr/libexec/secinitd
+  654   0.0 /System/Library/CoreServices/lockoutagent
+  655   0.0 /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/ContextStoreAgent
+  656   0.0 /System/Library/PrivateFrameworks/IntlPreferences.framework/Support/localizationswitcherd
+  657   0.0 /usr/libexec/dmd
+  658   0.0 /System/Library/PrivateFrameworks/ScreenTimeCore.framework/Versions/A/ScreenTimeAgent
+  659   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  660   0.0 /System/Library/PrivateFrameworks/TelephonyUtilities.framework/callservicesd
+  663   0.0 /System/Library/PrivateFrameworks/SessionCore.framework/Support/liveactivitiesd
+  664   0.0 /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock
+  665   0.0 /System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter
+  667   0.0 /System/Library/CoreServices/SystemUIServer.app/Contents/MacOS/SystemUIServer
+  668   0.0 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+  669   2.6 /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder
+  672   0.0 /System/Library/CoreServices/AccessibilityUIServer.app/Contents/MacOS/AccessibilityUIServer
+  673   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/XPCServices/csnameddatad.xpc/Contents/MacOS/csnameddatad
+  674   0.0 /System/Library/CoreServices/WallpaperAgent.app/Contents/MacOS/WallpaperAgent
+  676   0.0 /System/Library/Frameworks/QuickLookThumbnailing.framework/Support/com.apple.quicklook.ThumbnailsAgent
+  677   0.0 /usr/sbin/filecoordinationd
+  678   0.0 /System/Library/Frameworks/QuickLookUI.framework/Versions/A/XPCServices/QuickLookUIService.xpc/Contents/MacOS/QuickLookUIService
+  679   0.0 /System/Library/PrivateFrameworks/VoiceShortcuts.framework/Versions/A/Support/siriactionsd
+  680   0.0 /System/Library/PrivateFrameworks/ViewBridge.framework/Versions/A/XPCServices/ViewBridgeAuxiliary.xpc/Contents/MacOS/ViewBridgeAuxiliary
+  681   0.0 /System/Library/PrivateFrameworks/SocialLayer.framework/sociallayerd.app/Contents/MacOS/sociallayerd
+  683   0.0 /System/Library/PrivateFrameworks/CalendarDaemon.framework/Support/calaccessd
+  684   0.0 /System/Library/CoreServices/iconservicesagent
+  685   0.0 /System/Library/CoreServices/sharedfilelistd
+  686   0.0 /usr/libexec/intelligentroutingd
+  687   0.0 /System/Library/PrivateFrameworks/iCloudDriveCore.framework/Versions/A/Support/bird
+  688   0.0 /System/Library/PrivateFrameworks/FileProvider.framework/Support/fileproviderd
+  689   0.0 /usr/libexec/wallpaperexportd
+  690   0.0 /System/Library/PrivateFrameworks/AMPDevices.framework/Versions/A/Support/AMPDeviceDiscoveryAgent
+  691   0.0 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+  692   0.0 /System/Library/PrivateFrameworks/MobileTimer.framework/Executables/mobiletimerd
+  693   0.0 /usr/libexec/replayd
+  694   0.0 /System/Library/Frameworks/AudioToolbox.framework/AudioComponentRegistrar
+  695   0.0 /System/Library/ExtensionKit/Extensions/WallpaperAerialsExtension.appex/Contents/MacOS/WallpaperAerialsExtension
+  696   0.0 /System/Library/PrivateFrameworks/login.framework/Versions/A/XPCServices/LoginUserService.xpc/Contents/MacOS/LoginUserService
+  697   0.0 /System/Library/PrivateFrameworks/IMCore.framework/imagent.app/Contents/MacOS/imagent
+  698   0.0 /usr/libexec/nearbyd
+  699   0.0 /System/Library/PrivateFrameworks/StatusKit.framework/StatusKitAgent
+  700   0.0 /System/Library/Frameworks/ManagedSettings.framework/Versions/A/ManagedSettingsAgent
+  701   0.0 /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Support/BackgroundTaskManagementAgent.app/Contents/MacOS/BackgroundTaskManagementAgent
+  702   0.0 /usr/libexec/sharingd
+  703   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/corespotlightd
+  704   0.0 /System/Library/PrivateFrameworks/HomeKitDaemon.framework/Support/homed
+  705   0.0 /System/Library/PrivateFrameworks/CacheDelete.framework/deleted
+  708   0.0 /usr/libexec/rosetta/oahd
+  709   0.0 /System/Library/PrivateFrameworks/DoNotDisturbServer.framework/Support/donotdisturbd
+  710   0.0 /Library/Apple/System/Library/PrivateFrameworks/DeviceInterface.framework/Support/deviceinterfaced
+  712   0.0 /System/Library/PrivateFrameworks/WiFiPolicy.framework/XPCServices/WiFiCloudAssetsXPCService.xpc/Contents/MacOS/WiFiCloudAssetsXPCService
+  713   0.0 /usr/libexec/kernelmanager_helper
+  714   0.0 /usr/sbin/systemsoundserverd
+  716   0.0 /System/Library/CoreServices/UIKitSystem.app/Contents/MacOS/UIKitSystem
+  717   0.0 /usr/libexec/milod
+  718   0.0 /System/Library/PrivateFrameworks/CoreFollowUp.framework/Versions/A/Support/followupd
+  719   0.0 /System/Library/PrivateFrameworks/CommunicationTrust.framework/Support/communicationtrustd
+  720   0.0 /System/Library/PrivateFrameworks/IMDPersistence.framework/XPCServices/IMDPersistenceAgent.xpc/Contents/MacOS/IMDPersistenceAgent
+  724   0.0 /System/Library/PrivateFrameworks/AppSSO.framework/Support/AppSSOAgent.app/Contents/MacOS/AppSSOAgent
+  725   0.0 /System/Library/CoreServices/ReportCrash
+  726   0.0 /System/Library/PrivateFrameworks/AppSSO.framework/Support/AppSSODaemon
+  727   0.0 /System/Library/PrivateFrameworks/ProtectedCloudStorage.framework/Helpers/ProtectedCloudKeySyncing
+  728   0.0 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService
+  729   0.0 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/XPCServices/com.apple.hiservices-xpcservice.xpc/Contents/MacOS/com.apple.hiservices-xpcservice
+  730   0.0 /usr/libexec/assessmentagent
+  731   0.0 /System/Library/CoreServices/WiFiAgent.app/Contents/MacOS/WiFiAgent
+  732   0.0 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+  733   0.0 /System/Library/PrivateFrameworks/MediaAnalysis.framework/Versions/A/mediaanalysisd
+  737   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  738   0.0 /System/Library/PrivateFrameworks/EmailDaemon.framework/Versions/A/maild
+  739   0.0 /usr/libexec/mobilerepaird
+  740   0.0 /System/Library/PrivateFrameworks/UsageTracking.framework/Versions/A/UsageTrackingAgent
+  741   0.0 /System/Library/PrivateFrameworks/SiriInference.framework/Versions/A/siriinferenced
+  742   0.0 /usr/libexec/diagnosticextensionsd
+  743   0.0 /System/Library/PrivateFrameworks/FamilyCircle.framework/Versions/A/Resources/familycircled
+  744   0.0 /System/Library/PrivateFrameworks/PhotoLibraryServices.framework/Versions/A/Support/photolibraryd
+  745   0.0 /System/Library/PrivateFrameworks/AssistantServices.framework/Versions/A/Support/assistantd
+  746   0.0 /System/Library/PrivateFrameworks/AuthKit.framework/Versions/A/Support/akd
+  747   0.0 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+  748   0.0 /usr/libexec/duetexpertd
+  750   0.0 /System/Library/CoreServices/ScopedBookmarkAgent
+  751   0.0 /System/Library/PrivateFrameworks/iCloudDriveService.framework/XPCServices/ContainerMetadataExtractor.xpc/Contents/MacOS/ContainerMetadataExtractor
+  752   0.0 /usr/libexec/wifianalyticsd
+  753   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  754   0.0 /System/Library/Frameworks/FamilyControls.framework/Versions/A/FamilyControlsAgent
+  755   0.0 /System/Library/PrivateFrameworks/CloudDocs.framework/PlugIns/com.apple.CloudDocs.iCloudDriveFileProvider.appex/Contents/MacOS/com.apple.CloudDocs.iCloudDriveFileProvider
+  756   0.0 /System/Library/PrivateFrameworks/UserActivity.framework/Agents/useractivityd
+  757   0.0 /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.extra.xpc/Contents/MacOS/com.apple.dock.extra
+  758   0.0 /System/Library/PrivateFrameworks/TelephonyUtilities.framework/XPCServices/com.apple.FaceTime.FTConversationService.xpc/Contents/MacOS/com.apple.FaceTime.FTConversationService
+  759   0.0 /System/Library/PrivateFrameworks/CoreADI.framework/adid
+  761   0.0 /System/Library/PrivateFrameworks/SiriTTSService.framework/sirittsd
+  762   0.0 /System/Library/Frameworks/Translation.framework/translationd
+  763   0.0 /System/Library/Frameworks/Speech.framework/Versions/A/XPCServices/localspeechrecognition.xpc/Contents/MacOS/localspeechrecognition
+  765   0.0 /usr/libexec/searchpartyuseragent
+  767   0.0 /System/Library/CoreServices/ReportCrash
+  768   0.0 /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoteagent
+  769   0.0 /usr/libexec/appleaccountd
+  770   0.0 /usr/libexec/avconferenced
+  771   0.0 /usr/libexec/siriknowledged
+  772   0.0 /System/Library/PrivateFrameworks/GenerativeExperiencesRuntime.framework/Versions/A/generativeexperiencesd
+  773   0.0 /System/Library/PrivateFrameworks/ContinuousDialogManagerService.framework/assistant_cdmd
+  774   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/AudioConverterService.xpc/Contents/MacOS/AudioConverterService
+  775   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/AudioConverterHardenedService.xpc/Contents/MacOS/AudioConverterHardenedService
+  776   0.0 /System/Library/PrivateFrameworks/CoreParsec.framework/parsecd
+  777   0.0 /System/Library/PrivateFrameworks/iTunesCloud.framework/Support/itunescloudd
+  778   0.0 /System/Library/CoreServices/Spotlight.app/Contents/MacOS/Spotlight
+  779   0.0 /System/Library/PrivateFrameworks/TextInputUIMacHelper.framework/Versions/A/XPCServices/CursorUIViewService.xpc/Contents/MacOS/CursorUIViewService
+  780   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+  781   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+  782   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+  783   0.0 /usr/libexec/triald
+  784   0.0 /System/Library/PrivateFrameworks/CSExattrCrypto.framework/Versions/A/XPCServices/CSExattrCryptoService.xpc/Contents/MacOS/CSExattrCryptoService
+  785   0.0 /usr/libexec/networkserviceproxy
+  787   0.0 /System/Library/PrivateFrameworks/AppleMediaServices.framework/Resources/amsaccountsd
+  789   0.0 /System/Library/PrivateFrameworks/WiFiPolicy.framework/XPCServices/WiFiCloudAssetsXPCService.xpc/Contents/MacOS/WiFiCloudAssetsXPCService
+  790   0.0 /System/Library/PrivateFrameworks/iCloudNotification.framework/iCloudNotificationAgent
+  791   0.0 /System/Library/CoreServices/pbs
+  792   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  793   0.0 /System/Library/PrivateFrameworks/MapsSync.framework/mapssyncd
+  794   0.0 /System/Library/PrivateFrameworks/CacheDelete.framework/deleted_helper
+  795   0.0 /System/Library/PrivateFrameworks/CloudSubscriptionFeatures.framework/FeatureAccessAgent
+  796   0.0 /System/Library/PrivateFrameworks/AppleMediaServicesUI.framework/amsengagementd
+  800   0.0 /usr/sbin/spindump
+  801   0.0 /System/Library/PrivateFrameworks/CoreThreadCommissionerService.framework/CoreThreadCommissionerServiced
+  802   0.0 /usr/libexec/spindump_agent
+  803   0.0 /System/Library/CoreServices/SubmitDiagInfo
+  804   0.0 /System/Library/PrivateFrameworks/ContextKit.framework/Versions/A/XPCServices/ContextService.xpc/Contents/MacOS/ContextService
+  807   0.0 /System/Library/CoreServices/appplaceholdersyncd
+  809   0.0 /usr/libexec/swcd
+  810   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+  811   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  812   0.0 /usr/libexec/gamepolicyd
+  813   0.0 /usr/libexec/bluetoothuserd
+  814   0.0 /usr/libexec/tailspind
+  815   0.0 /usr/libexec/ospredictiond
+  817   0.0 /System/Library/PrivateFrameworks/PhotoAnalysis.framework/Versions/A/Support/photoanalysisd
+  818   0.0 cloudphotod
+  819   0.0 /System/Library/PrivateFrameworks/CoreRecents.framework/Versions/A/Support/recentsd
+  820   0.0 /System/Library/PrivateFrameworks/AssetCacheServices.framework/Versions/A/XPCServices/AssetCacheLocatorService.xpc/Contents/MacOS/AssetCacheLocatorService
+  821   0.0 /System/Library/CoreServices/UniversalControl.app/Contents/MacOS/UniversalControl
+  822   0.0 /usr/libexec/swtransparencyd
+  824   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  825   0.0 /System/Library/PrivateFrameworks/TrialServer.framework/Versions/A/XPCServices/TrialArchivingService.xpc/Contents/MacOS/TrialArchivingService
+  826   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+  827   0.0 /System/Library/PrivateFrameworks/CloudServices.framework/Helpers/com.apple.sbd
+  830   0.0 /usr/libexec/SidecarRelay
+  831   0.0 /usr/libexec/AssetCache/AssetCache
+  832   0.0 /System/Library/Frameworks/Speech.framework/Versions/A/XPCServices/localspeechrecognition.xpc/Contents/MacOS/localspeechrecognition
+  833   0.0 /System/Library/PrivateFrameworks/AXAssetLoader.framework/Support/axassetsd
+  834   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+  836   0.0 /usr/libexec/countryd
+  839   0.0 /System/Library/PrivateFrameworks/CoreSymbolication.framework/coresymbolicationd
+  840   0.0 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+  844   0.0 /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService
+  845   0.0 /System/Library/PrivateFrameworks/AssetCacheServicesExtensions.framework/XPCServices/AssetCacheTetheratorService.xpc/Contents/MacOS/AssetCacheTetheratorService
+  848   0.0 /System/Library/PrivateFrameworks/ContextKit.framework/Versions/A/XPCServices/ContextService.xpc/Contents/MacOS/ContextService
+  855   0.0 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+  858   0.0 /System/Library/PrivateFrameworks/CoreCDP.framework/Versions/A/Resources/cdpd
+  880   0.0 /System/Library/PrivateFrameworks/HearingCore.framework/heard
+  881   0.0 /System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd
+  887   0.0 2BUA8C4S2C.com.1password.browser-helper
+  890   0.0 /System/Library/Frameworks/InputMethodKit.framework/Resources/imklaunchagent
+  893   0.0 /System/Library/Image Capture/Support/icdd
+  895   0.0 /opt/homebrew/opt/ollama/bin/ollama
+  896   0.0 /System/Library/PrivateFrameworks/AskPermission.framework/Versions/A/Resources/askpermissiond
+  899   0.0 arkaudiod
+  900   0.0 /System/Library/CoreServices/AirPlayUIAgent.app/Contents/MacOS/AirPlayUIAgent
+  901   0.0 /opt/homebrew/opt/postgresql@17/bin/postgres
+  904   0.0 /System/Library/CoreServices/diagnostics_agent
+  905   0.0 /System/Library/CoreServices/TextInputMenuAgent.app/Contents/MacOS/TextInputMenuAgent
+  907   0.0 Contents/Resources/StudioLaunchAgent
+  909   0.0 /System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp
+  910   0.0 /System/Library/PrivateFrameworks/UniversalAccess.framework/Versions/A/Resources/universalAccessAuthWarn.app/Contents/MacOS/universalAccessAuthWarn
+  911   0.0 /System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp
+  914   0.0 /usr/libexec/loginitemregisterd
+  915   0.0 /usr/libexec/MTLAssetUpgraderD
+  916   0.0 /System/Library/Frameworks/MediaExtension.framework/Versions/A/Helpers/MENotificationAgent
+  917   0.0 /System/Library/Frameworks/StoreKit.framework/Support/storekitagent
+  918   0.0 /System/Library/CoreServices/TextInputSwitcher.app/Contents/MacOS/TextInputSwitcher
+  919   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  921   0.0 /System/Library/PrivateFrameworks/IntelligenceFlowContextRuntime.framework/Versions/A/intelligencecontextd
+  923   0.0 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+  925   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+  927   0.0 /usr/libexec/captiveagent
+  928   0.0 /usr/libexec/metrickitd
+  931   0.0 /System/Library/Frameworks/Speech.framework/Versions/A/XPCServices/localspeechrecognition.xpc/Contents/MacOS/localspeechrecognition
+  932   0.0 /Library/SystemExtensions/1A15F6AD-8B4D-4FB2-9A78-8E1969EB6C6E/io.tailscale.ipn.macsys.network-extension.systemextension/Contents/MacOS/io.tailscale.ipn.macsys.network-extension
+  933   0.0 /System/Library/PrivateFrameworks/AppleNeuralEngine.framework/XPCServices/ANECompilerService.xpc/Contents/MacOS/ANECompilerService
+  954   0.0 /usr/sbin/BTLEServerAgent
+  963   0.0 /System/Library/PrivateFrameworks/SoftwareUpdate.framework/Resources/SoftwareUpdateNotificationManager.app/Contents/MacOS/SoftwareUpdateNotificationManager
+  964   0.0 /System/Library/PrivateFrameworks/FindMyMac.framework/Resources/FindMyMacd
+  967   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/AUCrashHandlerService.xpc/Contents/MacOS/AUCrashHandlerService
+  969   0.0 /usr/libexec/diagnosticd
+  975   0.0 /System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Versions/A/XPCServices/com.apple.MobileSoftwareUpdate.CleanupPreparePathService.xpc/Contents/MacOS/com.apple.MobileSoftwareUpdate.CleanupPreparePathService
+  983   0.0 /System/Library/PrivateFrameworks/WebPrivacy.framework/webprivacyd
+  993   0.0 /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/CVMServer
+  994   0.0 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreautha.bundle/Contents/MacOS/coreautha
+  998   0.0 /System/Library/Frameworks/MediaAccessibility.framework/Versions/A/XPCServices/com.apple.accessibility.mediaaccessibilityd.xpc/Contents/MacOS/com.apple.accessibility.mediaaccessibilityd
+ 1000   0.0 /System/Library/Frameworks/ColorSync.framework/Support/colorsync.useragent
+ 1002   0.0 /System/Library/DriverExtensions/IOUserBluetoothSerialDriver.dext/IOUserBluetoothSerialDriver
+ 1003   0.0 /System/Library/Frameworks/ColorSync.framework/Versions/A/XPCServices/com.apple.ColorSyncXPCAgent.xpc/Contents/MacOS/com.apple.ColorSyncXPCAgent
+ 1005   0.0 /usr/sbin/distnoted
+ 1006   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdbulkimport
+ 1008   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+ 1013   0.0 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+ 1016   0.0 /System/Library/ExtensionKit/Extensions/PackageThumbnailExtension.appex/Contents/MacOS/PackageThumbnailExtension
+ 1019   0.0 /System/Library/PrivateFrameworks/JetCore.framework/Support/jetpackassetd
+ 1020   0.0 /System/Library/Frameworks/FinanceKit.framework/financed
+ 1022   0.0 /System/Library/CoreServices/Keychain Circle Notification.app/Contents/MacOS/Keychain Circle Notification
+ 1025   0.0 /System/Library/Frameworks/ClassKit.framework/Versions/A/progressd
+ 1027   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/UARPUpdaterServiceDisplay.xpc/Contents/MacOS/UARPUpdaterServiceDisplay
+ 1028   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/UARPUpdaterServiceUSBPD.xpc/Contents/MacOS/UARPUpdaterServiceUSBPD
+ 1029   0.0 /usr/sbin/distnoted
+ 1030   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/UARPUpdaterServiceHID.xpc/Contents/MacOS/UARPUpdaterServiceHID
+ 1031   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/UARPUpdaterServiceAFU.xpc/Contents/MacOS/UARPUpdaterServiceAFU
+ 1032   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/UARPUpdaterServiceLegacyAudio.xpc/Contents/MacOS/UARPUpdaterServiceLegacyAudio
+ 1044   0.0 /System/Library/PrivateFrameworks/AssetCacheServices.framework/Versions/A/XPCServices/AssetCacheLocatorService.xpc/Contents/MacOS/AssetCacheLocatorService
+ 1047   0.0 /System/Library/PrivateFrameworks/UARPAssetManager.framework/XPCServices/UARPAssetManagerServiceMobileAsset.xpc/Contents/MacOS/UARPAssetManagerServiceMobileAsset
+ 1072   0.0 /System/Cryptexes/App/usr/libexec/AuthenticationServicesAgent
+ 1080   0.0 /usr/sbin/distnoted
+ 1083   0.0 /usr/libexec/keychainsharingmessagingd
+ 1098   0.0 /System/Library/PrivateFrameworks/LockdownMode.framework/Versions/A/XPCServices/lockdownmoded
+ 1100   0.0 /System/Library/PrivateFrameworks/AppleDeviceQuerySupport.framework/Versions/A/XPCServices/AppleDeviceQueryService.xpc/Contents/MacOS/AppleDeviceQueryService
+ 1101   0.0 /System/Library/PrivateFrameworks/ModelCatalogRuntime.framework/Versions/A/ModelCatalogAgent
+ 1102   0.0 /usr/libexec/nfcd
+ 1103   0.0 /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService
+ 1104   0.0 /usr/libexec/inputanalyticsd
+ 1105   0.0 /System/Library/PrivateFrameworks/NearFieldPrivateServices.framework/Versions/A/XPCServices/NFStorageServer.xpc/Contents/MacOS/NFStorageServer
+ 1106   0.0 /usr/sbin/distnoted
+ 1108   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/ThunderboltAccessoryUpdaterService.xpc/Contents/MacOS/ThunderboltAccessoryUpdaterService
+ 1109   0.0 postgres: checkpointer 
+ 1110   0.0 postgres: background writer 
+ 1112   0.0 postgres: walwriter 
+ 1113   0.0 postgres: autovacuum launcher 
+ 1116   0.0 /usr/libexec/gamecontrolleragentd
+ 1128   0.0 /System/Library/PrivateFrameworks/FindMyDevice.framework/XPCServices/FindMyDeviceSharedConfigurationXPCService.xpc/Contents/MacOS/FindMyDeviceSharedConfigurationXPCService
+ 1149   0.0 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+ 1152   0.0 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XProtectBridgeService.xpc/Contents/MacOS/XProtectBridgeService
+ 1174   0.0 /usr/libexec/assetsubscriptiond
+ 1175   0.0 /usr/libexec/sysmond
+ 1179   0.0 /System/Library/PrivateFrameworks/AuthKit.framework/Versions/A/Support/akd
+ 1189   0.0 /System/Library/PrivateFrameworks/TextToSpeechVoiceBankingSupport.framework/Support/voicebankingd
+ 1193   0.0 /System/Library/PrivateFrameworks/Categories.framework/Versions/A/XPCServices/CategoriesService.xpc/Contents/MacOS/CategoriesService
+ 1210   0.0 /usr/sbin/systemstats
+ 1212   0.0 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+ 1245   0.0 /System/Library/PrivateFrameworks/StocksKit.framework/XPCServices/StocksKitService.xpc/Contents/MacOS/StocksKitService
+ 1262   0.0 /Users/jesse/.codex/packages/app-server-daemon/releases/0.162.1-aarch64-apple-darwin/bin/codex
+ 1280   0.0 /System/Library/CoreServices/Shortcuts Events.app/Contents/MacOS/Shortcuts Events
+ 1281   0.0 /System/Library/PrivateFrameworks/CommerceKit.framework/Versions/A/Resources/commerce
+ 1358   0.0 /System/Library/PrivateFrameworks/HomeKitEvents.framework/Support/homeeventsd
+ 1376   0.0 /System/Library/PrivateFrameworks/WeatherDaemon.framework/weatherd
+ 1377   0.0 /usr/libexec/adprivacyd
+ 1378   0.0 /usr/libexec/promotedcontentd
+ 1381   0.0 /usr/libexec/fairplaydeviceidentityd
+ 1382   0.0 /System/Library/PrivateFrameworks/SiriSuggestionsSupport.framework/Versions/A/XPCServices/SiriSuggestionsBookkeepingService.xpc/Contents/MacOS/SiriSuggestionsBookkeepingService
+ 1383   0.0 /System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd
+ 1384   0.0 /System/Library/PrivateFrameworks/AppStoreDaemon.framework/Support/appstoreagent
+ 1385   0.0 /System/Library/PrivateFrameworks/GeoServices.framework/geodMachServiceBridge
+ 1386   0.0 /System/Library/PrivateFrameworks/PackageKit.framework/Resources/system_installd
+ 1391   0.0 /System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd
+ 1392   0.0 /System/Library/PrivateFrameworks/MobileInstallation.framework/XPCServices/com.apple.MobileInstallationHelperService.xpc/Contents/MacOS/com.apple.MobileInstallationHelperService
+ 1394   0.0 /usr/sbin/distnoted
+ 1396   0.0 /System/Library/PrivateFrameworks/AppStoreDaemon.framework/Versions/A/XPCServices/com.apple.AppStoreDaemon.StorePrivilegedODRService.xpc/Contents/MacOS/com.apple.AppStoreDaemon.StorePrivilegedODRService
+ 1401   0.0 /System/Library/PrivateFrameworks/OnDeviceStorage.framework/Support/amsondevicestoraged
+ 1403   0.0 /System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/fairplayd
+ 1500   0.0 /usr/libexec/findmylocateagent
+ 1695   0.0 /System/Library/PrivateFrameworks/SiriAnalytics.framework/Versions/A/XPCServices/SAExtensionOrchestrator.xpc/Contents/MacOS/SAExtensionOrchestrator
+ 1779   0.0 /System/Library/PrivateFrameworks/Ecosystem.framework/Support/ecosystemd
+ 1868   0.0 /System/Library/PrivateFrameworks/Synapse.framework/Support/contentlinkingd
+ 1883   0.0 /System/Cryptexes/App/usr/libexec/SafariLaunchAgent
+ 2260   0.0 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+ 2265   0.0 /System/Library/PrivateFrameworks/ToneLibrary.framework/Versions/A/XPCServices/com.apple.tonelibraryd.xpc/Contents/MacOS/com.apple.tonelibraryd
+ 2274   0.0 /usr/libexec/GamePolicyAgent
+ 2320   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+ 2370   0.0 /System/Library/ExtensionKit/Extensions/IFTranscriptSELFIngestor.appex/Contents/MacOS/IFTranscriptSELFIngestor
+ 2450   0.0 /System/Library/ExtensionKit/Extensions/GMSSELFIngestor.appex/Contents/MacOS/GMSSELFIngestor
+ 2453   0.0 /System/Library/ExtensionKit/Extensions/BiomeSELFIngestor.appex/Contents/MacOS/BiomeSELFIngestor
+ 2456   0.0 /System/Library/ExtensionKit/Extensions/IFTelemetrySELFIngestor.appex/Contents/MacOS/IFTelemetrySELFIngestor
+ 2461   0.0 /System/Library/PrivateFrameworks/AppPredictionFoundation.framework/Versions/A/XPCServices/AppPredictionIntentsHelperService.xpc/Contents/MacOS/AppPredictionIntentsHelperService
+ 2462   0.0 /System/Library/CoreServices/CrashReporterSupportHelper
+ 2514   0.0 /System/Library/Frameworks/Contacts.framework/Support/contactsd
+ 2515   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/Support/fudHelperAgent
+ 2622   0.0 /usr/libexec/trustd
+ 2714   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker
+ 2843   0.0 /System/Library/PrivateFrameworks/WorkflowKit.framework/XPCServices/ShortcutsViewService.xpc/Contents/MacOS/ShortcutsViewService
+ 2950   0.0 /System/Library/PrivateFrameworks/IASUtilities.framework/Versions/A/Resources/installerauthagent
+ 2951   0.0 /usr/libexec/NRDUpdated
+ 2962   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker
+ 2967   0.0 /System/Library/PrivateFrameworks/StreamingZip.framework/Versions/A/XPCServices/com.apple.StreamingUnzipService.privileged.xpc/Contents/MacOS/com.apple.StreamingUnzipService.privileged
+ 2975   0.0 /System/Library/AssetsV2/com_apple_MobileAsset_RecoveryOSUpdateBrain/28f9b40aedc0bda53bdc29e31682c998de89e5cb.asset/AssetData/com.apple.NRD.UpdateBrainService.xpc/Contents/MacOS/com.apple.NRD.UpdateBrainService
+ 2976   0.0 /System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsagent
+ 3029   0.0 /System/Library/CoreServices/EscrowSecurityAlert.app/Contents/MacOS/EscrowSecurityAlert
+ 3224   0.0 /usr/libexec/proactiveeventtrackerd
+ 3225   0.0 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XProtectUpdateService.xpc/Contents/MacOS/XProtectUpdateService
+ 3227   0.0 /usr/libexec/sysdiagnosed
+ 3720   0.0 /usr/libexec/tipsd
+ 3832   0.0 /System/Library/PrivateFrameworks/AssistantServices.framework/Versions/A/XPCServices/media-indexer.xpc/Contents/MacOS/media-indexer
+ 3834   0.0 /System/Library/PrivateFrameworks/AMPLibrary.framework/Versions/A/Support/AMPLibraryAgent
+ 3839   0.0 /System/Library/PrivateFrameworks/PodcastServices.framework/XPCServices/PodcastContentService.xpc/Contents/MacOS/PodcastContentService
+ 3840   0.0 /System/Library/PrivateFrameworks/BookKit.framework/Versions/A/XPCServices/com.apple.BKAgentService.xpc/Contents/MacOS/com.apple.BKAgentService
+ 3841   0.0 /System/Library/PrivateFrameworks/AMPLibrary.framework/Versions/A/Support/AMPArtworkAgent
+ 4667   0.0 /System/Library/PrivateFrameworks/UIFoundation.framework/Versions/A/XPCServices/nsattributedstringagent.xpc/Contents/MacOS/nsattributedstringagent
+ 4668   0.0 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/XPCServices/com.apple.hiservices-xpcservice.xpc/Contents/MacOS/com.apple.hiservices-xpcservice
+ 4669   0.0 /usr/sbin/cfprefsd
+ 4673   0.0 /System/Library/Frameworks/MediaAccessibility.framework/Versions/A/XPCServices/com.apple.accessibility.mediaaccessibilityd.xpc/Contents/MacOS/com.apple.accessibility.mediaaccessibilityd
+ 4678   0.0 /System/Library/PrivateFrameworks/UIFoundation.framework/Versions/A/XPCServices/nsattributedstringagent.xpc/Contents/MacOS/nsattributedstringagent
+ 4698   0.0 /System/Library/PrivateFrameworks/Install.framework/Frameworks/DistributionKit.framework/Versions/A/XPCServices/DistributionHelper.xpc/Contents/MacOS/DistributionHelper
+ 4763   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/remotemanagementd
+ 4765   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/SecuritySubscriber.xpc/Contents/MacOS/SecuritySubscriber
+ 4766   0.0 /usr/sbin/distnoted
+ 4767   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/InteractiveLegacyProfilesSubscriber.xpc/Contents/MacOS/InteractiveLegacyProfilesSubscriber
+ 4768   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ScreenSharingSubscriber.xpc/Contents/MacOS/ScreenSharingSubscriber
+ 4771   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/LegacyProfilesSubscriber.xpc/Contents/MacOS/LegacyProfilesSubscriber
+ 4772   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/PasscodeSettingsSubscriber.xpc/Contents/MacOS/PasscodeSettingsSubscriber
+ 4773   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/DiskManagementSubscriber.xpc/Contents/MacOS/DiskManagementSubscriber
+ 4774   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedPreferencesSubscriber.xpc/Contents/MacOS/ManagedPreferencesSubscriber
+ 4775   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/SoftwareUpdateSubscriber.xpc/Contents/MacOS/SoftwareUpdateSubscriber
+ 4776   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/MigrationSubscriber.xpc/Contents/MacOS/MigrationSubscriber
+ 4777   0.0 /System/Library/PrivateFrameworks/SystemMigration.framework/Resources/systemmigrationd
+ 4778   0.0 /System/Library/CoreServices/iconservicesagent
+ 4779   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedAppsSubscriber.xpc/Contents/MacOS/ManagedAppsSubscriber
+ 4780   0.0 /System/Library/Frameworks/ManagedAppDistribution.framework/Support/managedappdistributiond
+ 4781   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagementTestSubscriber.xpc/Contents/MacOS/ManagementTestSubscriber
+ 4782   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedConfigurationFilesSubscriber.xpc/Contents/MacOS/ManagedConfigurationFilesSubscriber
+ 4904   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+ 4941   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+ 4946   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+ 5717   0.0 /System/Library/PrivateFrameworks/BiomeStreams.framework/Support/BiomeAgent
+ 6302   0.0 gpg-agent
+ 6303   0.0 scdaemon
+ 6722   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+ 9158   0.0 /System/Library/PrivateFrameworks/GameControllerFoundation.framework/Versions/A/XPCServices/GameControllerConfigService.xpc/Contents/MacOS/GameControllerConfigService
+ 9412   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+10650   0.0 /Applications/WhatsApp.app/Contents/PlugIns/ServiceExtension.appex/Contents/MacOS/ServiceExtension
+11052   0.0 automountd
+12620   0.0 /System/Library/PrivateFrameworks/DataAccess.framework/Support/dataaccessd
+12625   0.0 /System/Cryptexes/App/usr/libexec/SafariBookmarksSyncAgent
+12896   0.0 /System/Cryptexes/App/usr/libexec/com.apple.Safari.History
+12991   0.0 /System/Library/Frameworks/CoreGraphics.framework/Versions/A/XPCServices/CGPDFService.xpc/Contents/MacOS/CGPDFService
+13125   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+13126   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+13514   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+13515   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+13974   0.0 /System/Library/Frameworks/ApplicationServices.framework/Frameworks/PrintCore.framework/Versions/A/printtool
+14499   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/RemoteManagementAgent
+14500   0.0 /System/Library/PrivateFrameworks/SafariFoundation.framework/Versions/A/XPCServices/SafariConfigurationSubscriber.xpc/Contents/MacOS/SafariConfigurationSubscriber
+14501   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/SecuritySubscriber.xpc/Contents/MacOS/SecuritySubscriber
+14502   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/InteractiveLegacyProfilesSubscriber.xpc/Contents/MacOS/InteractiveLegacyProfilesSubscriber
+14503   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ScreenSharingSubscriber.xpc/Contents/MacOS/ScreenSharingSubscriber
+14507   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/LegacyProfilesSubscriber.xpc/Contents/MacOS/LegacyProfilesSubscriber
+14508   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/PasscodeSettingsSubscriber.xpc/Contents/MacOS/PasscodeSettingsSubscriber
+14509   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/AccountSubscriber.xpc/Contents/MacOS/AccountSubscriber
+14510   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedAppsSubscriber.xpc/Contents/MacOS/ManagedAppsSubscriber
+14511   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagementTestSubscriber.xpc/Contents/MacOS/ManagementTestSubscriber
+14512   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ASConfigurationSubscriber.xpc/Contents/MacOS/ASConfigurationSubscriber
+14515   0.0 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedSettingsSubscriber.xpc/Contents/MacOS/ManagedSettingsSubscriber
+14533   0.0 /System/Library/PrivateFrameworks/PackageKit.framework/Versions/A/XPCServices/package_script_service.xpc/Contents/MacOS/package_script_service
+14905   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+14992   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+15636   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+15638   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+16008   0.0 /System/Library/PrivateFrameworks/Stickers.framework/Support/stickersd
+16098   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+19467   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+25010   0.0 /System/Library/PrivateFrameworks/SharePointManagement.framework/XPCServices/SharePointManagementService.xpc/Contents/MacOS/SharePointManagementService
+25476   0.0 /usr/libexec/icloudwebd
+25508   0.0 /usr/libexec/frauddefensed
+25558   3.3 /Applications/kitty.app/Contents/MacOS/kitty
+25559   0.0 /Applications/kitty.app/Contents/MacOS/kitten
+26406   0.0 /System/Library/PrivateFrameworks/FileProviderDaemon.framework/XPCServices/FPCKService.xpc/Contents/MacOS/FPCKService
+26485   0.0 /System/Library/PrivateFrameworks/IntelligencePlatformCore.framework/Versions/A/knowledgeconstructiond
+26487   0.0 /usr/libexec/mlruntimed
+26507   0.0 /System/Applications/Weather.app/Contents/PlugIns/WeatherWidget.appex/Contents/MacOS/WeatherWidget
+26508   0.0 /System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Support/fontd
+26512   0.0 /System/Library/PrivateFrameworks/CommunicationsFilter.framework/CMFSyncAgent
+26627   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+26628   0.0 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTEncoderXPCService.xpc/Contents/MacOS/VTEncoderXPCService
+26652   0.0 /System/Library/PrivateFrameworks/MediaAnalysisAccess.framework/Versions/A/XPCServices/mediaanalysisd-access.xpc/Contents/MacOS/mediaanalysisd-access
+26654   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+27615   0.0 /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService
+27761   0.0 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+27764   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/chrome_crashpad_handler
+27768   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+27769   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+27770   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+27783   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+27785   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+27792   0.0 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+27801   0.0 /System/Library/PrivateFrameworks/SafariFoundation.framework/Versions/A/XPCServices/CredentialProviderExtensionHelper.xpc/Contents/MacOS/CredentialProviderExtensionHelper
+27802   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+27803   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+27809   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+27841   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+27849   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+27869   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+27870   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+27873   0.0 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTEncoderXPCService.xpc/Contents/MacOS/VTEncoderXPCService
+27874   0.0 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService
+27875   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+27926   0.0 /Library/Apple/System/Library/CoreServices/XProtect.app/Contents/XPCServices/XProtectPluginService.xpc/Contents/MacOS/XProtectPluginService
+27928   0.0 /Library/Apple/System/Library/CoreServices/XProtect.app/Contents/XPCServices/XProtectPluginService.xpc/Contents/MacOS/XProtectPluginService
+27963   0.0 /System/Applications/Messages.app/Contents/PlugIns/Messages Assistant Extension.appex/Contents/MacOS/Messages Assistant Extension
+28130   0.0 /System/Library/PrivateFrameworks/IntelligencePlatformCompute.framework/Versions/A/XPCServices/IntelligencePlatformComputeService.xpc/Contents/MacOS/IntelligencePlatformComputeService
+28916   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+30472   0.0 /System/Library/PrivateFrameworks/AppleIntelligenceReportingProcessing.framework/Versions/A/XPCServices/AppleIntelligenceReportingProcessingService.xpc/Contents/MacOS/AppleIntelligenceReportingProcessingService
+30545   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+30595   0.0 /System/Library/PrivateFrameworks/MobileInstallation.framework/Support/appinstalld
+30596   0.0 /usr/sbin/distnoted
+30598   0.0 /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService
+30608   0.0 /System/Library/Frameworks/ManagedAppDistribution.framework/Support/managedappdistributionagent
+30611   0.0 /System/Library/PrivateFrameworks/IMDPersistence.framework/IMAutomaticHistoryDeletionAgent.app/Contents/MacOS/IMAutomaticHistoryDeletionAgent
+30618   0.0 /System/Library/PrivateFrameworks/ManagedBackgroundAssets.framework/Versions/A/XPCServices/Managed Background Assets Helper Service.xpc/Contents/MacOS/Managed Background Assets Helper Service
+30619   0.0 /Library/Apple/System/Library/CoreServices/XProtect.app/Contents/MacOS/XProtect
+30620   0.0 /Library/Apple/System/Library/CoreServices/XProtect.app/Contents/MacOS/XProtect
+30622   0.0 /System/Library/PrivateFrameworks/IDSBlastDoorSupport.framework/Versions/A/XPCServices/IDSBlastDoorService.xpc/Contents/MacOS/IDSBlastDoorService
+30623   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/managedcorespotlightd
+30632   0.0 /System/Library/PrivateFrameworks/IntelligenceTasksEngine.framework/Support/intelligencetasksd
+30668   0.0 /System/Library/PrivateFrameworks/CloudPhotoServices.framework/Versions/A/XPCServices/com.apple.CloudPhotosConfiguration.xpc/Contents/MacOS/com.apple.CloudPhotosConfiguration
+30690   0.0 /usr/libexec/studentd
+30913   0.0 /System/Library/PrivateFrameworks/EcosystemAnalytics.framework/Support/ecosystemanalyticsd
+31067   0.0 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService
+31714   0.0 /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+32726   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+32748   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+32751   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+32752   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+32761   0.0 /System/Library/PrivateFrameworks/IntelligencePlatformCore.framework/Versions/A/intelligenceplatformd
+32768   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+32769   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+32918   0.0 /Users/jesse/.codex/packages/app-server-daemon/releases/0.162.1-aarch64-apple-darwin/bin/codex
+32938   0.0 /Applications/1Password.app/Contents/MacOS/1Password
+32957   0.0 /Applications/1Password.app/Contents/Frameworks/1Password Helper.app/Contents/MacOS/1Password Helper
+32958   0.0 /Applications/1Password.app/Contents/Frameworks/1Password Helper.app/Contents/MacOS/1Password Helper
+32959   0.0 /Applications/1Password.app/Contents/MacOS/1Password-Crash-Handler
+32960   0.0 /System/Library/PrivateFrameworks/SafariFoundation.framework/Versions/A/XPCServices/CredentialProviderExtensionHelper.xpc/Contents/MacOS/CredentialProviderExtensionHelper
+32961   0.0 /Applications/1Password.app/Contents/Library/LoginItems/1Password Browser Helper.app/Contents/MacOS/1Password-BrowserSupport
+33469   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+33544   0.0 /System/Library/Frameworks/Speech.framework/Versions/A/XPCServices/localspeechrecognition.xpc/Contents/MacOS/localspeechrecognition
+33909   0.0 /usr/libexec/taskgated
+34030   0.0 /System/Library/PrivateFrameworks/CoreSuggestions.framework/Versions/A/Support/suggestd
+34042   0.0 /System/Library/ExtensionKit/Extensions/AudiovisualThumbnailExtension.appex/Contents/MacOS/AudiovisualThumbnailExtension
+34043   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+34044   0.0 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService
+34302   0.0 op
+34345   0.0 /usr/libexec/misagent
+34443   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+34456   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+34471   0.3 /Applications/superwhisper.app/Contents/MacOS/superwhisper
+34475   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+34476   0.0 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+34591   0.0 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+34686   0.0 /System/Library/CoreServices/sharedfilelistd
+34690   0.0 /Applications/Microsoft Excel.app/Contents/PlugIns/ExcelWidget_mac.appex/Contents/MacOS/ExcelWidget_mac
+34747   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+34854   0.0 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService
+34916   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+34928   0.0 /Users/jesse/.codex/packages/app-server-daemon/releases/0.162.1-aarch64-apple-darwin/bin/codex-code-mode-host
+35016   0.0 /System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/MessagesBlastDoorService.xpc/Contents/MacOS/MessagesBlastDoorService
+35058   0.0 /usr/sbin/BTLEServer
+35059   0.0 /System/Library/PrivateFrameworks/CoreAccessories.framework/Support/accessoryd
+35071   0.0 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+35072   0.0 /usr/libexec/containermanagerd
+35402   0.0 /System/Library/PrivateFrameworks/StorageManagement.framework/Resources/diskspaced
+35800   0.0 /System/Library/Services/AppleSpell.service/Contents/MacOS/AppleSpell
+35801   0.0 /usr/libexec/keyboardservicesd
+36128   0.0 /usr/libexec/naturallanguaged
+36367   0.0 /System/Library/CryptoTokenKit/com.apple.ifdreader.slotd/Contents/MacOS/com.apple.ifdreader
+36433   0.0 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+36614   0.0 /System/Library/PrivateFrameworks/AppleAccountTransparency.framework/Versions/A/Resources/appleaccounttransparencyd
+36777   0.0 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+36784   0.0 /usr/libexec/microstackshot
+37852   3.6 /Users/jesse/.asdf/installs/python/3.12.11/bin/python3
+39152   0.0 /System/Library/CoreServices/ControlCenter.app/Contents/PlugIns/DisplayControls.appex/Contents/MacOS/DisplayControls
+39436   0.0 /System/Library/PrivateFrameworks/CoreSpeech.framework/Versions/A/XPCServices/CoreSpeechXPC.xpc/Contents/MacOS/CoreSpeechXPC
+39657   0.0 /System/Library/PrivateFrameworks/BusinessChatService.framework/businessservicesd
+39658   0.0 /System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/MessagesBlastDoorService.xpc/Contents/MacOS/MessagesBlastDoorService
+43449   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+43452   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+43522   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+45125   0.0 /System/Library/PrivateFrameworks/PassKitCore.framework/passd
+45800   0.0 /usr/libexec/spotlightknowledged.updater
+46060   0.0 /usr/libexec/ASPCarryLog
+46260   0.0 /usr/libexec/seserviced
+46261   0.0 /System/Cryptexes/App/usr/libexec/PasswordBreachAgent
+48761   0.0 /usr/bin/ssh-agent
+54476   0.0 /usr/sbin/cfprefsd
+54477   0.0 /usr/libexec/dprivacyd
+54507   0.0 /System/Library/PrivateFrameworks/AppleNeuralEngine.framework/XPCServices/ANEStorageMaintainer.xpc/Contents/MacOS/ANEStorageMaintainer
+54508   0.0 /System/Library/PrivateFrameworks/AppleNeuralEngine.framework/XPCServices/ANEStorageMaintainer.xpc/Contents/MacOS/ANEStorageMaintainer
+54509   0.0 /usr/sbin/distnoted
+54526   0.0 /usr/sbin/cfprefsd
+54536   0.0 /System/Library/PrivateFrameworks/ContactsDonation.framework/Versions/A/Support/contactsdonationagent
+54537   0.0 /usr/sbin/cfprefsd
+54543   0.0 /usr/sbin/cfprefsd
+54544   0.0 /usr/sbin/cfprefsd
+54545   0.0 /System/Library/PrivateFrameworks/AvatarPersistence.framework/Support/avatarsd
+54549   0.0 /usr/sbin/cfprefsd
+54550   0.0 /usr/sbin/cfprefsd
+55289   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+56219   0.0 /Applications/Microsoft PowerPoint.app/Contents/PlugIns/PowerPointWidget_mac.appex/Contents/MacOS/PowerPointWidget_mac
+60020   0.0 /System/Library/Frameworks/Contacts.framework/Support/postersyncd
+61594   0.0 /System/Library/CoreServices/Setup Assistant.app/Contents/Resources/mbuseragent
+61612   0.0 /usr/libexec/DataDetectorsSourceAccess
+62685   0.0 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService
+63616   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+63640   0.0 /Users/jesse/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rust-analyzer
+63828   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+63901   0.0 /Users/jesse/.rustup/toolchains/stable-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+64179   0.0 /System/Applications/Messages.app/Contents/MacOS/Messages
+64226   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+64278   0.0 /System/iOSSupport/System/Library/PrivateFrameworks/IMTranscoding.framework/XPCServices/IMTranscoderAgent.xpc/Contents/MacOS/IMTranscoderAgent
+64298   0.0 /System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/MessagesBlastDoorService.xpc/Contents/MacOS/MessagesBlastDoorService
+64308   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+64358   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+64365   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+64372   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+64469   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+64607   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+64973   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+65013   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+65018   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+65045   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+65060   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+65180   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+65253   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+65488   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+65905   0.0 /usr/libexec/PerfPowerServices
+65949   0.0 /System/Library/CoreServices/PowerChime.app/Contents/MacOS/PowerChime
+67776   0.0 /usr/libexec/filevaultd
+68243   0.0 /System/Library/PrivateFrameworks/PrivateCloudCompute.framework/privatecloudcomputed.app/Contents/MacOS/privatecloudcomputed
+68245   0.0 /usr/libexec/mlhostd
+68246   0.0 /System/Library/PrivateFrameworks/SafariSafeBrowsing.framework/com.apple.Safari.SafeBrowsing.Service
+68259   0.0 /usr/libexec/backgroundassets.user
+68576   0.0 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+68588   0.0 /usr/libexec/textunderstandingd
+68654   0.0 /usr/libexec/mmaintenanced
+68960   0.0 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+68961   0.0 /usr/libexec/secinitd
+68964   0.0 /usr/sbin/cfprefsd
+68965   0.0 /usr/libexec/trustd
+68968   0.0 /System/Library/PrivateFrameworks/NewsDaemon.framework/newsd
+68979   0.0 /usr/libexec/containermanagerd
+69070   0.0 /System/Library/PrivateFrameworks/Noticeboard.framework/Versions/A/Resources/nbagent.app/Contents/MacOS/nbagent
+69219   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+69220   0.0 /System/Library/PrivateFrameworks/MediaConversionService.framework/Versions/A/XPCServices/com.apple.photos.ImageConversionService.xpc/Contents/MacOS/com.apple.photos.ImageConversionService
+69221   0.0 /System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/HubbleBlastDoorService.xpc/Contents/MacOS/HubbleBlastDoorService
+69222   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdwrite
+69302   0.0 keyboxd
+69377   0.0 /System/Library/PrivateFrameworks/SkyLight.framework//Versions/A/Resources/AquaAppearanceHelper.app/Contents/MacOS/AquaAppearanceHelper
+69680   0.0 /usr/libexec/betaenrollmentagent
+69681   0.0 /usr/libexec/betaenrollmentd
+69784   0.0 /System/Library/PrivateFrameworks/Noticeboard.framework/Versions/A/Resources/nbstated
+70172   0.0 /System/Library/Frameworks/CoreSpotlight.framework/spotlightknowledged
+70174   0.0 /System/Library/CoreServices/ReportSystemMemory
+70464   0.0 /usr/libexec/seputil
+70953   0.0 /System/Library/PrivateFrameworks/CallHistory.framework/Support/CallHistorySyncHelper
+70954   0.0 /System/Library/PrivateFrameworks/CallHistory.framework/Support/CallHistoryPluginHelper
+71329   0.0 /System/Library/ExtensionKit/Extensions/WallpaperMacintoshExtension.appex/Contents/MacOS/WallpaperMacintoshExtension
+72773   0.0 /usr/libexec/feedbackd
+74556   0.0 /System/Library/ExtensionKit/Extensions/AssetMetricsExtension.appex/Contents/MacOS/AssetMetricsExtension
+75259   0.0 /System/Library/PrivateFrameworks/GeoAnalytics.framework/geoanalyticsd
+75775   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+75808   0.0 /System/iOSSupport/System/Library/PrivateFrameworks/HomeEnergyDaemon.framework/Support/homeenergyd
+76183   0.0 /System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/MessagesBlastDoorService.xpc/Contents/MacOS/MessagesBlastDoorService
+76184   0.0 /System/Library/PrivateFrameworks/People.framework/peopled
+76187   0.0 /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService
+76189   0.0 /usr/libexec/textcomposerd
+76192   0.0 /usr/sbin/distnoted
+76194   0.0 /System/Library/ExtensionKit/Extensions/TGOnDeviceInferenceProviderService.appex/Contents/MacOS/TGOnDeviceInferenceProviderService
+76196   0.0 /System/Library/ExtensionKit/Extensions/GenerativeExperiencesSafetyInferenceProvider.appex/Contents/MacOS/GenerativeExperiencesSafetyInferenceProvider
+76197   0.0 /System/Library/ExtensionKit/Extensions/TGOnDeviceInferenceProviderService.appex/Contents/MacOS/TGOnDeviceInferenceProviderService
+76206   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+76288   0.0 /System/Library/Frameworks/Security.framework/authtrampoline
+76313   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+76315   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+76335   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+76428   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+76519   0.0 /System/Library/CoreServices/Dock.app/Contents/XPCServices/DockHelper.xpc/Contents/MacOS/DockHelper
+76720   0.0 /System/Library/Frameworks/ShazamKit.framework/shazamd
+76828   0.0 /System/Library/PrivateFrameworks/AOSKit.framework/Versions/A/XPCServices/com.apple.iCloudHelper.xpc/Contents/MacOS/com.apple.iCloudHelper
+76853   0.0 /Applications/Microsoft Word.app/Contents/PlugIns/WordWidget_mac.appex/Contents/MacOS/WordWidget_mac
+76990   0.0 /System/Applications/Calendar.app/Contents/PlugIns/CalendarWidgetExtension.appex/Contents/MacOS/CalendarWidgetExtension
+77048   0.0 /usr/libexec/remindd
+77105   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+77254   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+77316   0.0 /Users/jesse/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rust-analyzer
+77317   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+77382   0.0 /Users/jesse/.rustup/toolchains/stable-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+78314   0.0 /System/Library/PrivateFrameworks/DeviceCheckInternal.framework/devicecheckd
+78717   0.0 /System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/MessagesBlastDoorService.xpc/Contents/MacOS/MessagesBlastDoorService
+78999   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+79022   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+79023   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+79148   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+79418   0.0 /usr/libexec/fskit_agent
+79422   0.0 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+79436   0.0 /System/Library/ExtensionKit/Extensions/com.apple.fskit.msdos.appex/Contents/MacOS/com.apple.fskit.msdos
+79437   0.0 /usr/libexec/fskit_helper
+79720   0.0 /System/Library/PrivateFrameworks/WatchListKit.framework/Support/watchlistd
+79724   0.0 /System/Library/PrivateFrameworks/CoreLSKD.framework/Versions/A/lskdd
+80389   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+80391   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+80996   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81076   0.0 /opt/homebrew/bin/sccache
+81643   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+81651   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+81711   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+82272   0.0 /usr/libexec/tznotify
+82464   0.0 /System/Library/PrivateFrameworks/KerberosHelper/Helpers/DiskUnmountWatcher
+82838   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.12/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+83078   0.0 /usr/libexec/griddatad
+83248   0.0 /usr/libexec/dprivacyd
+83252   0.0 /usr/libexec/ciphermld
+84029   0.0 /System/Library/PrivateFrameworks/AssetCacheServicesExtensions.framework/XPCServices/AssetCacheManagerService.xpc/Contents/MacOS/AssetCacheManagerService
+85293   0.0 /System/Library/ExtensionKit/Extensions/WebThumbnailExtension.appex/Contents/MacOS/WebThumbnailExtension
+85294   0.0 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU
+85297   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+85298   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+85303   0.0 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+85377   0.0 /System/Library/PrivateFrameworks/WiFiPolicy.framework/XPCServices/WiFiCloudAssetsXPCService.xpc/Contents/MacOS/WiFiCloudAssetsXPCService
+85378   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/AudioConverterService.xpc/Contents/MacOS/AudioConverterService
+85379   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/AudioConverterHardenedService.xpc/Contents/MacOS/AudioConverterHardenedService
+85380   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+85381   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+85514   0.0 /System/Library/Frameworks/AudioToolbox.framework/XPCServices/com.apple.audio.SandboxHelper.xpc/Contents/MacOS/com.apple.audio.SandboxHelper
+86024   0.0 /System/Library/PrivateFrameworks/StreamingZip.framework/Versions/A/XPCServices/com.apple.StreamingUnzipService.xpc/Contents/MacOS/com.apple.StreamingUnzipService
+86028   0.0 /usr/libexec/pkd
+86029   0.0 /usr/sbin/cfprefsd
+86037   0.0 /System/Library/PrivateFrameworks/AppStoreDaemon.framework/Versions/A/XPCServices/com.apple.AppStoreDaemon.StorePrivilegedTaskService.xpc/Contents/MacOS/com.apple.AppStoreDaemon.StorePrivilegedTaskService
+86040   0.0 /bin/zsh
+86043   0.0 git
+86044   0.0 /opt/homebrew/opt/git/libexec/git-core/git
+86045   0.0 /opt/homebrew/opt/git/libexec/git-core/git-remote-https
+86059   0.0 /bin/sh
+86097   0.0 /bin/sh
+86098   0.0 /bin/sh
+86099   0.0 /usr/libexec/containermanagerd
+86164   0.0 /private/var/folders/b4/1x_3_70s5c3_c6j_5wp0m2rc0000gn/X/1F19913B-EDC4-5164-AFD4-DB264CA215D0/d/Wrapper/AqaraHome.app/PlugIns/NotificationService.appex/NotificationService
+86345   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+86414   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86415   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86416   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86417   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86420   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86437   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86439   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86441   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86443   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86449   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+86497   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+86849   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+86868   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+87186   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+87485   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+87513   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+89091   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+89144   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+89624   0.0 /System/Library/ExtensionKit/Extensions/ImageThumbnailExtension.appex/Contents/MacOS/ImageThumbnailExtension
+89852   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+89854   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+90211   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+90480   0.0 /Library/PrivilegedHelperTools/com.adobe.ARMDC.Communicator
+90481   0.0 /Library/PrivilegedHelperTools/com.adobe.ARMDC.SMJobBlessHelper
+91139   0.0 /System/Library/CoreServices/diagnosticservicesd
+91175   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+91445   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+91493   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+91700   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+91991   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92370   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92372   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92373   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92374   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92375   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92376   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92377   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92378   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92380   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92382   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92391   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92457   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92458   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92459   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92460   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92461   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92568   0.0 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+92733   0.0 /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/EAUpdaterService.xpc/Contents/MacOS/EAUpdaterService
+92986   0.0 /Users/jesse/.cargo/bin/cargo-nextest
+93029   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/cargo
+93456 372.6 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+94272   0.0 /System/Library/PrivateFrameworks/IMTranscoding.framework/XPCServices/IMTranscoderAgent.xpc/Contents/MacOS/IMTranscoderAgent
+94273   0.0 /System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/MessagesBlastDoorService.xpc/Contents/MacOS/MessagesBlastDoorService
+94603  76.3 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+94743  69.2 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+94745   0.0 /bin/zsh
+94747   0.0 /Users/jesse/.cargo/bin/cargo-nextest
+94754   2.9 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/cargo
+94913  77.7 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+95247   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+95523   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+95899  70.1 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+96015   0.0 /bin/zsh
+96025   0.0 /usr/libexec/proactived
+96071   0.0 /Users/jesse/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo
+96072   0.1 ugrep
+96180   2.8 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+96182  76.5 /Users/jesse/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc
+96280  72.7 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+96578  51.8 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+96656  29.4 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+96658  27.5 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+96662  10.5 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+96683   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rustc
+96698   0.0 ps
+96699   0.0 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
+98532   0.0 /System/Library/CoreServices/NotificationCenter.app/Contents/MacOS/NotificationCenter
+98533   0.0 /System/Library/PrivateFrameworks/UserNotificationsCore.framework/Support/usernotificationsd
+98537   0.0 /Users/jesse/Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/ipcserver
+98553   0.0 /System/Library/PrivateFrameworks/ReplicatorCore.framework/Support/replicatord
+98639   0.0 postgres: logical replication launcher 
+98919   0.0 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+98960   0.0 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Support/fontworker
+98967   0.0 /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+99036   0.0 /System/Applications/Photos.app/Contents/PlugIns/PhotosReliveWidget.appex/Contents/MacOS/PhotosReliveWidget
+99637   0.0 /Users/jesse/.serena/language_servers/static/EclipseJDTLS/vscode-java-1.54.0-923/extension/jre/21.0.10-macosx-aarch64/bin/java
+99645   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+99705   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+99990   0.0 /usr/libexec/wifivelocityd
+72749   0.0 /usr/bin/login
+72751   0.0 -zsh
+81473   0.0 /usr/bin/login
+81474   0.0 -zsh
+81585   0.8 claude
+81628   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+99530   0.0 /usr/bin/login
+99531   0.0 -zsh
+99576   0.0 claude
+99620   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+43174   0.0 /usr/bin/login
+43176   0.0 -zsh
+43308   0.1 claude
+43421   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+61567   0.0 /usr/bin/login
+61593   0.0 -zsh
+63530   2.3 codex
+77130   0.0 /usr/bin/login
+77131   0.0 -zsh
+77244  14.1 claude
+77297   0.0 /Users/jesse/code/mcmaster-agent/.venv/bin/python3
+77298   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+87306   0.0 caffeinate
+86130   0.0 /usr/bin/login
+86131   0.0 -zsh
+86366   0.0 codex
+89884   0.0 /usr/bin/login
+89885   0.0 -zsh
+90799   1.8 codex
+40151   2.3 claude
+76294   0.0 /opt/homebrew/Cellar/python@3.13/3.13.16/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+81231   0.0 /usr/bin/login
+81232   0.0 -zsh
+82770   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/bin/rust-analyzer
+82964   0.0 /Users/jesse/.rustup/toolchains/1.96.0-aarch64-apple-darwin/libexec/rust-analyzer-proc-macro-srv
+87973   0.0 caffeinate
+
+COMMAND ['/Users/jesse/.asdf/installs/python/3.12.11/bin/python3', '/private/tmp/femtovg-poc2389-20261015/harness/harness/pr389-atlas/tools/pair.py', '/private/tmp/femtovg-poc2389-20261015/results/timing_m15sw_p15sw_text.jsonl']
+
+timing_m15sw_p15sw_text: frame_ms, mean of 50 frames with the first
+  route changes: 33 frames
+    gui-gradient-linear      hd    0.997 ->   0.991  paired +0.017 (-0.023..+0.027)   +1.7 %  mixed    spread mbase 4 % poc 5 %
+    gui-gradient-linear      z1    0.948 ->   0.949  paired +0.001 (-0.058..+0.021)   +0.1 %  mixed    spread mbase 2 % poc 11 %
+    gui-gradient-linear      z2    0.934 ->   0.928  paired -0.009 (-0.010..-0.001)   -1.0 %  one sign spread mbase 1 % poc 1 %
+    gui-gradient-linear      z4    0.852 ->   0.837  paired -0.015 (-0.026..+0.018)   -1.8 %  mixed    spread mbase 4 % poc 10 %
+    native-canvas            hd    8.310 ->   8.906  paired +0.154 (+0.153..+0.658)   +1.9 %  one sign spread mbase 13 % poc 14 %
+    native-canvas            z1    5.714 ->   5.692  paired -0.015 (-0.022..+0.411)   -0.3 %  mixed    spread mbase 7 % poc 15 %
+    native-canvas            z2    5.957 ->   5.937  paired +0.040 (-0.028..+0.122)   +0.7 %  mixed    spread mbase 1 % poc 3 %
+    gradient-across-runs     hd    0.830 ->   0.815  paired -0.007 (-0.027..+0.069)   -0.8 %  mixed    spread mbase 12 % poc 3 %
+    gradient-across-runs     z2    0.761 ->   0.738  paired -0.007 (-0.041..+0.031)   -0.9 %  mixed    spread mbase 10 % poc 2 %
+    gradient-across-runs     z4    0.676 ->   0.684  paired +0.008 (-0.003..+0.039)   +1.2 %  mixed    spread mbase 14 % poc 20 %
+    gradient-bbox-units      hd    0.821 ->   0.866  paired -0.001 (-0.018..+0.051)   -0.1 %  mixed    spread mbase 6 % poc 8 %
+    gradient-bbox-units      z2    0.732 ->   0.689  paired +0.002 (-0.043..+0.003)   +0.3 %  mixed    spread mbase 14 % poc 14 %
+    gradient-bbox-units      z4    0.671 ->   0.658  paired -0.007 (-0.027..-0.006)   -1.0 %  one sign spread mbase 9 % poc 11 %
+    gradient-fade            hd    0.813 ->   0.761  paired -0.052 (-0.089..+0.073)   -6.4 %  mixed    spread mbase 9 % poc 12 %
+    gradient-fade            z2    0.691 ->   0.684  paired -0.018 (-0.031..+0.001)   -2.6 %  mixed    spread mbase 2 % poc 6 %
+    gradient-fade            z4    0.679 ->   0.687  paired +0.012 (+0.008..+0.036)   +1.8 %  one sign spread mbase 8 % poc 12 %
+    gradient-in-layers       hd    1.242 ->   1.295  paired +0.029 (+0.020..+0.064)   +2.3 %  one sign spread mbase 13 % poc 13 %
+    gradient-in-layers       z2    0.954 ->   0.954  paired -0.019 (-0.027..+0.000)   -2.0 %  mixed    spread mbase 12 % poc 13 %
+    gradient-in-layers       z4    0.967 ->   0.979  paired +0.010 (-0.016..+0.012)   +1.0 %  mixed    spread mbase 6 % poc 3 %
+    gradient-radial          hd    0.833 ->   0.796  paired -0.012 (-0.037..-0.001)   -1.4 %  one sign spread mbase 10 % poc 8 %
+    gradient-radial          z2    0.663 ->   0.691  paired -0.007 (-0.014..+0.028)   -1.1 %  mixed    spread mbase 10 % poc 9 %
+    gradient-radial          z4    0.657 ->   0.659  paired +0.009 (-0.016..+0.011)   +1.4 %  mixed    spread mbase 5 % poc 7 %
+    gradient-size-threshold  hd    0.816 ->   0.812  paired -0.001 (-0.026..+0.028)   -0.1 %  mixed    spread mbase 4 % poc 11 %
+    gradient-size-threshold  z1    0.654 ->   0.637  paired -0.025 (-0.038..+0.053)   -3.8 %  mixed    spread mbase 3 % poc 13 %
+    gradient-size-threshold  z2    0.664 ->   0.632  paired -0.026 (-0.032..-0.007)   -3.9 %  one sign spread mbase 8 % poc 12 %
+    gradient-size-threshold  z4    0.662 ->   0.691  paired +0.016 (+0.002..+0.038)   +2.4 %  one sign spread mbase 9 % poc 10 %
+    gradient-stroke          hd    0.755 ->   0.788  paired +0.033 (-0.020..+0.038)   +4.4 %  mixed    spread mbase 31 % poc 21 %
+    gradient-stroke          z2    0.692 ->   0.688  paired +0.008 (-0.004..+0.028)   +1.2 %  mixed    spread mbase 9 % poc 12 %
+    gradient-stroke          z4    0.660 ->   0.676  paired +0.014 (+0.012..+0.016)   +2.1 %  one sign spread mbase 8 % poc 8 %
+    gradient-transformed-groups hd    0.854 ->   0.824  paired -0.011 (-0.063..-0.004)   -1.3 %  one sign spread mbase 5 % poc 8 %
+    gradient-transformed-groups z1    0.718 ->   0.712  paired +0.003 (-0.010..+0.023)   +0.4 %  mixed    spread mbase 3 % poc 6 %
+    gradient-transformed-groups z2    0.724 ->   0.740  paired -0.001 (-0.003..+0.031)   -0.1 %  mixed    spread mbase 6 % poc 4 %
+    gradient-transformed-groups z4    0.683 ->   0.700  paired +0.017 (+0.011..+0.030)   +2.5 %  one sign spread mbase 7 % poc 9 %
+  route does not change (noise floor): 239 frames
+    advanced-shadows         hd    0.922 ->   0.952  paired -0.014 (-0.025..+0.067)   -1.5 %  mixed    spread mbase 17 % poc 14 %
+    advanced-shadows         z1    0.837 ->   0.848  paired -0.002 (-0.033..+0.011)   -0.2 %  mixed    spread mbase 12 % poc 17 %
+    advanced-shadows         z2    0.834 ->   0.818  paired -0.016 (-0.026..+0.034)   -1.9 %  mixed    spread mbase 24 % poc 16 %
+    advanced-shadows         z4    0.872 ->   0.801  paired -0.037 (-0.097..+0.010)   -4.2 %  mixed    spread mbase 5 % poc 13 %
+    advanced-shadows-right-handed hd    0.945 ->   0.928  paired +0.013 (-0.054..+0.024)   +1.4 %  mixed    spread mbase 12 % poc 18 %
+    advanced-shadows-right-handed z1    0.834 ->   0.845  paired +0.011 (+0.003..+0.080)   +1.3 %  one sign spread mbase 30 % poc 17 %
+    advanced-shadows-right-handed z2    0.864 ->   0.850  paired +0.009 (-0.014..+0.061)   +1.0 %  mixed    spread mbase 23 % poc 15 %
+    advanced-shadows-right-handed z4    0.830 ->   0.824  paired +0.033 (-0.006..+0.049)   +4.0 %  mixed    spread mbase 16 % poc 17 %
+    child-overriding-parent-font-properties hd    0.851 ->   0.850  paired +0.014 (-0.112..+0.101)   +1.6 %  mixed    spread mbase 31 % poc 35 %
+    child-overriding-parent-font-properties z1    0.623 ->   0.655  paired +0.023 (+0.019..+0.032)   +3.7 %  one sign spread mbase 18 % poc 18 %
+    child-overriding-parent-font-properties z2    0.693 ->   0.666  paired -0.017 (-0.027..-0.003)   -2.5 %  one sign spread mbase 24 % poc 21 %
+    child-overriding-parent-font-properties z4    0.685 ->   0.694  paired -0.002 (-0.003..+0.009)   -0.3 %  mixed    spread mbase 16 % poc 16 %
+    default-render-pipeline  hd    1.519 ->   1.494  paired -0.025 (-0.052..-0.006)   -1.6 %  one sign spread mbase 20 % poc 17 %
+    default-render-pipeline  z1    1.482 ->   1.474  paired +0.014 (-0.008..+0.035)   +0.9 %  mixed    spread mbase 16 % poc 14 %
+    default-render-pipeline  z2    1.452 ->   1.446  paired -0.012 (-0.026..-0.006)   -0.8 %  one sign spread mbase 5 % poc 6 %
+    default-render-pipeline  z4    1.065 ->   1.055  paired +0.000 (-0.010..+0.031)   +0.0 %  mixed    spread mbase 16 % poc 12 %
+    font-size-inheritance    hd    0.906 ->   0.902  paired +0.016 (-0.004..+0.049)   +1.8 %  mixed    spread mbase 16 % poc 12 %
+    font-size-inheritance    z1    0.684 ->   0.662  paired -0.030 (-0.062..-0.014)   -4.4 %  one sign spread mbase 8 % poc 12 %
+    font-size-inheritance    z2    0.695 ->   0.680  paired -0.015 (-0.035..+0.048)   -2.2 %  mixed    spread mbase 2 % poc 11 %
+    font-size-inheritance    z4    0.664 ->   0.680  paired +0.016 (-0.035..+0.020)   +2.4 %  mixed    spread mbase 17 % poc 8 %
+    font-style-inheritance   hd    0.914 ->   0.902  paired -0.005 (-0.055..-0.003)   -0.5 %  one sign spread mbase 6 % poc 11 %
+    font-style-inheritance   z1    0.651 ->   0.655  paired +0.004 (-0.021..+0.006)   +0.6 %  mixed    spread mbase 10 % poc 6 %
+    font-style-inheritance   z2    0.677 ->   0.646  paired -0.010 (-0.069..-0.007)   -1.5 %  one sign spread mbase 5 % poc 8 %
+    font-style-inheritance   z4    0.659 ->   0.665  paired +0.005 (-0.022..+0.013)   +0.8 %  mixed    spread mbase 10 % poc 6 %
+    framegraph-gui-bloom     hd    0.808 ->   0.805  paired -0.019 (-0.033..+0.004)   -2.4 %  mixed    spread mbase 5 % poc 5 %
+    framegraph-gui-bloom     z1    0.713 ->   0.673  paired -0.041 (-0.050..-0.020)   -5.8 %  one sign spread mbase 1 % poc 5 %
+    framegraph-gui-bloom     z2    0.696 ->   0.698  paired +0.005 (-0.017..+0.015)   +0.7 %  mixed    spread mbase 2 % poc 3 %
+    framegraph-gui-bloom     z4    0.689 ->   0.711  paired +0.020 (+0.012..+0.044)   +2.9 %  one sign spread mbase 1 % poc 4 %
+    0                        hd    0.683 ->   0.677  paired -0.006 (-0.027..+0.010)   -0.9 %  mixed    spread mbase 6 % poc 12 %
+    0                        z1    0.568 ->   0.542  paired +0.015 (-0.026..+0.015)   +2.6 %  mixed    spread mbase 12 % poc 11 %
+    0                        z2    0.560 ->   0.545  paired -0.020 (-0.035..+0.021)   -3.6 %  mixed    spread mbase 5 % poc 9 %
+    0                        z4    0.552 ->   0.568  paired +0.009 (-0.021..+0.016)   +1.6 %  mixed    spread mbase 15 % poc 9 %
+    1                        hd    0.678 ->   0.668  paired +0.004 (-0.010..+0.006)   +0.6 %  mixed    spread mbase 11 % poc 10 %
+    1                        z1    0.546 ->   0.550  paired +0.009 (-0.029..+0.035)   +1.6 %  mixed    spread mbase 6 % poc 6 %
+    1                        z2    0.531 ->   0.544  paired +0.013 (+0.004..+0.021)   +2.4 %  one sign spread mbase 16 % poc 12 %
+    1                        z4    0.554 ->   0.528  paired -0.025 (-0.026..-0.007)   -4.5 %  one sign spread mbase 6 % poc 10 %
+    2                        hd    0.675 ->   0.670  paired -0.005 (-0.026..+0.029)   -0.7 %  mixed    spread mbase 1 % poc 9 %
+    2                        z1    0.545 ->   0.574  paired +0.013 (-0.038..+0.064)   +2.4 %  mixed    spread mbase 3 % poc 20 %
+    2                        z2    0.561 ->   0.551  paired +0.006 (-0.013..+0.042)   +1.1 %  mixed    spread mbase 12 % poc 5 %
+    2                        z4    0.537 ->   0.565  paired -0.001 (-0.007..+0.042)   -0.2 %  mixed    spread mbase 12 % poc 13 %
+    3                        hd    0.707 ->   0.670  paired -0.018 (-0.037..-0.002)   -2.5 %  one sign spread mbase 8 % poc 10 %
+    3                        z1    0.567 ->   0.553  paired -0.013 (-0.014..-0.001)   -2.3 %  one sign spread mbase 9 % poc 12 %
+    3                        z2    0.566 ->   0.552  paired +0.015 (-0.017..+0.017)   +2.7 %  mixed    spread mbase 8 % poc 7 %
+    3                        z4    0.541 ->   0.560  paired +0.000 (-0.052..+0.026)   +0.0 %  mixed    spread mbase 8 % poc 18 %
+    0                        hd    0.688 ->   0.677  paired -0.011 (-0.028..+0.002)   -1.6 %  mixed    spread mbase 1 % poc 3 %
+    0                        z1    0.554 ->   0.565  paired +0.001 (+0.000..+0.039)   +0.2 %  mixed    spread mbase 10 % poc 15 %
+    0                        z2    0.560 ->   0.557  paired +0.010 (-0.003..+0.030)   +1.8 %  mixed    spread mbase 11 % poc 7 %
+    0                        z4    0.553 ->   0.547  paired +0.005 (-0.082..+0.008)   +0.9 %  mixed    spread mbase 7 % poc 12 %
+    1                        hd    0.695 ->   0.712  paired +0.019 (-0.095..+0.025)   +2.7 %  mixed    spread mbase 12 % poc 5 %
+    1                        z1    0.568 ->   0.556  paired -0.012 (-0.028..+0.004)   -2.1 %  mixed    spread mbase 13 % poc 7 %
+    1                        z2    0.549 ->   0.582  paired -0.014 (-0.026..+0.062)   -2.6 %  mixed    spread mbase 11 % poc 20 %
+    1                        z4    0.561 ->   0.538  paired -0.010 (-0.023..+0.026)   -1.8 %  mixed    spread mbase 6 % poc 13 %
+    2                        hd    0.675 ->   0.703  paired +0.026 (-0.006..+0.056)   +3.9 %  mixed    spread mbase 13 % poc 3 %
+    2                        z1    0.546 ->   0.567  paired +0.014 (-0.036..+0.021)   +2.6 %  mixed    spread mbase 18 % poc 8 %
+    2                        z2    0.548 ->   0.541  paired -0.022 (-0.026..+0.024)   -4.0 %  mixed    spread mbase 7 % poc 13 %
+    2                        z4    0.537 ->   0.548  paired +0.021 (+0.011..+0.056)   +3.9 %  one sign spread mbase 4 % poc 11 %
+    3                        hd    0.691 ->   0.683  paired -0.005 (-0.008..-0.003)   -0.7 %  one sign spread mbase 3 % poc 4 %
+    3                        z1    0.577 ->   0.587  paired +0.024 (+0.003..+0.041)   +4.2 %  one sign spread mbase 15 % poc 10 %
+    3                        z2    0.552 ->   0.569  paired +0.010 (-0.007..+0.040)   +1.8 %  mixed    spread mbase 13 % poc 14 %
+    3                        z4    0.544 ->   0.541  paired -0.001 (-0.014..+0.002)   -0.2 %  mixed    spread mbase 8 % poc 6 %
+    4                        hd    0.680 ->   0.694  paired -0.011 (-0.021..+0.014)   -1.6 %  mixed    spread mbase 7 % poc 6 %
+    4                        z1    0.544 ->   0.591  paired +0.012 (-0.023..+0.080)   +2.2 %  mixed    spread mbase 18 % poc 17 %
+    4                        z2    0.545 ->   0.553  paired +0.010 (-0.025..+0.014)   +1.8 %  mixed    spread mbase 8 % poc 1 %
+    4                        z4    0.539 ->   0.558  paired +0.020 (-0.002..+0.028)   +3.7 %  mixed    spread mbase 4 % poc 2 %
+    5                        hd    0.695 ->   0.690  paired -0.002 (-0.020..+0.015)   -0.3 %  mixed    spread mbase 8 % poc 3 %
+    5                        z1    0.540 ->   0.563  paired +0.008 (-0.029..+0.032)   +1.5 %  mixed    spread mbase 12 % poc 7 %
+    5                        z2    0.573 ->   0.545  paired +0.001 (-0.053..+0.006)   +0.2 %  mixed    spread mbase 14 % poc 10 %
+    5                        z4    0.553 ->   0.560  paired -0.009 (-0.022..+0.044)   -1.6 %  mixed    spread mbase 17 % poc 7 %
+    6                        hd    0.681 ->   0.712  paired +0.002 (-0.005..+0.033)   +0.3 %  mixed    spread mbase 7 % poc 8 %
+    6                        z1    0.572 ->   0.532  paired -0.004 (-0.088..+0.008)   -0.7 %  mixed    spread mbase 19 % poc 12 %
+    6                        z2    0.534 ->   0.560  paired +0.006 (-0.013..+0.026)   +1.1 %  mixed    spread mbase 13 % poc 9 %
+    6                        z4    0.539 ->   0.545  paired +0.004 (-0.004..+0.018)   +0.7 %  mixed    spread mbase 8 % poc 8 %
+    7                        hd    0.678 ->   0.694  paired +0.004 (-0.025..+0.019)   +0.6 %  mixed    spread mbase 10 % poc 6 %
+    7                        z1    0.571 ->   0.581  paired +0.008 (-0.024..+0.010)   +1.4 %  mixed    spread mbase 9 % poc 16 %
+    7                        z2    0.559 ->   0.579  paired +0.009 (-0.011..+0.020)   +1.6 %  mixed    spread mbase 14 % poc 10 %
+    7                        z4    0.561 ->   0.577  paired +0.016 (-0.015..+0.032)   +2.9 %  mixed    spread mbase 6 % poc 15 %
+    0                        hd    0.928 ->   0.895  paired -0.019 (-0.047..+0.027)   -2.0 %  mixed    spread mbase 6 % poc 13 %
+    0                        z1    0.694 ->   0.706  paired -0.005 (-0.011..+0.026)   -0.7 %  mixed    spread mbase 5 % poc 8 %
+    0                        z2    0.699 ->   0.703  paired +0.003 (-0.001..+0.004)   +0.4 %  mixed    spread mbase 6 % poc 6 %
+    0                        z4    0.768 ->   0.786  paired +0.005 (+0.003..+0.044)   +0.7 %  one sign spread mbase 7 % poc 11 %
+    1                        hd    0.954 ->   0.951  paired -0.013 (-0.046..+0.030)   -1.4 %  mixed    spread mbase 5 % poc 5 %
+    1                        z1    0.699 ->   0.700  paired +0.010 (-0.032..+0.034)   +1.4 %  mixed    spread mbase 12 % poc 3 %
+    1                        z2    0.730 ->   0.724  paired -0.007 (-0.018..+0.009)   -1.0 %  mixed    spread mbase 5 % poc 9 %
+    1                        z4    0.744 ->   0.756  paired +0.012 (-0.014..+0.017)   +1.6 %  mixed    spread mbase 10 % poc 6 %
+    gui-force-resize-width   hd    0.856 ->   0.902  paired +0.047 (-0.016..+0.049)   +5.5 %  mixed    spread mbase 10 % poc 2 %
+    gui-force-resize-width   z1    0.854 ->   0.855  paired -0.001 (-0.027..+0.009)   -0.1 %  mixed    spread mbase 4 % poc 9 %
+    gui-force-resize-width   z2    0.869 ->   0.870  paired -0.001 (-0.002..+0.001)   -0.1 %  mixed    spread mbase 7 % poc 7 %
+    gui-force-resize-width   z4    0.807 ->   0.779  paired -0.015 (-0.028..-0.005)   -1.9 %  one sign spread mbase 5 % poc 7 %
+    gui-horizontal-stack-panel-and-text-block-with-resizetofit-a hd    2.223 ->   2.178  paired -0.045 (-0.053..+0.045)   -2.0 %  mixed    spread mbase 5 % poc 10 %
+    gui-horizontal-stack-panel-and-text-block-with-resizetofit-a z1    1.900 ->   1.885  paired -0.002 (-0.045..+0.023)   -0.1 %  mixed    spread mbase 9 % poc 9 %
+    gui-horizontal-stack-panel-and-text-block-with-resizetofit-a z2    2.016 ->   2.022  paired +0.003 (-0.006..+0.006)   +0.1 %  mixed    spread mbase 11 % poc 11 %
+    gui-horizontal-stack-panel-and-text-block-with-resizetofit-a z4    2.041 ->   2.028  paired +0.018 (-0.013..+0.040)   +0.9 %  mixed    spread mbase 12 % poc 13 %
+    gui-input-test           hd    0.898 ->   0.904  paired +0.006 (+0.002..+0.023)   +0.7 %  one sign spread mbase 5 % poc 7 %
+    gui-input-test           z1    0.833 ->   0.845  paired +0.016 (+0.010..+0.037)   +1.9 %  one sign spread mbase 1 % poc 3 %
+    gui-input-test           z2    0.808 ->   0.836  paired +0.017 (-0.026..+0.028)   +2.1 %  mixed    spread mbase 8 % poc 14 %
+    gui-input-test           z4    0.816 ->   0.809  paired -0.007 (-0.015..+0.029)   -0.9 %  mixed    spread mbase 10 % poc 4 %
+    gui-input-test--ub4f3b-8 hd    0.897 ->   0.865  paired +0.013 (-0.033..+0.021)   +1.4 %  mixed    spread mbase 7 % poc 6 %
+    gui-input-test--ub4f3b-8 z1    0.837 ->   0.828  paired -0.020 (-0.029..-0.009)   -2.4 %  one sign spread mbase 8 % poc 10 %
+    gui-input-test--ub4f3b-8 z2    0.831 ->   0.810  paired -0.005 (-0.029..+0.047)   -0.6 %  mixed    spread mbase 12 % poc 4 %
+    gui-input-test--ub4f3b-8 z4    0.761 ->   0.808  paired +0.004 (-0.011..+0.047)   +0.5 %  mixed    spread mbase 9 % poc 7 %
+    gui-input-text-area-inside-scrollviewer hd    0.943 ->   0.981  paired +0.038 (+0.012..+0.119)   +4.0 %  one sign spread mbase 15 % poc 2 %
+    gui-input-text-area-inside-scrollviewer z1    0.740 ->   0.720  paired +0.003 (-0.022..+0.006)   +0.4 %  mixed    spread mbase 11 % poc 10 %
+    gui-input-text-area-inside-scrollviewer z2    0.739 ->   0.718  paired +0.000 (-0.024..+0.011)   +0.0 %  mixed    spread mbase 10 % poc 11 %
+    gui-input-text-area-inside-scrollviewer z4    0.714 ->   0.720  paired +0.025 (+0.006..+0.036)   +3.5 %  one sign spread mbase 11 % poc 9 %
+    gui-input-text-area-with-placeholder hd    0.873 ->   0.846  paired -0.051 (-0.054..+0.092)   -5.8 %  mixed    spread mbase 13 % poc 8 %
+    gui-input-text-area-with-placeholder z1    0.697 ->   0.694  paired -0.014 (-0.025..-0.003)   -2.0 %  one sign spread mbase 8 % poc 10 %
+    gui-input-text-area-with-placeholder z2    0.712 ->   0.685  paired +0.019 (-0.044..+0.020)   +2.7 %  mixed    spread mbase 11 % poc 8 %
+    gui-input-text-area-with-placeholder z4    0.716 ->   0.705  paired +0.003 (-0.044..+0.009)   +0.4 %  mixed    spread mbase 14 % poc 10 %
+    0                        hd    0.649 ->   0.649  paired -0.014 (-0.018..+0.000)   -2.2 %  mixed    spread mbase 7 % poc 8 %
+    0                        z1    0.509 ->   0.514  paired +0.010 (-0.029..+0.043)   +2.0 %  mixed    spread mbase 15 % poc 14 %
+    0                        z2    0.511 ->   0.509  paired +0.004 (-0.005..+0.012)   +0.8 %  mixed    spread mbase 7 % poc 8 %
+    0                        z4    0.542 ->   0.504  paired -0.025 (-0.038..-0.011)   -4.6 %  one sign spread mbase 14 % poc 11 %
+    gui-stackpanel           hd    0.804 ->   0.807  paired +0.015 (-0.007..+0.027)   +1.9 %  mixed    spread mbase 6 % poc 3 %
+    gui-stackpanel           z1    0.712 ->   0.706  paired -0.004 (-0.013..+0.014)   -0.6 %  mixed    spread mbase 10 % poc 12 %
+    gui-stackpanel           z2    0.696 ->   0.726  paired +0.035 (+0.030..+0.037)   +5.0 %  one sign spread mbase 14 % poc 13 %
+    gui-stackpanel           z4    0.669 ->   0.703  paired +0.000 (-0.014..+0.040)   +0.0 %  mixed    spread mbase 9 % poc 13 %
+    gui-text-block-with-resizetofit-and-forceresizewidth hd    2.116 ->   2.077  paired +0.006 (-0.043..+0.038)   +0.3 %  mixed    spread mbase 9 % poc 10 %
+    gui-text-block-with-resizetofit-and-forceresizewidth z1    1.835 ->   1.800  paired -0.035 (-0.044..+0.032)   -1.9 %  mixed    spread mbase 15 % poc 10 %
+    gui-text-block-with-resizetofit-and-forceresizewidth z2    1.993 ->   2.001  paired +0.003 (-0.029..+0.016)   +0.2 %  mixed    spread mbase 9 % poc 11 %
+    gui-text-block-with-resizetofit-and-forceresizewidth z4    0.593 ->   0.616  paired -0.004 (-0.024..+0.023)   -0.7 %  mixed    spread mbase 13 % poc 10 %
+    gui-transform-stackpanel hd    1.128 ->   1.101  paired -0.027 (-0.089..-0.003)   -2.4 %  one sign spread mbase 4 % poc 13 %
+    gui-transform-stackpanel z1    1.150 ->   1.182  paired +0.032 (-0.011..+0.074)   +2.8 %  mixed    spread mbase 6 % poc 14 %
+    gui-transform-stackpanel z2    1.198 ->   1.220  paired +0.039 (-0.038..+0.138)   +3.3 %  mixed    spread mbase 13 % poc 5 %
+    gui-transform-stackpanel z4    0.709 ->   0.723  paired -0.011 (-0.023..+0.035)   -1.6 %  mixed    spread mbase 9 % poc 10 %
+    ktx2-decoder-test        hd    1.007 ->   1.006  paired -0.010 (-0.015..-0.001)   -1.0 %  one sign spread mbase 7 % poc 7 %
+    ktx2-decoder-test        z1    0.876 ->   0.882  paired -0.006 (-0.012..+0.011)   -0.7 %  mixed    spread mbase 7 % poc 8 %
+    ktx2-decoder-test        z2    0.888 ->   0.877  paired -0.011 (-0.020..-0.004)   -1.2 %  one sign spread mbase 7 % poc 5 %
+    ktx2-decoder-test        z4    0.849 ->   0.834  paired -0.001 (-0.015..+0.005)   -0.1 %  mixed    spread mbase 6 % poc 5 %
+    load-gui-snippet-with-unicode hd    1.210 ->   1.194  paired -0.007 (-0.016..-0.004)   -0.6 %  one sign spread mbase 7 % poc 7 %
+    load-gui-snippet-with-unicode z1    1.131 ->   1.147  paired +0.016 (+0.008..+0.037)   +1.4 %  one sign spread mbase 2 % poc 5 %
+    load-gui-snippet-with-unicode z2    1.142 ->   1.133  paired -0.014 (-0.014..+0.004)   -1.2 %  mixed    spread mbase 1 % poc 1 %
+    load-gui-snippet-with-unicode z4    1.126 ->   1.144  paired +0.003 (-0.007..+0.055)   +0.3 %  mixed    spread mbase 8 % poc 11 %
+    load-gui-snippet-with-unicode--ys93ky-1 hd    1.253 ->   1.220  paired -0.014 (-0.033..-0.003)   -1.1 %  one sign spread mbase 6 % poc 7 %
+    load-gui-snippet-with-unicode--ys93ky-1 z1    1.141 ->   1.152  paired +0.017 (-0.049..+0.024)   +1.5 %  mixed    spread mbase 13 % poc 7 %
+    load-gui-snippet-with-unicode--ys93ky-1 z2    1.148 ->   1.132  paired +0.013 (-0.016..+0.049)   +1.1 %  mixed    spread mbase 8 % poc 11 %
+    load-gui-snippet-with-unicode--ys93ky-1 z4    1.145 ->   1.141  paired -0.004 (-0.177..+0.000)   -0.3 %  mixed    spread mbase 28 % poc 11 %
+    loading-gltf-model-with-ktx2-textures hd    0.948 ->   1.036  paired +0.038 (+0.021..+0.110)   +4.0 %  one sign spread mbase 7 % poc 8 %
+    loading-gltf-model-with-ktx2-textures z1    0.928 ->   0.917  paired -0.005 (-0.025..+0.037)   -0.5 %  mixed    spread mbase 9 % poc 12 %
+    loading-gltf-model-with-ktx2-textures z2    0.915 ->   0.907  paired -0.008 (-0.012..+0.015)   -0.9 %  mixed    spread mbase 12 % poc 9 %
+    loading-gltf-model-with-ktx2-textures z4    0.897 ->   0.914  paired +0.004 (-0.009..+0.020)   +0.4 %  mixed    spread mbase 7 % poc 9 %
+    local-cubemaps           hd    0.805 ->   0.789  paired -0.015 (-0.039..-0.001)   -1.9 %  one sign spread mbase 10 % poc 9 %
+    local-cubemaps           z1    0.708 ->   0.685  paired -0.011 (-0.034..-0.010)   -1.6 %  one sign spread mbase 14 % poc 13 %
+    local-cubemaps           z2    0.688 ->   0.697  paired -0.008 (-0.011..+0.026)   -1.2 %  mixed    spread mbase 14 % poc 17 %
+    local-cubemaps           z4    0.553 ->   0.555  paired +0.024 (+0.002..+0.025)   +4.3 %  one sign spread mbase 17 % poc 16 %
+    native-canvas            z4    6.256 ->   6.169  paired -0.004 (-0.590..+0.007)   -0.1 %  mixed    spread mbase 3 % poc 9 %
+    node-material-1          hd    0.860 ->   0.853  paired -0.020 (-0.045..+0.037)   -2.3 %  mixed    spread mbase 5 % poc 7 %
+    node-material-1          z1    0.806 ->   0.822  paired +0.024 (+0.003..+0.030)   +3.0 %  one sign spread mbase 10 % poc 7 %
+    node-material-1          z2    0.762 ->   0.784  paired +0.005 (-0.024..+0.043)   +0.7 %  mixed    spread mbase 3 % poc 10 %
+    node-material-1          z4    0.575 ->   0.605  paired +0.004 (-0.032..+0.044)   +0.7 %  mixed    spread mbase 15 % poc 6 %
+    parse-gui-json-with-unicode hd    1.251 ->   1.265  paired +0.014 (+0.012..+0.032)   +1.1 %  one sign spread mbase 5 % poc 6 %
+    parse-gui-json-with-unicode z1    1.131 ->   1.142  paired +0.003 (-0.016..+0.011)   +0.3 %  mixed    spread mbase 6 % poc 4 %
+    parse-gui-json-with-unicode z2    1.151 ->   1.126  paired -0.025 (-0.089..-0.020)   -2.2 %  one sign spread mbase 9 % poc 3 %
+    parse-gui-json-with-unicode z4    1.141 ->   1.160  paired -0.009 (-0.050..+0.019)   -0.8 %  mixed    spread mbase 10 % poc 6 %
+    parse-gui-json-with-unicode--ervgt5-1 hd    1.293 ->   1.292  paired -0.011 (-0.016..+0.284)   -0.9 %  mixed    spread mbase 5 % poc 19 %
+    parse-gui-json-with-unicode--ervgt5-1 z1    1.162 ->   1.176  paired -0.005 (-0.007..+0.089)   -0.4 %  mixed    spread mbase 7 % poc 3 %
+    parse-gui-json-with-unicode--ervgt5-1 z2    1.169 ->   1.158  paired -0.011 (-0.022..+0.007)   -0.9 %  mixed    spread mbase 2 % poc 5 %
+    parse-gui-json-with-unicode--ervgt5-1 z4    1.163 ->   1.152  paired -0.008 (-0.011..+0.011)   -0.7 %  mixed    spread mbase 5 % poc 3 %
+    pointers                 hd    0.748 ->   0.752  paired -0.013 (-0.046..+0.017)   -1.7 %  mixed    spread mbase 3 % poc 10 %
+    pointers                 z1    0.647 ->   0.658  paired +0.011 (-0.007..+0.023)   +1.7 %  mixed    spread mbase 7 % poc 12 %
+    pointers                 z2    0.623 ->   0.639  paired +0.013 (+0.011..+0.016)   +2.1 %  one sign spread mbase 10 % poc 9 %
+    pointers                 z4    0.600 ->   0.613  paired +0.005 (-0.008..+0.013)   +0.8 %  mixed    spread mbase 9 % poc 12 %
+    prepass-ssao-gui         hd    0.754 ->   0.794  paired +0.020 (+0.002..+0.102)   +2.7 %  one sign spread mbase 18 % poc 6 %
+    prepass-ssao-gui         z1    0.646 ->   0.688  paired +0.042 (-0.009..+0.059)   +6.5 %  mixed    spread mbase 15 % poc 4 %
+    prepass-ssao-gui         z2    0.689 ->   0.730  paired +0.015 (-0.009..+0.044)   +2.2 %  mixed    spread mbase 13 % poc 10 %
+    prepass-ssao-gui         z4    0.699 ->   0.724  paired +0.011 (-0.017..+0.025)   +1.6 %  mixed    spread mbase 14 % poc 10 %
+    rounding-values-on-controls-inside-stackpanel hd    0.888 ->   0.851  paired -0.002 (-0.037..+0.010)   -0.2 %  mixed    spread mbase 7 % poc 6 %
+    rounding-values-on-controls-inside-stackpanel z1    0.754 ->   0.754  paired +0.018 (+0.000..+0.027)   +2.4 %  mixed    spread mbase 7 % poc 5 %
+    rounding-values-on-controls-inside-stackpanel z2    0.752 ->   0.723  paired -0.012 (-0.034..-0.009)   -1.6 %  one sign spread mbase 4 % poc 6 %
+    rounding-values-on-controls-inside-stackpanel z4    0.708 ->   0.714  paired +0.006 (-0.021..+0.006)   +0.8 %  mixed    spread mbase 7 % poc 3 %
+    0                        hd    4.280 ->   4.174  paired -0.106 (-0.179..+0.008)   -2.5 %  mixed    spread mbase 10 % poc 6 %
+    0                        z1    3.492 ->   3.512  paired +0.016 (-0.060..+0.020)   +0.5 %  mixed    spread mbase 5 % poc 3 %
+    0                        z2    3.494 ->   3.493  paired -0.001 (-0.012..+0.062)   -0.0 %  mixed    spread mbase 3 % poc 1 %
+    0                        z4    3.329 ->   3.339  paired +0.004 (-0.006..+0.012)   +0.1 %  mixed    spread mbase 2 % poc 2 %
+    1                        hd    1.118 ->   1.114  paired +0.001 (-0.004..+0.001)   +0.1 %  mixed    spread mbase 6 % poc 6 %
+    1                        z1    1.016 ->   0.987  paired +0.009 (-0.051..+0.035)   +0.9 %  mixed    spread mbase 6 % poc 7 %
+    1                        z2    0.975 ->   1.001  paired +0.014 (-0.006..+0.026)   +1.4 %  mixed    spread mbase 8 % poc 6 %
+    1                        z4    0.952 ->   0.952  paired +0.000 (-0.009..+0.024)   +0.0 %  mixed    spread mbase 6 % poc 9 %
+    skybox-with-boombox      hd    0.707 ->   0.689  paired -0.016 (-0.059..-0.013)   -2.3 %  one sign spread mbase 2 % poc 5 %
+    skybox-with-boombox      z1    0.566 ->   0.585  paired +0.022 (-0.002..+0.030)   +3.9 %  mixed    spread mbase 9 % poc 6 %
+    skybox-with-boombox      z2    0.535 ->   0.527  paired +0.007 (-0.008..+0.020)   +1.3 %  mixed    spread mbase 10 % poc 12 %
+    skybox-with-boombox      z4    0.582 ->   0.560  paired -0.011 (-0.022..+0.008)   -1.9 %  mixed    spread mbase 12 % poc 9 %
+    sliders                  hd    6.205 ->   6.292  paired +0.072 (-0.608..+0.087)   +1.2 %  mixed    spread mbase 2 % poc 14 %
+    sliders                  z1    6.112 ->   6.229  paired +0.117 (-0.039..+0.174)   +1.9 %  mixed    spread mbase 14 % poc 18 %
+    sliders                  z2    5.829 ->   5.953  paired +0.114 (+0.086..+0.124)   +2.0 %  one sign spread mbase 14 % poc 13 %
+    sliders                  z4    5.850 ->   5.824  paired -0.193 (-0.593..+0.220)   -3.3 %  mixed    spread mbase 9 % poc 12 %
+    ui-unaffected-by-post-process hd    0.728 ->   0.747  paired +0.021 (+0.019..+0.078)   +2.9 %  one sign spread mbase 14 % poc 5 %
+    ui-unaffected-by-post-process z1    0.624 ->   0.636  paired +0.012 (-0.010..+0.015)   +1.9 %  mixed    spread mbase 16 % poc 11 %
+    ui-unaffected-by-post-process z2    0.621 ->   0.627  paired +0.006 (-0.001..+0.024)   +1.0 %  mixed    spread mbase 17 % poc 12 %
+    ui-unaffected-by-post-process z4    0.638 ->   0.682  paired +0.001 (-0.020..+0.044)   +0.2 %  mixed    spread mbase 11 % poc 14 %
+    banner                   hd    4.641 ->   4.725  paired +0.032 (+0.019..+0.100)   +0.7 %  one sign spread mbase 4 % poc 4 %
+    banner                   z1    3.216 ->   3.147  paired +0.015 (-0.133..+0.021)   +0.5 %  mixed    spread mbase 6 % poc 4 %
+    banner                   z2    2.950 ->   3.000  paired +0.041 (+0.007..+0.078)   +1.4 %  one sign spread mbase 2 % poc 4 %
+    banner                   z4    1.086 ->   1.064  paired -0.007 (-0.031..-0.004)   -0.6 %  one sign spread mbase 3 % poc 4 %
+    fill-opacity-overlap     hd    0.783 ->   0.766  paired -0.017 (-0.041..+0.015)   -2.2 %  mixed    spread mbase 5 % poc 13 %
+    fill-opacity-overlap     z1    0.594 ->   0.547  paired -0.031 (-0.048..-0.004)   -5.2 %  one sign spread mbase 11 % poc 6 %
+    fill-opacity-overlap     z2    0.646 ->   0.629  paired +0.002 (-0.031..+0.012)   +0.3 %  mixed    spread mbase 5 % poc 9 %
+    fill-opacity-overlap     z4    0.608 ->   0.640  paired +0.044 (-0.025..+0.061)   +7.2 %  mixed    spread mbase 10 % poc 6 %
+    gradient-across-runs     z1    0.609 ->   0.576  paired -0.019 (-0.052..-0.016)   -3.1 %  one sign spread mbase 3 % poc 6 %
+    gradient-bbox-units      z1    0.582 ->   0.606  paired +0.009 (-0.003..+0.024)   +1.5 %  mixed    spread mbase 18 % poc 21 %
+    gradient-fade            z1    0.581 ->   0.611  paired +0.011 (-0.021..+0.064)   +1.9 %  mixed    spread mbase 5 % poc 14 %
+    gradient-in-layers       z1    0.752 ->   0.784  paired +0.032 (+0.007..+0.049)   +4.3 %  one sign spread mbase 5 % poc 10 %
+    gradient-radial          z1    0.595 ->   0.606  paired +0.011 (-0.057..+0.012)   +1.8 %  mixed    spread mbase 1 % poc 14 %
+    gradient-stroke          z1    0.637 ->   0.635  paired -0.002 (-0.012..-0.002)   -0.3 %  one sign spread mbase 10 % poc 8 %
+    solid-transformed-groups hd    0.890 ->   0.906  paired +0.016 (-0.030..+0.019)   +1.8 %  mixed    spread mbase 17 % poc 11 %
+    solid-transformed-groups z1    0.800 ->   0.802  paired -0.013 (-0.028..+0.005)   -1.6 %  mixed    spread mbase 11 % poc 9 %
+    solid-transformed-groups z2    0.793 ->   0.800  paired +0.003 (-0.006..+0.007)   +0.4 %  mixed    spread mbase 4 % poc 5 %
+    solid-transformed-groups z4    0.771 ->   0.746  paired -0.019 (-0.091..-0.003)   -2.5 %  one sign spread mbase 6 % poc 14 %
+    stroke-dashed            hd    1.294 ->   1.257  paired +0.007 (-0.137..+0.011)   +0.5 %  mixed    spread mbase 18 % poc 29 %
+    stroke-dashed            z1    1.273 ->   1.235  paired -0.023 (-0.120..+0.008)   -1.8 %  mixed    spread mbase 30 % poc 42 %
+    stroke-dashed            z2    1.178 ->   1.224  paired +0.035 (-0.022..+0.072)   +3.0 %  mixed    spread mbase 31 % poc 34 %
+    stroke-dashed            z4    1.208 ->   1.207  paired +0.023 (-0.075..+0.078)   +1.9 %  mixed    spread mbase 30 % poc 32 %
+    stroke-wide-round        hd    0.806 ->   0.824  paired +0.018 (-0.042..+0.059)   +2.2 %  mixed    spread mbase 9 % poc 24 %
+    stroke-wide-round        z1    0.628 ->   0.633  paired +0.029 (+0.005..+0.038)   +4.6 %  one sign spread mbase 10 % poc 11 %
+    stroke-wide-round        z2    0.609 ->   0.629  paired -0.002 (-0.010..+0.020)   -0.3 %  mixed    spread mbase 14 % poc 16 %
+    stroke-wide-round        z4    0.624 ->   0.613  paired -0.011 (-0.034..+0.029)   -1.8 %  mixed    spread mbase 11 % poc 23 %
+    mask-text-001            hd    2.213 ->   2.261  paired -0.023 (-0.068..+0.295)   -1.0 %  mixed    spread mbase 48 % poc 30 %
+    mask-text-001            z1    1.247 ->   1.263  paired +0.016 (-0.051..+0.094)   +1.3 %  mixed    spread mbase 3 % poc 16 %
+    mask-text-001            z2    1.322 ->   1.278  paired -0.004 (-0.044..+0.047)   -0.3 %  mixed    spread mbase 18 % poc 22 %
+    mask-text-001            z4    1.326 ->   1.246  paired -0.048 (-0.082..+0.013)   -3.6 %  mixed    spread mbase 16 % poc 11 %
+    mask-text-001-arial      hd    2.186 ->   2.174  paired -0.011 (-0.014..+0.042)   -0.5 %  mixed    spread mbase 22 % poc 19 %
+    mask-text-001-arial      z1    1.296 ->   1.282  paired -0.014 (-0.031..-0.007)   -1.1 %  one sign spread mbase 13 % poc 11 %
+    mask-text-001-arial      z2    1.283 ->   1.255  paired -0.015 (-0.028..+0.011)   -1.2 %  mixed    spread mbase 11 % poc 14 %
+    mask-text-001-arial      z4    1.313 ->   1.264  paired -0.049 (-0.051..-0.020)   -3.7 %  one sign spread mbase 21 % poc 19 %
+    mask-text-001-arial-ref  hd    0.732 ->   0.715  paired -0.017 (-0.043..-0.014)   -2.3 %  one sign spread mbase 21 % poc 27 %
+    mask-text-001-arial-ref  z1    0.640 ->   0.635  paired +0.014 (-0.027..+0.043)   +2.2 %  mixed    spread mbase 12 % poc 20 %
+    mask-text-001-arial-ref  z2    0.636 ->   0.631  paired +0.025 (-0.005..+0.027)   +3.9 %  mixed    spread mbase 17 % poc 17 %
+    mask-text-001-arial-ref  z4    0.606 ->   0.655  paired +0.013 (-0.015..+0.049)   +2.1 %  mixed    spread mbase 18 % poc 13 %
+    mask-text-001-ref        hd    0.741 ->   0.741  paired +0.000 (-0.031..+0.002)   +0.0 %  mixed    spread mbase 11 % poc 16 %
+    mask-text-001-ref        z1    0.675 ->   0.648  paired -0.009 (-0.048..+0.006)   -1.3 %  mixed    spread mbase 10 % poc 11 %
+    mask-text-001-ref        z2    0.637 ->   0.624  paired -0.013 (-0.017..+0.022)   -2.0 %  mixed    spread mbase 16 % poc 9 %
+    mask-text-001-ref        z4    0.646 ->   0.649  paired +0.013 (-0.051..+0.047)   +2.0 %  mixed    spread mbase 12 % poc 15 %
+    mask-text-001-ref        hd    0.710 ->   0.717  paired -0.014 (-0.022..+0.007)   -2.0 %  mixed    spread mbase 29 % poc 28 %
+    mask-text-001-ref        z1    0.652 ->   0.670  paired +0.019 (+0.018..+0.050)   +2.9 %  one sign spread mbase 6 % poc 11 %
+    mask-text-001-ref        z2    0.650 ->   0.639  paired -0.015 (-0.034..+0.019)   -2.3 %  mixed    spread mbase 14 % poc 12 %
+    mask-text-001-ref        z4    0.653 ->   0.610  paired -0.024 (-0.043..+0.001)   -3.7 %  mixed    spread mbase 9 % poc 14 %
+    mask-text-001            hd    2.265 ->   2.275  paired +0.010 (-0.006..+0.017)   +0.4 %  mixed    spread mbase 19 % poc 20 %
+    mask-text-001            z1    1.238 ->   1.230  paired -0.008 (-0.080..+0.024)   -0.6 %  mixed    spread mbase 25 % poc 16 %
+    mask-text-001            z2    1.310 ->   1.288  paired -0.022 (-0.041..+0.042)   -1.7 %  mixed    spread mbase 23 % poc 31 %
+    mask-text-001            z4    1.362 ->   1.339  paired -0.023 (-0.121..+0.025)   -1.7 %  mixed    spread mbase 12 % poc 25 %
+    noise floor: paired medians -5.8 % .. +7.2 %, median of their sizes 1.6 %, 59 of 239 with one sign
+
+timing_m15sw_p15sw_text: encode_ms
+  route changes: 33 frames
+    gui-gradient-linear      hd    0.333 ->   0.331  paired -0.000 (-0.004..+0.002)   -0.1 %  mixed    spread mbase 2 % poc 2 %
+    gui-gradient-linear      z1    0.326 ->   0.323  paired +0.001 (-0.003..+0.006)   +0.3 %  mixed    spread mbase 3 % poc 4 %
+    gui-gradient-linear      z2    0.324 ->   0.324  paired +0.002 (-0.001..+0.002)   +0.5 %  mixed    spread mbase 1 % poc 1 %
+    gui-gradient-linear      z4    0.297 ->   0.300  paired +0.000 (-0.011..+0.003)   +0.0 %  mixed    spread mbase 3 % poc 7 %
+    native-canvas            hd    3.856 ->   3.861  paired -0.024 (-0.064..+0.028)   -0.6 %  mixed    spread mbase 11 % poc 13 %
+    native-canvas            z1    2.790 ->   2.833  paired +0.031 (-0.003..+0.275)   +1.1 %  mixed    spread mbase 12 % poc 19 %
+    native-canvas            z2    2.991 ->   2.981  paired +0.020 (-0.030..+0.056)   +0.7 %  mixed    spread mbase 1 % poc 3 %
+    gradient-across-runs     hd    0.190 ->   0.191  paired -0.001 (-0.002..+0.007)   -0.3 %  mixed    spread mbase 4 % poc 2 %
+    gradient-across-runs     z2    0.196 ->   0.201  paired +0.009 (-0.018..+0.020)   +4.7 %  mixed    spread mbase 22 % poc 14 %
+    gradient-across-runs     z4    0.182 ->   0.184  paired +0.003 (-0.001..+0.011)   +1.4 %  mixed    spread mbase 10 % poc 16 %
+    gradient-bbox-units      hd    0.199 ->   0.205  paired -0.000 (-0.007..+0.022)   -0.1 %  mixed    spread mbase 8 % poc 21 %
+    gradient-bbox-units      z2    0.188 ->   0.185  paired -0.002 (-0.004..+0.003)   -0.9 %  mixed    spread mbase 7 % poc 10 %
+    gradient-bbox-units      z4    0.166 ->   0.172  paired +0.005 (+0.001..+0.006)   +3.1 %  one sign spread mbase 8 % poc 10 %
+    gradient-fade            hd    0.169 ->   0.170  paired -0.001 (-0.003..+0.002)   -0.7 %  mixed    spread mbase 6 % poc 5 %
+    gradient-fade            z2    0.167 ->   0.169  paired +0.000 (-0.008..+0.002)   +0.0 %  mixed    spread mbase 6 % poc 2 %
+    gradient-fade            z4    0.167 ->   0.169  paired +0.002 (-0.001..+0.012)   +1.0 %  mixed    spread mbase 3 % poc 12 %
+    gradient-in-layers       hd    0.338 ->   0.343  paired +0.006 (+0.004..+0.014)   +1.6 %  one sign spread mbase 15 % poc 18 %
+    gradient-in-layers       z2    0.334 ->   0.325  paired -0.008 (-0.018..-0.001)   -2.5 %  one sign spread mbase 8 % poc 2 %
+    gradient-in-layers       z4    0.334 ->   0.329  paired +0.000 (-0.010..+0.007)   +0.1 %  mixed    spread mbase 4 % poc 3 %
+    gradient-radial          hd    0.186 ->   0.181  paired -0.003 (-0.005..+0.011)   -1.7 %  mixed    spread mbase 8 % poc 16 %
+    gradient-radial          z2    0.174 ->   0.173  paired -0.001 (-0.001..-0.000)   -0.6 %  one sign spread mbase 2 % poc 2 %
+    gradient-radial          z4    0.157 ->   0.156  paired -0.003 (-0.006..+0.001)   -2.0 %  mixed    spread mbase 4 % poc 2 %
+    gradient-size-threshold  hd    0.164 ->   0.164  paired -0.003 (-0.006..+0.004)   -1.8 %  mixed    spread mbase 7 % poc 2 %
+    gradient-size-threshold  z1    0.154 ->   0.148  paired -0.004 (-0.047..+0.004)   -2.3 %  mixed    spread mbase 34 % poc 3 %
+    gradient-size-threshold  z2    0.155 ->   0.151  paired -0.006 (-0.007..-0.004)   -3.5 %  one sign spread mbase 5 % poc 4 %
+    gradient-size-threshold  z4    0.162 ->   0.161  paired +0.002 (-0.003..+0.003)   +1.0 %  mixed    spread mbase 3 % poc 2 %
+    gradient-stroke          hd    0.145 ->   0.150  paired +0.004 (-0.001..+0.007)   +2.6 %  mixed    spread mbase 5 % poc 2 %
+    gradient-stroke          z2    0.146 ->   0.149  paired +0.004 (-0.001..+0.005)   +2.4 %  mixed    spread mbase 3 % poc 3 %
+    gradient-stroke          z4    0.146 ->   0.147  paired +0.001 (-0.001..+0.004)   +0.6 %  mixed    spread mbase 2 % poc 5 %
+    gradient-transformed-groups hd    0.211 ->   0.211  paired +0.003 (-0.001..+0.006)   +1.5 %  mixed    spread mbase 4 % poc 3 %
+    gradient-transformed-groups z1    0.198 ->   0.199  paired +0.001 (-0.001..+0.006)   +0.4 %  mixed    spread mbase 0 % poc 4 %
+    gradient-transformed-groups z2    0.202 ->   0.203  paired +0.003 (-0.001..+0.014)   +1.5 %  mixed    spread mbase 7 % poc 13 %
+    gradient-transformed-groups z4    0.195 ->   0.194  paired +0.004 (-0.000..+0.007)   +2.1 %  mixed    spread mbase 8 % poc 9 %
+  route does not change (noise floor): 239 frames
+    advanced-shadows         hd    0.327 ->   0.328  paired -0.002 (-0.006..+0.001)   -0.6 %  mixed    spread mbase 13 % poc 14 %
+    advanced-shadows         z1    0.304 ->   0.303  paired -0.001 (-0.001..+0.003)   -0.2 %  mixed    spread mbase 20 % poc 21 %
+    advanced-shadows         z2    0.307 ->   0.302  paired +0.003 (-0.006..+0.015)   +0.8 %  mixed    spread mbase 22 % poc 26 %
+    advanced-shadows         z4    0.333 ->   0.304  paired -0.007 (-0.053..-0.005)   -2.0 %  one sign spread mbase 9 % poc 15 %
+    advanced-shadows-right-handed hd    0.315 ->   0.313  paired -0.002 (-0.021..-0.002)   -0.6 %  one sign spread mbase 9 % poc 17 %
+    advanced-shadows-right-handed z1    0.315 ->   0.306  paired +0.002 (-0.009..+0.014)   +0.5 %  mixed    spread mbase 15 % poc 19 %
+    advanced-shadows-right-handed z2    0.304 ->   0.307  paired +0.003 (-0.003..+0.013)   +1.0 %  mixed    spread mbase 15 % poc 9 %
+    advanced-shadows-right-handed z4    0.309 ->   0.310  paired +0.017 (+0.001..+0.032)   +5.5 %  one sign spread mbase 17 % poc 21 %
+    child-overriding-parent-font-properties hd    0.195 ->   0.190  paired +0.001 (-0.005..+0.008)   +0.7 %  mixed    spread mbase 40 % poc 43 %
+    child-overriding-parent-font-properties z1    0.187 ->   0.186  paired -0.001 (-0.004..+0.005)   -0.5 %  mixed    spread mbase 25 % poc 30 %
+    child-overriding-parent-font-properties z2    0.191 ->   0.189  paired -0.004 (-0.007..-0.002)   -1.9 %  one sign spread mbase 29 % poc 27 %
+    child-overriding-parent-font-properties z4    0.186 ->   0.197  paired +0.011 (-0.000..+0.011)   +5.7 %  mixed    spread mbase 28 % poc 35 %
+    default-render-pipeline  hd    0.923 ->   0.911  paired -0.012 (-0.015..-0.000)   -1.3 %  one sign spread mbase 17 % poc 16 %
+    default-render-pipeline  z1    0.906 ->   0.895  paired -0.008 (-0.011..+0.007)   -0.9 %  mixed    spread mbase 15 % poc 13 %
+    default-render-pipeline  z2    0.892 ->   0.894  paired -0.015 (-0.035..+0.002)   -1.7 %  mixed    spread mbase 7 % poc 5 %
+    default-render-pipeline  z4    0.611 ->   0.611  paired -0.000 (-0.002..+0.010)   -0.0 %  mixed    spread mbase 10 % poc 7 %
+    font-size-inheritance    hd    0.246 ->   0.244  paired +0.004 (-0.002..+0.009)   +1.5 %  mixed    spread mbase 11 % poc 13 %
+    font-size-inheritance    z1    0.203 ->   0.201  paired +0.005 (-0.027..+0.008)   +2.2 %  mixed    spread mbase 6 % poc 17 %
+    font-size-inheritance    z2    0.200 ->   0.193  paired +0.001 (-0.016..+0.003)   +0.5 %  mixed    spread mbase 8 % poc 13 %
+    font-size-inheritance    z4    0.192 ->   0.195  paired +0.003 (-0.005..+0.004)   +1.7 %  mixed    spread mbase 16 % poc 11 %
+    font-style-inheritance   hd    0.257 ->   0.257  paired -0.000 (-0.005..+0.011)   -0.0 %  mixed    spread mbase 8 % poc 15 %
+    font-style-inheritance   z1    0.189 ->   0.185  paired +0.002 (-0.005..+0.010)   +0.8 %  mixed    spread mbase 8 % poc 13 %
+    font-style-inheritance   z2    0.186 ->   0.187  paired +0.001 (+0.001..+0.002)   +0.5 %  one sign spread mbase 7 % poc 8 %
+    font-style-inheritance   z4    0.191 ->   0.187  paired -0.003 (-0.006..-0.001)   -1.8 %  one sign spread mbase 15 % poc 12 %
+    framegraph-gui-bloom     hd    0.215 ->   0.216  paired +0.004 (-0.004..+0.007)   +2.0 %  mixed    spread mbase 5 % poc 4 %
+    framegraph-gui-bloom     z1    0.217 ->   0.211  paired -0.006 (-0.008..-0.001)   -2.8 %  one sign spread mbase 10 % poc 7 %
+    framegraph-gui-bloom     z2    0.215 ->   0.214  paired -0.004 (-0.017..+0.003)   -1.6 %  mixed    spread mbase 9 % poc 2 %
+    framegraph-gui-bloom     z4    0.215 ->   0.222  paired +0.008 (-0.003..+0.009)   +3.8 %  mixed    spread mbase 2 % poc 4 %
+    0                        hd    0.108 ->   0.109  paired +0.001 (-0.001..+0.002)   +0.8 %  mixed    spread mbase 11 % poc 15 %
+    0                        z1    0.107 ->   0.108  paired +0.000 (+0.000..+0.004)   +0.3 %  one sign spread mbase 4 % poc 7 %
+    0                        z2    0.111 ->   0.108  paired -0.002 (-0.009..+0.000)   -1.7 %  mixed    spread mbase 7 % poc 3 %
+    0                        z4    0.109 ->   0.109  paired +0.000 (-0.003..+0.002)   +0.4 %  mixed    spread mbase 1 % poc 4 %
+    1                        hd    0.109 ->   0.108  paired -0.000 (-0.001..+0.003)   -0.1 %  mixed    spread mbase 7 % poc 10 %
+    1                        z1    0.107 ->   0.109  paired -0.003 (-0.004..+0.001)   -2.6 %  mixed    spread mbase 6 % poc 7 %
+    1                        z2    0.109 ->   0.113  paired +0.004 (-0.001..+0.005)   +3.6 %  mixed    spread mbase 7 % poc 11 %
+    1                        z4    0.112 ->   0.111  paired -0.001 (-0.002..-0.001)   -0.8 %  one sign spread mbase 7 % poc 8 %
+    2                        hd    0.108 ->   0.110  paired +0.001 (-0.003..+0.002)   +0.5 %  mixed    spread mbase 3 % poc 6 %
+    2                        z1    0.106 ->   0.106  paired -0.001 (-0.001..+0.002)   -0.5 %  mixed    spread mbase 6 % poc 3 %
+    2                        z2    0.108 ->   0.112  paired +0.004 (-0.002..+0.005)   +3.2 %  mixed    spread mbase 5 % poc 11 %
+    2                        z4    0.108 ->   0.111  paired +0.003 (-0.003..+0.004)   +3.2 %  mixed    spread mbase 5 % poc 12 %
+    3                        hd    0.107 ->   0.108  paired +0.000 (-0.003..+0.000)   +0.0 %  mixed    spread mbase 8 % poc 5 %
+    3                        z1    0.107 ->   0.106  paired -0.002 (-0.002..+0.001)   -1.4 %  mixed    spread mbase 9 % poc 6 %
+    3                        z2    0.108 ->   0.108  paired +0.001 (-0.001..+0.003)   +0.6 %  mixed    spread mbase 5 % poc 8 %
+    3                        z4    0.111 ->   0.107  paired -0.003 (-0.004..-0.001)   -2.6 %  one sign spread mbase 7 % poc 8 %
+    0                        hd    0.107 ->   0.108  paired +0.001 (-0.005..+0.002)   +0.7 %  mixed    spread mbase 3 % poc 4 %
+    0                        z1    0.107 ->   0.106  paired -0.001 (-0.004..+0.004)   -1.3 %  mixed    spread mbase 12 % poc 4 %
+    0                        z2    0.106 ->   0.104  paired +0.000 (-0.003..+0.002)   +0.0 %  mixed    spread mbase 5 % poc 7 %
+    0                        z4    0.114 ->   0.109  paired -0.004 (-0.018..+0.001)   -3.9 %  mixed    spread mbase 8 % poc 11 %
+    1                        hd    0.116 ->   0.110  paired -0.002 (-0.022..+0.002)   -1.6 %  mixed    spread mbase 20 % poc 8 %
+    1                        z1    0.108 ->   0.110  paired +0.003 (+0.001..+0.004)   +2.5 %  one sign spread mbase 2 % poc 2 %
+    1                        z2    0.107 ->   0.107  paired +0.002 (-0.009..+0.011)   +1.7 %  mixed    spread mbase 15 % poc 15 %
+    1                        z4    0.107 ->   0.110  paired +0.004 (+0.003..+0.004)   +3.4 %  one sign spread mbase 12 % poc 11 %
+    2                        hd    0.110 ->   0.107  paired -0.002 (-0.004..+0.004)   -2.2 %  mixed    spread mbase 11 % poc 4 %
+    2                        z1    0.106 ->   0.108  paired +0.001 (+0.001..+0.002)   +0.9 %  one sign spread mbase 9 % poc 8 %
+    2                        z2    0.107 ->   0.108  paired +0.002 (-0.001..+0.002)   +1.6 %  mixed    spread mbase 8 % poc 6 %
+    2                        z4    0.105 ->   0.108  paired +0.002 (+0.000..+0.005)   +1.5 %  one sign spread mbase 5 % poc 9 %
+    3                        hd    0.109 ->   0.109  paired -0.000 (-0.002..+0.002)   -0.1 %  mixed    spread mbase 8 % poc 8 %
+    3                        z1    0.110 ->   0.109  paired -0.002 (-0.002..+0.004)   -1.5 %  mixed    spread mbase 8 % poc 12 %
+    3                        z2    0.111 ->   0.110  paired -0.000 (-0.001..+0.000)   -0.2 %  mixed    spread mbase 9 % poc 8 %
+    3                        z4    0.108 ->   0.110  paired +0.000 (-0.001..+0.006)   +0.3 %  mixed    spread mbase 4 % poc 9 %
+    4                        hd    0.107 ->   0.107  paired -0.001 (-0.002..+0.005)   -1.3 %  mixed    spread mbase 5 % poc 11 %
+    4                        z1    0.110 ->   0.107  paired -0.000 (-0.004..+0.001)   -0.3 %  mixed    spread mbase 9 % poc 6 %
+    4                        z2    0.107 ->   0.109  paired +0.001 (+0.001..+0.006)   +1.2 %  one sign spread mbase 8 % poc 3 %
+    4                        z4    0.110 ->   0.111  paired +0.001 (-0.000..+0.012)   +0.7 %  mixed    spread mbase 5 % poc 7 %
+    5                        hd    0.109 ->   0.108  paired -0.001 (-0.002..+0.003)   -1.0 %  mixed    spread mbase 6 % poc 2 %
+    5                        z1    0.107 ->   0.108  paired -0.000 (-0.002..+0.002)   -0.3 %  mixed    spread mbase 6 % poc 5 %
+    5                        z2    0.109 ->   0.108  paired +0.002 (-0.001..+0.003)   +1.5 %  mixed    spread mbase 7 % poc 8 %
+    5                        z4    0.109 ->   0.110  paired -0.002 (-0.005..+0.001)   -1.8 %  mixed    spread mbase 11 % poc 9 %
+    6                        hd    0.108 ->   0.107  paired -0.000 (-0.001..+0.001)   -0.4 %  mixed    spread mbase 7 % poc 9 %
+    6                        z1    0.107 ->   0.105  paired +0.001 (-0.002..+0.002)   +0.7 %  mixed    spread mbase 8 % poc 5 %
+    6                        z2    0.106 ->   0.108  paired +0.002 (-0.001..+0.004)   +1.6 %  mixed    spread mbase 4 % poc 9 %
+    6                        z4    0.107 ->   0.109  paired +0.001 (-0.001..+0.002)   +1.1 %  mixed    spread mbase 9 % poc 6 %
+    7                        hd    0.109 ->   0.109  paired +0.000 (-0.003..+0.000)   +0.0 %  mixed    spread mbase 4 % poc 7 %
+    7                        z1    0.109 ->   0.107  paired -0.002 (-0.006..+0.003)   -1.9 %  mixed    spread mbase 3 % poc 13 %
+    7                        z2    0.109 ->   0.109  paired +0.000 (-0.001..+0.003)   +0.2 %  mixed    spread mbase 7 % poc 4 %
+    7                        z4    0.110 ->   0.110  paired +0.001 (-0.001..+0.003)   +1.2 %  mixed    spread mbase 8 % poc 9 %
+    0                        hd    0.257 ->   0.260  paired -0.002 (-0.004..+0.003)   -0.8 %  mixed    spread mbase 6 % poc 5 %
+    0                        z1    0.211 ->   0.212  paired +0.001 (-0.001..+0.001)   +0.3 %  mixed    spread mbase 7 % poc 7 %
+    0                        z2    0.209 ->   0.212  paired +0.001 (-0.002..+0.003)   +0.6 %  mixed    spread mbase 5 % poc 6 %
+    0                        z4    0.247 ->   0.251  paired +0.002 (+0.002..+0.005)   +0.9 %  one sign spread mbase 6 % poc 6 %
+    1                        hd    0.260 ->   0.258  paired -0.002 (-0.002..-0.002)   -0.7 %  one sign spread mbase 6 % poc 6 %
+    1                        z1    0.210 ->   0.206  paired -0.000 (-0.008..+0.003)   -0.2 %  mixed    spread mbase 8 % poc 4 %
+    1                        z2    0.212 ->   0.211  paired +0.001 (-0.001..+0.003)   +0.3 %  mixed    spread mbase 6 % poc 7 %
+    1                        z4    0.247 ->   0.251  paired +0.004 (+0.000..+0.006)   +1.7 %  one sign spread mbase 4 % poc 2 %
+    gui-force-resize-width   hd    0.287 ->   0.289  paired +0.007 (-0.005..+0.014)   +2.4 %  mixed    spread mbase 9 % poc 4 %
+    gui-force-resize-width   z1    0.279 ->   0.281  paired -0.001 (-0.012..+0.009)   -0.3 %  mixed    spread mbase 2 % poc 9 %
+    gui-force-resize-width   z2    0.285 ->   0.283  paired -0.003 (-0.006..+0.002)   -0.9 %  mixed    spread mbase 4 % poc 1 %
+    gui-force-resize-width   z4    0.286 ->   0.282  paired -0.006 (-0.007..-0.001)   -2.1 %  one sign spread mbase 2 % poc 1 %
+    gui-horizontal-stack-panel-and-text-block-with-resizetofit-a hd    0.661 ->   0.662  paired +0.001 (-0.019..+0.001)   +0.1 %  mixed    spread mbase 8 % poc 11 %
+    gui-horizontal-stack-panel-and-text-block-with-resizetofit-a z1    0.619 ->   0.621  paired +0.001 (-0.004..+0.002)   +0.1 %  mixed    spread mbase 13 % poc 12 %
+    gui-horizontal-stack-panel-and-text-block-with-resizetofit-a z2    0.651 ->   0.648  paired -0.003 (-0.006..+0.003)   -0.5 %  mixed    spread mbase 14 % poc 13 %
+    gui-horizontal-stack-panel-and-text-block-with-resizetofit-a z4    0.654 ->   0.653  paired -0.001 (-0.002..+0.008)   -0.1 %  mixed    spread mbase 15 % poc 13 %
+    gui-input-test           hd    0.298 ->   0.297  paired -0.000 (-0.005..+0.006)   -0.1 %  mixed    spread mbase 5 % poc 9 %
+    gui-input-test           z1    0.263 ->   0.266  paired +0.003 (+0.002..+0.017)   +1.0 %  one sign spread mbase 4 % poc 2 %
+    gui-input-test           z2    0.275 ->   0.274  paired -0.004 (-0.005..-0.001)   -1.5 %  one sign spread mbase 6 % poc 7 %
+    gui-input-test           z4    0.300 ->   0.297  paired +0.006 (-0.009..+0.010)   +1.9 %  mixed    spread mbase 10 % poc 6 %
+    gui-input-test--ub4f3b-8 hd    0.286 ->   0.286  paired +0.001 (-0.004..+0.001)   +0.2 %  mixed    spread mbase 8 % poc 7 %
+    gui-input-test--ub4f3b-8 z1    0.258 ->   0.258  paired -0.000 (-0.004..+0.001)   -0.1 %  mixed    spread mbase 5 % poc 7 %
+    gui-input-test--ub4f3b-8 z2    0.284 ->   0.283  paired +0.002 (-0.003..+0.007)   +0.6 %  mixed    spread mbase 8 % poc 5 %
+    gui-input-test--ub4f3b-8 z4    0.287 ->   0.285  paired +0.003 (-0.003..+0.007)   +1.1 %  mixed    spread mbase 9 % poc 7 %
+    gui-input-text-area-inside-scrollviewer hd    0.289 ->   0.294  paired +0.003 (+0.001..+0.005)   +1.0 %  one sign spread mbase 7 % poc 7 %
+    gui-input-text-area-inside-scrollviewer z1    0.231 ->   0.229  paired -0.000 (-0.007..+0.001)   -0.1 %  mixed    spread mbase 7 % poc 6 %
+    gui-input-text-area-inside-scrollviewer z2    0.224 ->   0.226  paired +0.002 (-0.003..+0.004)   +0.7 %  mixed    spread mbase 7 % poc 4 %
+    gui-input-text-area-inside-scrollviewer z4    0.227 ->   0.226  paired -0.000 (-0.002..+0.000)   -0.2 %  mixed    spread mbase 7 % poc 8 %
+    gui-input-text-area-with-placeholder hd    0.203 ->   0.207  paired +0.001 (-0.000..+0.004)   +0.5 %  mixed    spread mbase 7 % poc 7 %
+    gui-input-text-area-with-placeholder z1    0.195 ->   0.194  paired -0.000 (-0.000..+0.004)   -0.2 %  mixed    spread mbase 6 % poc 8 %
+    gui-input-text-area-with-placeholder z2    0.200 ->   0.201  paired -0.002 (-0.002..+0.001)   -0.9 %  mixed    spread mbase 6 % poc 6 %
+    gui-input-text-area-with-placeholder z4    0.202 ->   0.204  paired +0.002 (-0.004..+0.003)   +1.0 %  mixed    spread mbase 7 % poc 4 %
+    0                        hd    0.077 ->   0.076  paired +0.000 (-0.001..+0.001)   +0.1 %  mixed    spread mbase 6 % poc 8 %
+    0                        z1    0.074 ->   0.076  paired -0.000 (-0.001..+0.004)   -0.4 %  mixed    spread mbase 9 % poc 11 %
+    0                        z2    0.076 ->   0.076  paired +0.000 (-0.002..+0.002)   +0.1 %  mixed    spread mbase 12 % poc 6 %
+    0                        z4    0.077 ->   0.077  paired -0.001 (-0.003..-0.000)   -0.9 %  one sign spread mbase 11 % poc 8 %
+    gui-stackpanel           hd    0.199 ->   0.201  paired +0.005 (+0.000..+0.013)   +2.7 %  mixed    spread mbase 7 % poc 10 %
+    gui-stackpanel           z1    0.197 ->   0.198  paired -0.002 (-0.003..+0.001)   -0.8 %  mixed    spread mbase 6 % poc 6 %
+    gui-stackpanel           z2    0.200 ->   0.201  paired +0.001 (+0.001..+0.002)   +0.7 %  one sign spread mbase 3 % poc 3 %
+    gui-stackpanel           z4    0.199 ->   0.199  paired +0.001 (-0.000..+0.005)   +0.5 %  mixed    spread mbase 8 % poc 5 %
+    gui-text-block-with-resizetofit-and-forceresizewidth hd    0.671 ->   0.669  paired +0.003 (-0.019..+0.010)   +0.4 %  mixed    spread mbase 17 % poc 15 %
+    gui-text-block-with-resizetofit-and-forceresizewidth z1    0.610 ->   0.601  paired -0.009 (-0.009..-0.000)   -1.4 %  one sign spread mbase 15 % poc 14 %
+    gui-text-block-with-resizetofit-and-forceresizewidth z2    0.644 ->   0.649  paired +0.005 (-0.003..+0.006)   +0.8 %  mixed    spread mbase 13 % poc 15 %
+    gui-text-block-with-resizetofit-and-forceresizewidth z4    0.166 ->   0.161  paired +0.001 (-0.004..+0.001)   +0.3 %  mixed    spread mbase 12 % poc 12 %
+    gui-transform-stackpanel hd    0.455 ->   0.459  paired -0.002 (-0.008..+0.005)   -0.4 %  mixed    spread mbase 9 % poc 7 %
+    gui-transform-stackpanel z1    0.449 ->   0.445  paired -0.003 (-0.004..+0.003)   -0.7 %  mixed    spread mbase 10 % poc 12 %
+    gui-transform-stackpanel z2    0.447 ->   0.453  paired +0.006 (+0.006..+0.009)   +1.4 %  one sign spread mbase 8 % poc 8 %
+    gui-transform-stackpanel z4    0.256 ->   0.258  paired +0.001 (+0.001..+0.009)   +0.5 %  one sign spread mbase 9 % poc 13 %
+    ktx2-decoder-test        hd    0.391 ->   0.375  paired -0.006 (-0.023..+0.004)   -1.5 %  mixed    spread mbase 9 % poc 10 %
+    ktx2-decoder-test        z1    0.351 ->   0.355  paired +0.001 (+0.000..+0.005)   +0.3 %  one sign spread mbase 7 % poc 7 %
+    ktx2-decoder-test        z2    0.362 ->   0.354  paired -0.003 (-0.010..+0.002)   -0.9 %  mixed    spread mbase 7 % poc 6 %
+    ktx2-decoder-test        z4    0.352 ->   0.346  paired -0.002 (-0.006..+0.006)   -0.5 %  mixed    spread mbase 5 % poc 7 %
+    load-gui-snippet-with-unicode hd    0.631 ->   0.639  paired +0.006 (+0.005..+0.008)   +1.0 %  one sign spread mbase 8 % poc 7 %
+    load-gui-snippet-with-unicode z1    0.668 ->   0.678  paired +0.008 (-0.018..+0.019)   +1.2 %  mixed    spread mbase 5 % poc 3 %
+    load-gui-snippet-with-unicode z2    0.658 ->   0.656  paired -0.005 (-0.021..-0.001)   -0.7 %  one sign spread mbase 1 % poc 3 %
+    load-gui-snippet-with-unicode z4    0.658 ->   0.671  paired +0.006 (-0.035..+0.028)   +0.9 %  mixed    spread mbase 12 % poc 8 %
+    load-gui-snippet-with-unicode--ys93ky-1 hd    0.660 ->   0.660  paired -0.007 (-0.009..+0.001)   -1.0 %  mixed    spread mbase 7 % poc 8 %
+    load-gui-snippet-with-unicode--ys93ky-1 z1    0.667 ->   0.669  paired +0.003 (-0.021..+0.009)   +0.4 %  mixed    spread mbase 19 % poc 14 %
+    load-gui-snippet-with-unicode--ys93ky-1 z2    0.659 ->   0.657  paired +0.001 (-0.002..+0.025)   +0.1 %  mixed    spread mbase 9 % poc 13 %
+    load-gui-snippet-with-unicode--ys93ky-1 z4    0.667 ->   0.663  paired -0.004 (-0.110..+0.005)   -0.6 %  mixed    spread mbase 31 % poc 13 %
+    loading-gltf-model-with-ktx2-textures hd    0.350 ->   0.357  paired +0.004 (-0.002..+0.007)   +1.1 %  mixed    spread mbase 10 % poc 8 %
+    loading-gltf-model-with-ktx2-textures z1    0.371 ->   0.374  paired +0.003 (+0.003..+0.004)   +0.8 %  one sign spread mbase 9 % poc 9 %
+    loading-gltf-model-with-ktx2-textures z2    0.351 ->   0.354  paired +0.003 (-0.004..+0.006)   +0.7 %  mixed    spread mbase 7 % poc 10 %
+    loading-gltf-model-with-ktx2-textures z4    0.349 ->   0.356  paired -0.001 (-0.004..+0.007)   -0.2 %  mixed    spread mbase 9 % poc 8 %
+    local-cubemaps           hd    0.189 ->   0.190  paired +0.001 (-0.007..+0.001)   +0.4 %  mixed    spread mbase 11 % poc 6 %
+    local-cubemaps           z1    0.190 ->   0.192  paired +0.003 (+0.002..+0.005)   +1.3 %  one sign spread mbase 6 % poc 7 %
+    local-cubemaps           z2    0.191 ->   0.195  paired +0.002 (-0.004..+0.008)   +1.1 %  mixed    spread mbase 5 % poc 12 %
+    local-cubemaps           z4    0.113 ->   0.115  paired +0.001 (-0.002..+0.003)   +1.2 %  mixed    spread mbase 12 % poc 8 %
+    native-canvas            z4    2.516 ->   2.533  paired -0.015 (-0.023..+0.017)   -0.6 %  mixed    spread mbase 5 % poc 4 %
+    node-material-1          hd    0.262 ->   0.261  paired -0.004 (-0.005..-0.001)   -1.7 %  one sign spread mbase 5 % poc 5 %
+    node-material-1          z1    0.253 ->   0.254  paired +0.001 (+0.000..+0.002)   +0.4 %  one sign spread mbase 3 % poc 4 %
+    node-material-1          z2    0.253 ->   0.254  paired -0.003 (-0.003..+0.004)   -1.0 %  mixed    spread mbase 2 % poc 3 %
+    node-material-1          z4    0.148 ->   0.155  paired +0.001 (-0.001..+0.009)   +0.9 %  mixed    spread mbase 8 % poc 5 %
+    parse-gui-json-with-unicode hd    0.659 ->   0.674  paired +0.001 (-0.006..+0.018)   +0.2 %  mixed    spread mbase 3 % poc 4 %
+    parse-gui-json-with-unicode z1    0.664 ->   0.674  paired -0.009 (-0.011..+0.010)   -1.4 %  mixed    spread mbase 6 % poc 5 %
+    parse-gui-json-with-unicode z2    0.664 ->   0.656  paired -0.011 (-0.031..-0.007)   -1.7 %  one sign spread mbase 4 % poc 1 %
+    parse-gui-json-with-unicode z4    0.671 ->   0.672  paired -0.003 (-0.007..+0.004)   -0.4 %  mixed    spread mbase 3 % poc 5 %
+    parse-gui-json-with-unicode--ervgt5-1 hd    0.674 ->   0.679  paired -0.003 (-0.007..+0.120)   -0.4 %  mixed    spread mbase 2 % poc 18 %
+    parse-gui-json-with-unicode--ervgt5-1 z1    0.677 ->   0.692  paired +0.015 (-0.010..+0.069)   +2.2 %  mixed    spread mbase 3 % poc 9 %
+    parse-gui-json-with-unicode--ervgt5-1 z2    0.665 ->   0.672  paired +0.002 (-0.012..+0.007)   +0.3 %  mixed    spread mbase 2 % poc 4 %
+    parse-gui-json-with-unicode--ervgt5-1 z4    0.671 ->   0.663  paired -0.012 (-0.017..+0.005)   -1.8 %  mixed    spread mbase 4 % poc 7 %
+    pointers                 hd    0.161 ->   0.159  paired -0.001 (-0.003..+0.002)   -0.8 %  mixed    spread mbase 5 % poc 3 %
+    pointers                 z1    0.158 ->   0.158  paired -0.002 (-0.003..+0.000)   -1.2 %  mixed    spread mbase 8 % poc 7 %
+    pointers                 z2    0.155 ->   0.158  paired -0.003 (-0.004..+0.007)   -2.2 %  mixed    spread mbase 5 % poc 6 %
+    pointers                 z4    0.161 ->   0.158  paired -0.004 (-0.005..-0.003)   -2.2 %  one sign spread mbase 6 % poc 5 %
+    prepass-ssao-gui         hd    0.205 ->   0.205  paired -0.001 (-0.003..+0.005)   -0.3 %  mixed    spread mbase 2 % poc 2 %
+    prepass-ssao-gui         z1    0.198 ->   0.200  paired +0.002 (+0.001..+0.005)   +0.8 %  one sign spread mbase 1 % poc 1 %
+    prepass-ssao-gui         z2    0.204 ->   0.208  paired +0.003 (-0.002..+0.005)   +1.7 %  mixed    spread mbase 0 % poc 4 %
+    prepass-ssao-gui         z4    0.204 ->   0.206  paired -0.000 (-0.004..+0.001)   -0.0 %  mixed    spread mbase 10 % poc 8 %
+    rounding-values-on-controls-inside-stackpanel hd    0.237 ->   0.241  paired +0.001 (-0.006..+0.005)   +0.3 %  mixed    spread mbase 4 % poc 2 %
+    rounding-values-on-controls-inside-stackpanel z1    0.233 ->   0.234  paired +0.000 (-0.004..+0.003)   +0.2 %  mixed    spread mbase 4 % poc 1 %
+    rounding-values-on-controls-inside-stackpanel z2    0.236 ->   0.235  paired -0.002 (-0.007..+0.003)   -1.0 %  mixed    spread mbase 1 % poc 4 %
+    rounding-values-on-controls-inside-stackpanel z4    0.225 ->   0.223  paired -0.001 (-0.003..-0.001)   -0.5 %  one sign spread mbase 2 % poc 1 %
+    0                        hd    1.479 ->   1.477  paired -0.026 (-0.054..-0.002)   -1.8 %  one sign spread mbase 10 % poc 8 %
+    0                        z1    1.440 ->   1.437  paired +0.007 (-0.021..+0.008)   +0.5 %  mixed    spread mbase 2 % poc 1 %
+    0                        z2    1.442 ->   1.444  paired -0.001 (-0.024..+0.006)   -0.1 %  mixed    spread mbase 2 % poc 1 %
+    0                        z4    1.323 ->   1.333  paired -0.008 (-0.028..+0.022)   -0.6 %  mixed    spread mbase 4 % poc 3 %
+    1                        hd    0.470 ->   0.466  paired -0.004 (-0.005..+0.004)   -0.8 %  mixed    spread mbase 1 % poc 2 %
+    1                        z1    0.467 ->   0.463  paired +0.002 (-0.007..+0.004)   +0.4 %  mixed    spread mbase 2 % poc 2 %
+    1                        z2    0.462 ->   0.465  paired +0.002 (-0.003..+0.002)   +0.3 %  mixed    spread mbase 3 % poc 4 %
+    1                        z4    0.403 ->   0.408  paired +0.006 (-0.008..+0.010)   +1.4 %  mixed    spread mbase 4 % poc 1 %
+    skybox-with-boombox      hd    0.114 ->   0.113  paired -0.002 (-0.002..+0.003)   -1.6 %  mixed    spread mbase 11 % poc 8 %
+    skybox-with-boombox      z1    0.112 ->   0.110  paired +0.001 (-0.003..+0.004)   +0.9 %  mixed    spread mbase 4 % poc 8 %
+    skybox-with-boombox      z2    0.111 ->   0.109  paired -0.001 (-0.002..-0.000)   -0.6 %  one sign spread mbase 1 % poc 1 %
+    skybox-with-boombox      z4    0.108 ->   0.109  paired +0.001 (-0.000..+0.001)   +0.5 %  mixed    spread mbase 6 % poc 6 %
+    sliders                  hd    5.596 ->   5.668  paired +0.010 (-0.353..+0.186)   +0.2 %  mixed    spread mbase 6 % poc 16 %
+    sliders                  z1    5.664 ->   5.739  paired +0.075 (-0.049..+0.186)   +1.3 %  mixed    spread mbase 15 % poc 20 %
+    sliders                  z2    5.456 ->   5.540  paired +0.085 (+0.050..+0.122)   +1.6 %  one sign spread mbase 14 % poc 13 %
+    sliders                  z4    5.448 ->   5.398  paired -0.125 (-0.588..+0.240)   -2.3 %  mixed    spread mbase 9 % poc 13 %
+    ui-unaffected-by-post-process hd    0.193 ->   0.189  paired -0.004 (-0.010..-0.003)   -2.3 %  one sign spread mbase 11 % poc 7 %
+    ui-unaffected-by-post-process z1    0.189 ->   0.196  paired +0.006 (+0.002..+0.007)   +3.2 %  one sign spread mbase 4 % poc 7 %
+    ui-unaffected-by-post-process z2    0.193 ->   0.189  paired +0.000 (-0.007..+0.002)   +0.2 %  mixed    spread mbase 6 % poc 3 %
+    ui-unaffected-by-post-process z4    0.188 ->   0.189  paired +0.003 (-0.001..+0.012)   +1.6 %  mixed    spread mbase 2 % poc 6 %
+    banner                   hd    1.191 ->   1.189  paired -0.002 (-0.006..-0.001)   -0.1 %  one sign spread mbase 4 % poc 4 %
+    banner                   z1    1.152 ->   1.168  paired +0.011 (-0.078..+0.016)   +1.0 %  mixed    spread mbase 14 % poc 7 %
+    banner                   z2    1.014 ->   1.022  paired +0.002 (-0.026..+0.009)   +0.2 %  mixed    spread mbase 2 % poc 5 %
+    banner                   z4    0.391 ->   0.394  paired -0.003 (-0.017..+0.003)   -0.8 %  mixed    spread mbase 7 % poc 4 %
+    fill-opacity-overlap     hd    0.136 ->   0.134  paired +0.002 (-0.014..+0.002)   +1.3 %  mixed    spread mbase 9 % poc 6 %
+    fill-opacity-overlap     z1    0.101 ->   0.102  paired +0.003 (-0.004..+0.003)   +3.0 %  mixed    spread mbase 4 % poc 5 %
+    fill-opacity-overlap     z2    0.129 ->   0.128  paired +0.000 (-0.000..+0.001)   +0.1 %  mixed    spread mbase 5 % poc 5 %
+    fill-opacity-overlap     z4    0.128 ->   0.128  paired +0.000 (-0.001..+0.003)   +0.2 %  mixed    spread mbase 3 % poc 0 %
+    gradient-across-runs     z1    0.110 ->   0.106  paired -0.004 (-0.010..-0.003)   -3.4 %  one sign spread mbase 10 % poc 4 %
+    gradient-bbox-units      z1    0.108 ->   0.112  paired +0.004 (+0.001..+0.008)   +3.3 %  one sign spread mbase 13 % poc 20 %
+    gradient-fade            z1    0.118 ->   0.122  paired +0.004 (-0.003..+0.010)   +3.0 %  mixed    spread mbase 2 % poc 13 %
+    gradient-in-layers       z1    0.204 ->   0.214  paired +0.010 (+0.004..+0.017)   +5.1 %  one sign spread mbase 10 % poc 16 %
+    gradient-radial          z1    0.103 ->   0.109  paired +0.006 (-0.007..+0.015)   +5.9 %  mixed    spread mbase 5 % poc 17 %
+    gradient-stroke          z1    0.153 ->   0.155  paired +0.002 (-0.002..+0.003)   +1.0 %  mixed    spread mbase 4 % poc 1 %
+    solid-transformed-groups hd    0.268 ->   0.261  paired +0.003 (-0.010..+0.006)   +1.0 %  mixed    spread mbase 8 % poc 10 %
+    solid-transformed-groups z1    0.256 ->   0.251  paired -0.004 (-0.018..+0.007)   -1.7 %  mixed    spread mbase 8 % poc 8 %
+    solid-transformed-groups z2    0.246 ->   0.244  paired -0.002 (-0.003..-0.001)   -1.0 %  one sign spread mbase 1 % poc 1 %
+    solid-transformed-groups z4    0.235 ->   0.238  paired +0.002 (+0.002..+0.002)   +1.0 %  one sign spread mbase 4 % poc 4 %
+    stroke-dashed            hd    0.451 ->   0.448  paired -0.001 (-0.003..+0.018)   -0.2 %  mixed    spread mbase 8 % poc 12 %
+    stroke-dashed            z1    0.446 ->   0.448  paired +0.004 (-0.014..+0.012)   +1.0 %  mixed    spread mbase 2 % poc 4 %
+    stroke-dashed            z2    0.440 ->   0.429  paired -0.004 (-0.011..+0.004)   -0.8 %  mixed    spread mbase 18 % poc 20 %
+    stroke-dashed            z4    0.456 ->   0.457  paired +0.005 (+0.001..+0.021)   +1.0 %  one sign spread mbase 19 % poc 15 %
+    stroke-wide-round        hd    0.146 ->   0.138  paired +0.000 (-0.008..+0.026)   +0.3 %  mixed    spread mbase 20 % poc 40 %
+    stroke-wide-round        z1    0.127 ->   0.126  paired +0.001 (-0.000..+0.005)   +0.9 %  mixed    spread mbase 23 % poc 19 %
+    stroke-wide-round        z2    0.133 ->   0.123  paired -0.009 (-0.011..-0.001)   -7.2 %  one sign spread mbase 27 % poc 19 %
+    stroke-wide-round        z4    0.124 ->   0.123  paired +0.002 (-0.002..+0.016)   +1.9 %  mixed    spread mbase 23 % poc 34 %
+    mask-text-001            hd    0.390 ->   0.392  paired -0.003 (-0.022..+0.002)   -0.8 %  mixed    spread mbase 43 % poc 38 %
+    mask-text-001            z1    0.369 ->   0.364  paired -0.005 (-0.010..+0.003)   -1.2 %  mixed    spread mbase 23 % poc 27 %
+    mask-text-001            z2    0.393 ->   0.377  paired -0.001 (-0.016..+0.006)   -0.2 %  mixed    spread mbase 26 % poc 23 %
+    mask-text-001            z4    0.413 ->   0.368  paired -0.024 (-0.045..-0.001)   -5.8 %  one sign spread mbase 16 % poc 10 %
+    mask-text-001-arial      hd    0.411 ->   0.396  paired -0.014 (-0.015..+0.003)   -3.5 %  mixed    spread mbase 19 % poc 14 %
+    mask-text-001-arial      z1    0.385 ->   0.366  paired +0.001 (-0.020..+0.010)   +0.2 %  mixed    spread mbase 12 % poc 10 %
+    mask-text-001-arial      z2    0.373 ->   0.363  paired -0.004 (-0.010..+0.005)   -1.0 %  mixed    spread mbase 12 % poc 15 %
+    mask-text-001-arial      z4    0.367 ->   0.371  paired -0.000 (-0.030..+0.004)   -0.1 %  mixed    spread mbase 25 % poc 17 %
+    mask-text-001-arial-ref  hd    0.151 ->   0.154  paired -0.001 (-0.020..+0.007)   -0.5 %  mixed    spread mbase 23 % poc 7 %
+    mask-text-001-arial-ref  z1    0.137 ->   0.140  paired +0.003 (+0.000..+0.005)   +1.9 %  one sign spread mbase 10 % poc 14 %
+    mask-text-001-arial-ref  z2    0.142 ->   0.146  paired +0.004 (-0.005..+0.015)   +2.5 %  mixed    spread mbase 14 % poc 29 %
+    mask-text-001-arial-ref  z4    0.134 ->   0.138  paired -0.001 (-0.010..+0.004)   -0.7 %  mixed    spread mbase 24 % poc 17 %
+    mask-text-001-ref        hd    0.159 ->   0.150  paired -0.010 (-0.012..+0.003)   -6.0 %  mixed    spread mbase 17 % poc 8 %
+    mask-text-001-ref        z1    0.145 ->   0.140  paired -0.004 (-0.005..+0.002)   -2.4 %  mixed    spread mbase 11 % poc 16 %
+    mask-text-001-ref        z2    0.144 ->   0.142  paired -0.002 (-0.013..-0.000)   -1.2 %  one sign spread mbase 19 % poc 10 %
+    mask-text-001-ref        z4    0.140 ->   0.146  paired +0.006 (-0.002..+0.013)   +4.4 %  mixed    spread mbase 11 % poc 21 %
+    mask-text-001-ref        hd    0.148 ->   0.149  paired -0.001 (-0.005..+0.003)   -0.6 %  mixed    spread mbase 23 % poc 19 %
+    mask-text-001-ref        z1    0.143 ->   0.139  paired -0.002 (-0.005..+0.012)   -1.5 %  mixed    spread mbase 7 % poc 17 %
+    mask-text-001-ref        z2    0.144 ->   0.142  paired -0.001 (-0.003..+0.003)   -0.9 %  mixed    spread mbase 7 % poc 11 %
+    mask-text-001-ref        z4    0.141 ->   0.144  paired +0.001 (-0.004..+0.008)   +0.6 %  mixed    spread mbase 7 % poc 7 %
+    mask-text-001            hd    0.410 ->   0.396  paired +0.004 (-0.014..+0.009)   +1.0 %  mixed    spread mbase 24 % poc 22 %
+    mask-text-001            z1    0.365 ->   0.371  paired -0.002 (-0.022..+0.007)   -0.6 %  mixed    spread mbase 28 % poc 22 %
+    mask-text-001            z2    0.377 ->   0.376  paired -0.000 (-0.004..+0.025)   -0.1 %  mixed    spread mbase 27 % poc 36 %
+    mask-text-001            z4    0.393 ->   0.385  paired -0.003 (-0.034..+0.033)   -0.6 %  mixed    spread mbase 11 % poc 29 %
+    noise floor: paired medians -7.2 % .. +5.9 %, median of their sizes 0.9 %, 55 of 239 with one sign

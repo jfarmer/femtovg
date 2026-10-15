@@ -1,0 +1,56 @@
+{
+  "m15_p15": {
+    "frames": 5120,
+    "changed": 33,
+    "files": [
+      "corpus__babylon__gui-gradient-linear",
+      "corpus__babylon__native-canvas",
+      "corpus__text-probes__gradient-across-runs",
+      "corpus__text-probes__gradient-bbox-units",
+      "corpus__text-probes__gradient-fade",
+      "corpus__text-probes__gradient-in-layers",
+      "corpus__text-probes__gradient-radial",
+      "corpus__text-probes__gradient-size-threshold",
+      "corpus__text-probes__gradient-stroke",
+      "corpus__text-probes__gradient-transformed-groups"
+    ]
+  },
+  "p15_a15": {
+    "frames": 5120,
+    "changed": 9,
+    "files": [
+      "corpus__babylon__gui-gradient-linear",
+      "corpus__babylon__native-canvas",
+      "corpus__text-probes__gradient-across-runs",
+      "corpus__text-probes__gradient-bbox-units",
+      "corpus__text-probes__gradient-in-layers"
+    ]
+  },
+  "m15sw_p15sw": {
+    "frames": 5120,
+    "changed": 33,
+    "files": [
+      "corpus__babylon__gui-gradient-linear",
+      "corpus__babylon__native-canvas",
+      "corpus__text-probes__gradient-across-runs",
+      "corpus__text-probes__gradient-bbox-units",
+      "corpus__text-probes__gradient-fade",
+      "corpus__text-probes__gradient-in-layers",
+      "corpus__text-probes__gradient-radial",
+      "corpus__text-probes__gradient-size-threshold",
+      "corpus__text-probes__gradient-stroke",
+      "corpus__text-probes__gradient-transformed-groups"
+    ]
+  },
+  "p15sw_a15sw": {
+    "frames": 5120,
+    "changed": 9,
+    "files": [
+      "corpus__babylon__gui-gradient-linear",
+      "corpus__babylon__native-canvas",
+      "corpus__text-probes__gradient-across-runs",
+      "corpus__text-probes__gradient-bbox-units",
+      "corpus__text-probes__gradient-in-layers"
+    ]
+  }
+}

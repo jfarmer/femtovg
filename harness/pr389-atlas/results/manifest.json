@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-15T06:10:45.232984",
+  "builds": {
+    "master": {
+      "head": "9f5ad2614e922677a467e2d6f66fecba14d3a30a",
+      "diff": ""
+    },
+    "p389": {
+      "head": "828c7a0f08c54127059230ab849b52f490b5d89f",
+      "diff": ""
+    },
+    "poc2389": {
+      "head": "da58dfb31f05ebc9b4540e5b0a4be40292a2cea0",
+      "diff": ""
+    }
+  },
+  "harness": "0daebdc8b2e08074b694c2b9eda2d5a91735d5ab",
+  "rustc -Vv": "rustc 1.96.0 (ac68faa20 2026-05-25)\nbinary: rustc\ncommit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96\ncommit-date: 2026-05-25\nhost: aarch64-apple-darwin\nrelease: 1.96.0\nLLVM version: 22.1.2",
+  "sw_vers": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83",
+  "sysctl -n machdep.cpu.brand_string": "Apple M4 Max",
+  "sysctl -n hw.memsize": "137438953472"
+}

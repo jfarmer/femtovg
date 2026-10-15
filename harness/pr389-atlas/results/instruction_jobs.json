@@ -1,0 +1,16 @@
+[
+  "corpus__babylon__gui-gradient-linear:hd",
+  "corpus__babylon__gui-gradient-linear:z2",
+  "corpus__babylon__native-canvas:z2",
+  "corpus__text-probes__gradient-across-runs:z2",
+  "corpus__text-probes__gradient-bbox-units:z2",
+  "corpus__text-probes__gradient-in-layers:z2",
+  "corpus__text-probes__gradient-radial:z05",
+  "corpus__text-probes__gradient-fade:z05",
+  "corpus__text-probes__gradient-stroke:z05",
+  "corpus__text-probes__gradient-size-threshold:z05",
+  "corpus__text-probes__gradient-transformed-groups:z2",
+  "corpus__babylon__gui-input-test:z2",
+  "corpus__text-probes__fill-opacity-overlap:z1",
+  "tiger__Ghostscript_Tiger:z1"
+]
