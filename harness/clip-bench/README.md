@@ -66,3 +66,10 @@ builds A and B:
 
 `paired.py` does the wgpu harness's pages the same way; `draw_cost.rs` and `mask_cost.rs` are Void-renderer
 benches of the canvas side.
+
+## Cubics that are points (`tabs_300.svg`)
+
+300 tabs rounded on top, each written as `Path::rounded_rect_varying(x, y, 60, 24, 6, 6, 0, 0)` emits it: a cubic
+for every corner, so the two square ones are cubics whose four points coincide. On master 9f5ad26 the flattener
+halves each of those to its depth limit (2,047 pieces, no point). Paired medians on the M4 Max at 1080p, master ->
+the PR that skips them: encode 3.44 -> 0.70 ms a frame, frame 4.40 -> 1.51 ms; the pixels are the same.

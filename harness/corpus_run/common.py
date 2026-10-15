@@ -99,6 +99,12 @@ BUILDS['master'] = (f'{BIN}/_logos_full_master', {})  # upstream master 9d574e0 
 BUILDS['master_128'] = (f'{BIN}/_logos_full_master', {'TRANSIENT_BUDGET_MB': '128'})  # master at the library's default transient-image budget
 BUILDS['master_lsm'] = (f'{BIN}/_logos_full_master_lsm', {})  # upstream master 9d574e0, harness merging a group shadow in linearRGB (shadow-merge-2026-10-04.md)
 BUILDS['master_lsm_single'] = (f'{BIN}/_logos_full_master_lsm', {'SINGLE_SHADOW_LAYER': '1'})  # the same binary with the previous shadow mapping, as 'master'
+BUILDS['master_lsm_128'] = (f'{BIN}/_logos_full_master_lsm', {'TRANSIENT_BUDGET_MB': '128'})  # master_lsm at the library's default transient budget
+# master 9d574e0 with shadow_merge/library.patch (a shadow coloured after its blur, a lone colour-space conversion run
+# in the layer composite) and the harness of 2026-10-05 (rule 4b): shadow-merge-library-2026-10-05.md
+BUILDS['master_sab'] = (f'{BIN}/_logos_full_master_sab', {})
+BUILDS['master_sab_128'] = (f'{BIN}/_logos_full_master_sab', {'TRANSIENT_BUDGET_MB': '128'})  # master_sab at the default budget
+BUILDS['master_sab_exact'] = (f'{BIN}/_logos_full_master_sab', {'EXACT_DROP_SHADOW': '1'})  # every shadow colour unrounded (no rule 4b)
 BUILDS['cp_128'] = (f'{BIN}/_logos_full_cp', {'TRANSIENT_BUDGET_MB': '128'})  # #375 at the default budget
 BUILDS['moh'] = (f'{BIN}/_logos_full_moh', {})  # mo with the 2026-10-03 harness: filter parameters through the element transform, all-or-nothing chains, offset-first shadows
 BUILDS['moh_partial'] = (f'{BIN}/_logos_full_moh', {'PARTIAL_CHAINS': '1'})  # the same binary with the partial-chain policy of before
@@ -217,3 +223,10 @@ for _b in ('m389g', 'p389g'):
     BUILDS[_b] = (f'{BIN}/_logos_full_{_b}', {'SINGLE_SHADOW_LAYER': '1'})
     BUILDS[f'{_b}_paths'] = (f'{BIN}/_logos_full_{_b}', {'SINGLE_SHADOW_LAYER': '1', 'TEXT_AS_PATHS': '1'})
     BUILDS[f'{_b}_notext'] = (f'{BIN}/_logos_full_{_b}', {'SINGLE_SHADOW_LAYER': '1', 'NO_TEXT': '1'})
+# 2026-10-14, the shadow-after-blur PR on upstream master 9f5ad26 (#386), all cfgs incl crop + clip_paths:
+# m9 = master, sab = shadow-after-blur 6ad8709. The _lsm builds keep rule 4a's merge layers, which shadow_merge/ab.py
+# and cost.py run by binary name (shadow-merge-library-2026-10-05.md, "Upstream").
+BUILDS['m9'] = (f'{BIN}/_logos_full_m9', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['sab'] = (f'{BIN}/_logos_full_sab', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m9_lsm'] = (f'{BIN}/_logos_full_m9', {})
+BUILDS['sab_lsm'] = (f'{BIN}/_logos_full_sab', {})
