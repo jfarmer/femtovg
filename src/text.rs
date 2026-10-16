@@ -507,6 +507,9 @@ impl PendingMask<'_> {
 pub struct GlyphAtlas {
     pub rendered_glyphs: RefCell<FnvHashMap<RenderedRunId, FnvHashMap<RenderedGlyphKey, Option<RenderedGlyph>>>>,
     pub glyph_textures: RefCell<Vec<FontTexture>>,
+    // Empty quad buffers that Canvas::draw_glyph_commands() gave back, so that render_atlas()
+    // does not grow a new Vec for every run.
+    pub(crate) quad_buffers: RefCell<Vec<Vec<Quad>>>,
     #[cfg(feature = "swash")]
     swash_scale_context: Rc<RefCell<swash::scale::ScaleContext>>,
 }
@@ -516,6 +519,7 @@ impl GlyphAtlas {
         Self {
             rendered_glyphs: RefCell::default(),
             glyph_textures: RefCell::default(),
+            quad_buffers: RefCell::default(),
             #[cfg(feature = "swash")]
             swash_scale_context: (**_text_context).borrow().swash_scale_context(),
         }
@@ -611,7 +615,7 @@ impl GlyphAtlas {
                     None => {
                         cmds.push(DrawCommand {
                             image_id,
-                            quads: Vec::new(),
+                            quads: self.quad_buffers.borrow_mut().pop().unwrap_or_default(),
                         });
                         cmds.last_mut().unwrap()
                     }

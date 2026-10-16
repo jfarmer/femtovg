@@ -1934,17 +1934,27 @@ where
         let mut paint_flavor = paint.flavor.clone();
         paint_flavor.mul_alpha(self.state().alpha);
 
-        for cmd in draw_commands.alpha_glyphs {
+        for cmd in &draw_commands.alpha_glyphs {
             self.render_triangles(&cmd.quads, &transform, &paint_flavor, GlyphTexture::AlphaMask(cmd.image_id));
         }
 
-        for cmd in draw_commands.color_glyphs {
+        for cmd in &draw_commands.color_glyphs {
             self.render_triangles(
                 &cmd.quads,
                 &transform,
                 &paint_flavor,
                 GlyphTexture::ColorTexture(cmd.image_id),
             );
+        }
+
+        // Keep a few quad buffers for the next render_atlas() call.
+        let mut quad_buffers = self.glyph_atlas.quad_buffers.borrow_mut();
+        for cmd in draw_commands.alpha_glyphs.into_iter().chain(draw_commands.color_glyphs) {
+            if quad_buffers.len() < 8 {
+                let mut quads = cmd.quads;
+                quads.clear();
+                quad_buffers.push(quads);
+            }
         }
     }
 
