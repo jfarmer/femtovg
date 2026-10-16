@@ -14,7 +14,7 @@
 //! slice iterator; by default glyph_run passes an iterator whose size_hint is (0, None), like the flat_map behind
 //! parley's positioned_glyphs()), ONE_RUN=1 (glyph_run only: every label's glyphs in one fill_glyph_run call with
 //! one paint, an upper bound for what merging the labels' draw calls could save), SAME_COLOR=1 (every label in
-//! one color).
+//! one color), PIXEL_HASH=1 (gl only: print a hash of the image target after the last frame).
 //!
 //! The `void` renderer discards the commands, so it measures femtovg's own work up to the renderer: shaping and
 //! cache lookups, atlas lookups, quad and vertex building, command recording and the end-of-frame bookkeeping.
@@ -345,7 +345,18 @@ mod gl {
                 canvas.flush_to_output(());
             });
             // Wait for the GPU so that a run's instruction count includes the driver work its frames queued.
-            canvas.screenshot().unwrap();
+            let shot = canvas.screenshot().unwrap();
+            if std::env::var("PIXEL_HASH").is_ok_and(|v| v == "1") {
+                let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
+                let mut inked = 0usize;
+                for p in shot.pixels() {
+                    for byte in [p.r, p.g, p.b, p.a] {
+                        hash = (hash ^ u64::from(byte)).wrapping_mul(0x100_0000_01b3);
+                    }
+                    inked += usize::from(p.r < 250 || p.g < 250 || p.b < 250);
+                }
+                println!("pixels={}x{} hash={hash:016x} non_white={inked}", shot.width(), shot.height());
+            }
             event_loop.exit();
         }
 
