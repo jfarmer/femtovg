@@ -9,7 +9,11 @@
 //!   fill_text  fill_text with femtovg's own shaping and caches (needs the default `textlayout` feature)
 //!
 //! Environment: FONT (a .ttf path), LABELS (label count), SCISSOR=1 (intersect a scissor around each label),
-//! SAME_PAINT=1 (reuse one Paint per label instead of building it per draw as Slint does).
+//! SAME_PAINT=1 (reuse one Paint per label instead of building it per draw as Slint does), COORDS (comma-separated
+//! normalized variation coordinates for glyph_run, e.g. 0,0,0 for a variable font), EXACT_SIZE_HINT=1 (pass a
+//! slice iterator; by default glyph_run passes an iterator whose size_hint is (0, None), like the flat_map behind
+//! parley's positioned_glyphs()), ONE_RUN=1 (glyph_run only: every label's glyphs in one fill_glyph_run call with
+//! one paint, an upper bound for what merging the labels' draw calls could save).
 //!
 //! The `void` renderer discards the commands, so it measures femtovg's own work up to the renderer: shaping and
 //! cache lookups, atlas lookups, quad and vertex building, command recording and the end-of-frame bookkeeping.
@@ -93,6 +97,9 @@ struct Bench {
     font_id: FontId,
     scissor: bool,
     same_paint: bool,
+    coords: Vec<i16>,
+    exact_size_hint: bool,
+    one_run: Vec<PositionedGlyph>,
     paints: Vec<Paint>,
 }
 
@@ -114,18 +121,45 @@ impl Bench {
                 paint
             })
             .collect();
+        let one_run = if std::env::var("ONE_RUN").is_ok_and(|v| v == "1") {
+            labels
+                .iter()
+                .flat_map(|label| {
+                    label.glyphs.iter().map(|glyph| PositionedGlyph {
+                        x: glyph.x + label.x,
+                        y: glyph.y + label.y,
+                        glyph_id: glyph.glyph_id,
+                    })
+                })
+                .collect()
+        } else {
+            Vec::new()
+        };
         Self {
             mode,
             labels,
             font_id,
             scissor: std::env::var("SCISSOR").is_ok_and(|v| v == "1"),
             same_paint: std::env::var("SAME_PAINT").is_ok_and(|v| v == "1"),
+            coords: std::env::var("COORDS")
+                .map(|v| v.split(',').map(|c| c.trim().parse().unwrap()).collect())
+                .unwrap_or_default(),
+            exact_size_hint: std::env::var("EXACT_SIZE_HINT").is_ok_and(|v| v == "1"),
+            one_run,
             paints,
         }
     }
 
     fn draw<T: Renderer>(&self, canvas: &mut Canvas<T>) {
         canvas.clear_rect(0, 0, W, H, Color::white());
+        if !self.one_run.is_empty() {
+            let mut paint = Paint::color(self.labels[0].color);
+            paint.set_font_size(14.0);
+            canvas
+                .fill_glyph_run(self.font_id, &self.coords, self.one_run.iter().cloned(), &paint)
+                .unwrap();
+            return;
+        }
         for (label, kept_paint) in self.labels.iter().zip(&self.paints) {
             canvas.save();
             canvas.translate(label.x, label.y);
@@ -143,8 +177,16 @@ impl Bench {
                 &built
             };
             match self.mode {
+                Mode::GlyphRun if self.exact_size_hint => canvas
+                    .fill_glyph_run(self.font_id, &self.coords, label.glyphs.iter().cloned(), paint)
+                    .unwrap(),
                 Mode::GlyphRun => canvas
-                    .fill_glyph_run(self.font_id, &[], label.glyphs.iter().cloned(), paint)
+                    .fill_glyph_run(
+                        self.font_id,
+                        &self.coords,
+                        label.glyphs.iter().cloned().flat_map(std::iter::once),
+                        paint,
+                    )
                     .unwrap(),
                 #[cfg(feature = "textlayout")]
                 Mode::FillText => {
