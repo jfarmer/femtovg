@@ -35,6 +35,31 @@ fn polygon(points: &[serde_json::Value]) -> Path {
     path
 }
 
+/// A path of several closed contours, each a list of points.
+fn contours(contours: &[serde_json::Value]) -> Path {
+    let mut path = Path::new();
+    for contour in contours {
+        for (i, p) in contour.as_array().unwrap().iter().enumerate() {
+            let (x, y) = (p[0].as_f64().unwrap() as f32, p[1].as_f64().unwrap() as f32);
+            if i == 0 {
+                path.move_to(x, y);
+            } else {
+                path.line_to(x, y);
+            }
+        }
+        path.close();
+    }
+    path
+}
+
+/// The fill rule an op names, as the argument of ctx.fill() and ctx.clip(): non-zero unless "evenodd".
+fn rule(name: Option<&serde_json::Value>) -> FillRule {
+    match name.and_then(|rule| rule.as_str()) {
+        Some("evenodd") => FillRule::EvenOdd,
+        _ => FillRule::NonZero,
+    }
+}
+
 fn operation(name: &str) -> CompositeOperation {
     match name {
         "copy" => CompositeOperation::Copy,
@@ -104,21 +129,11 @@ impl ApplicationHandler for App {
                         &polygon(op[2].as_array().unwrap()),
                         &Paint::color(Color::hex(op[1].as_str().unwrap())),
                     ),
-                    "fillpath" => {
-                        let mut path = Path::new();
-                        for polygon in op[2].as_array().unwrap() {
-                            for (i, p) in polygon.as_array().unwrap().iter().enumerate() {
-                                let (x, y) = (p[0].as_f64().unwrap() as f32, p[1].as_f64().unwrap() as f32);
-                                if i == 0 {
-                                    path.move_to(x, y);
-                                } else {
-                                    path.line_to(x, y);
-                                }
-                            }
-                            path.close();
-                        }
-                        canvas.fill_path(&path, &Paint::color(Color::hex(op[1].as_str().unwrap())));
-                    }
+                    "fillpath" => canvas.fill_path(
+                        &contours(op[2].as_array().unwrap()),
+                        &Paint::color(Color::hex(op[1].as_str().unwrap())).with_fill_rule(rule(op.get(3))),
+                    ),
+                    "clippath" => canvas.clip_path(&contours(op[1].as_array().unwrap()), rule(op.get(2))),
                     other => panic!("unknown op {other}"),
                 }
             }

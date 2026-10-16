@@ -57,6 +57,7 @@ cfgs_for() {
   has 'pub fn clip_paths' && flags+=(--cfg harness_clip_paths)
   has 'fn set_submission_slicing' && flags+=(--cfg harness_slices)
   has 'fn debug_image_count' && flags+=(--cfg harness_image_count)
+  has 'pub fn set_thin_fill_masks' && flags+=(--cfg harness_thin_fill_masks)
   echo "${flags[@]}"
 }
 

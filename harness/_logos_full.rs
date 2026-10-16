@@ -3020,6 +3020,12 @@ fn main() {
     {
         canvas.set_clip_mask_budget(mb << 20);
     }
+    // NO_THIN_FILL_MASKS: fills thinner than a pixel through their fringes, as
+    // every fill (femtovg/femtovg#327).
+    #[cfg(harness_thin_fill_masks)]
+    if std::env::var_os("NO_THIN_FILL_MASKS").is_some() {
+        canvas.set_thin_fill_masks(false);
+    }
     // DUMMY_IMAGES=n,format,size: n images that nothing draws, alive for the
     // whole run - what a long-lived texture of that kind costs the frames.
     if let Ok(spec) = std::env::var("DUMMY_IMAGES") {

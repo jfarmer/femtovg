@@ -197,6 +197,17 @@ BUILDS['m7pad'] = (f'{BIN}/_logos_full_m7pad', {'SINGLE_SHADOW_LAYER': '1'})  # 
 # 2026-10-08, on master cc0d841: fb = flatten-straddle da5e537 (chords straddle each curve, CHORD_SHIFT 3/8, curve ends
 # on the curve; holds_outline gets the straddle as slack at a round corner), fc = flatten-straddle-half 297bf9a (fb at
 # tolerance 0.125). No debug info, as m7/m7f.
+# 2026-10-15, thin fills through coverage masks in the library (branch thin-fill-masks): one binary, masks on and
+# off (NO_THIN_FILL_MASKS), so the A/B is the switch alone.
+BUILDS['tfm'] = (f'{BIN}/_logos_full_tfm', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['tfm_off'] = (f'{BIN}/_logos_full_tfm', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfme: the branch rebuilt on 153e3f0 (an even-odd hole wound against its fill in every mask, clip masks included),
+# with the mean width taken under the fill's rule (f0e94ff).
+BUILDS['tfme_off'] = (f'{BIN}/_logos_full_tfme', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmp: the perimeter from the points' edge lengths, no hole question for one contour (bbd09d5).
+BUILDS['tfmp_off'] = (f'{BIN}/_logos_full_tfmp', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmq: the masks a frame makes uploaded as the rectangle they span, not the atlas's whole rows (uncommitted on 731531a).
+BUILDS['tfmq_off'] = (f'{BIN}/_logos_full_tfmq', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
 BUILDS['fb'] = (f'{BIN}/_logos_full_fb', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['fc'] = (f'{BIN}/_logos_full_fc', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['pp1'] = (f'{BIN}/_logos_full_pp1', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs: the fill's triangle list in a sized loop
