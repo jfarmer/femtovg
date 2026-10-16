@@ -545,8 +545,8 @@ impl GlyphAtlas {
         mode: RenderMode,
         normalized_coords: &[i16],
     ) -> Result<GlyphDrawCommands, ErrorKind> {
-        let mut alpha_cmd_map = FnvHashMap::default();
-        let mut color_cmd_map = FnvHashMap::default();
+        let mut alpha_cmds: Vec<DrawCommand> = Vec::new();
+        let mut color_cmds: Vec<DrawCommand> = Vec::new();
 
         let line_width_offset = if mode == RenderMode::Stroke {
             (line_width / 2.0).ceil()
@@ -598,16 +598,24 @@ impl GlyphAtlas {
                 let itw = 1.0 / size.0 as f32;
                 let ith = 1.0 / size.1 as f32;
 
-                let cmd_map = if rendered.color_glyph {
-                    &mut color_cmd_map
+                let cmds = if rendered.color_glyph {
+                    &mut color_cmds
                 } else {
-                    &mut alpha_cmd_map
+                    &mut alpha_cmds
                 };
 
-                let cmd = cmd_map.entry(rendered.texture_index).or_insert_with(|| DrawCommand {
-                    image_id,
-                    quads: Vec::new(),
-                });
+                // A run's glyphs are almost always in one or two textures, so a linear search is
+                // cheaper than a map.
+                let cmd = match cmds.iter().position(|cmd| cmd.image_id == image_id) {
+                    Some(index) => &mut cmds[index],
+                    None => {
+                        cmds.push(DrawCommand {
+                            image_id,
+                            quads: Vec::new(),
+                        });
+                        cmds.last_mut().unwrap()
+                    }
+                };
 
                 let mut q = Quad::default();
 
@@ -638,8 +646,8 @@ impl GlyphAtlas {
         })?;
 
         Ok(GlyphDrawCommands {
-            alpha_glyphs: alpha_cmd_map.drain().map(|(_, cmd)| cmd).collect(),
-            color_glyphs: color_cmd_map.drain().map(|(_, cmd)| cmd).collect(),
+            alpha_glyphs: alpha_cmds,
+            color_glyphs: color_cmds,
         })
     }
 
