@@ -179,7 +179,7 @@ fn assert_every_cached_glyph_has_its_mask_queued(canvas: &TestCanvas) {
     let masks = queued_masks(canvas);
     let textures = canvas.glyph_atlas.glyph_textures.borrow();
     let margin = GLYPH_MARGIN as f32;
-    for glyph in canvas.glyph_atlas.rendered_glyphs.borrow().values().flatten() {
+    for glyph in canvas.glyph_atlas.rendered_glyphs.borrow().values().flat_map(|run| run.values()).flatten() {
         let [x0, y0, x1, y1] = cell(glyph);
         let cleared = [x0 - margin, y0 - margin, x1 + margin, y1 + margin];
         let image = textures[glyph.texture_index].image_id;
@@ -211,8 +211,8 @@ fn no_queued_clear_covers_an_uploaded_glyph() {
 
     let rendered = canvas.glyph_atlas.rendered_glyphs.borrow();
     let textures = canvas.glyph_atlas.glyph_textures.borrow();
-    assert_eq!(rendered.values().flatten().count(), 5, "every glyph is in the atlas");
-    for glyph in rendered.values().flatten() {
+    assert_eq!(rendered.values().flat_map(|run| run.values()).flatten().count(), 5, "every glyph is in the atlas");
+    for glyph in rendered.values().flat_map(|run| run.values()).flatten() {
         let [left, top, right, bottom] = cell(glyph);
         let image = textures[glyph.texture_index].image_id;
         for mask in queued_masks(&canvas).iter().filter(|mask| mask.image == image) {
@@ -259,7 +259,7 @@ fn a_failed_draw_keeps_the_callers_state_and_the_masks_placed_before_it() {
                     .stroke_glyph_run(font, &[], glyphs("Atlas"), &stroke_paint())
                     .unwrap();
             }
-            let cached = canvas.glyph_atlas.rendered_glyphs.borrow().len();
+            let cached = canvas.glyph_atlas.rendered_glyphs.borrow().values().map(|run| run.len()).sum::<usize>();
             enter(&mut canvas, target);
 
             let result = keeping_caller_state(&mut canvas, &context, |canvas| {
@@ -271,7 +271,7 @@ fn a_failed_draw_keeps_the_callers_state_and_the_masks_placed_before_it() {
                 "{context}: {result:?}"
             );
             assert_eq!(
-                canvas.glyph_atlas.rendered_glyphs.borrow().len(),
+                canvas.glyph_atlas.rendered_glyphs.borrow().values().map(|run| run.len()).sum::<usize>(),
                 cached + 1,
                 "{context}: \".\" was placed before \"W\" failed"
             );
@@ -389,7 +389,7 @@ fn a_failed_debug_fill_releases_the_new_atlas_texture() {
 
     assert!(matches!(result, Err(ErrorKind::UnknownError)), "{result:?}");
     assert!(canvas.glyph_atlas.glyph_textures.borrow().is_empty());
-    assert!(canvas.glyph_atlas.rendered_glyphs.borrow().is_empty());
+    assert!(canvas.glyph_atlas.rendered_glyphs.borrow().values().all(|run| run.is_empty()));
     canvas.flush_to_output(());
     assert_eq!(canvas.renderer.image_allocation_attempts - allocated, 1);
     assert_eq!(
@@ -429,6 +429,7 @@ fn a_failed_png_glyph_upload_fails_the_draw_and_keeps_the_callers_state() {
         .rendered_glyphs
         .borrow()
         .values()
+        .flat_map(|run| run.values())
         .flatten()
         .map(|glyph| glyph.color_glyph)
         .collect();
@@ -448,7 +449,7 @@ fn a_failed_png_glyph_upload_fails_the_draw_and_keeps_the_callers_state() {
 
         assert!(matches!(result, Err(ErrorKind::UnknownError)), "{target:?}: {result:?}");
         assert_eq!(
-            canvas.glyph_atlas.rendered_glyphs.borrow().len(),
+            canvas.glyph_atlas.rendered_glyphs.borrow().values().map(|run| run.len()).sum::<usize>(),
             1,
             "only \"g\" is cached"
         );

@@ -93,41 +93,35 @@ pub enum RenderMode {
     Stroke,
 }
 
+// The part of a glyph's atlas key that is the same for every glyph of a run. The atlas keeps
+// one map per RenderedRunId, so render_atlas() looks up the run once and each glyph by
+// RenderedGlyphKey.
 #[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
-pub struct RenderedGlyphId {
-    glyph_index: u16,
+pub struct RenderedRunId {
     font_id: FontId,
     size: u32,
     line_width: u32,
     render_mode: RenderMode,
-    subpixel_location: u8,
     variation_hash: u64,
 }
 
-impl RenderedGlyphId {
-    fn new(
-        glyph_index: u16,
-        font_id: FontId,
-        font_size: f32,
-        line_width: f32,
-        mode: RenderMode,
-        subpixel_location: u8,
-        normalized_coords: &[i16],
-    ) -> Self {
+impl RenderedRunId {
+    fn new(font_id: FontId, font_size: f32, line_width: f32, mode: RenderMode, normalized_coords: &[i16]) -> Self {
         use std::hash::Hasher;
         let mut hasher = fnv::FnvHasher::default();
         normalized_coords.hash(&mut hasher);
         Self {
-            glyph_index,
             font_id,
             size: (font_size * 10.0).trunc() as u32,
             line_width: (line_width * 10.0).trunc() as u32,
             render_mode: mode,
-            subpixel_location,
             variation_hash: hasher.finish(),
         }
     }
 }
+
+// The glyph index in the upper 16 bits and the subpixel location in the lowest 8.
+type RenderedGlyphKey = u32;
 
 #[derive(Copy, Clone, Debug)]
 pub struct RenderedGlyph {
@@ -511,7 +505,7 @@ impl PendingMask<'_> {
 }
 
 pub struct GlyphAtlas {
-    pub rendered_glyphs: RefCell<FnvHashMap<RenderedGlyphId, Option<RenderedGlyph>>>,
+    pub rendered_glyphs: RefCell<FnvHashMap<RenderedRunId, FnvHashMap<RenderedGlyphKey, Option<RenderedGlyph>>>>,
     pub glyph_textures: RefCell<Vec<FontTexture>>,
     #[cfg(feature = "swash")]
     swash_scale_context: Rc<RefCell<swash::scale::ScaleContext>>,
@@ -560,21 +554,17 @@ impl GlyphAtlas {
             0.0
         };
 
+        let mut rendered_glyphs = self.rendered_glyphs.borrow_mut();
+        let run_glyphs = rendered_glyphs
+            .entry(RenderedRunId::new(font_id, font_size, line_width, mode, normalized_coords))
+            .or_default();
+
         let mut add_glyph = |canvas: &mut Canvas<T>, glyph: PositionedGlyph| -> Result<(), ErrorKind> {
             let subpixel_location = crate::geometry::quantize(glyph.x.fract(), 0.1) * 10.0;
 
-            let id = RenderedGlyphId::new(
-                glyph.glyph_id,
-                font_id,
-                font_size,
-                line_width,
-                mode,
-                subpixel_location as u8,
-                normalized_coords,
-            );
+            let id: RenderedGlyphKey = (u32::from(glyph.glyph_id) << 16) | u32::from(subpixel_location as u8);
 
-            let mut rendered_glyphs = self.rendered_glyphs.borrow_mut();
-            let glyph_cache_entry = rendered_glyphs.entry(id);
+            let glyph_cache_entry = run_glyphs.entry(id);
             let glyph_cache_entry = match glyph_cache_entry {
                 std::collections::hash_map::Entry::Occupied(occupied_entry) => occupied_entry,
                 std::collections::hash_map::Entry::Vacant(_) => {
