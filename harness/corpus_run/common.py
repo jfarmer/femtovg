@@ -32,13 +32,18 @@ DEFAULT_FRAMINGS = ['z1', 'z2', 'z4', 'hd']
 
 class Builds(dict):
     """build -> (binary, extra env). A name with no entry below is the binary harness/build.sh writes for it,
-    HARNESS_BIN/_logos_full_<name>, run as every build since the shadow merge is: with one shadow layer."""
+    HARNESS_BIN/_logos_full_<name>, run as every build since the shadow merge is: with one shadow layer;
+    <name>_off is that binary with the thin-fill masks off (NO_THIN_FILL_MASKS)."""
 
     def __missing__(self, name):
-        binary = f'{BIN}/_logos_full_{name}'
+        base = name.removesuffix('_off')
+        binary = f'{BIN}/_logos_full_{base}'
         if not os.path.exists(binary):
-            raise KeyError(f'no build {name!r}: build {binary} with harness/build.sh {name}:<femtovg checkout>')
-        return (binary, {'SINGLE_SHADOW_LAYER': '1'})
+            raise KeyError(f'no build {name!r}: build {binary} with harness/build.sh {base}:<femtovg checkout>')
+        extra = {'SINGLE_SHADOW_LAYER': '1'}
+        if base != name:
+            extra['NO_THIN_FILL_MASKS'] = '1'
+        return (binary, extra)
 
 
 # Builds of past runs, kept for what each tag meant. Every binary is the harness built with all the cfgs its tree
@@ -212,6 +217,12 @@ BUILDS['tfmq_off'] = (f'{BIN}/_logos_full_tfmq', {'SINGLE_SHADOW_LAYER': '1', 'N
 BUILDS['tfms_off'] = (f'{BIN}/_logos_full_tfms', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
 # tfmg: the fill-mask atlas starts at 512 and doubles in the frame a mask finds no room (uncommitted on b2c4f40).
 BUILDS['tfmg_off'] = (f'{BIN}/_logos_full_tfmg', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmc: #408 at 8849a84 (atlas held within max_texture_size); tfmb: tfmc with wgpu-frame-setup (ea98ca1) merged in,
+# its staging belt for vertices, fan indices and uniforms.
+BUILDS['tfmc_off'] = (f'{BIN}/_logos_full_tfmc', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+BUILDS['tfmb_off'] = (f'{BIN}/_logos_full_tfmb', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmt: tfmb with small image uploads staged in the belt too, copied at the start of the next frame (uncommitted).
+BUILDS['tfmt_off'] = (f'{BIN}/_logos_full_tfmt', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
 BUILDS['fb'] = (f'{BIN}/_logos_full_fb', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['fc'] = (f'{BIN}/_logos_full_fc', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['pp1'] = (f'{BIN}/_logos_full_pp1', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs: the fill's triangle list in a sized loop

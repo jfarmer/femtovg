@@ -48,3 +48,23 @@ The device app needs `NO_THIN_FILL_MASKS` handled in its own canvas set-up
 (the harness's `main` is not run there), the harness's memory sampler built for
 `target_os = "tvos"`, and the frame counter advanced per frame for
 `FRAME_DRIFT`; build-harness.sh and lib.rs in femtovg-pmu have all three.
+- `ios/`: the iPhone 16 Pro Max (A18 Pro), paired over Wi-Fi, where one counters
+  recording of a 7 s run takes about seven minutes. `run_fast.sh` launches the
+  app with `devicectl --console` (14 s a run) and fetches its soak CSV, whose
+  rows carry the render thread's exact instructions and cycles per CPU kind,
+  the process's, its energy (`task_energy_nj`) and the peak footprint;
+  `round.sh N` runs the six variants (#408, + belt, + image staging, each with
+  the masks on and off) forward and back; `ios_table.py` the table;
+  `run_thin.sh` one run under the events template; `run_gpu.sh`,
+  `gpu_round.sh` and `gpu_table.py` GPU time per frame (the A18 Pro's default
+  Metal GPU Counters set has no bandwidth or partial renders).
+- `m4belt/`: the M4's efficiency cores under the events template, harness
+  frames in motion: `rec.sh BUILD FILE TAG [off]` writes the whole recording's
+  counters and, with `pmc_agg.py`'s `ONLY=render_scene|flush_to_output|::submit`,
+  the frame loop's alone (`pmcf-*`; sampled totals of a whole run mix in the
+  start-up and varied by twice between recordings); `m4_table.py` and
+  `m4f_table.py` the rates and shares.
+
+`../corpus_run/area_changed.py BEFORE AFTER` scores only the frames
+`identity.py` found to differ against the area reference, where `area_ab.py`
+renders every frame that has one.

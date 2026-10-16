@@ -3,7 +3,8 @@
 export (the femtovg-events template: BRANCH_MISPRED_NONSPEC, L1D_CACHE_MISS_LD, L1I_CACHE_MISS_DEMAND, Instructions,
 Cycles, INST_BRANCH, L1D_CACHE_MISS_ST, L1D_TLB_MISS, sampled every millisecond with the user backtrace) per core type
 for the processes whose name contains the substring, and per function for the samples whose backtrace holds one of the
-patterns (inclusive: a sample's counts go to every matching frame once). Prints counts and the derived rates:
+patterns (inclusive: a sample's counts go to every matching frame once). ONLY=pattern|... keeps only the
+samples whose backtrace holds one of those, in every table: a frame loop's work without the start-up. Prints counts and the derived rates:
 L1D load misses per 1,000 instructions, branch mispredicts per 1,000 branches, instructions per cycle."""
 import collections, sys
 import xml.etree.ElementTree as ET
@@ -35,13 +36,18 @@ for _, el in ET.iterparse(path, events=('end',)):
     if len(counts) != len(EVENTS):
         continue
     kind = 'E' if core is not None and 'E Core' in (core.get('fmt') or '') else 'P'
+    only = __import__('os').environ.get('ONLY')
+    if only:
+        names = [(ids.get(f.get('ref'), f) if f.get('ref') else f).get('name') or '' for f in (bt if bt is not None else [])]
+        if not any(part in n for n in names for part in only.split('|')):
+            continue
     tot = by_core[kind]
     for i, v in enumerate(counts):
         tot[i] += v
     if bt is not None:
         frames = [ids.get(f.get('ref'), f) if f.get('ref') else f for f in bt]
         focus = __import__('os').environ.get('FOCUS')
-        if focus and not any(focus in (f.get('name') or '') for f in frames):
+        if focus and not any(part in (f.get('name') or '') for f in frames for part in focus.split('|')):
             frames = []
         leaf = (frames[0].get('name') or '?') if frames else '?'
         leaf = leaf.split('::h')[0][-70:]
