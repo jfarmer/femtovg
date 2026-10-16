@@ -1520,8 +1520,13 @@ fn a_draw_the_shape_holds_carries_no_shape() {
     let wide = paint.clone().with_line_width(6.0).with_line_join(LineJoin::Round);
     let mitered = paint.clone().with_line_width(6.0).with_miter_limit(4.0);
     let quad = |x: f32, y: f32| {
-        [(0.0, 0.0), (8.0, 8.0), (8.0, 0.0), (0.0, 0.0), (0.0, 8.0), (8.0, 8.0)]
-            .map(|(dx, dy)| Vertex::new(x + dx, y + dy, 0.0, 0.0))
+        [crate::Quad {
+            x0: x,
+            y0: y,
+            x1: x + 8.0,
+            y1: y + 8.0,
+            ..Default::default()
+        }]
     };
     let flavor = PaintFlavor::Color(Color::black());
 

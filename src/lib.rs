@@ -1929,45 +1929,18 @@ where
     /// using a custom font rasterizer/layout.
     pub fn draw_glyph_commands(&mut self, draw_commands: GlyphDrawCommands, paint: &Paint) {
         let transform = self.state().transform;
-        let create_vertices = |quads: &Vec<text::Quad>| {
-            let mut verts = Vec::with_capacity(quads.len() * 6);
-
-            for quad in quads {
-                let left = quad.x0;
-                let right = quad.x1;
-                let top = quad.y0;
-                let bottom = quad.y1;
-
-                let (p0, p1) = transform.transform_point(left, top);
-                let (p2, p3) = transform.transform_point(right, top);
-                let (p4, p5) = transform.transform_point(right, bottom);
-                let (p6, p7) = transform.transform_point(left, bottom);
-
-                verts.push(Vertex::new(p0, p1, quad.s0, quad.t0));
-                verts.push(Vertex::new(p4, p5, quad.s1, quad.t1));
-                verts.push(Vertex::new(p2, p3, quad.s1, quad.t0));
-                verts.push(Vertex::new(p0, p1, quad.s0, quad.t0));
-                verts.push(Vertex::new(p6, p7, quad.s0, quad.t1));
-                verts.push(Vertex::new(p4, p5, quad.s1, quad.t1));
-            }
-            verts
-        };
 
         // Apply global alpha
         let mut paint_flavor = paint.flavor.clone();
         paint_flavor.mul_alpha(self.state().alpha);
 
         for cmd in draw_commands.alpha_glyphs {
-            let verts = create_vertices(&cmd.quads);
-
-            self.render_triangles(&verts, &transform, &paint_flavor, GlyphTexture::AlphaMask(cmd.image_id));
+            self.render_triangles(&cmd.quads, &transform, &paint_flavor, GlyphTexture::AlphaMask(cmd.image_id));
         }
 
         for cmd in draw_commands.color_glyphs {
-            let verts = create_vertices(&cmd.quads);
-
             self.render_triangles(
-                &verts,
+                &cmd.quads,
                 &transform,
                 &paint_flavor,
                 GlyphTexture::ColorTexture(cmd.image_id),
@@ -2375,7 +2348,7 @@ where
 
     fn render_triangles(
         &mut self,
-        verts: &[Vertex],
+        quads: &[text::Quad],
         transform: &Transform2D,
         paint_flavor: &PaintFlavor,
         glyph_texture: GlyphTexture,
@@ -2383,11 +2356,18 @@ where
         self.reconcile_current_clip_plane();
         let clip = self.draw_clip(
             || {
-                verts.iter().fold(Bounds::default(), |bounds, vertex| Bounds {
-                    minx: bounds.minx.min(vertex.x),
-                    miny: bounds.miny.min(vertex.y),
-                    maxx: bounds.maxx.max(vertex.x),
-                    maxy: bounds.maxy.max(vertex.y),
+                quads.iter().fold(Bounds::default(), |bounds, quad| {
+                    [(quad.x0, quad.y0), (quad.x1, quad.y0), (quad.x1, quad.y1), (quad.x0, quad.y1)]
+                        .into_iter()
+                        .fold(bounds, |bounds, (x, y)| {
+                            let (x, y) = transform.transform_point(x, y);
+                            Bounds {
+                                minx: bounds.minx.min(x),
+                                miny: bounds.miny.min(y),
+                                maxx: bounds.maxx.max(x),
+                                maxy: bounds.maxy.max(y),
+                            }
+                        })
                 })
             },
             None,
@@ -2418,10 +2398,25 @@ where
                 .ok();
         }
 
-        cmd.triangles_verts = Some((self.verts.len(), verts.len()));
+        cmd.triangles_verts = Some((self.verts.len(), quads.len() * 6));
         self.append_cmd(cmd);
 
-        self.verts.extend_from_slice(verts);
+        self.verts.reserve(quads.len() * 6);
+        for quad in quads {
+            let (p0, p1) = transform.transform_point(quad.x0, quad.y0);
+            let (p2, p3) = transform.transform_point(quad.x1, quad.y0);
+            let (p4, p5) = transform.transform_point(quad.x1, quad.y1);
+            let (p6, p7) = transform.transform_point(quad.x0, quad.y1);
+
+            self.verts.extend_from_slice(&[
+                Vertex::new(p0, p1, quad.s0, quad.t0),
+                Vertex::new(p4, p5, quad.s1, quad.t1),
+                Vertex::new(p2, p3, quad.s1, quad.t0),
+                Vertex::new(p0, p1, quad.s0, quad.t0),
+                Vertex::new(p6, p7, quad.s0, quad.t1),
+                Vertex::new(p4, p5, quad.s1, quad.t1),
+            ]);
+        }
     }
 
     fn font_scale(&self) -> f32 {
