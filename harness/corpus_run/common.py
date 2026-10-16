@@ -208,6 +208,10 @@ BUILDS['tfme_off'] = (f'{BIN}/_logos_full_tfme', {'SINGLE_SHADOW_LAYER': '1', 'N
 BUILDS['tfmp_off'] = (f'{BIN}/_logos_full_tfmp', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
 # tfmq: the masks a frame makes uploaded as the rectangle they span, not the atlas's whole rows (uncommitted on 731531a).
 BUILDS['tfmq_off'] = (f'{BIN}/_logos_full_tfmq', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfms: coverage masks resolved row by row from the edges crossing each (b2c4f40 on tfmq).
+BUILDS['tfms_off'] = (f'{BIN}/_logos_full_tfms', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmg: the fill-mask atlas starts at 512 and doubles in the frame a mask finds no room (uncommitted on b2c4f40).
+BUILDS['tfmg_off'] = (f'{BIN}/_logos_full_tfmg', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
 BUILDS['fb'] = (f'{BIN}/_logos_full_fb', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['fc'] = (f'{BIN}/_logos_full_fc', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['pp1'] = (f'{BIN}/_logos_full_pp1', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs: the fill's triangle list in a sized loop
