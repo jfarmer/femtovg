@@ -2405,8 +2405,50 @@ where
                 .ok();
         }
 
-        cmd.triangles_verts = Some((self.verts.len(), quads.len() * 6));
-        self.append_cmd(cmd);
+        // PROTOTYPE: a solid-color glyph draw that follows one with the same state draws its
+        // vertices with it. FillColor does not read paint_mat, which differs by the transform.
+        let merged = !self.commands_suppressed()
+            && !self.clip_active()
+            && self.commands.last_mut().is_some_and(|last| {
+                let (CommandType::Triangles { params: a }, CommandType::Triangles { params: b }) =
+                    (&last.cmd_type, &cmd.cmd_type)
+                else {
+                    return false;
+                };
+                let same = a.shader_type == ShaderType::FillColor
+                    && b.shader_type == ShaderType::FillColor
+                    && a.inner_col == b.inner_col
+                    && a.outer_col == b.outer_col
+                    && a.glyph_texture_type == b.glyph_texture_type
+                    && a.scissor_mat == b.scissor_mat
+                    && a.scissor_ext == b.scissor_ext
+                    && a.scissor_scale == b.scissor_scale
+                    && a.scissor_radius == b.scissor_radius
+                    && a.feather == b.feather
+                    && a.stroke_mult == b.stroke_mult
+                    && a.stroke_thr == b.stroke_thr
+                    && a.tex_type == b.tex_type
+                    && a.clip.is_none()
+                    && b.clip.is_none()
+                    && a.clip_mask.is_none()
+                    && b.clip_mask.is_none()
+                    && last.image.is_none()
+                    && cmd.image.is_none()
+                    && last.glyph_texture == cmd.glyph_texture
+                    && last.composite_operation == cmd.composite_operation
+                    && !last.clip_active;
+                match &mut last.triangles_verts {
+                    Some((start, count)) if same && *start + *count == self.verts.len() => {
+                        *count += quads.len() * 6;
+                        true
+                    }
+                    _ => false,
+                }
+            });
+        if !merged {
+            cmd.triangles_verts = Some((self.verts.len(), quads.len() * 6));
+            self.append_cmd(cmd);
+        }
 
         self.verts.reserve(quads.len() * 6);
         for quad in quads {

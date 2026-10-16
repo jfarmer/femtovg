@@ -13,7 +13,8 @@
 //! normalized variation coordinates for glyph_run, e.g. 0,0,0 for a variable font), EXACT_SIZE_HINT=1 (pass a
 //! slice iterator; by default glyph_run passes an iterator whose size_hint is (0, None), like the flat_map behind
 //! parley's positioned_glyphs()), ONE_RUN=1 (glyph_run only: every label's glyphs in one fill_glyph_run call with
-//! one paint, an upper bound for what merging the labels' draw calls could save).
+//! one paint, an upper bound for what merging the labels' draw calls could save), SAME_COLOR=1 (every label in
+//! one color).
 //!
 //! The `void` renderer discards the commands, so it measures femtovg's own work up to the renderer: shaping and
 //! cache lookups, atlas lookups, quad and vertex building, command recording and the end-of-frame bookkeeping.
@@ -79,7 +80,11 @@ fn labels(font_data: &[u8], count: usize) -> Vec<Label> {
                 size,
                 text,
                 glyphs,
-                color: Color::rgb((i * 37 % 200) as u8, (i * 11 % 200) as u8, 60),
+                color: if std::env::var("SAME_COLOR").is_ok_and(|v| v == "1") {
+                    Color::rgb(30, 30, 30)
+                } else {
+                    Color::rgb((i * 37 % 200) as u8, (i * 11 % 200) as u8, 60)
+                },
             }
         })
         .collect()
