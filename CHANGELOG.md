@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Drawing text from the glyph atlas costs less CPU, with identical output:
+  color glyphs are now set apart from the rest of a run only when the run is
+  drawn as outlines.
 - Fixed text getting the width it had at an earlier letter spacing when both
   letter spacings were below a tenth of a device pixel (every negative one
   included) or in the same tenth above that (e.g., 2 and 2.05):

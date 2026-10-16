@@ -2273,36 +2273,40 @@ where
 
         let font_face = font.face_ref_with_normalized_coords(normalized_coords);
 
-        // TODO: create on demand
-
-        let mut color_glyphs = Vec::new();
-
-        let glyphs_it = glyphs.into_iter();
-        let non_color_glyphs = glyphs_it
-            .filter(|glyph| {
-                if font
-                    .glyph(&font_face, glyph.glyph_id, normalized_coords)
-                    .is_some_and(|glyph| glyph.path.is_none())
-                {
-                    color_glyphs.push(glyph.clone());
-
-                    false
-                } else {
-                    true
-                }
-            })
-            .collect::<Vec<_>>();
-
         // When baking scale into the rasterization, pre-multiply glyph positions
         // by `effective_scale` so that under a translation-only canvas transform
         // they still land at the original screen position.
-        let scaled = |g: &PositionedGlyph| PositionedGlyph {
+        let scaled = |g: PositionedGlyph| PositionedGlyph {
             x: g.x * effective_scale,
             y: g.y * effective_scale,
             glyph_id: g.glyph_id,
         };
 
-        let mut draw_commands = if need_direct_rendering {
+        // Color glyphs on the atlas path follow the same scale baking.
+        // On the direct path we leave them at the original font_size —
+        // that already matches today's behavior.
+        let draw_commands = if need_direct_rendering {
+            // TODO: create on demand
+
+            // render_direct() fills outlines, so glyphs without one are drawn from the ephemeral atlas.
+            let mut color_glyphs = Vec::new();
+
+            let glyphs_it = glyphs.into_iter();
+            let non_color_glyphs = glyphs_it
+                .filter(|glyph| {
+                    if font
+                        .glyph(&font_face, glyph.glyph_id, normalized_coords)
+                        .is_some_and(|glyph| glyph.path.is_none())
+                    {
+                        color_glyphs.push(glyph.clone());
+
+                        false
+                    } else {
+                        true
+                    }
+                })
+                .collect::<Vec<_>>();
+
             text::render_direct(
                 self,
                 font,
@@ -2314,36 +2318,14 @@ where
                 render_mode,
                 normalized_coords,
             )?;
-            GlyphDrawCommands::default()
-        } else {
-            self.glyph_atlas.clone().render_atlas(
-                self,
-                font_id,
-                font,
-                &font_face,
-                non_color_glyphs.iter().map(scaled),
-                effective_font_size,
-                stroke.line_width,
-                render_mode,
-                normalized_coords,
-            )?
-        };
 
-        if !color_glyphs.is_empty() {
-            let color_commands = {
-                let atlas = if need_direct_rendering {
-                    self.ephemeral_glyph_atlas
-                        .get_or_insert_with(|| Rc::new(GlyphAtlas::new(&self.text_context)))
-                        .clone()
-                } else {
-                    self.glyph_atlas.clone()
-                };
-
-                // Color glyphs on the atlas path follow the same scale baking.
-                // On the direct path we leave them at the original font_size —
-                // that already matches today's behavior.
-                if need_direct_rendering {
-                    atlas.render_atlas(
+            if color_glyphs.is_empty() {
+                GlyphDrawCommands::default()
+            } else {
+                self.ephemeral_glyph_atlas
+                    .get_or_insert_with(|| Rc::new(GlyphAtlas::new(&self.text_context)))
+                    .clone()
+                    .render_atlas(
                         self,
                         font_id,
                         font,
@@ -2354,24 +2336,21 @@ where
                         render_mode,
                         normalized_coords,
                     )?
-                } else {
-                    atlas.render_atlas(
-                        self,
-                        font_id,
-                        font,
-                        &font_face,
-                        color_glyphs.iter().map(scaled),
-                        effective_font_size,
-                        stroke.line_width,
-                        render_mode,
-                        normalized_coords,
-                    )?
-                }
-            };
-
-            draw_commands.alpha_glyphs.extend(color_commands.alpha_glyphs);
-            draw_commands.color_glyphs.extend(color_commands.color_glyphs);
-        }
+            }
+        } else {
+            // render_atlas() puts color glyphs in commands of their own, so the run is not split here.
+            self.glyph_atlas.clone().render_atlas(
+                self,
+                font_id,
+                font,
+                &font_face,
+                glyphs.into_iter().map(scaled),
+                effective_font_size,
+                stroke.line_width,
+                render_mode,
+                normalized_coords,
+            )?
+        };
 
         // For the scaled-atlas path, present the pre-scaled glyph quads with a
         // translation-only transform so the bitmap shows at its on-screen pixel
