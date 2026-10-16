@@ -542,7 +542,6 @@ impl GlyphAtlas {
         canvas: &mut Canvas<T>,
         font_id: FontId,
         font: &Font,
-        font_face: &font::FontFaceRef<'_>,
         mut glyphs: impl Iterator<Item = PositionedGlyph>,
         font_size: f32,
         line_width: f32,
@@ -578,7 +577,6 @@ impl GlyphAtlas {
                         line_width,
                         mode,
                         font,
-                        font_face,
                         glyph.glyph_id,
                         subpixel_location / 10.0,
                         normalized_coords,
@@ -668,7 +666,6 @@ impl GlyphAtlas {
         line_width: f32,
         mode: RenderMode,
         font: &'a Font,
-        font_face: &font::FontFaceRef<'_>,
         glyph_id: u16,
         _subpixel_x: f32,
         normalized_coords: &[i16],
@@ -683,6 +680,9 @@ impl GlyphAtlas {
         }
 
         let padding = GLYPH_PADDING + GLYPH_MARGIN;
+
+        // Parsing the face is not free, so it is done here, for a glyph that is not in the atlas yet.
+        let font_face = &font.face_ref_with_normalized_coords(normalized_coords);
 
         let (glyph_representation, glyph_metrics, scale) = {
             let scale = font.scale(font_size);

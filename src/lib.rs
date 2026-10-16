@@ -2254,8 +2254,6 @@ where
             return Err(ErrorKind::NoFontFound);
         };
 
-        let font_face = font.face_ref_with_normalized_coords(normalized_coords);
-
         // When baking scale into the rasterization, pre-multiply glyph positions
         // by `effective_scale` so that under a translation-only canvas transform
         // they still land at the original screen position.
@@ -2268,6 +2266,7 @@ where
         let draw_commands = if need_direct_rendering {
             // Glyphs without an outline (PNG images) cannot be filled as paths, so they go
             // through an atlas of their own that is cleared at the end of the frame.
+            let font_face = font.face_ref_with_normalized_coords(normalized_coords);
             let mut color_glyphs = Vec::new();
             let non_color_glyphs = glyphs.into_iter().filter(|glyph| {
                 if font
@@ -2302,7 +2301,6 @@ where
                     self,
                     font_id,
                     font,
-                    &font_face,
                     color_glyphs.into_iter(),
                     paint.text.font_size,
                     stroke.line_width,
@@ -2317,7 +2315,6 @@ where
                 self,
                 font_id,
                 font,
-                &font_face,
                 glyphs.into_iter().map(|glyph| scaled(&glyph)),
                 effective_font_size,
                 stroke.line_width,
