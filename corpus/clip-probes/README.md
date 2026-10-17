@@ -102,11 +102,13 @@ share inside the ellipse, from 16 x 16 samples (`harness/corpus_run/ideal_clip.p
 mask that adds the windings before folding them by the rule counted such a hole as covered in the pixels both edges
 cross. Pixels more than 20 levels off the 8x area reference (`refs_ideal.py`), and navy ink against the area's:
 
-| probe | framing | area ink | master 9f5ad26 | #407 (153e3f0) | Chromium | Firefox |
-|---|---|---:|---:|---:|---:|---:|
-| `evenodd-clip-thin-ring` | `z05` | 87.1 | 116 off, ink 115.0 | 0, 86.5 | 178 off | 117 off |
-| `evenodd-clip-thin-ring` | `z1` | 344.8 | 20 off, ink 352.6 | 0, 346.8 | 264 off | 317 off |
-| `evenodd-clip-hole-near-edge` | `z05` | 1744.8 | 6 off | 0 | 100 off | 57 off |
-| `evenodd-clip-hole-near-edge` | `z1` | 6979.1 | 6 off | 0 | 74 off | 103 off |
+| probe | framing | area ink | master 9f5ad26 | #407 (153e3f0) | Chromium | Firefox | WebKit |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `evenodd-clip-thin-ring` | `z05` | 87.1 | 116 off, ink 115.0 | 0, 86.5 | 178 off | 117 off | 0 |
+| `evenodd-clip-thin-ring` | `z1` | 344.8 | 20 off, ink 352.6 | 0, 346.8 | 264 off | 317 off | 0 |
+| `evenodd-clip-hole-near-edge` | `z05` | 1744.8 | 6 off | 0 | 100 off | 57 off | 0 |
+| `evenodd-clip-hole-near-edge` | `z1` | 6979.1 | 6 off | 0 | 74 off | 103 off | 0 |
+
+#407 draws both probes as WebKit does, pixel for pixel (master was 124 and 16 pixels off WebKit's ring at `z05` and `z1`, 6 off its disc), and comes nearer Chromium and Firefox, which draw the ring lighter than its area (at `z05` 214 -> 185 and 181 -> 118 pixels off them).
 
 At `z2` the hole probe's gap is still under a pixel (master 2 off, #407 none); from `z4` up, and for the ring from `z2`, master and #407 draw them alike.
