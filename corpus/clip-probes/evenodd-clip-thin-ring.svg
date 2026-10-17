@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="96" viewBox="0 0 120 96">
+  <title>An even-odd clip to a ring half a unit wide, both circles wound alike</title>
+  <clipPath id="ring">
+    <path clip-rule="evenodd" d="M100 48A40 40 0 1 1 20 48A40 40 0 1 1 100 48ZM99.5 48A39.5 39.5 0 1 1 20.5 48A39.5 39.5 0 1 1 99.5 48Z"/>
+  </clipPath>
+  <rect width="120" height="96" fill="navy" clip-path="url(#ring)"/>
+</svg>

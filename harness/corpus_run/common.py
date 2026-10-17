@@ -273,3 +273,5 @@ BUILDS['mem2'] = (f'{BIN}/_logos_full_mem2', {'SINGLE_SHADOW_LAYER': '1'})
 # and master 9f5ad261, built from one harness revision on 2026-10-17.
 BUILDS['f408'] = (f'{BIN}/_logos_full_f408', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['m0'] = (f'{BIN}/_logos_full_m0', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['no407'] = (f'{BIN}/_logos_full_no407', {'SINGLE_SHADOW_LAYER': '1'})  # #408 0928ad1b without #407's hole winding (experiment)
+BUILDS['e407'] = (f'{BIN}/_logos_full_e407', {'SINGLE_SHADOW_LAYER': '1'})  # #407 alone, 153e3f0c
