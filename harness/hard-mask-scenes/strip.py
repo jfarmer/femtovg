@@ -4,7 +4,7 @@ size) or label=REF,BEFORE,AFTER@x0,y0,x1,y1 to crop all three to that box first.
 reference, before vs the reference and after vs the reference (the reference in grey, red where a channel differs
 by more than 20, orange by more than 8, and - at a SCALE of 8 or more - the pixels before and after differ at by
 more than 2 outlined in magenta). Panels are scaled by SCALE (env, default 2) with nearest neighbour; REF_NAME (env,
-default Chromium) names the reference column. Prints per row the pixels more than
+default Chromium) names the reference column, BEFORE_NAME and AFTER_NAME the others. Prints per row the pixels more than
 20 off the reference, before and after."""
 import os, sys
 from PIL import Image, ImageDraw
@@ -13,7 +13,10 @@ import numpy as np
 SCALE = int(os.environ.get('SCALE', 2))
 out, rows = sys.argv[1], sys.argv[2:]
 REF = os.environ.get('REF_NAME', 'Chromium')  # what the reference column is, e.g. '8x area'
-HEADS = ['before (master)', 'after (this PR)', REF, f'before vs {REF}', f'after vs {REF}']
+BEFORE = os.environ.get('BEFORE_NAME', 'before')  # e.g. 'exact masks'; the column reads 'before (master)' by default
+AFTER = os.environ.get('AFTER_NAME', 'after')
+HEADS = [BEFORE if 'BEFORE_NAME' in os.environ else 'before (master)', AFTER if 'AFTER_NAME' in os.environ else 'after (this PR)',
+         REF, f'{BEFORE} vs {REF}', f'{AFTER} vs {REF}']
 
 
 def load(path, box):

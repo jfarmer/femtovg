@@ -151,3 +151,35 @@ Apple TV ("team h"), with the tools in `../pmc`:
   upload, about 40 % of it: wgpu's `write_texture` makes a staging buffer each
   call (the `wgpu-frame-setup` branch's staging belt is the fix for every image
   upload).
+
+## Two pixels for concave fills, and an atlas that lets go (2026-10-17)
+
+- A fill is thin when its mean width is under two pixels, or under one if each
+  of its contours is convex. #327's New York Times marks at 50 px (`z025`), the
+  tile logo +23 % and the Cooking wordmark +14 % over Chromium's ink with the
+  one-pixel test, come within 2 %; a convex contour a pixel wide and more keeps
+  its fringe, which draws a rectangle exactly. `corpus-small.png` now ends with
+  the two marks.
+- Master against #408 (`m0`, `f408` in `../corpus_run/common.py`, one harness
+  revision): 1,522 of 12,670 frames change (ten framings with `p240`); on the
+  579 with an area reference, pixels beyond 20/255 of it 239,663 -> 185,912,
+  523 nearer, 29 further (Firefox 141,008, GPU Chromium 150,393, software
+  Chromium 199,649 on the same frames). The furthest is the Babylon
+  `vertex-pulling...__1` image drawn as 65,536 unit squares at 240p (+35,018
+  px, conflation as in Chromium and Firefox); of the 28 others (+1,163 px) 21
+  land nearer Chromium or Firefox's own count, 3 have no browser frame, and 4
+  move 4 to 20 px in text and soft edges both builds draw unlike both
+  references. `corpus-1x.png`'s fox row is one of them: off Chromium 133 -> 53
+  px, off the area 116 -> 147.
+- The atlas keeps on the CPU only its rows down to the lowest mask, and a
+  moving scene's atlas is made smaller after eight start-overs that needed
+  less: at 1080p on an iPhone XS and SE the soak ran 2.0 MiB above the masks off
+  once a sliver had grown the atlas; it now runs within 0.3 MiB.
+- Cost, masks on against off with one binary: M4 still frames (326 frames of
+  the 163 files changed at 1x and 1080p, `../corpus_run/pass_time.py`) -1.9 %
+  in sum, median frame -0.7 %; moving every frame by 0.37 px -0.1 % in sum,
+  median -0.1 %, the worst +18 % (svgenius page_207 icon_72 at 1080p). Render
+  thread efficiency-core cycles a moving frame over the 20-frame soak: XS +5.4
+  %, SE +5.8 % (+6.1 / +6.4 % with #409), diners at 1080p +27 / +29 %. GPU time
+  on the SE at 1080p (GPU intervals, Metal GPU Counters) 63.8 -> 63.1 ms,
+  bandwidth within 0.4 %.

@@ -27,6 +27,8 @@ FRAMINGS = {'z1': (DEFAULT, 1.0), 'z2': (DEFAULT, 2.0), 'z4': (DEFAULT, 4.0), 'h
 FRAMINGS.update({'z01': (DEFAULT, 0.1), 'z025': (DEFAULT, 0.25), 'z05': (DEFAULT, 0.5)})
 # Zooms about the top-centre band of the box (PIVOT at frame 230,48) for wide artwork that the centre pivot zooms past.
 FRAMINGS.update({'zt2': ({**DEFAULT, 'PIVOT': '230,48'}, 2.0), 'zt4': ({**DEFAULT, 'PIVOT': '230,48'}, 4.0)})
+# 240p: the box the frame's height, centred, as at 1080p.
+FRAMINGS['p240'] = ({'FRAME_W': '426', 'FRAME_H': '240', 'BOX': '240', 'BOX_X': '93', 'BOX_Y': '0'}, 1.0)
 DEFAULT_FRAMINGS = ['z1', 'z2', 'z4', 'hd']
 
 
@@ -248,3 +250,26 @@ BUILDS['m9'] = (f'{BIN}/_logos_full_m9', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['sab'] = (f'{BIN}/_logos_full_sab', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['m9_lsm'] = (f'{BIN}/_logos_full_m9', {})
 BUILDS['sab_lsm'] = (f'{BIN}/_logos_full_sab', {})
+
+# Snapping experiment (femtovg branch thin-fill-snap 57008ac5, on #408 420f070a): the fill masks' positions snapped to
+# 1/n of a pixel by FEMTOVG_MASK_SNAP=n; snp0 is the same binary exact.
+for _n in (0, 2, 4, 8, 16):
+    BUILDS[f'snp{_n}'] = (f'{BIN}/_logos_full_snp', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_MASK_SNAP': str(_n)})
+# The same on #408 + #409 with snapped masks kept while a scene moves (femtovg branch snap-final 6f03873f): snpf<n>,
+# and snpf_off with the masks off.
+for _n in (0, 4, 8, 16):
+    BUILDS[f'snpf{_n}'] = (f'{BIN}/_logos_full_snpf', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_MASK_SNAP': str(_n)})
+
+# #408 at 420f070a and the memory experiment on it (femtovg branch thin-fill-masks-mem 599fcdb1: no CPU copy of the
+# fill mask atlas, each mask uploaded on its own, the atlas started over smaller), built from one harness revision.
+BUILDS['t408'] = (f'{BIN}/_logos_full_t408', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['mem'] = (f'{BIN}/_logos_full_mem', {'SINGLE_SHADOW_LAYER': '1'})
+# The thin-fill gate widened (femtovg branch thin-fill-gate 8106c327, on #408 420f070a): gate<w> draws fills whose
+# mean width is under w/10 px through masks (gate10 = #408).
+for _w in (10, 15, 20, 30):
+    BUILDS[f'gate{_w}'] = (f'{BIN}/_logos_full_gate', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_THIN_WIDTH': str(_w / 10)})
+BUILDS['mem2'] = (f'{BIN}/_logos_full_mem2', {'SINGLE_SHADOW_LAYER': '1'})
+# #408 as pushed with the 2 px gate for concave fills and the row-limited atlas (thin-fill-masks, local until pushed),
+# and master 9f5ad261, built from one harness revision on 2026-10-17.
+BUILDS['f408'] = (f'{BIN}/_logos_full_f408', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m0'] = (f'{BIN}/_logos_full_m0', {'SINGLE_SHADOW_LAYER': '1'})
