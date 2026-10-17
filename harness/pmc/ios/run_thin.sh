@@ -7,11 +7,11 @@
 #   pp = FlatPP = #408 (8849a84), a = FlatA = + wgpu-frame-setup's belt (3d82951), pc = FlatPC = + image staging (84a3d34)
 # XENV=NAME=VALUE passes one more variable (NO_THIN_FILL_MASKS=1). The phone must be unlocked when a run starts (the
 # app keeps it awake while it runs). Needs the sandbox off for xctrace.
-U=00008140-000859503A2A801C
+U=${U:-00008140-000859503A2A801C}  # U= another device (XS Max A12 00008020-001C292A2190003A, SE A13 00008030-0005694926D3402E)
 V=$1; TAG=$2; PH=${3:-thinhd,thin}; P=${4:-3}; REP=${5:-20}
 B=co.rbckr.femtovgpmu.flat$V
-OUT=/Users/matt/src/femtovg-wt/runs/raster/ios; mkdir -p $OUT
-TR=/tmp/claude-501/ios-$TAG.trace; rm -rf $TR
+OUT=${OUT:-/Users/matt/src/femtovg-wt/runs/raster/ios}; mkdir -p $OUT
+TR=/tmp/claude-501/ios-$U-$TAG.trace; rm -rf $TR
 # An idle device can be "offline" to xctrace: wake it with a launch that exits at once.
 DEVICECTL_CHILD_SOAK_TAG=wake DEVICECTL_CHILD_SOAK_PHASES=none DEVICECTL_CHILD_SOAK_EXIT=1 \
   xcrun devicectl device process launch --terminate-existing --device $U $B > $OUT/wake-$TAG.txt 2>&1
@@ -25,10 +25,13 @@ xcrun xctrace record --device $U --template /Users/matt/src/femtovg-wt/runs/thin
   --launch -- $B > $OUT/record-$TAG.txt 2>&1
 echo "$V $TAG: recorded in $(( $(date +%s)-T0 )) s, trace $(du -sh $TR 2>/dev/null | cut -f1); $(grep -E 'rror|ending|exited' $OUT/record-$TAG.txt | head -2 | tr '\n' ' ')"
 if [ -d $TR ]; then
-  xcrun xctrace export --input $TR --xpath '/trace-toc/run[@number="1"]/data/table[@schema="counters-profile"]' > /tmp/claude-501/ios-$TAG.xml 2>/dev/null
-  LEAVES=${LEAVES:-12} python3 /Users/matt/src/femtovg-wt/runs/thin/tools/pmc_agg.py /tmp/claude-501/ios-$TAG.xml Flat \
+  xcrun xctrace export --input $TR --xpath '/trace-toc/run[@number="1"]/data/table[@schema="counters-profile"]' > /tmp/claude-501/ios-$U-$TAG.xml 2>/dev/null
+  LEAVES=${LEAVES:-12} python3 /Users/matt/src/femtovg-wt/runs/thin/tools/pmc_agg.py /tmp/claude-501/ios-$U-$TAG.xml Flat \
     'fill_through_mask|MaskKey::rasterize|Coverage::resolve|upload_fill_masks|render_scene|write_texture|write_buffer|StagingBelt|submit|update_image' > $OUT/pmc-$TAG.txt 2>&1
-  rm -f /tmp/claude-501/ios-$TAG.xml
+  # The frame loop alone (render_scene, the flush, the submit), without the app's start-up.
+  ONLY='render_scene|flush_to_output|::submit' LEAVES=0 python3 /Users/matt/src/femtovg-wt/runs/thin/tools/pmc_agg.py /tmp/claude-501/ios-$U-$TAG.xml Flat \
+    'fill_through_mask|Coverage::resolve|upload_fill_masks|update_image|StagingBelt' > $OUT/pmcf-$TAG.txt 2>&1
+  rm -f /tmp/claude-501/ios-$U-$TAG.xml
 fi
 rm -rf $TR
 TMPD=/private/var/folders/_c/krb2zmbx2ss6b1xhpydpxcr80000gn

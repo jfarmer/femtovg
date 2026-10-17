@@ -69,12 +69,21 @@ fn zz_hm_scenes() {
                     "restore" => canvas.restore(),
                     "clip" => canvas.clip_path(&polygon(op[1].as_array().unwrap()), FillRule::NonZero),
                     "composite" => canvas.global_composite_operation(match op[1].as_str().unwrap() {
-                        "copy" => CompositeOperation::Copy,
+                        "source-over" => CompositeOperation::SourceOver,
                         "source-in" => CompositeOperation::SourceIn,
                         "source-out" => CompositeOperation::SourceOut,
+                        "source-atop" => CompositeOperation::Atop,
+                        "destination-over" => CompositeOperation::DestinationOver,
                         "destination-in" => CompositeOperation::DestinationIn,
+                        "destination-out" => CompositeOperation::DestinationOut,
                         "destination-atop" => CompositeOperation::DestinationAtop,
-                        _ => CompositeOperation::SourceOver,
+                        "lighter" => CompositeOperation::Lighter,
+                        "copy" => CompositeOperation::Copy,
+                        "xor" => CompositeOperation::Xor,
+                        // Chromium's legacy `clear` keeps none of source or destination: for the opaque fills of the
+                        // scenes that is destination-out.
+                        "clear" => CompositeOperation::DestinationOut,
+                        other => panic!("no composite operation {other}"),
                     }),
                     "fill" => canvas.fill_path(
                         &polygon(op[2].as_array().unwrap()),

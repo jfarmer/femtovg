@@ -62,12 +62,21 @@ fn rule(name: Option<&serde_json::Value>) -> FillRule {
 
 fn operation(name: &str) -> CompositeOperation {
     match name {
-        "copy" => CompositeOperation::Copy,
+        "source-over" => CompositeOperation::SourceOver,
         "source-in" => CompositeOperation::SourceIn,
         "source-out" => CompositeOperation::SourceOut,
+        "source-atop" => CompositeOperation::Atop,
+        "destination-over" => CompositeOperation::DestinationOver,
         "destination-in" => CompositeOperation::DestinationIn,
+        "destination-out" => CompositeOperation::DestinationOut,
         "destination-atop" => CompositeOperation::DestinationAtop,
-        _ => CompositeOperation::SourceOver,
+        "lighter" => CompositeOperation::Lighter,
+        "copy" => CompositeOperation::Copy,
+        "xor" => CompositeOperation::Xor,
+        // Chromium's legacy `clear` keeps none of source or destination: for the opaque fills of the
+        // scenes that is destination-out.
+        "clear" => CompositeOperation::DestinationOut,
+        other => panic!("no composite operation {other}"),
     }
 }
 

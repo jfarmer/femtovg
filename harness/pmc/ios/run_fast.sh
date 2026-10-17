@@ -3,10 +3,10 @@
 # streams for minutes): the app's CSV row a frame carries the render thread's own instructions and cycles per CPU kind
 # (thread_selfcounts), the process's, its energy and the frame's peak footprint.
 # usage: run_fast.sh pp|a|pc TAG [phases] [passes] [repeat]; XENV=NAME=VALUE passes one more variable.
-U=00008140-000859503A2A801C
+U=${U:-00008140-000859503A2A801C}  # U= another device (XS Max A12 00008020-001C292A2190003A, SE A13 00008030-0005694926D3402E)
 V=$1; TAG=$2; PH=${3:-thinhd,thin}; P=${4:-3}; REP=${5:-20}
 B=co.rbckr.femtovgpmu.flat$V
-OUT=/Users/matt/src/femtovg-wt/runs/raster/ios; mkdir -p $OUT
+OUT=${OUT:-/Users/matt/src/femtovg-wt/runs/raster/ios}; mkdir -p $OUT
 T0=$(date +%s)
 env DEVICECTL_CHILD_SOAK_TAG=$TAG DEVICECTL_CHILD_SOAK_PHASES=$PH DEVICECTL_CHILD_SOAK_PASSES=$P \
   DEVICECTL_CHILD_SOAK_REPEAT=$REP DEVICECTL_CHILD_FRAME_DRIFT=0.37 DEVICECTL_CHILD_MEM_PEAKS=1 DEVICECTL_CHILD_SOAK_EXIT=1 \
