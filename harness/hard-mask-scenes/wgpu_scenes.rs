@@ -59,10 +59,14 @@ fn zz_hm_scenes() {
         return;
     };
     let spec: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(spec).unwrap()).unwrap();
-    let (w, h) = (spec["width"].as_u64().unwrap() as u32, spec["height"].as_u64().unwrap() as u32);
+    // SCENES_SCALE draws each scene that many device pixels a canvas pixel, as a canvas of that devicePixelRatio.
+    let scale: f32 = std::env::var("SCENES_SCALE").map_or(1.0, |s| s.parse().unwrap());
+    let (w, h) = (spec["width"].as_u64().unwrap() as f32, spec["height"].as_u64().unwrap() as f32);
+    let (w, h) = ((w * scale).round() as u32, (h * scale).round() as u32);
     for (i, scene) in spec["scenes"].as_array().unwrap().iter().enumerate() {
         let ops = scene["ops"].as_array().unwrap().clone();
         let rgba = render_rgba(&device, &queue, w, h, Color::rgbaf(0.0, 0.0, 0.0, 0.0), |canvas: &mut Canvas<WGPURenderer>| {
+            canvas.scale(scale, scale);
             for op in &ops {
                 match op[0].as_str().unwrap() {
                     "save" => canvas.save(),

@@ -93,7 +93,10 @@ impl ApplicationHandler for App {
         let args: Vec<String> = std::env::args().collect();
         let spec: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(&args[1]).unwrap()).unwrap();
         let out = args[2].clone();
-        let (w, h) = (spec["width"].as_u64().unwrap() as u32, spec["height"].as_u64().unwrap() as u32);
+        // SCENES_SCALE draws each scene that many device pixels a canvas pixel, as a canvas of that devicePixelRatio.
+        let scale: f32 = std::env::var("SCENES_SCALE").map_or(1.0, |s| s.parse().unwrap());
+        let (w, h) = (spec["width"].as_u64().unwrap() as f32, spec["height"].as_u64().unwrap() as f32);
+        let (w, h) = ((w * scale).round() as u32, (h * scale).round() as u32);
         let window_attrs = Window::default_attributes()
             .with_inner_size(winit::dpi::PhysicalSize::new(64, 64))
             .with_visible(false);
@@ -128,6 +131,8 @@ impl ApplicationHandler for App {
                 .unwrap();
             canvas.set_render_target(RenderTarget::Image(image));
             canvas.clear_rect(0, 0, w, h, Color::rgbaf(0.0, 0.0, 0.0, 0.0));
+            canvas.save();
+            canvas.scale(scale, scale);
             for op in scene["ops"].as_array().unwrap() {
                 match op[0].as_str().unwrap() {
                     "save" => canvas.save(),
@@ -146,6 +151,7 @@ impl ApplicationHandler for App {
                     other => panic!("unknown op {other}"),
                 }
             }
+            canvas.restore();
             canvas.flush_to_output(());
             let shot = canvas.screenshot().unwrap();
             // Premultiplied over white.

@@ -41,3 +41,23 @@ What is left is the hard mask's whole-or-nothing edge. Both scene programs map
 every canvas operation now; they mapped only these five's and drew the rest as
 source-over (Chromium's legacy `clear` is drawn as destination-out, the same for
 the scenes' opaque fills).
+
+## Three browsers, three scales (2026-10-18, master ad762cd5 against #403 59fbefb9)
+
+- `scenes_browser.py chromium|firefox|webkit OUT_DIR`: the scenes on a canvas in each browser (Chromium 131's
+  headless shell, Firefox headless `--screenshot`, the system WebKit through `../corpus_run/wk_shot.swift`);
+  `SCENES_SCALE=2` draws them at two device pixels a canvas pixel. `scenes_chromium.py` is its Chromium case at 1x.
+- `wgpu_scenes.rs` and `../clip-bench/gl_scenes.rs` take `SCENES_SCALE` too.
+- `scenes_score.py`: run in a directory holding `chr-S`, `fir-S`, `web-S`, `wgpu-mst-S`, `wgpu-hm-S`, `gl-m403-S`
+  and `gl-h403-S` for S in 1, 2, 4; pixels more than 20 off each browser, master and #403, both backends, and for
+  every pixel #403 changes whether it moved toward each browser or away.
+- `zz_hm_bench.rs`: copied into a checkout's `tests/`, `HM_BENCH=hard|soft|none` draws 400 concave fills at
+  1920x1080 under a star clip with `source-in` (a hard mask), `source-over` (a soft mask) or no clip, and prints the
+  render thread's exact instructions and cycles a frame per CPU kind; run it under `taskpolicy -c background`.
+
+The three browsers draw all 13 scenes within 20 levels of each other at every scale. Over the 13, pixels more than 20
+off Chromium / Firefox / WebKit, master -> #403, WGPU: 1x 1,677 / 1,677 / 1,682 -> 162 / 162 / 168; 2x 5,733 ->
+324 (WebKit 5,742 -> 334); 4x 20,978 -> 650 (WebKit 20,991 -> 664). OpenGL: 1,722, 5,818, 21,143 -> 162, 324, 650.
+No pixel #403 changes moves away from any browser, and with it the two backends draw the scenes alike (2 pixels apart
+on the star at 4x, as on master; master's leaks differed by 9 to 33). Strips: `../../pr-hard-mask-winding-3.png`,
+`-gl-3.png`, `-3-4x.png`.
