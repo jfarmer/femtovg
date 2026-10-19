@@ -1,0 +1,6 @@
+[
+ {"name": "gpt-5-6-terra-pro", "crop": [690, 590, 1240, 900], "label": "feGaussianBlur > feOffset > feColorMatrix > feMerge: the shadow colour, computed in linearRGB, drawn as sRGB"},
+ {"name": "mistral-large-4", "crop": [620, 380, 860, 560], "label": "feDropShadow on a group: its translucent glow over its own shadow merged in sRGB"},
+ {"name": "gpt-5-6-sol-pro", "crop": [774, 793, 1094, 973], "label": "feTurbulence veil (feBlend multiply) over the group's drop-shadow chain, merged in sRGB"},
+ {"name": "gemini-3-1-pro-preview-custom-tools", "crop": [600, 50, 1240, 410], "label": "feDropShadow: anti-aliased hair edges over their own shadow merged in sRGB"}
+]
