@@ -102,6 +102,19 @@ the WKWebView's does: about 350 MiB through BuseyBench, 1,456 MiB at `perf__grad
 2,859 MiB, Chrome's GPU process 981 MiB, native peak footprint 1,067 MiB). `../../issue-webkit-gpu-memory.png`
 plots it.
 
+## Safari on an iPhone 12
+
+iOS 26.5, Safari, the page served over TLS on the local network (the certificate accepted once on the device):
+BuseyBench and the clip-path reftests at 1x and 2x (272 frames), BuseyBench and `perf` at 1x and 1080p for ten frames
+each (106), and the 1,000-gradient and 4,000-rect scenes four times each. No error, lost device or reload; 239 of the
+272 frames identical to native and the rest within 5 levels; no Jetsam event on the device during the runs.
+Through the 4,000 rects (Instruments' Activity Monitor, all processes; `ios-am6.trace` in the run directory) Safari's
+GPU process stays at 31-43 MiB and its WebContent process at 112-128 MiB: the 2 GB of WebKit's GPU process on macOS
+(#420) is not iOS's. The 4,000 rects cost 14 ms of encode and 41 ms of queue wait a frame there.
+
+Instruments on the device hung while saving whenever it ran detached from a terminal, and needed about nine minutes
+to save a 90-second recording made while Safari drew; run it in the foreground with a generous time-out.
+
 ## Files
 
 `analysis-correctness.json`, `analysis-part1.json`, the jobs' `results.jsonl` / `events.jsonl` / `procs.jsonl` are in
