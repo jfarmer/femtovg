@@ -2367,6 +2367,11 @@ fn femtovg_face(id: usvg::fontdb::ID) -> Option<(femtovg::FontId, u16)> {
 
 fn stroke_paint(stroke: &usvg::Stroke) -> Option<Paint> {
     let mut paint = to_paint(stroke.paint())?;
+    // STROKE_NO_STENCIL=1: strokes without the stencil (Paint::set_stencil_strokes(false)), each strip blended as
+    // it is drawn, as an application that turns them off sees them.
+    if std::env::var_os("STROKE_NO_STENCIL").is_some() {
+        paint.set_stencil_strokes(false);
+    }
     paint.set_line_width(stroke.width().get());
     paint.set_line_cap(match stroke.linecap() {
         usvg::LineCap::Butt => femtovg::LineCap::Butt,
