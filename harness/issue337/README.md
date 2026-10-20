@@ -40,7 +40,7 @@ feColorMatrix constants read as sRGB on the single-layer path), mistral-large-4 
 every earlier build ran. Five portraits added (claude-opus-5-5, claude-sonnet-5-5, gpt-6-1-sol, gpt-6-1-sol-pro, pareto).
 
 - `consensus_mst4_*.json`, `consensus_mst4o_single_*.json`, `score_mst4.json`: pixels off all three browsers, mean over
-  the 36 portraits, `mst4o_single` -> `mst4`: z2 0.103 -> 0.036 %, hd 0.035 -> 0.006 % (gpt-6-astra's references
+  the 36 portraits, `mst4o_single` -> `mst4`: z2 0.102 -> 0.036 %, hd 0.034 -> 0.006 % (gpt-6-astra's references
   regenerated after the `make_ref.py` fix below).
 - `busey_triage_r2_2026-10-19.json`: the root causes of what is left in the portraits the morning's triage did not
   reach (gpt-6-astra, ox-alpha, muse-spark-1-3-contributor, gemini-3-8-flash, glm-5v-turbo, the five new ones), each

@@ -1,0 +1,51 @@
+t-chr-mst4: 106 frames
+
+== t-chr-mst4b against t-chr-mst4: 106 frames
+  hd: encode median ratio (0.97, 0.9, 1.02), sum 292.4 -> 283.2 ms; queue ratio (0.976, 0.89, 2.12), sum 989.6 -> 991.8 ms
+       GPU process cpu/frame ratio (0.936, 0.81, 1.03), sum 869.1 -> 823.9 ms; page process cpu/frame ratio (0.968, 0.88, 2.08), sum 1482.0 -> 1453.0 ms
+       slowest relative: lines-1000 3.1+8.3 -> 3.0+17.7; lines-200 0.6+2.1 -> 0.6+3.8; glm-5-3-flash 4.6+17.3 -> 4.6+23.7; fugu-ultra 5.0+20.6 -> 5.1+24.0
+       fastest relative: nex-n2-pro 4.6+17.7 -> 4.3+15.7; grads-200 0.4+1.0 -> 0.4+0.9; qwen3-8-2-4t-a95b 15.5+57.7 -> 15.3+51.8; claude-sonnet-5-5 8.8+31.4 -> 8.5+28.8
+  z1: encode median ratio (0.962, 0.88, 1.03), sum 252.9 -> 242.8 ms; queue ratio (0.977, 0.76, 1.69), sum 791.2 -> 780.7 ms
+       GPU process cpu/frame ratio (0.937, 0.73, 1.05), sum 650.9 -> 618.2 ms; page process cpu/frame ratio (0.975, 0.87, 1.35), sum 1184.9 -> 1161.2 ms
+       slowest relative: lines-200 0.6+1.2 -> 0.6+2.0; rects-1000 3.1+2.2 -> 3.0+2.6; rects-same-200 0.6+0.7 -> 0.6+0.7; gemini-4-argon 12.7+43.0 -> 12.4+44.4
+       fastest relative: rects-0 0.0+0.5 -> 0.0+0.4; grads-200 0.4+0.8 -> 0.4+0.7; stars-1000 3.0+2.7 -> 2.9+2.3; kimi-k2-6 4.1+14.9 -> 3.7+13.9
+
+== t-chr-bgc against t-chr-mst4: 106 frames
+  hd: encode median ratio (0.859, 0.77, 1.0), sum 292.4 -> 253.0 ms; queue ratio (0.966, 0.89, 1.06), sum 989.6 -> 951.3 ms
+       GPU process cpu/frame ratio (0.934, 0.84, 1.14), sum 869.1 -> 818.5 ms; page process cpu/frame ratio (0.955, 0.83, 1.25), sum 1482.0 -> 1418.7 ms
+       slowest relative: gemini-3-1-pro-preview-custom-tools 8.2+27.3 -> 7.0+29.0; clipped-1000 2.9+3.8 -> 2.9+4.0; kimi-k3 2.3+16.6 -> 2.2+16.7; grads-1000 1.8+2.7 -> 1.7+2.8
+       fastest relative: qwen3-8-2-4t-a95b 15.5+57.7 -> 13.2+51.5; nex-n2-pro 4.6+17.7 -> 3.6+16.2; rects-0 0.0+0.4 -> 0.0+0.3; blurs-20 2.8+11.7 -> 2.2+10.8
+  z1: encode median ratio (0.812, 0.75, 1.02), sum 252.9 -> 208.3 ms; queue ratio (0.972, 0.78, 1.04), sum 791.2 -> 777.2 ms
+       GPU process cpu/frame ratio (0.923, 0.69, 1.18), sum 650.9 -> 604.8 ms; page process cpu/frame ratio (0.947, 0.69, 1.05), sum 1184.9 -> 1124.7 ms
+       slowest relative: rects-same-200 0.6+0.7 -> 0.6+0.7; mistral-large-4 4.1+14.9 -> 3.8+15.3; stars-200 0.4+0.5 -> 0.4+0.5; kimi-k3 2.6+8.8 -> 2.3+9.0
+       fastest relative: rects-0 0.0+0.5 -> 0.0+0.4; kimi-k2-6 4.1+14.9 -> 3.1+13.7; gpt-6-astra 7.5+23.6 -> 5.9+22.1; nex-n2-pro 4.1+14.5 -> 3.2+13.8
+
+== t-chr-wis against t-chr-mst4: 106 frames
+  hd: encode median ratio (0.685, 0.45, 1.02), sum 292.4 -> 197.5 ms; queue ratio (0.832, 0.57, 1.9), sum 989.6 -> 806.8 ms
+       GPU process cpu/frame ratio (0.701, 0.52, 1.02), sum 869.1 -> 581.1 ms; page process cpu/frame ratio (0.795, 0.58, 1.65), sum 1482.0 -> 1160.7 ms
+       slowest relative: lines-200 0.6+2.1 -> 0.6+3.9; lines-1000 3.1+8.3 -> 3.0+15.9; rects-0 0.0+0.4 -> 0.0+0.5; mistral-large-4 4.1+16.7 -> 3.1+22.0
+       fastest relative: gpt-5-6-luna-pro 2.1+11.5 -> 1.4+6.6; blurs-100 15.6+53.8 -> 7.0+38.9; qwen3-8-max 6.9+27.9 -> 4.2+19.2; blurs-20 2.8+11.7 -> 1.4+8.5
+  z1: encode median ratio (0.668, 0.52, 1.03), sum 252.9 -> 170.1 ms; queue ratio (0.81, 0.74, 1.54), sum 791.2 -> 635.3 ms
+       GPU process cpu/frame ratio (0.65, 0.49, 1.0), sum 650.9 -> 410.2 ms; page process cpu/frame ratio (0.78, 0.66, 1.85), sum 1184.9 -> 915.3 ms
+       slowest relative: lines-200 0.6+1.2 -> 0.6+1.9; stars-200 0.4+0.5 -> 0.4+0.6; rects-same-200 0.6+0.7 -> 0.6+0.8; rects-50 0.2+0.5 -> 0.2+0.6
+       fastest relative: blurs-100 9.0+35.8 -> 4.7+26.6; kimi-k2-6 4.1+14.9 -> 2.4+11.2; gemini-3-1-pro-preview 9.5+34.1 -> 5.2+26.2; blurs-20 1.8+7.1 -> 1.0+5.5
+
+== tg-chr-mst4 against t-chr-mst4: 106 frames
+  hd: encode median ratio (0.81, 0.65, 1.28), sum 292.4 -> 236.6 ms; queue ratio (0.828, 0.52, 6.44), sum 989.6 -> 742.1 ms
+       GPU process cpu/frame ratio (1.306, 0.82, 9.42), sum 869.1 -> 1096.0 ms; page process cpu/frame ratio (0.86, 0.6, 4.44), sum 1482.0 -> 1225.0 ms
+       slowest relative: rects-0 0.0+0.4 -> 0.0+2.2; rects-50 0.2+0.6 -> 0.2+3.6; clipped-200 0.6+1.1 -> 0.8+7.4; rects-same-200 0.7+0.9 -> 0.8+3.7
+       fastest relative: blurs-100 15.6+53.8 -> 10.1+28.2; gemini-3-1-pro-preview 11.2+39.2 -> 7.4+23.1; qwen3-8-flash 9.7+34.5 -> 7.1+19.8; qwen3-8-2-4t-a95b 15.5+57.7 -> 11.2+33.4
+  z1: encode median ratio (0.811, 0.68, 1.27), sum 252.9 -> 206.3 ms; queue ratio (0.866, 0.55, 9.56), sum 791.2 -> 646.2 ms
+       GPU process cpu/frame ratio (1.31, 0.81, 9.85), sum 650.9 -> 825.7 ms; page process cpu/frame ratio (0.883, 0.62, 3.08), sum 1184.9 -> 1036.1 ms
+       slowest relative: clipped-200 0.4+0.6 -> 0.4+5.3; rects-50 0.2+0.5 -> 0.2+3.6; stars-200 0.4+0.5 -> 0.4+3.7; rects-0 0.0+0.5 -> 0.0+1.6
+       fastest relative: blurs-100 9.0+35.8 -> 6.4+19.5; gemini-3-1-pro-preview 9.5+34.1 -> 6.4+21.2; qwen3-8-2-4t-a95b 14.5+50.1 -> 10.2+31.7; qwen3-8-flash 7.9+28.0 -> 6.0+17.4
+t-chr-mst4 z1 rects: per 1000 elements: encode 2.92 ms, queue 2.08 ms, GPU process 1.39 ms, page process 5.62 ms; N=0:0.0/0.5/0.4 N=50:0.2/0.5/0.4 N=200:0.6/0.8/0.6 N=1000:3.1/2.2/1.6 N=4000:11.7/8.7/5.9
+t-chr-mst4 hd rects: per 1000 elements: encode 3.73 ms, queue 2.33 ms, GPU process 1.41 ms, page process 6.97 ms; N=0:0.0/0.4/0.4 N=50:0.2/0.6/0.4 N=200:0.8/0.9/0.6 N=1000:3.9/3.0/1.8 N=4000:15.0/9.8/6.0
+t-chr-mst4b z1 rects: per 1000 elements: encode 2.90 ms, queue 1.98 ms, GPU process 1.33 ms, page process 5.35 ms; N=0:0.0/0.4/0.3 N=50:0.2/0.5/0.4 N=200:0.6/0.8/0.6 N=1000:3.0/2.6/1.5 N=4000:11.6/8.3/5.6
+t-chr-mst4b hd rects: per 1000 elements: encode 3.66 ms, queue 2.29 ms, GPU process 1.35 ms, page process 6.62 ms; N=0:0.0/0.4/0.4 N=50:0.2/0.6/0.4 N=200:0.8/0.9/0.6 N=1000:3.7/2.9/1.5 N=4000:14.7/9.6/5.7
+t-chr-bgc z1 rects: per 1000 elements: encode 2.87 ms, queue 2.02 ms, GPU process 1.31 ms, page process 5.43 ms; N=0:0.0/0.4/0.3 N=50:0.2/0.4/0.4 N=200:0.6/0.7/0.5 N=1000:2.9/2.2/1.4 N=4000:11.5/8.4/5.6
+t-chr-bgc hd rects: per 1000 elements: encode 3.69 ms, queue 2.25 ms, GPU process 1.33 ms, page process 6.83 ms; N=0:0.0/0.3/0.3 N=50:0.2/0.6/0.4 N=200:0.8/0.9/0.6 N=1000:3.7/2.7/1.6 N=4000:14.8/9.4/5.6
+t-chr-wis z1 rects: per 1000 elements: encode 2.93 ms, queue 1.89 ms, GPU process 1.17 ms, page process 5.19 ms; N=0:0.0/0.4/0.3 N=50:0.2/0.6/0.4 N=200:0.6/0.8/0.5 N=1000:2.9/2.5/1.4 N=4000:11.7/8.0/5.0
+t-chr-wis hd rects: per 1000 elements: encode 3.76 ms, queue 2.10 ms, GPU process 1.17 ms, page process 6.73 ms; N=0:0.0/0.5/0.3 N=50:0.2/0.6/0.4 N=200:0.8/0.9/0.6 N=1000:3.8/2.8/1.5 N=4000:15.1/8.9/5.0
+tg-chr-mst4 z1 rects: per 1000 elements: encode 3.27 ms, queue 0.70 ms, GPU process 2.01 ms, page process 6.17 ms; N=0:0.0/1.6/1.5 N=50:0.2/3.6/2.9 N=200:0.7/3.0/3.0 N=1000:3.3/3.8/4.5 N=4000:13.1/5.5/10.3
+tg-chr-mst4 hd rects: per 1000 elements: encode 4.13 ms, queue 1.09 ms, GPU process 2.08 ms, page process 7.18 ms; N=0:0.0/2.2/1.5 N=50:0.2/3.6/3.0 N=200:0.9/3.2/3.0 N=1000:4.2/3.9/5.1 N=4000:16.6/7.2/10.6

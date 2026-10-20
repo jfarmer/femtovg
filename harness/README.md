@@ -318,7 +318,7 @@ Firefox. `SRGB_SHADOW_MERGE=1` merges in sRGB with the same layers, and
 what a corpus run uses by default (`corpus_run/common.py`: a build without an entry runs with the harness's own
 defaults; `<build>_single` runs it with `SINGLE_SHADOW_LAYER=1`), now that the library runs a lone colour-space
 conversion in the layer composite (#400): over the 36 BuseyBench portraits the pixels more than 20/255 off all three
-browsers go from 0.103 % to 0.037 % of the frame at 2x and from 0.035 % to 0.007 % at 1080p (master 06243b80). The
+browsers go from 0.102 % to 0.036 % of the frame at 2x and from 0.034 % to 0.006 % at 1080p (master 06243b80, gpt-6-astra's references made after the `make_ref.py` fix of the same day). The
 same day `shadow_chain` stopped reading an `feColorMatrix`'s linearRGB constants as sRGB on the paths outside the
 merge (one shadow layer, a group that draws only its shadow): gpt-5-6-terra-pro's 0/.03/.06 is rgb(0, 48, 69), as
 the browsers draw it, not rgb(0, 8, 15). Across the corpus that moves exactly the two files with such a matrix

@@ -1,0 +1,583 @@
+{
+ "run_dir": "/Users/matt/src/femtovg-wt/runs/wasmx",
+ "pkg_dir": "/Users/matt/src/femtovg-wt/wasm-pkg",
+ "files": "/Users/matt/src/femtovg-wt/runs/wasmx/files_all.json",
+ "native": [
+  "mst4",
+  "mst4n"
+ ],
+ "native_rows": [
+  "/Users/matt/src/femtovg-wt/runs/wasmx/accuracy.jsonl",
+  "/Users/matt/src/femtovg-wt/runs/busey/accuracy.jsonl",
+  "/Users/matt/src/femtovg-wt/runs/wpt22/accuracy.jsonl"
+ ],
+ "fonts": [
+  "/System/Library/Fonts/Supplemental/Arial.ttf",
+  "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+  "/System/Library/Fonts/Supplemental/Arial Italic.ttf",
+  "/System/Library/Fonts/Supplemental/Arial Bold Italic.ttf",
+  "/System/Library/Fonts/Supplemental/Times New Roman.ttf",
+  "/System/Library/Fonts/Supplemental/Times New Roman Bold.ttf",
+  "/System/Library/Fonts/Supplemental/Times New Roman Italic.ttf",
+  "/System/Library/Fonts/Supplemental/Times New Roman Bold Italic.ttf",
+  "/System/Library/Fonts/Supplemental/Courier New.ttf",
+  "/System/Library/Fonts/Supplemental/Courier New Bold.ttf",
+  "/System/Library/Fonts/Supplemental/Courier New Italic.ttf",
+  "/System/Library/Fonts/Supplemental/Courier New Bold Italic.ttf",
+  "/System/Library/Fonts/Courier.ttc"
+ ],
+ "sample_s": 2.0,
+ "jobs": [
+  {
+   "name": "chr-mst4-unsliced",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "chr-mst4-sliced",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {},
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "wk-mst4-unsliced",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "wk-mst4-sliced",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {},
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "chr-wis-unsliced",
+   "build": "wis",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "chr-wis-sliced",
+   "build": "wis",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {},
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "wk-wis-unsliced",
+   "build": "wis",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "wk-wis-sliced",
+   "build": "wis",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {},
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "chr-mst4-webgl",
+   "build": "mst4",
+   "backend": "webgl",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "wk-mst4-webgl",
+   "build": "mst4",
+   "backend": "webgl",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": null,
+   "frames": 1
+  },
+  {
+   "name": "chr-leak-rb",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": [
+    "wpt-femorphology-reftests"
+   ],
+   "frames": 1
+  },
+  {
+   "name": "chr-leak-norb",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "wpt-femorphology-reftests"
+   ],
+   "frames": 3
+  },
+  {
+   "name": "wk-leak-rb",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": [
+    "wpt-femorphology-reftests"
+   ],
+   "frames": 1
+  },
+  {
+   "name": "wk-leak-norb",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "wpt-femorphology-reftests"
+   ],
+   "frames": 3
+  },
+  {
+   "name": "chr-webgl-smoke",
+   "build": "mst4",
+   "backend": "webgl",
+   "framings": [
+    "z1"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": [
+    "buseybench"
+   ],
+   "frames": 1
+  },
+  {
+   "name": "wk-webgl-smoke",
+   "build": "mst4",
+   "backend": "webgl",
+   "framings": [
+    "z1"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": [
+    "buseybench"
+   ],
+   "frames": 1
+  },
+  {
+   "name": "chr-leak-rb3",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "groups": [
+    "wpt-femorphology-reftests"
+   ],
+   "frames": 1
+  },
+  {
+   "name": "chr-leak-nopost",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_POST_PIXELS": "1"
+   },
+   "groups": [
+    "wpt-femorphology-reftests"
+   ],
+   "frames": 1
+  },
+  {
+   "name": "img-chr-mst4",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "keys": "/Users/matt/src/femtovg-wt/runs/wasmx/image_keys.json",
+   "frames": 1
+  },
+  {
+   "name": "img-chr-wis",
+   "build": "wis",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "keys": "/Users/matt/src/femtovg-wt/runs/wasmx/image_keys.json",
+   "frames": 1
+  },
+  {
+   "name": "img-wk-mst4",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "keys": "/Users/matt/src/femtovg-wt/runs/wasmx/image_keys.json",
+   "frames": 1
+  },
+  {
+   "name": "img-wk-wis",
+   "build": "wis",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "z2",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1"
+   },
+   "keys": "/Users/matt/src/femtovg-wt/runs/wasmx/image_keys.json",
+   "frames": 1
+  },
+  {
+   "name": "t-chr-mst4",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "t-chr-bgc",
+   "build": "bgc",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "t-chr-wis",
+   "build": "wis",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "t-chr-mst4b",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "t-wk-mst4",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "t-wk-bgc",
+   "build": "bgc",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "t-wk-wis",
+   "build": "wis",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "t-wk-mst4b",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "tg-chr-mst4",
+   "build": "mst4",
+   "backend": "webgl",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "tg-wk-mst4",
+   "build": "mst4",
+   "backend": "webgl",
+   "framings": [
+    "z1",
+    "hd"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "perf",
+    "buseybench"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "rep-wk-mst4",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "rep"
+   ],
+   "frames": 10
+  },
+  {
+   "name": "rep-chr-mst4",
+   "build": "mst4",
+   "backend": "webgpu",
+   "framings": [
+    "z1"
+   ],
+   "env": {
+    "NO_SLICES": "1",
+    "NO_READBACK": "1"
+   },
+   "groups": [
+    "rep"
+   ],
+   "frames": 10
+  }
+ ],
+ "native_png": [
+  [
+   "/Users/matt/src/femtovg-wt/runs/wasmx/native",
+   "mst4n_"
+  ],
+  [
+   "/Users/matt/src/femtovg-wt/runs/busey/png",
+   "mst4_"
+  ],
+  [
+   "/Users/matt/src/femtovg-wt/runs/wpt22/png",
+   "mst4_"
+  ]
+ ]
+}
