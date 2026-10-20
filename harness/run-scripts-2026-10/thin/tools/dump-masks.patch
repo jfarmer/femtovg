@@ -1,0 +1,47 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index 6b4f170..157d686 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -510,6 +510,11 @@ where
+                             return false;
+                         };
+                         let pixels = key.rasterize(&mut self.fill_masks.coverage);
++                        if let Some(path) = std::env::var_os("FILL_MASK_DUMP") {
++                            use std::io::Write;
++                            let mut f = std::fs::OpenOptions::new().create(true).append(true).open(path).unwrap();
++                            f.write_all(&key.dump()).unwrap();
++                        }
+                         self.fill_masks.keep(key, at, &pixels);
+                         at
+                     }
+diff --git a/src/clip/mask.rs b/src/clip/mask.rs
+index 05b5487..ca8e473 100644
+--- a/src/clip/mask.rs
++++ b/src/clip/mask.rs
+@@ -123,6 +123,26 @@ impl MaskKey {
+         self.size == other.size && self.outline == other.outline
+     }
+ 
++    /// The key as bytes: width, height, word count and words, little-endian.
++    pub(crate) fn dump(&self) -> Vec<u8> {
++        let mut out = Vec::new();
++        for v in [self.size[0], self.size[1], self.outline.len() as u32] {
++            out.extend(v.to_le_bytes());
++        }
++        for w in &self.outline {
++            out.extend(w.to_le_bytes());
++        }
++        out
++    }
++
++    /// A key read back from `dump`'s bytes, and the bytes after it.
++    pub(crate) fn undump(bytes: &[u8]) -> Option<(Self, &[u8])> {
++        let word = |i: usize| bytes.get(4 * i..4 * i + 4).map(|b| u32::from_le_bytes(b.try_into().unwrap()));
++        let (w, h, n) = (word(0)?, word(1)?, word(2)? as usize);
++        let outline = (0..n).map(|i| word(3 + i).map(|v| v as i32)).collect::<Option<Vec<_>>>()?;
++        Some((Self { size: [w, h], parent: None, outline }, &bytes[4 * (3 + n)..]))
++    }
++
+     /// Rasterizes the outline the key was made of: each child's coverage
+     /// under its rule, added up to the children's union.
+     pub(crate) fn rasterize(&self, coverage: &mut Coverage) -> Vec<u8> {

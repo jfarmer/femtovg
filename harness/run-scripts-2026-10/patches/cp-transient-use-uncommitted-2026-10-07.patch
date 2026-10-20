@@ -1,0 +1,533 @@
+diff --git a/src/budgets.rs b/src/budgets.rs
+index f69a2d9..27ecadc 100644
+--- a/src/budgets.rs
++++ b/src/budgets.rs
+@@ -234,9 +234,10 @@ where
+         width: usize,
+         height: usize,
+         flags: ImageFlags,
++        usage: TransientUse,
+     ) -> Result<ImageId, ErrorKind> {
+         self.transients
+-            .acquire(&mut self.images, &mut self.renderer, width, height, flags)
++            .acquire(&mut self.images, &mut self.renderer, width, height, flags, usage)
+     }
+ 
+     pub(crate) fn acquire_transient_image_reserving(
+@@ -244,10 +245,18 @@ where
+         width: usize,
+         height: usize,
+         flags: ImageFlags,
++        usage: TransientUse,
+         headroom: usize,
+     ) -> Result<ImageId, ErrorKind> {
+-        self.transients
+-            .acquire_reserving(&mut self.images, &mut self.renderer, width, height, flags, headroom)
++        self.transients.acquire_reserving(
++            &mut self.images,
++            &mut self.renderer,
++            width,
++            height,
++            flags,
++            usage,
++            headroom,
++        )
+     }
+ 
+     /// Returns a transient image to the pool once every command that reads it
+diff --git a/src/filters.rs b/src/filters.rs
+index 0382062..7379bed 100644
+--- a/src/filters.rs
++++ b/src/filters.rs
+@@ -470,7 +470,12 @@ where
+             return;
+         }
+         let blur_scratch = if filter.two_pass() {
+-            match self.acquire_transient_image(image_width, image_height, ImageFlags::PREMULTIPLIED) {
++            match self.acquire_transient_image(
++                image_width,
++                image_height,
++                ImageFlags::PREMULTIPLIED,
++                TransientUse::FilterTarget,
++            ) {
+                 Ok(image) => Some(image),
+                 Err(_) => {
+                     self.refund_filter_work(work);
+@@ -745,18 +750,23 @@ where
+                 None => levels.push((pass.level, is_two_pass(pass))),
+             }
+         }
+-        let mut wanted: Vec<(usize, usize)> = Vec::with_capacity(chain + 2 + 3 * levels.len());
++        // Passes write them all but the blend's, which its backdrop is drawn into.
++        let mut wanted: Vec<((usize, usize), TransientUse)> = Vec::with_capacity(chain + 2 + 3 * levels.len());
+         wanted.extend(std::iter::repeat_n(
+-            (width, height),
+-            chain + usize::from(two_pass) + usize::from(blend),
++            ((width, height), TransientUse::FilterTarget),
++            chain + usize::from(two_pass),
+         ));
++        wanted.extend(blend.then_some(((width, height), TransientUse::DrawTarget)));
+         for (level, blurred) in &levels {
+             let size = level_size(width, height, *level);
+-            wanted.extend(std::iter::repeat_n(size, if *blurred { 3 } else { 1 }));
++            wanted.extend(std::iter::repeat_n(
++                (size, TransientUse::FilterTarget),
++                if *blurred { 3 } else { 1 },
++            ));
+         }
+         let mut acquired: Vec<ImageId> = Vec::with_capacity(wanted.len());
+-        for (w, h) in wanted {
+-            match self.acquire_transient_image_reserving(w, h, ImageFlags::PREMULTIPLIED, headroom) {
++        for ((w, h), usage) in wanted {
++            match self.acquire_transient_image_reserving(w, h, ImageFlags::PREMULTIPLIED, usage, headroom) {
+                 Ok(id) => acquired.push(id),
+                 Err(err) => {
+                     for id in acquired {
+diff --git a/src/layers.rs b/src/layers.rs
+index a5d6ca4..c91d4a6 100644
+--- a/src/layers.rs
++++ b/src/layers.rs
+@@ -354,7 +354,12 @@ where
+         if (a * d - b * c).abs() < 1e-6 {
+             let void = transient::LAYER_GRANULARITY;
+             let image = self
+-                .acquire_transient_image(void, void, ImageFlags::PREMULTIPLIED | ImageFlags::FLIP_Y)
++                .acquire_transient_image(
++                    void,
++                    void,
++                    ImageFlags::PREMULTIPLIED | ImageFlags::FLIP_Y,
++                    TransientUse::DrawTarget,
++                )
+                 .ok();
+             self.layers.push(LayerRecord {
+                 image,
+@@ -431,7 +436,10 @@ where
+         let flags = ImageFlags::PREMULTIPLIED | ImageFlags::FLIP_Y;
+         let mut image = plan
+             .fits(limit)
+-            .then(|| self.acquire_transient_image(plan.width, plan.height, flags).ok())
++            .then(|| {
++                self.acquire_transient_image(plan.width, plan.height, flags, TransientUse::DrawTarget)
++                    .ok()
++            })
+             .flatten();
+         if image.is_none() && plan != visible {
+             // The reach did not fit the transient budget; the visible
+@@ -439,7 +447,10 @@ where
+             plan = visible;
+             image = plan
+                 .fits(limit)
+-                .then(|| self.acquire_transient_image(plan.width, plan.height, flags).ok())
++                .then(|| {
++                    self.acquire_transient_image(plan.width, plan.height, flags, TransientUse::DrawTarget)
++                        .ok()
++                })
+                 .flatten();
+         }
+         let (minx, miny) = plan.origin;
+@@ -825,12 +836,24 @@ where
+         headroom: usize,
+     ) -> Option<MaskImages> {
+         let normalized = self
+-            .acquire_transient_image_reserving(width, height, ImageFlags::PREMULTIPLIED | ImageFlags::FLIP_Y, headroom)
++            .acquire_transient_image_reserving(
++                width,
++                height,
++                ImageFlags::PREMULTIPLIED | ImageFlags::FLIP_Y,
++                TransientUse::DrawTarget,
++                headroom,
++            )
+             .ok()?;
+         let converted = match kind {
+             MaskKind::Alpha => None,
+             MaskKind::Luminance => {
+-                match self.acquire_transient_image_reserving(width, height, ImageFlags::PREMULTIPLIED, headroom) {
++                match self.acquire_transient_image_reserving(
++                    width,
++                    height,
++                    ImageFlags::PREMULTIPLIED,
++                    TransientUse::FilterTarget,
++                    headroom,
++                ) {
+                     Ok(converted) => Some(converted),
+                     Err(_) => {
+                         self.rollback_transient_image(normalized);
+@@ -870,7 +893,7 @@ where
+             ImageFlags::PREMULTIPLIED
+         };
+         let target = self
+-            .acquire_transient_image_reserving(width, height, flags, headroom)
++            .acquire_transient_image_reserving(width, height, flags, TransientUse::FilterTarget, headroom)
+             .ok()?;
+         // The result and the chain scratches are plain render targets alike,
+         // so a layer can alternate through its result and one scratch; the
+@@ -896,12 +919,24 @@ where
+         headroom: usize,
+     ) -> Option<BlendImages> {
+         let backdrop = self
+-            .acquire_transient_image_reserving(width, height, ImageFlags::PREMULTIPLIED, headroom)
++            .acquire_transient_image_reserving(
++                width,
++                height,
++                ImageFlags::PREMULTIPLIED,
++                TransientUse::DrawTarget,
++                headroom,
++            )
+             .ok()?;
+         let result = if capture_serves {
+             None
+         } else {
+-            match self.acquire_transient_image_reserving(width, height, ImageFlags::PREMULTIPLIED, headroom) {
++            match self.acquire_transient_image_reserving(
++                width,
++                height,
++                ImageFlags::PREMULTIPLIED,
++                TransientUse::FilterTarget,
++                headroom,
++            ) {
+                 Ok(result) => Some(result),
+                 Err(_) => {
+                     self.rollback_transient_image(backdrop);
+@@ -1874,6 +1909,38 @@ fn a_filtered_layer_reads_its_result_through_the_flag_its_passes_need() {
+     }
+ }
+ 
++/// Blurred siblings draw into one capture. A lone blur's result carries its
++/// capture's flags, so the two share a pool bucket; were the newest free
++/// image to serve whatever came next, each layer's capture would be the last
++/// one's result, and both images would be render targets where one is.
++#[test]
++fn filtered_siblings_draw_into_one_capture() {
++    use crate::ImageFilter;
++    use renderer::CommandType;
++    let mut canvas = Canvas::new(RecordingRenderer::default()).unwrap();
++    canvas.set_size(64, 64, 1.0);
++    let blur = LayerEffects::new().with_filters(&[ImageFilter::gaussian_blur(2.0)]);
++    let mut pairs = Vec::new();
++    for _ in 0..4 {
++        assert!(canvas.begin_layer(&blur));
++        let layer = canvas.layers.last().unwrap();
++        let (capture, result) = (layer.image.unwrap(), layer.filter_images.as_ref().unwrap().target);
++        assert_eq!(canvas.images.info(capture), canvas.images.info(result));
++        pairs.push((capture, result));
++        canvas.end_layer();
++    }
++    assert!(pairs.iter().all(|pair| *pair == pairs[0]), "{pairs:?}");
++    let drawn_into: HashSet<ImageId> = canvas
++        .commands
++        .iter()
++        .filter_map(|command| match command.cmd_type {
++            CommandType::SetRenderTarget(RenderTarget::Image(id)) => Some(id),
++            _ => None,
++        })
++        .collect();
++    assert_eq!(drawn_into.len(), 1);
++}
++
+ /// A wide blur over a large store fits the default work budget: sigma 77
+ /// over a 1080 px square (a `stdDeviation="10"` SVG blur at 1080p) is a
+ /// pyramid of four small passes and a copy, where 93 quadrature passes of
+diff --git a/src/lib.rs b/src/lib.rs
+index f5940fb..ae9873c 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -60,7 +60,7 @@ pub use crate::image::{
+     BlendMode, ImageFilter, ImageFlags, ImageId, ImageInfo, ImageSource, MorphologyOperator, PixelFormat,
+     TurbulenceKind,
+ };
+-use crate::transient::TransientPool;
++use crate::transient::{TransientPool, TransientUse};
+ use budgets::*;
+ use clip::*;
+ use filters::*;
+@@ -793,6 +793,9 @@ where
+         if self.current_render_target != target {
+             self.append_cmd(Command::new(CommandType::SetRenderTarget(target)));
+             self.current_render_target = target;
++            if let RenderTarget::Image(id) = target {
++                self.transients.mark_drawn(id);
++            }
+         }
+     }
+ 
+diff --git a/src/shadow.rs b/src/shadow.rs
+index fdd96c7..2309f8e 100644
+--- a/src/shadow.rs
++++ b/src/shadow.rs
+@@ -214,7 +214,8 @@ where
+         let image_flags = ImageFlags::PREMULTIPLIED | ImageFlags::FLIP_Y;
+         // Both come from the transient pool: past the budget the shadow is
+         // skipped rather than allocated, like a layer degrading.
+-        let Ok(coverage_image) = self.acquire_transient_image(width, height, image_flags) else {
++        let Ok(coverage_image) = self.acquire_transient_image(width, height, image_flags, TransientUse::DrawTarget)
++        else {
+             self.refund_filter_work(work);
+             return;
+         };
+@@ -227,7 +228,7 @@ where
+                 } else {
+                     ImageFlags::PREMULTIPLIED
+                 };
+-                match self.acquire_transient_image(width, height, blurred_flags) {
++                match self.acquire_transient_image(width, height, blurred_flags, TransientUse::FilterTarget) {
+                     Ok(image) => match self.acquire_filter_scratches(width, height, passes, 1, 0) {
+                         Ok(scratch) => (Some(image), Some(scratch)),
+                         Err(_) => {
+@@ -691,3 +692,32 @@ fn a_shadowed_draw_at_the_depth_limit_casts_as_at_the_root() {
+     );
+     assert_eq!(at_limit, stream(1));
+ }
++
++/// Blurred shadows of one size draw their coverage into one image: the
++/// blurred image carries the coverage's flags, and still each goes back to
++/// the use it had.
++#[test]
++fn shadows_of_one_size_draw_into_one_coverage_image() {
++    use renderer::CommandType;
++    let renderer = RecordingRenderer::default();
++    let recorded = renderer.last_commands.clone();
++    let mut canvas = Canvas::new(renderer).unwrap();
++    canvas.set_size(64, 64, 1.0);
++    canvas.set_shadow_color(Color::rgba(0, 0, 0, 255));
++    canvas.set_shadow_blur(6.0);
++    let mut rect = Path::new();
++    rect.rect(10.0, 10.0, 30.0, 30.0);
++    for _ in 0..4 {
++        canvas.fill_path(&rect, &Paint::color(Color::rgb(255, 0, 0)));
++    }
++    canvas.flush_to_output(());
++    let drawn_into: HashSet<ImageId> = recorded
++        .borrow()
++        .iter()
++        .filter_map(|command| match command.cmd_type {
++            CommandType::SetRenderTarget(RenderTarget::Image(id)) => Some(id),
++            _ => None,
++        })
++        .collect();
++    assert_eq!(drawn_into.len(), 1);
++}
+diff --git a/src/transient.rs b/src/transient.rs
+index 25f0b02..2949d33 100644
+--- a/src/transient.rs
++++ b/src/transient.rs
+@@ -11,15 +11,33 @@
+ //! execute in order, so a later layer drawing into an image an earlier
+ //! layer's composite reads is well-defined, and each consumer clears or fully
+ //! overwrites the image it takes.
++//!
++//! A free image that a draw has targeted goes first to the next acquire
++//! that will draw into one, and the others to the rest ([`TransientUse`]):
++//! a backend keeps a render target's attachments for as long as the image
++//! lives - a stencil texture each on wgpu - so a capture and a filter's
++//! result that traded places between sibling layers would both hold one.
+ 
+ use crate::image::ImageStore;
+ use crate::renderer::Renderer;
+ use crate::{ErrorKind, ImageFlags, ImageId, ImageInfo, PixelFormat};
+ use std::collections::{HashMap, HashSet};
+ 
++/// What an acquired transient is for, which picks among the free images of
++/// its size and flags.
++#[derive(Clone, Copy, Debug, PartialEq, Eq)]
++pub(crate) enum TransientUse {
++    /// Draws target it: a layer's capture, a mask's or a shadow's coverage,
++    /// a blend's backdrop.
++    DrawTarget,
++    /// Filter passes write it: a chain's result or scratch.
++    FilterTarget,
++}
++
+ #[derive(Debug, Default)]
+ pub(crate) struct FreeImages {
+-    by_info: HashMap<ImageInfo, Vec<ImageId>>,
++    /// By size and flags, and by whether a draw has targeted the image.
++    by_info: HashMap<(ImageInfo, bool), Vec<ImageId>>,
+     ids: HashSet<ImageId>,
+ }
+ 
+@@ -38,21 +56,24 @@ impl FreeImages {
+         self.ids.contains(id)
+     }
+ 
+-    fn insert(&mut self, info: ImageInfo, id: ImageId) {
++    fn insert(&mut self, info: ImageInfo, drawn: bool, id: ImageId) {
+         let inserted = self.ids.insert(id);
+         debug_assert!(inserted, "transient released twice");
+-        self.by_info.entry(info).or_default().push(id);
++        self.by_info.entry((info, drawn)).or_default().push(id);
+     }
+ 
+-    fn take_exact(&mut self, info: ImageInfo) -> Option<ImageId> {
+-        let bucket = self.by_info.get_mut(&info)?;
+-        let id = bucket.pop()?;
+-        let empty = bucket.is_empty();
+-        self.ids.remove(&id);
+-        if empty {
+-            self.by_info.remove(&info);
+-        }
+-        Some(id)
++    /// The newest free image of `info` that a draw has targeted, or has not,
++    /// as `drawn` asks; one of the other kind when there is none.
++    fn take_exact(&mut self, info: ImageInfo, drawn: bool) -> Option<ImageId> {
++        [drawn, !drawn].into_iter().find_map(|drawn| {
++            let bucket = self.by_info.get_mut(&(info, drawn))?;
++            let id = bucket.pop()?;
++            if bucket.is_empty() {
++                self.by_info.remove(&(info, drawn));
++            }
++            self.ids.remove(&id);
++            Some(id)
++        })
+     }
+ 
+     fn clear(&mut self) {
+@@ -90,13 +111,43 @@ pub(crate) fn round_up(n: usize, granularity: usize) -> usize {
+ 
+ #[cfg(test)]
+ mod tests {
+-    use super::round_up;
++    use super::{round_up, TransientUse};
++    use crate::{Canvas, ImageFlags, RecordingRenderer, RenderTarget};
+ 
+     #[test]
+     fn round_up_saturates_instead_of_wrapping() {
+         assert_eq!(round_up(65, 64), 128);
+         assert_eq!(round_up(usize::MAX, 64), usize::MAX);
+     }
++
++    /// A free image goes back to the use it had, whichever of two of one
++    /// size and flags was released last, and serves the other use only when
++    /// nothing else is free: two draw targets at once take both rather than
++    /// a third image.
++    #[test]
++    fn a_free_image_goes_back_to_the_use_it_had() {
++        let mut canvas = Canvas::new(RecordingRenderer::default()).unwrap();
++        canvas.set_size(64, 64, 1.0);
++        let acquire = |canvas: &mut Canvas<RecordingRenderer>, usage| {
++            let flags = ImageFlags::PREMULTIPLIED | ImageFlags::FLIP_Y;
++            canvas.acquire_transient_image(64, 64, flags, usage).unwrap()
++        };
++        let drawn = acquire(&mut canvas, TransientUse::DrawTarget);
++        let filtered = acquire(&mut canvas, TransientUse::FilterTarget);
++        canvas.with_render_target(RenderTarget::Image(drawn), |_| {});
++        for order in [[drawn, filtered], [filtered, drawn]] {
++            for id in order {
++                canvas.release_transient_image(id);
++            }
++            assert_eq!(acquire(&mut canvas, TransientUse::FilterTarget), filtered);
++            assert_eq!(acquire(&mut canvas, TransientUse::DrawTarget), drawn);
++        }
++        canvas.release_transient_image(filtered);
++        canvas.release_transient_image(drawn);
++        assert_eq!(acquire(&mut canvas, TransientUse::DrawTarget), drawn);
++        assert_eq!(acquire(&mut canvas, TransientUse::DrawTarget), filtered);
++        assert_eq!(canvas.transients.images.len(), 2);
++    }
+ }
+ 
+ #[derive(Debug)]
+@@ -106,6 +157,9 @@ pub(crate) struct TransientPool {
+     /// Transients whose last consumer command has been recorded; a subset of
+     /// `images`, taken by the next acquire of the same size and flags.
+     pub(crate) free: FreeImages,
++    /// Images a draw has targeted since the last flush: for each of these a
++    /// backend holds a render target's attachments.
++    drawn: HashSet<ImageId>,
+     /// Images already referenced by a recorded command in this frame. A
+     /// failed reservation may delete only images absent from this set.
+     recorded: HashSet<ImageId>,
+@@ -119,6 +173,7 @@ impl TransientPool {
+         Self {
+             images: Vec::new(),
+             free: FreeImages::default(),
++            drawn: HashSet::new(),
+             recorded: HashSet::new(),
+             bytes: 0,
+             budget,
+@@ -139,7 +194,9 @@ impl TransientPool {
+     }
+ 
+     /// A pooled image of exactly `width` x `height` with `flags` if one is
+-    /// free, otherwise a fresh RGBA8 image counted against the budget.
++    /// free - where there is a choice, one a draw has targeted for
++    /// [`TransientUse::DrawTarget`] and one none has for the other use -
++    /// otherwise a fresh RGBA8 image counted against the budget.
+     pub(crate) fn acquire<T: Renderer>(
+         &mut self,
+         images: &mut ImageStore<T::Image>,
+@@ -147,10 +204,12 @@ impl TransientPool {
+         width: usize,
+         height: usize,
+         flags: ImageFlags,
++        usage: TransientUse,
+     ) -> Result<ImageId, ErrorKind> {
+-        self.acquire_reserving(images, renderer, width, height, flags, 0)
++        self.acquire_reserving(images, renderer, width, height, flags, usage, 0)
+     }
+ 
++    #[allow(clippy::too_many_arguments)]
+     pub(crate) fn acquire_reserving<T: Renderer>(
+         &mut self,
+         images: &mut ImageStore<T::Image>,
+@@ -158,18 +217,24 @@ impl TransientPool {
+         width: usize,
+         height: usize,
+         flags: ImageFlags,
++        usage: TransientUse,
+         headroom: usize,
+     ) -> Result<ImageId, ErrorKind> {
+         let info = ImageInfo::new(flags, width, height, PixelFormat::Rgba8);
+         if self.bytes.saturating_add(headroom) > self.budget {
+             return Err(ErrorKind::TransientImageBudgetExceeded);
+         }
+-        if let Some(id) = self.free.take_exact(info) {
++        if let Some(id) = self.free.take_exact(info, usage == TransientUse::DrawTarget) {
+             return Ok(id);
+         }
+         self.allocate(images, renderer, info, headroom)
+     }
+ 
++    /// Notes that a draw targets `id`.
++    pub(crate) fn mark_drawn(&mut self, id: ImageId) {
++        self.drawn.insert(id);
++    }
++
+     fn allocate<T: Renderer>(
+         &mut self,
+         images: &mut ImageStore<T::Image>,
+@@ -193,8 +258,11 @@ impl TransientPool {
+         debug_assert!(self.images.contains(&id), "released image is not a transient");
+         debug_assert!(!self.free.contains(&id), "transient released twice");
+         self.recorded.insert(id);
+-        self.free
+-            .insert(images.info(id).expect("a transient has image info"), id);
++        self.free.insert(
++            images.info(id).expect("a transient has image info"),
++            self.drawn.contains(&id),
++            id,
++        );
+     }
+ 
+     /// Rolls back an admission that recorded no commands. A fresh image can
+@@ -203,8 +271,11 @@ impl TransientPool {
+         debug_assert!(self.images.contains(&id), "rolled back image is not a transient");
+         debug_assert!(!self.free.contains(&id), "transient rolled back twice");
+         if self.recorded.contains(&id) {
+-            self.free
+-                .insert(images.info(id).expect("a transient has image info"), id);
++            self.free.insert(
++                images.info(id).expect("a transient has image info"),
++                self.drawn.contains(&id),
++                id,
++            );
+             return;
+         }
+         if let Some(at) = self.images.iter().position(|&image| image == id) {
+@@ -224,6 +295,7 @@ impl TransientPool {
+     ) {
+         self.free.clear();
+         let held: HashSet<ImageId> = held.iter().copied().collect();
++        self.drawn.retain(|id| held.contains(id));
+         let mut kept = Vec::new();
+         for id in std::mem::take(&mut self.images) {
+             if held.contains(&id) {

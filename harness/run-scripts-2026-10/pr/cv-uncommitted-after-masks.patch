@@ -1,0 +1,201 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index e3d56d8..740bb92 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -376,19 +376,31 @@ where
+                     parent.cut(&mut pixels, key.size(), offset);
+                 }
+                 let [mask_width, mask_height] = key.size();
+-                let image = match self.clip_masks.spare_image(key.size()) {
+-                    Some(image) => image,
++                let (image, uploaded) = match self.clip_masks.spare_image(key.size()) {
++                    Some(image) => {
++                        let source = ImageSource::Gray(imgref::Img::new(pixels.as_gray(), mask_width, mask_height));
++                        (image, self.images.update(&mut self.renderer, image, source, 0, 0))
++                    }
+                     None => {
+                         let [width, height] = mask::image_size(key.size());
+                         let info = ImageInfo::new(ImageFlags::NEAREST, width, height, PixelFormat::Gray8);
+                         let Ok(image) = self.images.alloc(&mut self.renderer, info) else {
+                             return false;
+                         };
+-                        image
++                        // A new image is uploaded whole, the mask in its
++                        // corner: a backend clears a texture whose first
++                        // upload leaves part of it unwritten, and on wgpu
++                        // five such textures cost every frame after 8 ms
++                        // of a 70 ms frame of blurred layers.
++                        let mut whole = vec![0; width * height];
++                        for (row, line) in pixels.chunks_exact(mask_width).enumerate() {
++                            whole[row * width..][..mask_width].copy_from_slice(line);
++                        }
++                        let source = ImageSource::Gray(imgref::Img::new(whole.as_gray(), width, height));
++                        (image, self.images.update(&mut self.renderer, image, source, 0, 0))
+                     }
+                 };
+-                let source = ImageSource::Gray(imgref::Img::new(pixels.as_gray(), mask_width, mask_height));
+-                if self.images.update(&mut self.renderer, image, source, 0, 0).is_err() {
++                if uploaded.is_err() {
+                     self.images.remove(&mut self.renderer, image);
+                     return false;
+                 }
+diff --git a/src/renderer.rs b/src/renderer.rs
+index ecfeb8f..a06ea4b 100644
+--- a/src/renderer.rs
++++ b/src/renderer.rs
+@@ -149,6 +149,32 @@ impl Command {
+             composite_operation: CompositeOperationState::default(),
+         }
+     }
++
++    /// The pixels a coverage mask leaves the command's draws - x, y, width
++    /// and height from the target's top left - when they are under one.
++    /// Outside them the mask is empty, so the renderer scissors every draw
++    /// of the command to them, the ones that only write the stencil too: a
++    /// fragment out there is not shaded, and a tiler leaves its tile alone,
++    /// as a clip on the stencil would have.
++    pub(crate) fn clip_bounds(&self) -> Option<[u32; 4]> {
++        let params = match &self.cmd_type {
++            CommandType::ConvexFill { params }
++            | CommandType::Stroke { params }
++            | CommandType::Triangles { params }
++            | CommandType::ConcaveFill {
++                fill_params: params, ..
++            }
++            | CommandType::StencilStroke { params1: params, .. } => params,
++            _ => return None,
++        };
++        let mask = params.clip_mask?;
++        Some([
++            mask.origin[0] as u32,
++            mask.origin[1] as u32,
++            mask.size[0] as u32,
++            mask.size[1] as u32,
++        ])
++    }
+ }
+ 
+ /// Represents different render targets (screen or image).
+diff --git a/src/renderer/opengl.rs b/src/renderer/opengl.rs
+index 5d9817f..574d154 100644
+--- a/src/renderer/opengl.rs
++++ b/src/renderer/opengl.rs
+@@ -51,6 +51,8 @@ pub struct OpenGl {
+     current_program: u8,
+     current_program_needs_glyph_texture: bool,
+     current_program_clips: (bool, bool),
++    // The scissor rect of the draws under a coverage mask; none is no scissor.
++    current_clip_bounds: Option<[u32; 4]>,
+     vert_arr: Option<<glow::Context as glow::HasContext>::VertexArray>,
+     vert_buff: Option<<glow::Context as glow::HasContext>::Buffer>,
+     framebuffers: FnvHashMap<ImageId, Result<Framebuffer, ErrorKind>>,
+@@ -298,6 +300,7 @@ impl OpenGl {
+             current_program: 0,
+             current_program_needs_glyph_texture: true,
+             current_program_clips: (false, false),
++            current_clip_bounds: None,
+             vert_arr: None,
+             vert_buff: None,
+             framebuffers: HashMap::default(),
+@@ -1050,6 +1053,29 @@ impl OpenGl {
+         });
+     }
+ 
++    /// Scissors the draws that follow to `bounds` - x, y, width and height
++    /// from the target's top left - or lifts the scissor.
++    fn set_clip_bounds(&mut self, bounds: Option<[u32; 4]>) {
++        if self.current_clip_bounds == bounds {
++            return;
++        }
++        self.current_clip_bounds = bounds;
++        unsafe {
++            match bounds {
++                Some([x, y, width, height]) => {
++                    self.context.enable(glow::SCISSOR_TEST);
++                    self.context.scissor(
++                        x as i32,
++                        self.view[1] as i32 - (y + height) as i32,
++                        width as i32,
++                        height as i32,
++                    );
++                }
++                None => self.context.disable(glow::SCISSOR_TEST),
++            }
++        }
++    }
++
+     fn main_program(&self) -> &MainProgram {
+         if self.current_program_clips != (false, false) {
+             return self
+@@ -1197,6 +1223,7 @@ impl Renderer for OpenGl {
+         self.check_error("render prepare");
+ 
+         for cmd in commands {
++            self.set_clip_bounds(cmd.clip_bounds());
+             self.set_composite_operation(cmd.composite_operation);
+ 
+             match cmd.cmd_type {
+@@ -1238,6 +1265,9 @@ impl Renderer for OpenGl {
+             }
+         }
+ 
++        // No scissor of a masked draw outlives the frame.
++        self.set_clip_bounds(None);
++
+         unsafe {
+             self.context.disable_vertex_attrib_array(0);
+             self.context.disable_vertex_attrib_array(1);
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 4455258..ce135b2 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -642,6 +642,7 @@ impl Renderer for WGPURenderer {
+ 
+         let mut current_render_target = RenderTarget::Screen;
+         for command in commands {
++            render_pass_builder.set_clip_bounds(command.clip_bounds());
+             match command.cmd_type {
+                 super::CommandType::SetRenderTarget(render_target) => {
+                     current_render_target = render_target;
+@@ -2089,6 +2090,8 @@ struct RenderPassBuilder<'a> {
+     current_pipeline_state: Option<PipelineState>,
+     current_stencil_reference: Option<u32>,
+     current_bound_offset: Option<u32>,
++    // The scissor rect set on the open pass; none is the whole target.
++    current_clip_bounds: Option<[u32; 4]>,
+ }
+ 
+ impl<'a> RenderPassBuilder<'a> {
+@@ -2124,9 +2127,24 @@ impl<'a> RenderPassBuilder<'a> {
+             current_pipeline_state: None,
+             current_stencil_reference: None,
+             current_bound_offset: None,
++            current_clip_bounds: None,
+         }
+     }
+ 
++    /// Scissors the open pass's draws to `bounds` - x, y, width and height
++    /// from the target's top left - or to the whole target again.
++    fn set_clip_bounds(&mut self, bounds: Option<[u32; 4]>) {
++        if self.current_clip_bounds == bounds {
++            return;
++        }
++        self.current_clip_bounds = bounds;
++        let (width, height) = (self.viewport[0] as u32, self.viewport[1] as u32);
++        let [x, y, w, h] = bounds.unwrap_or([0, 0, width, height]);
++        // An image target stores its rows bottom up.
++        let y = if self.rendering_to_texture { height - (y + h) } else { y };
++        self.rpass.as_mut().unwrap().set_scissor_rect(x, y, w, h);
++    }
++
+     fn set_viewport(&mut self, viewport: [f32; 2]) {
+         if self.viewport == viewport {
+             return;
+@@ -2292,6 +2310,7 @@ impl<'a> RenderPassBuilder<'a> {
+         self.current_pipeline_state = None;
+         self.current_stencil_reference = None;
+         self.current_bound_offset = None;
++        self.current_clip_bounds = None;
+         drop(self.rpass.take());
+         let stencil_view = self
+             .stencil_buffer

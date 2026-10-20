@@ -1,0 +1,96 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index 4bdefe2..d9ed2f9 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -297,7 +297,7 @@ where
+     ) -> (Option<ClipCoverage>, Scissor, Option<RoundedBox>) {
+         let Some((shape, coverage, scissor)) = self.scissored_shape() else {
+             self.shape_carried = false;
+-            return (None, self.state().scissor, None);
++            return self.scissor_alone(bounds, fill);
+         };
+         let held = coverage.holds(&bounds());
+         let rect = match fill {
+@@ -351,6 +351,45 @@ where
+         (None, self.state().scissor, None)
+     }
+ 
++    /// With no clip shape in force, the scissor a draw over `bounds` carries:
++    /// none when the scissor holds the draw whole, and none for an
++    /// antialiased upright rect under an upright scissor, which is filled as
++    /// the rect the two share - an edge the draw has in common with the
++    /// scissor is then antialiased once, by the draw.
++    fn scissor_alone(
++        &mut self,
++        bounds: impl FnOnce() -> Bounds,
++        fill: Option<(&Path, &Transform2D)>,
++    ) -> (Option<ClipCoverage>, Scissor, Option<RoundedBox>) {
++        let scissor = self.state().scissor;
++        let Some(extent) = scissor.extent else {
++            return (None, scissor, None);
++        };
++        let boxed = match self.last_scissor_box {
++            Some((last, boxed)) if last == scissor => boxed,
++            _ => {
++                let scissor_box = RoundedBox {
++                    frame: scissor.transform,
++                    extent,
++                    radii: [scissor.radius; 2],
++                };
++                let boxed = scissor_box.coverage(self.fringe_width).map(|coverage| (scissor_box, coverage));
++                self.last_scissor_box = Some((scissor, boxed));
++                boxed
++            }
++        };
++        let Some((scissor_box, coverage)) = boxed else {
++            return (None, scissor, None);
++        };
++        if coverage.holds(&bounds()) {
++            return (None, Scissor::default(), None);
++        }
++        match fill.and_then(|(path, transform)| scissor_box.shared_rect(path, transform, self.fringe_width)) {
++            Some(rect) => (None, Scissor::default(), Some(rect)),
++            None => (None, scissor, None),
++        }
++    }
++
+     /// The shape clip in force on the current render target, and its coverage.
+     pub(crate) fn clip_shape(&self) -> Option<(RoundedBox, ClipCoverage)> {
+         let target = self.current_render_target;
+diff --git a/src/lib.rs b/src/lib.rs
+index aa27c45..9cfa4ec 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -422,6 +422,8 @@ pub struct Canvas<T: Renderer> {
+     clip_planes: HashMap<RenderTarget, ClipPlaneState>,
+     // The scissor and clip shape the last draw met together, as one box.
+     last_scissored_shape: Option<ScissoredShape>,
++    // The scissor the last draw met alone, as a box.
++    last_scissor_box: Option<(Scissor, Option<(RoundedBox, ClipCoverage)>)>,
+     // Whether the last draw carried a clip shape: the shader variant the
+     // renderer has bound.
+     shape_carried: bool,
+@@ -495,6 +497,7 @@ where
+             clip_stack: Vec::new(),
+             clip_planes: HashMap::new(),
+             last_scissored_shape: None,
++            last_scissor_box: None,
+             shape_carried: false,
+         };
+ 
+@@ -538,6 +541,7 @@ where
+             clip_stack: Vec::new(),
+             clip_planes: HashMap::new(),
+             last_scissored_shape: None,
++            last_scissor_box: None,
+             shape_carried: false,
+         };
+ 
+@@ -576,6 +580,7 @@ where
+             }
+             // Worked out for the fringe width before.
+             self.last_scissored_shape = None;
++            self.last_scissor_box = None;
+         }
+         if let Some(image) = self.layers.last().and_then(|layer| layer.image) {
+             // Same size at a frame boundary: the open layer keeps capturing

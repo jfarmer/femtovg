@@ -1,0 +1,111 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 79170d93..dfad26eb 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -380,6 +380,7 @@ pub struct WGPURenderer {
+     stencil_buffer: Option<wgpu::Texture>,
+     stencil_buffer_for_textures: HashMap<wgpu::Texture, wgpu::Texture>,
+     viewport_bind_group_layout: wgpu::BindGroupLayout,
++    viewport_bind_groups: HashMap<[u32; 2], (wgpu::BindGroup, u64)>,
+     /// Without and with a coverage mask.
+     draw_layouts: [DrawLayout; 2],
+     pipeline_cache: Rc<RefCell<HashMap<PipelineState, CachedPipeline>>>,
+@@ -559,6 +560,7 @@ impl WGPURenderer {
+             stencil_buffer: None,
+             stencil_buffer_for_textures: HashMap::new(),
+             viewport_bind_group_layout,
++            viewport_bind_groups: HashMap::new(),
+             draw_layouts,
+             pipeline_cache: Default::default(),
+             mipmaps: None,
+@@ -837,6 +839,8 @@ impl Renderer for WGPURenderer {
+             output.format,
+             self.screen_view,
+             self.viewport_bind_group_layout.clone(),
++            &mut self.viewport_bind_groups,
++            self.flush_count,
+             &mut self.stencil_buffer_for_textures,
+             texture_view,
+             stencil_buffer.clone(),
+@@ -1006,6 +1010,10 @@ impl Renderer for WGPURenderer {
+ 
+         let command_buffer = encoder.finish();
+ 
++        let flush = self.flush_count;
++        self.viewport_bind_groups
++            .retain(|_, (_, last_used)| *last_used == flush);
++
+         evict_least_recently_used(
+             &mut self.pipeline_cache.borrow_mut(),
+             self.flush_count,
+@@ -2408,6 +2416,8 @@ struct RenderPassBuilder<'a> {
+     fan_indices: wgpu::Buffer,
+     rendering_to_texture: bool,
+     viewport_bind_group_layout: wgpu::BindGroupLayout,
++    viewport_bind_groups: &'a mut HashMap<[u32; 2], (wgpu::BindGroup, u64)>,
++    flush_count: u64,
+     rpass: Option<wgpu::RenderPass<'a>>,
+     screen_stencil_buffer: wgpu::Texture,
+     screen_view: [f32; 2],
+@@ -2428,13 +2438,21 @@ impl<'a> RenderPassBuilder<'a> {
+         screen_surface_format: wgpu::TextureFormat,
+         screen_view: [f32; 2],
+         viewport_bind_group_layout: wgpu::BindGroupLayout,
++        viewport_bind_groups: &'a mut HashMap<[u32; 2], (wgpu::BindGroup, u64)>,
++        flush_count: u64,
+         stencil_buffer_for_textures: &'a mut HashMap<wgpu::Texture, wgpu::Texture>,
+         texture_view: wgpu::TextureView,
+         stencil_buffer: wgpu::Texture,
+         vertex_buffer: wgpu::Buffer,
+         fan_indices: wgpu::Buffer,
+     ) -> Self {
+-        let viewport_bind_group = Self::create_viewport_bind_group(&device, &screen_view, &viewport_bind_group_layout);
++        let viewport_bind_group = Self::viewport_bind_group(
++            &device,
++            &viewport_bind_group_layout,
++            viewport_bind_groups,
++            flush_count,
++            screen_view,
++        );
+         Self {
+             device: device.clone(),
+             encoder,
+@@ -2447,6 +2465,8 @@ impl<'a> RenderPassBuilder<'a> {
+             fan_indices,
+             rendering_to_texture: false,
+             viewport_bind_group_layout,
++            viewport_bind_groups,
++            flush_count,
+             rpass: None,
+             screen_stencil_buffer: stencil_buffer,
+             screen_view,
+@@ -2480,8 +2500,27 @@ impl<'a> RenderPassBuilder<'a> {
+             return;
+         }
+         self.viewport = viewport;
+-        self.viewport_bind_group =
+-            Self::create_viewport_bind_group(&self.device, &self.viewport, &self.viewport_bind_group_layout);
++        self.viewport_bind_group = Self::viewport_bind_group(
++            &self.device,
++            &self.viewport_bind_group_layout,
++            self.viewport_bind_groups,
++            self.flush_count,
++            viewport,
++        );
++    }
++
++    fn viewport_bind_group(
++        device: &wgpu::Device,
++        layout: &wgpu::BindGroupLayout,
++        groups: &mut HashMap<[u32; 2], (wgpu::BindGroup, u64)>,
++        flush_count: u64,
++        viewport: [f32; 2],
++    ) -> wgpu::BindGroup {
++        let (group, last_used) = groups
++            .entry([viewport[0] as u32, viewport[1] as u32])
++            .or_insert_with(|| (Self::create_viewport_bind_group(device, &viewport, layout), flush_count));
++        *last_used = flush_count;
++        group.clone()
+     }
+ 
+     fn create_viewport_bind_group(
