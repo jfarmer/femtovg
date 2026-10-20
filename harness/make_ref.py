@@ -75,7 +75,8 @@ BOX = os.environ.get("BOX", "200"); BX = os.environ.get("BOX_X", "130"); BY = os
 # The pivot of the zoom: the frame centre, or PIVOT=x,y as the harness reads it.
 PX, PY_ = (float(v) for v in os.environ["PIVOT"].split(",")) if os.environ.get("PIVOT") else (float(FW) / 2, float(FH) / 2)
 fit = float(BOX) / max(w, h)
-print(f'''<!doctype html><body style="margin:0;background:#fff">
+# The charset: WebKit reads a file page without one as windows-1252 (emoji and CJK text came out as mojibake).
+print(f'''<!doctype html><meta charset="utf-8"><body style="margin:0;background:#fff">
 <svg width="{FW}" height="{FH}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g transform="translate({PX:g},{PY_:g}) scale({scale}) translate({-PX:g},{-PY_:g})"><svg x="{BX}" y="{BY}" width="{w * fit:.6g}" height="{h * fit:.6g}" viewBox="{vb}" preserveAspectRatio="{par}" {keep}>
 {inner}
