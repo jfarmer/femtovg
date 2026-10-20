@@ -47,6 +47,16 @@ fn box_at() -> (f32, f32) {
     (env_f32("BOX_X", 130.0), env_f32("BOX_Y", 30.0))
 }
 
+thread_local! {
+    /// What a node's `abs_transform` is relative to: identity, except under a
+    /// colour glyph of flattened text (see `usvg::Node::Text` in `draw_nodes`).
+    static ABS_BASE: std::cell::Cell<usvg::Transform> = std::cell::Cell::new(usvg::Transform::default());
+}
+
+fn abs_of(t: usvg::Transform) -> usvg::Transform {
+    ABS_BASE.with(|b| b.get().pre_concat(t))
+}
+
 fn ts_to_t2d(t: usvg::Transform) -> Transform2D {
     Transform2D([t.sx, t.ky, t.kx, t.sy, t.tx, t.ty])
 }
@@ -2303,6 +2313,337 @@ fn draw_group_body(
     }
 }
 
+thread_local! {
+    /// The fonts of the scene being drawn (set by `render_scene`), the text
+    /// context of the canvas, and the femtovg faces made of fontdb faces so
+    /// far with their units per em, for FEMTOVG_TEXT.
+    static FONTDB: std::cell::RefCell<Option<std::sync::Arc<usvg::fontdb::Database>>> = const { std::cell::RefCell::new(None) };
+    static TEXT_CONTEXT: femtovg::TextContext = femtovg::TextContext::default();
+    static FACES: std::cell::RefCell<std::collections::HashMap<usvg::fontdb::ID, Option<(femtovg::FontId, u16)>>> =
+        std::cell::RefCell::new(Default::default());
+}
+/// Text elements FEMTOVG_TEXT drew, left to usvg's outlines, and glyph or
+/// text draws femtovg returned an error for; counted under LAYER_STATS.
+static TEXT_FEMTOVG: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+static TEXT_UNMAPPED: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+static TEXT_ERRORS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
+/// FEMTOVG_TEXT: text through femtovg's text engine rather than as usvg's
+/// outlines. `glyphs`: usvg's shaping and positions, each glyph through
+/// `fill_glyph_run`/`stroke_glyph_run` (femtovg's rasterizer, glyph atlas and
+/// colour glyphs). `shape` (textlayout builds): each chunk's text through
+/// `fill_text`/`stroke_text` (femtovg's shaping, bidi and font fallback too).
+/// Text either mode cannot map is drawn as usvg's outlines and counted.
+fn text_mode() -> Option<&'static str> {
+    static MODE: std::sync::OnceLock<Option<String>> = std::sync::OnceLock::new();
+    MODE.get_or_init(|| std::env::var("FEMTOVG_TEXT").ok()).as_deref()
+}
+
+/// A face's units per em, from its `head` table (in a font or a collection).
+fn units_per_em(data: &[u8], index: u32) -> Option<u16> {
+    let be16 = |o: usize| Some(u16::from_be_bytes(data.get(o..o + 2)?.try_into().ok()?));
+    let be32 = |o: usize| Some(u32::from_be_bytes(data.get(o..o + 4)?.try_into().ok()?));
+    let dir = if data.get(0..4) == Some(b"ttcf".as_slice()) { be32(12 + 4 * index as usize)? as usize } else { 0 };
+    (0..be16(dir + 4)? as usize)
+        .map(|i| dir + 12 + 16 * i)
+        .find(|&rec| data.get(rec..rec + 4) == Some(b"head".as_slice()))
+        .and_then(|rec| be16(be32(rec + 8)? as usize + 18))
+}
+
+/// The femtovg face of a fontdb face, registered with the canvas's text
+/// context on first use.
+fn femtovg_face(id: usvg::fontdb::ID) -> Option<(femtovg::FontId, u16)> {
+    if let Some(face) = FACES.with(|f| f.borrow().get(&id).copied()) {
+        return face;
+    }
+    let face = FONTDB.with(|db| {
+        let (data, index) = db.borrow().as_ref()?.with_face_data(id, |data, index| (data.to_vec(), index))?;
+        let upem = units_per_em(&data, index)?;
+        TEXT_CONTEXT.with(|ctx| ctx.add_shared_font_with_index(data, index).ok()).map(|f| (f, upem))
+    });
+    FACES.with(|f| f.borrow_mut().insert(id, face));
+    face
+}
+
+fn stroke_paint(stroke: &usvg::Stroke) -> Option<Paint> {
+    let mut paint = to_paint(stroke.paint())?;
+    paint.set_line_width(stroke.width().get());
+    paint.set_line_cap(match stroke.linecap() {
+        usvg::LineCap::Butt => femtovg::LineCap::Butt,
+        usvg::LineCap::Round => femtovg::LineCap::Round,
+        usvg::LineCap::Square => femtovg::LineCap::Square,
+    });
+    paint.set_line_join(match stroke.linejoin() {
+        usvg::LineJoin::Miter | usvg::LineJoin::MiterClip => femtovg::LineJoin::Miter,
+        usvg::LineJoin::Round => femtovg::LineJoin::Round,
+        usvg::LineJoin::Bevel => femtovg::LineJoin::Bevel,
+    });
+    paint.set_miter_limit(stroke.miterlimit().get());
+    if let Some(dashes) = stroke.dasharray() {
+        paint.set_line_dash(dashes);
+        paint.set_line_dash_offset(stroke.dashoffset());
+    }
+    Some(paint)
+}
+
+/// The shadow copy's offset (`SHADOW_COPY`) applies after every transform:
+/// a translation added to the composed matrix's own.
+fn shift_for_shadow(canvas: &mut Canvas<WGPURenderer>) {
+    if let Some((_, dx, dy)) = *SHADOW_COPY.lock().unwrap() {
+        let mut shifted = canvas.transform();
+        shifted.0[4] += dx;
+        shifted.0[5] += dy;
+        canvas.reset_transform();
+        canvas.set_transform(&shifted);
+    }
+}
+
+/// A span's fill and stroke as (paint, opacity, is the stroke), in paint order.
+fn span_passes(
+    fill: Option<&usvg::Fill>,
+    stroke: Option<&usvg::Stroke>,
+    order: usvg::PaintOrder,
+) -> Vec<(Paint, f32, bool)> {
+    let fill = fill.and_then(|f| Some((to_paint(f.paint())?, f.opacity().get(), false)));
+    let stroke = stroke.and_then(|s| Some((stroke_paint(s)?, s.opacity().get(), true)));
+    match order {
+        usvg::PaintOrder::FillAndStroke => [fill, stroke],
+        usvg::PaintOrder::StrokeAndFill => [stroke, fill],
+    }
+    .into_iter()
+    .flatten()
+    .collect()
+}
+
+/// FEMTOVG_TEXT=glyphs. A glyph usvg places by more than a translation
+/// (`rotate`, a text path, `lengthAdjust`, vertical text) is drawn alone
+/// under that placement.
+fn draw_text_glyphs(canvas: &mut Canvas<WGPURenderer>, text: &usvg::Text, scale: f32, masks: &MaskMap) -> bool {
+    use femtovg::PositionedGlyph;
+    let spans = text.layouted();
+    if spans.iter().flat_map(|s| &s.positioned_glyphs).any(|g| femtovg_face(g.font).is_none()) {
+        return false;
+    }
+    let base = abs_of(text.abs_transform());
+    for span in spans.iter().filter(|s| s.visible) {
+        let lines: Vec<usvg::Node> = [&span.overline, &span.underline]
+            .into_iter()
+            .flatten()
+            .map(|p| usvg::Node::Path(Box::new(p.clone())))
+            .collect();
+        draw_nodes(canvas, &lines, scale, masks);
+        for (mut paint, alpha, stroked) in span_passes(span.fill.as_ref(), span.stroke.as_ref(), span.paint_order) {
+            canvas.save();
+            canvas.set_transform(&ts_to_t2d(base));
+            shift_for_shadow(canvas);
+            canvas.set_global_alpha(alpha);
+            let mut draw = |canvas: &mut Canvas<WGPURenderer>, face: femtovg::FontId, size: f32, run: &[(f32, f32, u16)]| {
+                let glyphs = run.iter().map(|&(x, y, glyph_id)| PositionedGlyph { x, y, glyph_id });
+                paint.set_font(&[face]);
+                paint.set_font_size(size);
+                let drawn = if stroked {
+                    canvas.stroke_glyph_run(face, &[], glyphs, &paint)
+                } else {
+                    canvas.fill_glyph_run(face, &[], glyphs, &paint)
+                };
+                if drawn.is_err() {
+                    TEXT_ERRORS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                }
+            };
+            // Runs of glyphs of one face and size placed by translations.
+            let mut run: Vec<(f32, f32, u16)> = Vec::new();
+            let mut run_key = None;
+            for g in &span.positioned_glyphs {
+                let (face, upem) = femtovg_face(g.font).unwrap();
+                let size = g.font_size();
+                let k = size / upem as f32;
+                let at = g.transform().pre_scale(1.0 / k, 1.0 / k);
+                let placed = (at.sx - 1.0).abs() < 1e-4 && (at.sy - 1.0).abs() < 1e-4 && at.kx.abs() < 1e-4 && at.ky.abs() < 1e-4;
+                                if run_key != Some((face, size.to_bits())) || !placed {
+                    if let Some((face, size)) = run_key.take() {
+                        draw(canvas, face, f32::from_bits(size), &run);
+                    }
+                    run.clear();
+                }
+                if placed {
+                    run_key = Some((face, size.to_bits()));
+                    run.push((at.tx, at.ty, g.id.0 as u16));
+                } else {
+                    canvas.save();
+                    canvas.set_transform(&ts_to_t2d(at));
+                    draw(canvas, face, size, &[(0.0, 0.0, g.id.0 as u16)]);
+                    canvas.restore();
+                }
+            }
+            if let Some((face, size)) = run_key {
+                draw(canvas, face, f32::from_bits(size), &run);
+            }
+            canvas.restore();
+        }
+        let lines: Vec<usvg::Node> = span.line_through.iter().map(|p| usvg::Node::Path(Box::new(p.clone()))).collect();
+        draw_nodes(canvas, &lines, scale, masks);
+    }
+    true
+}
+
+/// FEMTOVG_TEXT=shape: each chunk at its own x and y with its anchor, in its
+/// spans' fonts (each family of theirs that resolves, then the faces usvg's
+/// layout fell back to). Maps horizontal, unpositioned, undecorated chunks
+/// whose spans share one style; anything else is left to usvg.
+#[cfg(feature = "textlayout")]
+fn draw_text_shaped(canvas: &mut Canvas<WGPURenderer>, text: &usvg::Text) -> bool {
+    use usvg::fontdb;
+    // TEXT_DEBUG=1 says why a text is left to usvg.
+    let unmapped = |why: &str| {
+        if std::env::var_os("TEXT_DEBUG").is_some() {
+            eprintln!("FEMTOVG_TEXT=shape leaves a text to usvg: {why}");
+        }
+        false
+    };
+    if text.writing_mode() != usvg::WritingMode::LeftToRight
+        || text.dx().iter().chain(text.dy()).chain(text.rotate()).any(|v| *v != 0.0)
+    {
+        return unmapped("vertical, or positioned per character");
+    }
+    let mut fallback = Vec::new();
+    for g in text.layouted().iter().flat_map(|s| &s.positioned_glyphs) {
+        match femtovg_face(g.font) {
+            Some((face, _)) if !fallback.contains(&face) => fallback.push(face),
+            Some(_) => {}
+            None => return unmapped("a face femtovg cannot read"),
+        }
+    }
+    let Some(db) = FONTDB.with(|db| db.borrow().clone()) else {
+        return unmapped("no font database");
+    };
+    let style_of = |s: &usvg::TextSpan| {
+        format!(
+            "{:?}|{:?}|{:?}|{:?}|{}|{}|{:?}",
+            s.font(),
+            s.font_size(),
+            s.fill(),
+            s.stroke(),
+            s.letter_spacing(),
+            s.apply_kerning(),
+            s.paint_order()
+        )
+    };
+    let mut draws = Vec::new();
+    for chunk in text.chunks() {
+        let (Some(x), Some(y), [span, rest @ ..]) = (chunk.x(), chunk.y(), chunk.spans()) else {
+            return unmapped("a chunk without its own x and y");
+        };
+        let plain = |s: &usvg::TextSpan| {
+            s.is_visible()
+                && s.baseline_shift().is_empty()
+                && matches!(s.dominant_baseline(), usvg::DominantBaseline::Auto | usvg::DominantBaseline::Alphabetic)
+                && matches!(s.alignment_baseline(), usvg::AlignmentBaseline::Auto | usvg::AlignmentBaseline::Baseline)
+                && !s.small_caps()
+                && s.word_spacing() == 0.0
+                && s.text_length().is_none()
+                && s.decoration().underline().is_none()
+                && s.decoration().overline().is_none()
+                && s.decoration().line_through().is_none()
+                // usvg states the weight as a `wght` variation; any other
+                // variation would need the font's normalized coordinates.
+                && s.font().variations().iter().all(|v| &v.tag == b"wght" && v.value == f32::from(s.font().weight()))
+        };
+        if !matches!(chunk.text_flow(), usvg::TextFlow::Linear)
+            || !plain(span)
+            || rest.iter().any(|s| !plain(s) || style_of(s) != style_of(span))
+        {
+            return unmapped(&format!(
+                "{} spans; flow {:?}, shift {:?}, baselines {:?}/{:?}, small caps {}, word spacing {}, length {:?}, \
+                 variations {:?}, decorated {}",
+                chunk.spans().len(),
+                chunk.text_flow(),
+                span.baseline_shift(),
+                span.dominant_baseline(),
+                span.alignment_baseline(),
+                span.small_caps(),
+                span.word_spacing(),
+                span.text_length(),
+                span.font().variations(),
+                span.decoration().underline().is_some()
+                    || span.decoration().overline().is_some()
+                    || span.decoration().line_through().is_some()
+            ));
+        }
+        let font = span.font();
+        let mut faces = Vec::new();
+        for family in font.families() {
+            let family = match family {
+                usvg::FontFamily::Serif => fontdb::Family::Serif,
+                usvg::FontFamily::SansSerif => fontdb::Family::SansSerif,
+                usvg::FontFamily::Cursive => fontdb::Family::Cursive,
+                usvg::FontFamily::Fantasy => fontdb::Family::Fantasy,
+                usvg::FontFamily::Monospace => fontdb::Family::Monospace,
+                usvg::FontFamily::Named(name) => fontdb::Family::Name(name),
+            };
+            let query = fontdb::Query {
+                families: &[family],
+                weight: fontdb::Weight(font.weight()),
+                stretch: match font.stretch() {
+                    usvg::FontStretch::UltraCondensed => fontdb::Stretch::UltraCondensed,
+                    usvg::FontStretch::ExtraCondensed => fontdb::Stretch::ExtraCondensed,
+                    usvg::FontStretch::Condensed => fontdb::Stretch::Condensed,
+                    usvg::FontStretch::SemiCondensed => fontdb::Stretch::SemiCondensed,
+                    usvg::FontStretch::Normal => fontdb::Stretch::Normal,
+                    usvg::FontStretch::SemiExpanded => fontdb::Stretch::SemiExpanded,
+                    usvg::FontStretch::Expanded => fontdb::Stretch::Expanded,
+                    usvg::FontStretch::ExtraExpanded => fontdb::Stretch::ExtraExpanded,
+                    usvg::FontStretch::UltraExpanded => fontdb::Stretch::UltraExpanded,
+                },
+                style: match font.style() {
+                    usvg::FontStyle::Normal => fontdb::Style::Normal,
+                    usvg::FontStyle::Italic => fontdb::Style::Italic,
+                    usvg::FontStyle::Oblique => fontdb::Style::Oblique,
+                },
+            };
+            if let Some((face, _)) = db.query(&query).and_then(femtovg_face) {
+                if !faces.contains(&face) {
+                    faces.push(face);
+                }
+            }
+        }
+        for face in &fallback {
+            if !faces.contains(face) {
+                faces.push(*face);
+            }
+        }
+        let passes = span_passes(span.fill(), span.stroke(), span.paint_order());
+        draws.push((x, y, chunk.text().to_string(), chunk.anchor(), span.font_size().get(), span.letter_spacing(), faces, passes));
+    }
+    let base = abs_of(text.abs_transform());
+    for (x, y, string, anchor, size, spacing, faces, passes) in draws {
+        for (mut paint, alpha, stroked) in passes {
+            paint.set_font(&faces);
+            paint.set_font_size(size);
+            paint.set_letter_spacing(spacing);
+            paint.set_text_baseline(femtovg::Baseline::Alphabetic);
+            paint.set_text_align(match anchor {
+                usvg::TextAnchor::Start => femtovg::Align::Left,
+                usvg::TextAnchor::Middle => femtovg::Align::Center,
+                usvg::TextAnchor::End => femtovg::Align::Right,
+            });
+            canvas.save();
+            canvas.set_transform(&ts_to_t2d(base));
+            shift_for_shadow(canvas);
+            canvas.set_global_alpha(alpha);
+            let drawn = if stroked {
+                canvas.stroke_text(x, y, &string, &paint).map(drop)
+            } else {
+                canvas.fill_text(x, y, &string, &paint).map(drop)
+            };
+            if drawn.is_err() {
+                TEXT_ERRORS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+            }
+            canvas.restore();
+        }
+    }
+    true
+}
+
 fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale: f32, masks: &MaskMap) {
     use usvg::tiny_skia_path::PathSegment;
     for node in children {
@@ -2509,16 +2850,8 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                     }
                 }
                 canvas.save();
-                canvas.set_transform(&ts_to_t2d(svg_path.abs_transform()));
-                if let Some((_, dx, dy)) = *SHADOW_COPY.lock().unwrap() {
-                    // The offset applies after every transform: a translation
-                    // added to the composed matrix's own.
-                    let mut shifted = canvas.transform();
-                    shifted.0[4] += dx;
-                    shifted.0[5] += dy;
-                    canvas.reset_transform();
-                    canvas.set_transform(&shifted);
-                }
+                canvas.set_transform(&ts_to_t2d(abs_of(svg_path.abs_transform())));
+                shift_for_shadow(canvas);
                 if let Some(fill) = svg_path.fill() {
                     if let Some(mut paint) = to_paint(fill.paint()) {
                         paint.set_fill_rule(match fill.rule() {
@@ -2537,23 +2870,7 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                     }
                 }
                 if let Some(stroke) = svg_path.stroke() {
-                    if let Some(mut paint) = to_paint(stroke.paint()) {
-                        paint.set_line_width(stroke.width().get());
-                        paint.set_line_cap(match stroke.linecap() {
-                            usvg::LineCap::Butt => femtovg::LineCap::Butt,
-                            usvg::LineCap::Round => femtovg::LineCap::Round,
-                            usvg::LineCap::Square => femtovg::LineCap::Square,
-                        });
-                        paint.set_line_join(match stroke.linejoin() {
-                            usvg::LineJoin::Miter | usvg::LineJoin::MiterClip => femtovg::LineJoin::Miter,
-                            usvg::LineJoin::Round => femtovg::LineJoin::Round,
-                            usvg::LineJoin::Bevel => femtovg::LineJoin::Bevel,
-                        });
-                        paint.set_miter_limit(stroke.miterlimit().get());
-                        if let Some(dashes) = stroke.dasharray() {
-                            paint.set_line_dash(dashes);
-                            paint.set_line_dash_offset(stroke.dashoffset());
-                        }
+                    if let Some(paint) = stroke_paint(stroke) {
                         canvas.set_global_alpha(stroke.opacity().get());
                         canvas.stroke_path(&path, &paint);
                         canvas.set_global_alpha(1.0);
@@ -2569,7 +2886,7 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                 canvas.save();
                 // usvg's transform already fits the raster's own size onto
                 // the element's rect (`preserveAspectRatio` included).
-                canvas.set_transform(&ts_to_t2d(image.abs_transform()));
+                canvas.set_transform(&ts_to_t2d(abs_of(image.abs_transform())));
                 match image.kind() {
                     usvg::ImageKind::PNG(data) | usvg::ImageKind::JPEG(data) => {
                         // A browser minifies a smooth image through a filtered
@@ -2599,7 +2916,35 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
             // (`Text::flattened`, transforms and paints resolved), the fonts'
             // own outlines as a browser draws them.
             usvg::Node::Text(text) if std::env::var("NO_TEXT").is_err() => {
-                draw_nodes(canvas, text.flattened().children(), scale, masks)
+                let drawn = match text_mode() {
+                    Some("glyphs") => draw_text_glyphs(canvas, text, scale, masks),
+                    #[cfg(feature = "textlayout")]
+                    Some("shape") => draw_text_shaped(canvas, text),
+                    _ => false,
+                };
+                if text_mode().is_some() {
+                    let counter = if drawn { &TEXT_FEMTOVG } else { &TEXT_UNMAPPED };
+                    counter.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                }
+                if drawn {
+                    continue;
+                }
+                for child in text.flattened().children() {
+                    match child {
+                        // A colour glyph (bitmap, SVG or COLR) is a group whose
+                        // own transform places it; usvg leaves the abs_transform
+                        // of the group and everything under it at identity (the
+                        // TODO in its text/flatten.rs), so the subtree is drawn
+                        // under the text's transform and the group's.
+                        usvg::Node::Group(glyph) => {
+                            let base = text.abs_transform().pre_concat(glyph.transform());
+                            let outer = ABS_BASE.with(|b| b.replace(b.get().pre_concat(base)));
+                            draw_nodes(canvas, glyph.children(), scale, masks);
+                            ABS_BASE.with(|b| b.set(outer));
+                        }
+                        _ => draw_nodes(canvas, std::slice::from_ref(child), scale, masks),
+                    }
+                }
             }
             _ => {}
         }
@@ -2613,6 +2958,7 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
 static FRAME_INDEX: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
 
 fn render_scene(canvas: &mut Canvas<WGPURenderer>, tree: &usvg::Tree, scale: f32, bg: Color) {
+    FONTDB.with(|db| *db.borrow_mut() = Some(tree.fontdb().clone()));
     canvas.clear_rect(0, 0, frame_w(), frame_h(), bg);
     // A blend mode reads the backdrop under its group, the page background
     // included (Chromium blends a top-level child with the page: a gray
@@ -2901,7 +3247,7 @@ fn soak(device: &wgpu::Device, queue: &wgpu::Queue, out_csv: &str, list: &str) {
     if std::env::var_os("NO_SLICES").is_none() {
         renderer.set_submission_slicing(Some(slicing_from_env()));
     }
-    let mut canvas = Canvas::new(renderer).unwrap();
+    let mut canvas = Canvas::new_with_text_context(renderer, TEXT_CONTEXT.with(Clone::clone)).unwrap();
     canvas.set_size(frame_w(), frame_h(), 1.0);
     let zooms: Vec<f32> = std::env::var("SOAK_ZOOMS")
         .unwrap_or_else(|_| "1,2,4".into())
@@ -2994,6 +3340,111 @@ fn soak(device: &wgpu::Device, queue: &wgpu::Queue, out_csv: &str, list: &str) {
     std::fs::write(out_csv, csv).unwrap();
 }
 
+/// LAYER_STATS=1: what the frames drew and what the harness left out.
+fn print_stats() {
+    if std::env::var("LAYER_STATS").is_ok() {
+        eprintln!("layers begun: {}", LAYERS.load(std::sync::atomic::Ordering::Relaxed));
+        if text_mode().is_some() {
+            eprintln!(
+                "text by femtovg: {} unmapped: {} draw errors: {}",
+                TEXT_FEMTOVG.load(std::sync::atomic::Ordering::Relaxed),
+                TEXT_UNMAPPED.load(std::sync::atomic::Ordering::Relaxed),
+                TEXT_ERRORS.load(std::sync::atomic::Ordering::Relaxed)
+            );
+        }
+        eprintln!(
+            "transient bytes held at flush: {}",
+            TRANSIENT_AT_FLUSH.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "layers passed through: {}",
+            PASS_THROUGH.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "clip coverage layers: {}",
+            CLIP_COVERAGE_LAYERS.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "harness cfgs: clip={} turbulence={} blend={} mix_blend={} slices={} blur_xy={} morph={} clip_paths={} crop={}",
+            cfg!(harness_clip),
+            cfg!(harness_turbulence),
+            cfg!(harness_blend),
+            cfg!(harness_mix_blend),
+            cfg!(harness_slices),
+            cfg!(harness_blur_xy),
+            cfg!(harness_morph),
+            cfg!(harness_clip_paths),
+            cfg!(harness_crop)
+        );
+        eprintln!(
+            "filters skipped (SKIP_UNSUPPORTED_FILTERS): {}",
+            FILTERS_SKIPPED.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "feTurbulence chains not run (no harness_turbulence): {}",
+            TURBULENCE_UNSUPPORTED.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "clip paths drawn unclipped (no harness_clip): {}",
+            CLIPS_UNSUPPORTED.load(std::sync::atomic::Ordering::Relaxed)
+        );
+        eprintln!(
+            "filter attributes with invalid references dropped (Filter Effects 5): {}",
+            INVALID_FILTER_REFS_DROPPED.load(std::sync::atomic::Ordering::Relaxed)
+        );
+    }
+}
+
+/// Copies the target back and writes it to `out` as a binary PPM.
+fn write_frame(device: &wgpu::Device, queue: &wgpu::Queue, target: &wgpu::Texture, out: &str) {
+    let unpadded = frame_w() * 4;
+    let align = wgpu::COPY_BYTES_PER_ROW_ALIGNMENT;
+    let padded = unpadded.div_ceil(align) * align;
+    let readback = device.create_buffer(&wgpu::BufferDescriptor {
+        label: None,
+        size: (padded * frame_h()) as u64,
+        usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
+        mapped_at_creation: false,
+    });
+    let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
+    encoder.copy_texture_to_buffer(
+        wgpu::TexelCopyTextureInfo {
+            texture: target,
+            mip_level: 0,
+            origin: wgpu::Origin3d::ZERO,
+            aspect: wgpu::TextureAspect::All,
+        },
+        wgpu::TexelCopyBufferInfo {
+            buffer: &readback,
+            layout: wgpu::TexelCopyBufferLayout {
+                offset: 0,
+                bytes_per_row: Some(padded),
+                rows_per_image: Some(frame_h()),
+            },
+        },
+        wgpu::Extent3d {
+            width: frame_w(),
+            height: frame_h(),
+            depth_or_array_layers: 1,
+        },
+    );
+    queue.submit(Some(encoder.finish()));
+
+    let slice = readback.slice(..);
+    slice.map_async(wgpu::MapMode::Read, |_| {});
+    device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+    let mapped = slice.get_mapped_range().unwrap();
+    let mut ppm = format!("P6\n{} {}\n255\n", frame_w(), frame_h()).into_bytes();
+    for row in 0..frame_h() as usize {
+        let src = row * padded as usize;
+        for px in 0..frame_w() as usize {
+            let i = src + px * 4;
+            ppm.extend_from_slice(&mapped[i..i + 3]);
+        }
+    }
+    std::fs::write(out, ppm).unwrap();
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     if args.get(1).map(String::as_str) == Some("soak") {
@@ -3032,7 +3483,7 @@ fn main() {
     if std::env::var_os("NO_SLICES").is_none() {
         renderer.set_submission_slicing(Some(slicing_from_env()));
     }
-    let mut canvas = Canvas::new(renderer).unwrap();
+    let mut canvas = Canvas::new_with_text_context(renderer, TEXT_CONTEXT.with(Clone::clone)).unwrap();
     canvas.set_size(frame_w(), frame_h(), 1.0);
     // CLIP_MASK_BUDGET_MB: the budget of the coverage masks that antialias
     // path clips (MiB; 0 takes every such clip on the stencil).
@@ -3138,6 +3589,22 @@ fn main() {
     // The part of a frame spent recording and encoding it, before the
     // submit: what the CPU pays, apart from the wait for the GPU.
     let mut encoding = std::time::Duration::ZERO;
+    // ZOOM_LADDER=z,z,...: one frame at each zoom in turn on the one canvas, the
+    // pivot zoom of each step in place of the command line's, written to
+    // <out>.<step>.ppm - what a zoom gesture in and out leaves in the frames
+    // (anything cached at one zoom that leaks into another, and whether a
+    // zoom drawn again reproduces its first frame).
+    if let Ok(ladder) = std::env::var("ZOOM_LADDER") {
+        for (step, zoom) in ladder.split(',').enumerate() {
+            FRAME_INDEX.store(step, std::sync::atomic::Ordering::Relaxed);
+            render_scene(&mut canvas, &tree, zoom.trim().parse().expect("ZOOM_LADDER zoom"), bg);
+            queue.submit(canvas.flush_to_output(&target));
+            device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
+            write_frame(&device, &queue, &target, &format!("{out}.{step:02}.ppm"));
+        }
+        print_stats();
+        return;
+    }
     for frame in 0..frames {
         FRAME_INDEX.store(frame, std::sync::atomic::Ordering::Relaxed);
         let frame_started = std::time::Instant::now();
@@ -3193,93 +3660,6 @@ fn main() {
         }
     }
 
-    let unpadded = frame_w() * 4;
-    let align = wgpu::COPY_BYTES_PER_ROW_ALIGNMENT;
-    let padded = unpadded.div_ceil(align) * align;
-    let readback = device.create_buffer(&wgpu::BufferDescriptor {
-        label: None,
-        size: (padded * frame_h()) as u64,
-        usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
-        mapped_at_creation: false,
-    });
-    let mut encoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None });
-    encoder.copy_texture_to_buffer(
-        wgpu::TexelCopyTextureInfo {
-            texture: &target,
-            mip_level: 0,
-            origin: wgpu::Origin3d::ZERO,
-            aspect: wgpu::TextureAspect::All,
-        },
-        wgpu::TexelCopyBufferInfo {
-            buffer: &readback,
-            layout: wgpu::TexelCopyBufferLayout {
-                offset: 0,
-                bytes_per_row: Some(padded),
-                rows_per_image: Some(frame_h()),
-            },
-        },
-        wgpu::Extent3d {
-            width: frame_w(),
-            height: frame_h(),
-            depth_or_array_layers: 1,
-        },
-    );
-    queue.submit(Some(encoder.finish()));
-
-    let slice = readback.slice(..);
-    slice.map_async(wgpu::MapMode::Read, |_| {});
-    device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
-    let mapped = slice.get_mapped_range().unwrap();
-    let mut ppm = format!("P6\n{} {}\n255\n", frame_w(), frame_h()).into_bytes();
-    for row in 0..frame_h() as usize {
-        let src = row * padded as usize;
-        for px in 0..frame_w() as usize {
-            let i = src + px * 4;
-            ppm.extend_from_slice(&mapped[i..i + 3]);
-        }
-    }
-    std::fs::write(out, ppm).unwrap();
-    if std::env::var("LAYER_STATS").is_ok() {
-        eprintln!("layers begun: {}", LAYERS.load(std::sync::atomic::Ordering::Relaxed));
-        eprintln!(
-            "transient bytes held at flush: {}",
-            TRANSIENT_AT_FLUSH.load(std::sync::atomic::Ordering::Relaxed)
-        );
-        eprintln!(
-            "layers passed through: {}",
-            PASS_THROUGH.load(std::sync::atomic::Ordering::Relaxed)
-        );
-        eprintln!(
-            "clip coverage layers: {}",
-            CLIP_COVERAGE_LAYERS.load(std::sync::atomic::Ordering::Relaxed)
-        );
-        eprintln!(
-            "harness cfgs: clip={} turbulence={} blend={} mix_blend={} slices={} blur_xy={} morph={} clip_paths={} crop={}",
-            cfg!(harness_clip),
-            cfg!(harness_turbulence),
-            cfg!(harness_blend),
-            cfg!(harness_mix_blend),
-            cfg!(harness_slices),
-            cfg!(harness_blur_xy),
-            cfg!(harness_morph),
-            cfg!(harness_clip_paths),
-            cfg!(harness_crop)
-        );
-        eprintln!(
-            "filters skipped (SKIP_UNSUPPORTED_FILTERS): {}",
-            FILTERS_SKIPPED.load(std::sync::atomic::Ordering::Relaxed)
-        );
-        eprintln!(
-            "feTurbulence chains not run (no harness_turbulence): {}",
-            TURBULENCE_UNSUPPORTED.load(std::sync::atomic::Ordering::Relaxed)
-        );
-        eprintln!(
-            "clip paths drawn unclipped (no harness_clip): {}",
-            CLIPS_UNSUPPORTED.load(std::sync::atomic::Ordering::Relaxed)
-        );
-        eprintln!(
-            "filter attributes with invalid references dropped (Filter Effects 5): {}",
-            INVALID_FILTER_REFS_DROPPED.load(std::sync::atomic::Ordering::Relaxed)
-        );
-    }
+    write_frame(&device, &queue, &target, out);
+    print_stats();
 }

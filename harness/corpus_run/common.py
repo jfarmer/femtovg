@@ -25,6 +25,9 @@ FRAMINGS = {'z1': (DEFAULT, 1.0), 'z2': (DEFAULT, 2.0), 'z4': (DEFAULT, 4.0), 'h
 # Below the fit: the 200-unit box at a tenth, a quarter and half its size - natural size for a 20 px icon and
 # up - looked up by name; the corpus scripts iterate DEFAULT_FRAMINGS unless asked for more.
 FRAMINGS.update({'z01': (DEFAULT, 0.1), 'z025': (DEFAULT, 0.25), 'z05': (DEFAULT, 0.5)})
+# The zooms of zoom_ladder.py's gesture that no framing above has: display scale factors (1.25, 1.5, 1.75) and
+# the steps between the fit and 4x and between the fit and a quarter.
+FRAMINGS.update({f'z{n}': (DEFAULT, z) for n, z in {'033': 0.33, '075': 0.75, '125': 1.25, '15': 1.5, '175': 1.75, '3': 3.0}.items()})
 # Zooms about the top-centre band of the box (PIVOT at frame 230,48) for wide artwork that the centre pivot zooms past.
 FRAMINGS.update({'zt2': ({**DEFAULT, 'PIVOT': '230,48'}, 2.0), 'zt4': ({**DEFAULT, 'PIVOT': '230,48'}, 4.0)})
 # 240p: the box the frame's height, centred, as at 1080p.
