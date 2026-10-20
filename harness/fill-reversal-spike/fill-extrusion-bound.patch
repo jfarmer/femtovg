@@ -1,0 +1,80 @@
+diff --git a/src/path/cache.rs b/src/path/cache.rs
+index 05737d8a..abc01168 100644
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -925,6 +925,23 @@ impl PathCache {
+ 
+         self.calculate_joins(fringe_width, line_join, miter_limit);
+ 
++        // The fan and the fringe are offset along each point's miter vector,
++        // 1/|dm| long, and only a corner past the miter limit is beveled. A
++        // point that flattening put inside a curve is no corner, however
++        // sharply the outline turns there: where a curve turns back on itself
++        // its miter vector is up to 24.5 long (the clamp in calculate_joins),
++        // and the fringe's outer edge reaches up to half that past the turn,
++        // a thin spike. Bound such a point's offset to the miter limit.
++        if has_fringe {
++            let limit2 = miter_limit * miter_limit;
++            for point in &mut self.points {
++                let m2 = point.dmpos.mag2();
++                if !point.flags.contains(PointFlags::BEVEL) && m2 > limit2 {
++                    point.dmpos *= miter_limit / m2.sqrt();
++                }
++            }
++        }
++
+         let convex = self.contours.len() == 1 && self.contours[0].convexity == Convexity::Convex;
+ 
+         for contour in &mut self.contours {
+@@ -1685,6 +1702,51 @@ mod tests {
+         }
+     }
+ 
++    #[test]
++    fn a_hairpin_inside_a_curve_keeps_its_fringe_near_the_outline() {
++        // An ear at 2x: the last cubic runs left past the start point and
++        // turns back to it, a hairpin with no corner (lines 123/128 of
++        // corpus/buseybench/glm-5v-turbo.svg).
++        let s = 0.390625;
++        let mut path = Path::new();
++        path.move_to(252.0, 465.0);
++        path.bezier_to(218.0, 465.0, 218.0, 535.0, 252.0, 535.0);
++        path.bezier_to(278.0, 535.0, 285.0, 500.0, 272.0, 478.0);
++        path.bezier_to(260.0, 460.0, 242.0, 465.0, 252.0, 465.0);
++        path.close();
++        let transform = Transform2D::new(s, 0.0, 0.0, s, 30.0, -70.0);
++        let mut cache = PathCache::new(path.verbs(), &transform, 0.125, 0.01);
++        let hairpin = cache
++            .points
++            .windows(2)
++            .any(|w| !w[1].flags.contains(PointFlags::CORNER) && w[0].dpos.dot(w[1].dpos) < -0.9);
++        assert!(
++            hairpin,
++            "the outline has to turn back at a point inside a curve for the test to mean anything"
++        );
++        cache.expand_fill(1.0, LineJoin::Miter, 2.4, FillRule::NonZero);
++
++        // No fringe or fan vertex lies further from the outline than the
++        // inner fringe, 1.5 px, can reach at the miter limit.
++        let near = |x: f32, y: f32| {
++            cache
++                .points
++                .iter()
++                .map(|p| ((x - p.pos.x).powi(2) + (y - p.pos.y).powi(2)).sqrt())
++                .fold(f32::INFINITY, f32::min)
++        };
++        let contour = &cache.contours[0];
++        for v in contour.stroke.iter().chain(&contour.fill) {
++            assert!(
++                near(v.x, v.y) <= 1.5 * 2.4,
++                "a vertex at ({}, {}) is {} px off the outline",
++                v.x,
++                v.y,
++                near(v.x, v.y)
++            );
++        }
++    }
++
+     #[test]
+     fn self_intersecting_polygon_is_concave() {
+         // star

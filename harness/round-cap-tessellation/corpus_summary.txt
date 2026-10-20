@@ -1,0 +1,8 @@
+BuseyBench: 108 frames, 108 change
+  chr  toward/away: z1 16/11 (13060 -> 13055 px), z2 27/6 (25233 -> 25090 px), hd 32/1 (99813 -> 99186 px)
+  id   toward/away: z1 15/4 (5602 -> 5555 px), z2 26/2 (7704 -> 7599 px), hd 24/4 (29360 -> 29144 px)
+  all3 toward/away: z1 9/6 (1101 -> 1091 px), z2 21/1 (1561 -> 1509 px), hd 21/1 (4513 -> 4369 px)
+other files: 102 frames, 29 change
+  chr  toward/away: z1 3/2 (7249 -> 7241 px), z2 7/1 (18713 -> 18584 px), hd 4/4 (117132 -> 116921 px)
+  id   toward/away: z1 4/0 (5672 -> 5579 px), z2 4/1 (15517 -> 15347 px), hd 5/0 (104062 -> 103367 px)
+  all3 toward/away: z1 2/0 (365 -> 335 px), z2 3/0 (239 -> 144 px), hd 2/0 (1095 -> 757 px)

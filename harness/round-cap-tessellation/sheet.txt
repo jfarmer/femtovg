@@ -1,0 +1,11 @@
+corpus__buseybench__gpt-5-6-luna-pro hd: off Chromium 12 -> 1, off area 6 -> 0, off all three 3 -> 0
+    at changed pixels: off Chromium 12 -> 1, off all three 3 -> 0; after, off Chromium but within 20/255 of the area 1 (Chromium off the area there: 0)
+corpus__buseybench__claude-opus-5-5 hd: off Chromium 21 -> 17, off area 5 -> 1, off all three 4 -> 0
+    at changed pixels: off Chromium 4 -> 0, off all three 4 -> 0; after, off Chromium but within 20/255 of the area 17 (Chromium off the area there: 16)
+corpus__buseybench__glm-5v-turbo hd: off Chromium 11 -> 6, off area 6 -> 2, off all three 8 -> 3
+    at changed pixels: off Chromium 5 -> 0, off all three 5 -> 0; after, off Chromium but within 20/255 of the area 4 (Chromium off the area there: 1)
+red__sheet-caps z1: off Chromium 9 -> 4, off area 16 -> 0, off all three 7 -> 0
+    at changed pixels: off Chromium 9 -> 4, off all three 7 -> 0; after, off Chromium but within 20/255 of the area 4 (Chromium off the area there: 2)
+red__sheet-joins z1: off Chromium 3 -> 1, off area 4 -> 1, off all three 3 -> 1
+    at changed pixels: off Chromium 2 -> 0, off all three 2 -> 0; after, off Chromium but within 20/255 of the area 0 (Chromium off the area there: 0)
+/Users/matt/src/femtovg-wt/da/issue-round-cap-tessellation.png (924, 1705)

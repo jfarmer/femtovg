@@ -1,0 +1,231 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 64fe538c..18b09a00 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1619,6 +1619,8 @@ where
+         // introduced a bug by removing the upper bound.
+         //paint.set_stroke_width((paint.stroke_width() * transform.average_scale()).max(0.0).min(200.0));
+         let mut line_width = (stroke.line_width * transform.average_scale()).max(0.0);
++        // The stroke's own width, whose round caps and joins carry its ink when it is drawn wider.
++        let width = line_width;
+ 
+         if line_width < self.fringe_width {
+             // A stroke thinner than the fringe is drawn at fringe width with its
+@@ -1659,6 +1661,7 @@ where
+             stroke.line_join,
+             stroke.miter_limit,
+             self.tess_tol,
++            width,
+         );
+ 
+         // GPU uniforms
+diff --git a/src/path/cache.rs b/src/path/cache.rs
+index 05737d8a..aadde053 100644
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -1031,11 +1031,17 @@ impl PathCache {
+         line_join: LineJoin,
+         miter_limit: f32,
+         tess_tol: f32,
++        width: f32,
+     ) {
+-        let ncap = curve_divisions(stroke_width, PI, tess_tol);
+-
+         let stroke_width = stroke_width + (fringe_width * 0.5);
+ 
++        // A round cap or join is a fan whose antialiasing ramp falls to nothing on its chords: take enough
++        // chords for them to keep within half the tolerance of the arc at the fan's radius, one point more
++        // than chords, and place the inner points for the fan to put down the area of the exact shape.
++        let ncap = curve_divisions(stroke_width, PI, tess_tol * 0.5) + 1;
++        let fan = RoundFan::new(stroke_width, fringe_width, width);
++        let cap_inner = fan.inner_radius(PI, ncap as usize - 1);
++
+         // Disable the gradient used for antialiasing when antialiasing is not enabled.
+         let (u0, u1) = if fringe_width == 0.0 { (0.5, 0.5) } else { (0.0, 1.0) };
+ 
+@@ -1068,9 +1074,16 @@ impl PathCache {
+                             u0,
+                             u1,
+                         ),
+-                        LineCap::Round => {
+-                            round_cap_start(&mut contour.stroke, p0, p0, stroke_width, ncap as usize, u0, u1)
+-                        }
++                        LineCap::Round => round_cap_start(
++                            &mut contour.stroke,
++                            p0,
++                            p0,
++                            stroke_width,
++                            cap_inner,
++                            ncap as usize,
++                            u0,
++                            u1,
++                        ),
+                     }
+                 }
+ 
+@@ -1086,6 +1099,7 @@ impl PathCache {
+                                 u0,
+                                 u1,
+                                 ncap as usize,
++                                &fan,
+                             );
+                         } else {
+                             bevel_join(&mut contour.stroke, p0, p1, stroke_width, stroke_width, u0, u1);
+@@ -1123,9 +1137,16 @@ impl PathCache {
+                             u0,
+                             u1,
+                         ),
+-                        LineCap::Round => {
+-                            round_cap_end(&mut contour.stroke, p1, p0, stroke_width, ncap as usize, u0, u1)
+-                        }
++                        LineCap::Round => round_cap_end(
++                            &mut contour.stroke,
++                            p1,
++                            p0,
++                            stroke_width,
++                            cap_inner,
++                            ncap as usize,
++                            u0,
++                            u1,
++                        ),
+                     }
+                 }
+             }
+@@ -1266,6 +1287,48 @@ fn curve_divisions(radius: f32, arc: f32, tol: f32) -> u32 {
+     ((arc / da).ceil() as u32).max(2)
+ }
+ 
++/// Where the inner points of a round cap's or join's fan go. The fan's first and last points sit on the
++/// stroke's sides, `rim` from its centre, and along each ray from the centre the shader takes coverage from
++/// 1 to 0 over the outer `fringe / rim` of the way to the fan's edge, so a fan puts down `2 k` times its
++/// polygon's area, `k = 1/2 - t/2 + t^2/6` for `t = fringe / rim`: around an arc, more than the arc's area,
++/// and less where its chords cut inside. The inner points are placed for the fan to put down the area of the
++/// exact cap or join, a half disc or a sector of the stroke's own `width`, at the alpha a stroke thinner than
++/// the fringe is drawn at.
++struct RoundFan {
++    rim: f32,
++    k: f32,
++    area_per_radian: f32,
++}
++
++impl RoundFan {
++    fn new(rim: f32, fringe: f32, width: f32) -> Self {
++        let t = fringe / rim;
++        let drawn = 2.0 * rim - fringe;
++        let alpha = (width / drawn).min(1.0);
++        Self {
++            rim,
++            k: 0.5 - t / 2.0 + t * t / 6.0,
++            area_per_radian: if width > 0.0 { width * width / 8.0 / alpha } else { 0.0 },
++        }
++    }
++
++    /// The radius of the inner points of a fan of `chords` chords turning through `turn`.
++    fn inner_radius(&self, turn: f32, chords: usize) -> f32 {
++        if chords < 2 || self.area_per_radian <= 0.0 {
++            return self.rim;
++        }
++        // The polygon's area is (sin / 2) (2 rim r + m r^2), its first and last triangles reaching the rim.
++        let ink = self.area_per_radian * turn / self.k;
++        let sin = (turn / chords as f32).sin();
++        let m = (chords - 2) as f32;
++        if m == 0.0 {
++            ink / (2.0 * sin * self.rim)
++        } else {
++            ((self.rim * self.rim + m * ink / sin).sqrt() - self.rim) / m
++        }
++    }
++}
++
+ #[allow(clippy::too_many_arguments)]
+ fn butt_cap_start(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, d: f32, aa: f32, u0: f32, u1: f32) {
+     let ppos = p0.pos - p1.dpos * d;
+@@ -1288,13 +1351,15 @@ fn butt_cap_end(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, d: f32,
+     verts.push(Vertex::pos(ppos - dlpos * w + p1.dpos * aa, u1, 0.0));
+ }
+ 
+-fn round_cap_start(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, ncap: usize, u0: f32, u1: f32) {
++#[allow(clippy::too_many_arguments)]
++fn round_cap_start(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, inner: f32, ncap: usize, u0: f32, u1: f32) {
+     let ppos = p0.pos;
+     let dlpos = p1.dpos.orthogonal();
+ 
+     for i in 0..ncap {
+         let a = i as f32 / (ncap as f32 - 1.0) * PI;
+-        let offset = Vector::from_angle(a).with_basis(-dlpos, -p1.dpos) * w;
++        let r = if i == 0 || i == ncap - 1 { w } else { inner };
++        let offset = Vector::from_angle(a).with_basis(-dlpos, -p1.dpos) * r;
+ 
+         verts.push(Vertex::pos(ppos + offset, u0, 1.0));
+         verts.push(Vertex::pos(ppos, 0.5, 1.0));
+@@ -1304,7 +1369,8 @@ fn round_cap_start(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, ncap
+     verts.push(Vertex::pos(ppos - dlpos * w, u1, 1.0));
+ }
+ 
+-fn round_cap_end(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, ncap: usize, u0: f32, u1: f32) {
++#[allow(clippy::too_many_arguments)]
++fn round_cap_end(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, inner: f32, ncap: usize, u0: f32, u1: f32) {
+     let ppos = p0.pos;
+     let dlpos = p1.dpos.orthogonal();
+ 
+@@ -1313,7 +1379,8 @@ fn round_cap_end(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, ncap:
+ 
+     for i in 0..ncap {
+         let a = i as f32 / (ncap as f32 - 1.0) * PI;
+-        let offset = Vector::from_angle(a).with_basis(-dlpos, p1.dpos) * w;
++        let r = if i == 0 || i == ncap - 1 { w } else { inner };
++        let offset = Vector::from_angle(a).with_basis(-dlpos, p1.dpos) * r;
+ 
+         verts.push(Vertex::pos(ppos, 0.5, 1.0));
+         verts.push(Vertex::pos(ppos + offset, u0, 1.0));
+@@ -1330,7 +1397,17 @@ fn choose_bevel(bevel: bool, p0: &Point, p1: &Point, w: f32) -> (Position, Posit
+ }
+ 
+ #[allow(clippy::too_many_arguments)]
+-fn round_join(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, lw: f32, rw: f32, lu: f32, ru: f32, ncap: usize) {
++fn round_join(
++    verts: &mut Vec<Vertex>,
++    p0: &Point,
++    p1: &Point,
++    lw: f32,
++    rw: f32,
++    lu: f32,
++    ru: f32,
++    ncap: usize,
++    fan: &RoundFan,
++) {
+     let dlpos0 = p0.dpos.orthogonal();
+     let dlpos1 = p1.dpos.orthogonal();
+ 
+@@ -1349,12 +1426,13 @@ fn round_join(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, lw: f32, rw: f32,
+         verts.push(Vertex::pos(lpos0, lu, 1.0));
+         verts.push(Vertex::pos(p1.pos - dlpos0 * rw, ru, 1.0));
+ 
+-        let n = ((((a0 - a1) / PI) * ncap as f32).ceil() as usize).max(2).min(ncap);
++        let n = (((a0 - a1) / PI * (ncap - 1) as f32).ceil() as usize + 1).clamp(2, ncap);
++        let inner = fan.inner_radius(a0 - a1, n - 1);
+ 
+         for i in 0..n {
+             let u = i as f32 / (n - 1) as f32;
+             let a = a0 + u * (a1 - a0);
+-            let rpos = p1.pos + Vector::from_angle(a) * rw;
++            let rpos = p1.pos + Vector::from_angle(a) * if i == 0 || i == n - 1 { rw } else { inner };
+ 
+             verts.push(Vertex::pos(p1.pos, 0.5, 1.0));
+             verts.push(Vertex::pos(rpos, ru, 1.0));
+@@ -1374,12 +1452,13 @@ fn round_join(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, lw: f32, rw: f32,
+         verts.push(Vertex::pos(p1.pos + dlpos0 * rw, lu, 1.0));
+         verts.push(Vertex::pos(rpos0, ru, 1.0));
+ 
+-        let n = ((((a1 - a0) / PI) * ncap as f32).ceil() as usize).max(2).min(ncap);
++        let n = (((a1 - a0) / PI * (ncap - 1) as f32).ceil() as usize + 1).clamp(2, ncap);
++        let inner = fan.inner_radius(a1 - a0, n - 1);
+ 
+         for i in 0..n {
+             let u = i as f32 / (n - 1) as f32;
+             let a = a0 + u * (a1 - a0);
+-            let lpos = p1.pos + Vector::from_angle(a) * lw;
++            let lpos = p1.pos + Vector::from_angle(a) * if i == 0 || i == n - 1 { lw } else { inner };
+ 
+             verts.push(Vertex::pos(lpos, lu, 1.0));
+             verts.push(Vertex::pos(p1.pos, 0.5, 1.0));

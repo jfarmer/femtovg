@@ -1,0 +1,57 @@
+210 frames (0 missing), 137 change
+  21-degenerate-paths-dashes-and-joins: 72 frames, 0 change
+  babylon: 3 frames, 3 change
+  buseybench: 108 frames, 108 change
+  firefox: 12 frames, 12 change
+  firefox-com: 3 frames, 3 change
+  icons: 6 frames, 6 change
+  logos: 3 frames, 3 change
+  reductions: 3 frames, 2 change
+chr   z1  :  46 changed frames: 19 toward, 13 away, 14 same count; px 20309 -> 20296
+chr   z2  :  45 changed frames: 34 toward, 7 away, 4 same count; px 43946 -> 43674
+chr   hd  :  46 changed frames: 36 toward, 5 away, 5 same count; px 216945 -> 216107
+chr   all : 137 changed frames: 89 toward, 25 away, 23 same count; px 281200 -> 280077
+id    z1  :  44 changed frames: 19 toward, 4 away, 21 same count; px 11274 -> 11134
+id    z2  :  42 changed frames: 30 toward, 3 away, 9 same count; px 23221 -> 22946
+id    hd  :  44 changed frames: 29 toward, 4 away, 11 same count; px 133422 -> 132511
+id    all : 130 changed frames: 78 toward, 11 away, 41 same count; px 167917 -> 166591
+all3  z1  :  41 changed frames: 11 toward, 6 away, 24 same count; px 1466 -> 1426
+all3  z2  :  39 changed frames: 24 toward, 1 away, 14 same count; px 1800 -> 1653
+all3  hd  :  39 changed frames: 23 toward, 1 away, 15 same count; px 5608 -> 5126
+all3  all : 119 changed frames: 58 toward, 8 away, 53 same count; px 8874 -> 8205
+
+frames moving away (chr, id or all3):
+  corpus__buseybench__claude-fable-5-1 z1 changed 408 {'chr': [65, 67], 'id': [81, 81], 'all3': [8, 8]}
+  corpus__buseybench__claude-fable-5-1 z2 changed 613 {'chr': [208, 208], 'id': [99, 100], 'all3': [13, 12]}
+  corpus__buseybench__claude-opus-5-5 z1 changed 267 {'chr': [120, 121], 'id': [137, 137], 'all3': [37, 38]}
+  corpus__buseybench__claude-opus-5-5 z2 changed 503 {'chr': [302, 303], 'id': [279, 273], 'all3': [31, 27]}
+  corpus__buseybench__claude-opus-5 hd changed 867 {'chr': [788, 774], 'id': [120, 121], 'all3': [3, 3]}
+  corpus__buseybench__gemini-3-1-pro-preview z2 changed 310 {'chr': [2940, 2941], 'id': [761, 759], 'all3': [241, 240]}
+  corpus__buseybench__gemini-3-7-flash z1 changed 218 {'chr': [567, 573], 'id': [454, 443], 'all3': [159, 157]}
+  corpus__buseybench__gemini-3-8-flash z1 changed 43 {'chr': [961, 962], 'id': [213, 213], 'all3': [59, 58]}
+  corpus__buseybench__glm-5-3-flash z2 changed 301 {'chr': [610, 612], 'id': [216, 216], 'all3': [13, 13]}
+  corpus__buseybench__glm-5v-turbo z1 changed 328 {'chr': [344, 351], 'id': [130, 128], 'all3': [47, 46]}
+  corpus__buseybench__glm-5v-turbo z2 changed 711 {'chr': [492, 501], 'id': [228, 224], 'all3': [110, 114]}
+  corpus__buseybench__gpt-5-6-sol z1 changed 121 {'chr': [95, 98], 'id': [112, 111], 'all3': [19, 21]}
+  corpus__buseybench__gpt-5-6-sol hd changed 771 {'chr': [751, 752], 'id': [115, 114], 'all3': [12, 11]}
+  corpus__buseybench__gpt-5-6-terra-pro z1 changed 88 {'chr': [289, 287], 'id': [68, 65], 'all3': [28, 30]}
+  corpus__buseybench__gpt-6-sol z1 changed 376 {'chr': [78, 77], 'id': [122, 123], 'all3': [19, 19]}
+  corpus__buseybench__kimi-k2-6 z1 changed 61 {'chr': [200, 202], 'id': [81, 81], 'all3': [11, 11]}
+  corpus__buseybench__kimi-k2-6 hd changed 395 {'chr': [1038, 1032], 'id': [177, 178], 'all3': [40, 37]}
+  corpus__buseybench__muse-spark-1-3-contributor z2 changed 219 {'chr': [295, 296], 'id': [25, 23], 'all3': [8, 8]}
+  corpus__buseybench__muse-wonder z1 changed 251 {'chr': [522, 527], 'id': [109, 108], 'all3': [18, 18]}
+  corpus__buseybench__ox-alpha z1 changed 81 {'chr': [92, 96], 'id': [91, 92], 'all3': [17, 20]}
+  corpus__buseybench__ox-alpha z2 changed 86 {'chr': [212, 213], 'id': [136, 137], 'all3': [8, 8]}
+  corpus__buseybench__ox-alpha hd changed 314 {'chr': [2680, 2673], 'id': [2502, 2503], 'all3': [902, 903]}
+  corpus__buseybench__pareto z1 changed 275 {'chr': [131, 130], 'id': [121, 122], 'all3': [47, 48]}
+  corpus__buseybench__qwen3-8-2-4t-a95b z1 changed 469 {'chr': [506, 510], 'id': [105, 105], 'all3': [21, 22]}
+  corpus__buseybench__qwen3-8-2-4t-a95b hd changed 5394 {'chr': [1695, 1680], 'id': [119, 121], 'all3': [57, 57]}
+  corpus__buseybench__qwen3-8-flash z1 changed 291 {'chr': [134, 138], 'id': [78, 79], 'all3': [5, 5]}
+  corpus__firefox__lists-empty-state-dark hd changed 326 {'chr': [1609, 1613]}
+  corpus__firefox__lists-empty-state-light hd changed 299 {'chr': [1, 2], 'id': [0, 0]}
+  corpus__firefox__lists-empty-state-nova z1 changed 92 {'chr': [131, 145], 'id': [62, 29]}
+  corpus__firefox__lists-empty-state-nova z2 changed 81 {'chr': [256, 258], 'id': [77, 44]}
+  corpus__firefox__lists-empty-state-nova hd changed 472 {'chr': [1047, 1141], 'id': [453, 373]}
+  corpus__firefox__puzzle-fox z2 changed 28 {'chr': [515, 505], 'id': [218, 219], 'all3': [55, 45]}
+  google-workspace-48px z1 changed 33 {'chr': [120, 125]}
+  google-workspace-48px hd changed 197 {'chr': [479, 486]}

@@ -1,0 +1,12 @@
+capx0 vs mstc: 0 frames differ
+capx8 vs caps: 0 frames differ
+mode 0 (master): caps 156/334/936; joins 25/46/119; corpus toward/away chr 0/0, id 0/0, all3 0/0
+mode 1 (chords from the rim radius at tess_tol, +1 point): caps 57/137/660; joins 6/9/54; corpus toward/away chr 78/33, id 66/24, all3 49/30
+mode 2 (chords from the half width at tess_tol, +1 point): caps 80/196/712; joins 6/13/54; corpus toward/away chr 86/27, id 69/19, all3 53/22
+mode 3 (chords from the rim radius at tess_tol / 2, +1 point (the count alone)): caps 22/12/51; joins 3/4/4; corpus toward/away chr 82/32, id 64/31, all3 45/33
+mode 4 (mode 1, inner points pushed out so the chords straddle the arc): caps 34/22/102; joins 6/5/6; corpus toward/away chr 77/38, id 60/39, all3 46/34
+mode 5 (mode 3 with the straddle): caps 29/6/1; joins 4/4/0; corpus toward/away chr 71/40, id 57/40, all3 44/36
+mode 6 (mode 3, inner points at an approximate equal-ink radius (a ramp a fringe wide assumed)): caps 13/18/68; joins 3/4/5; corpus toward/away chr 88/14, id 77/6, all3 57/10
+mode 7 (mode 6 with the straddle): caps 12/0/0; joins 3/4/0; corpus toward/away chr 83/23, id 74/12, all3 54/11
+mode 8 (mode 3, inner points fitted to the exact area (the prototype)): caps 10/0/1; joins 3/4/0; corpus toward/away chr 89/25, id 78/11, all3 58/8
+mode 9 (mode 8 at tess_tol): caps 16/20/99; joins 7/5/7; corpus toward/away chr 87/25, id 74/15, all3 58/9
