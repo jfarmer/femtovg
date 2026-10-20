@@ -1,0 +1,1324 @@
+{
+ "build": "mst4",
+ "portrait": [
+  {
+   "framing": "z1",
+   "box_half_px": 7,
+   "rows": [
+    {
+     "variant": "p00_orig",
+     "label": "femtovg master",
+     "ink": 12.81,
+     "ink_vs_area": 2.861,
+     "ink_vs_chr": 3.991,
+     "ink_vs_ff": 3.826,
+     "ink_vs_wk": 3.541,
+     "red_all3_iris": 60,
+     "red_all3_frame": 159,
+     "red_vs_area_iris": 80,
+     "red_all3_iris_also_off_area": 57,
+     "red_vs_chr_iris": 78,
+     "red_vs_chr_iris_chr_off_area": 17
+    },
+    {
+     "variant": "p05_emul_joined",
+     "label": "femtovg, the same pieces joined into one polyline per dash",
+     "ink": 8.91,
+     "ink_vs_area": 1.99,
+     "ink_vs_chr": 2.777,
+     "ink_vs_ff": 2.662,
+     "ink_vs_wk": 2.464,
+     "red_all3_iris": 33,
+     "red_all3_frame": 132,
+     "red_vs_area_iris": 46,
+     "red_all3_iris_also_off_area": 27,
+     "red_vs_chr_iris": 53,
+     "red_vs_chr_iris_chr_off_area": 15
+    },
+    {
+     "variant": "p02_dash_arcs",
+     "label": "femtovg, one arc subpath per dash",
+     "ink": 8.95,
+     "ink_vs_area": 1.999,
+     "ink_vs_chr": 2.789,
+     "ink_vs_ff": 2.674,
+     "ink_vs_wk": 2.475,
+     "red_all3_iris": 36,
+     "red_all3_frame": 135,
+     "red_vs_area_iris": 46,
+     "red_all3_iris_also_off_area": 29,
+     "red_vs_chr_iris": 52,
+     "red_vs_chr_iris_chr_off_area": 14
+    },
+    {
+     "variant": "p04_emul_split",
+     "label": "femtovg, its own pieces written out as M a L b subpaths",
+     "ink": 12.81,
+     "ink_vs_area": 2.861,
+     "ink_vs_chr": 3.991,
+     "ink_vs_ff": 3.826,
+     "ink_vs_wk": 3.541,
+     "red_all3_iris": 60,
+     "red_all3_frame": 159,
+     "red_vs_area_iris": 80,
+     "red_all3_iris_also_off_area": 57,
+     "red_vs_chr_iris": 78,
+     "red_vs_chr_iris_chr_off_area": 17
+    },
+    {
+     "variant": "p06_arcs_floor_z2",
+     "label": "femtovg, one arc per dash, dashes under a pixel lengthened to one at reduced opacity (z2)",
+     "ink": 7.8,
+     "ink_vs_area": 1.742,
+     "ink_vs_chr": 2.431,
+     "ink_vs_ff": 2.33,
+     "ink_vs_wk": 2.157,
+     "red_all3_iris": 24,
+     "red_all3_frame": 123,
+     "red_vs_area_iris": 39,
+     "red_all3_iris_also_off_area": 20,
+     "red_vs_chr_iris": 43,
+     "red_vs_chr_iris_chr_off_area": 13
+    },
+    {
+     "variant": "chr",
+     "label": "chr",
+     "ink": 3.21,
+     "ink_vs_area": 0.717,
+     "red_vs_other_two_iris": 6,
+     "red_vs_area_iris": 42
+    },
+    {
+     "variant": "ff",
+     "label": "ff",
+     "ink": 3.35,
+     "ink_vs_area": 0.748,
+     "red_vs_other_two_iris": 3,
+     "red_vs_area_iris": 39
+    },
+    {
+     "variant": "wk",
+     "label": "wk",
+     "ink": 3.62,
+     "ink_vs_area": 0.808,
+     "red_vs_other_two_iris": 11,
+     "red_vs_area_iris": 21
+    },
+    {
+     "variant": "id",
+     "label": "area reference",
+     "ink": 4.48,
+     "ink_vs_area": 1.0
+    }
+   ],
+   "nodash_red_all3_iris": 0,
+   "nodash_vs_area_iris": {
+    "femtovg": 13,
+    "chr": 31,
+    "ff": 30,
+    "wk": 16
+   },
+   "p04_identical_to_p00": true
+  },
+  {
+   "framing": "z2",
+   "box_half_px": 11,
+   "rows": [
+    {
+     "variant": "p00_orig",
+     "label": "femtovg master",
+     "ink": 27.12,
+     "ink_vs_area": 1.512,
+     "ink_vs_chr": 1.899,
+     "ink_vs_ff": 1.789,
+     "ink_vs_wk": 1.648,
+     "red_all3_iris": 65,
+     "red_all3_frame": 191,
+     "red_vs_area_iris": 77,
+     "red_all3_iris_also_off_area": 61,
+     "red_vs_chr_iris": 186,
+     "red_vs_chr_iris_chr_off_area": 112
+    },
+    {
+     "variant": "p05_emul_joined",
+     "label": "femtovg, the same pieces joined into one polyline per dash",
+     "ink": 20.89,
+     "ink_vs_area": 1.164,
+     "ink_vs_chr": 1.463,
+     "ink_vs_ff": 1.378,
+     "ink_vs_wk": 1.27,
+     "red_all3_iris": 30,
+     "red_all3_frame": 156,
+     "red_vs_area_iris": 34,
+     "red_all3_iris_also_off_area": 24,
+     "red_vs_chr_iris": 148,
+     "red_vs_chr_iris_chr_off_area": 108
+    },
+    {
+     "variant": "p02_dash_arcs",
+     "label": "femtovg, one arc subpath per dash",
+     "ink": 19.33,
+     "ink_vs_area": 1.077,
+     "ink_vs_chr": 1.354,
+     "ink_vs_ff": 1.275,
+     "ink_vs_wk": 1.175,
+     "red_all3_iris": 18,
+     "red_all3_frame": 144,
+     "red_vs_area_iris": 20,
+     "red_all3_iris_also_off_area": 15,
+     "red_vs_chr_iris": 139,
+     "red_vs_chr_iris_chr_off_area": 107
+    },
+    {
+     "variant": "p04_emul_split",
+     "label": "femtovg, its own pieces written out as M a L b subpaths",
+     "ink": 27.12,
+     "ink_vs_area": 1.512,
+     "ink_vs_chr": 1.899,
+     "ink_vs_ff": 1.789,
+     "ink_vs_wk": 1.648,
+     "red_all3_iris": 65,
+     "red_all3_frame": 191,
+     "red_vs_area_iris": 77,
+     "red_all3_iris_also_off_area": 61,
+     "red_vs_chr_iris": 186,
+     "red_vs_chr_iris_chr_off_area": 112
+    },
+    {
+     "variant": "p06_arcs_floor_z2",
+     "label": "femtovg, one arc per dash, dashes under a pixel lengthened to one at reduced opacity (z2)",
+     "ink": 17.15,
+     "ink_vs_area": 0.956,
+     "ink_vs_chr": 1.202,
+     "ink_vs_ff": 1.132,
+     "ink_vs_wk": 1.043,
+     "red_all3_iris": 1,
+     "red_all3_frame": 127,
+     "red_vs_area_iris": 4,
+     "red_all3_iris_also_off_area": 0,
+     "red_vs_chr_iris": 124,
+     "red_vs_chr_iris_chr_off_area": 102
+    },
+    {
+     "variant": "chr",
+     "label": "chr",
+     "ink": 14.28,
+     "ink_vs_area": 0.796,
+     "red_vs_other_two_iris": 61,
+     "red_vs_area_iris": 133
+    },
+    {
+     "variant": "ff",
+     "label": "ff",
+     "ink": 15.16,
+     "ink_vs_area": 0.845,
+     "red_vs_other_two_iris": 11,
+     "red_vs_area_iris": 46
+    },
+    {
+     "variant": "wk",
+     "label": "wk",
+     "ink": 16.45,
+     "ink_vs_area": 0.917,
+     "red_vs_other_two_iris": 37,
+     "red_vs_area_iris": 22
+    },
+    {
+     "variant": "id",
+     "label": "area reference",
+     "ink": 17.94,
+     "ink_vs_area": 1.0
+    }
+   ],
+   "nodash_red_all3_iris": 0,
+   "nodash_vs_area_iris": {
+    "femtovg": 4,
+    "chr": 105,
+    "ff": 43,
+    "wk": 11
+   },
+   "p04_identical_to_p00": true
+  },
+  {
+   "framing": "hd",
+   "box_half_px": 25,
+   "rows": [
+    {
+     "variant": "p00_orig",
+     "label": "femtovg master",
+     "ink": 133.08,
+     "ink_vs_area": 1.018,
+     "ink_vs_chr": 1.027,
+     "ink_vs_ff": 1.043,
+     "ink_vs_wk": 1.035,
+     "red_all3_iris": 47,
+     "red_all3_frame": 161,
+     "red_vs_area_iris": 83,
+     "red_all3_iris_also_off_area": 40,
+     "red_vs_chr_iris": 388,
+     "red_vs_chr_iris_chr_off_area": 306
+    },
+    {
+     "variant": "p05_emul_joined",
+     "label": "femtovg, the same pieces joined into one polyline per dash",
+     "ink": 130.98,
+     "ink_vs_area": 1.002,
+     "ink_vs_chr": 1.011,
+     "ink_vs_ff": 1.026,
+     "ink_vs_wk": 1.019,
+     "red_all3_iris": 9,
+     "red_all3_frame": 123,
+     "red_vs_area_iris": 33,
+     "red_all3_iris_also_off_area": 6,
+     "red_vs_chr_iris": 365,
+     "red_vs_chr_iris_chr_off_area": 304
+    },
+    {
+     "variant": "p02_dash_arcs",
+     "label": "femtovg, one arc subpath per dash",
+     "ink": 130.25,
+     "ink_vs_area": 0.996,
+     "ink_vs_chr": 1.005,
+     "ink_vs_ff": 1.021,
+     "ink_vs_wk": 1.013,
+     "red_all3_iris": 16,
+     "red_all3_frame": 130,
+     "red_vs_area_iris": 3,
+     "red_all3_iris_also_off_area": 0,
+     "red_vs_chr_iris": 406,
+     "red_vs_chr_iris_chr_off_area": 349
+    },
+    {
+     "variant": "p04_emul_split",
+     "label": "femtovg, its own pieces written out as M a L b subpaths",
+     "ink": 133.08,
+     "ink_vs_area": 1.018,
+     "ink_vs_chr": 1.027,
+     "ink_vs_ff": 1.043,
+     "ink_vs_wk": 1.035,
+     "red_all3_iris": 47,
+     "red_all3_frame": 161,
+     "red_vs_area_iris": 83,
+     "red_all3_iris_also_off_area": 40,
+     "red_vs_chr_iris": 388,
+     "red_vs_chr_iris_chr_off_area": 306
+    },
+    {
+     "variant": "p06_arcs_floor_z2",
+     "label": "femtovg, one arc per dash, dashes under a pixel lengthened to one at reduced opacity (z2)",
+     "ink": 129.73,
+     "ink_vs_area": 0.992,
+     "ink_vs_chr": 1.001,
+     "ink_vs_ff": 1.017,
+     "ink_vs_wk": 1.009,
+     "red_all3_iris": 82,
+     "red_all3_frame": 196,
+     "red_vs_area_iris": 109,
+     "red_all3_iris_also_off_area": 61,
+     "red_vs_chr_iris": 451,
+     "red_vs_chr_iris_chr_off_area": 317
+    },
+    {
+     "variant": "chr",
+     "label": "chr",
+     "ink": 129.59,
+     "ink_vs_area": 0.991,
+     "red_vs_other_two_iris": 151,
+     "red_vs_area_iris": 440
+    },
+    {
+     "variant": "ff",
+     "label": "ff",
+     "ink": 127.62,
+     "ink_vs_area": 0.976,
+     "red_vs_other_two_iris": 66,
+     "red_vs_area_iris": 260
+    },
+    {
+     "variant": "wk",
+     "label": "wk",
+     "ink": 128.55,
+     "ink_vs_area": 0.983,
+     "red_vs_other_two_iris": 184,
+     "red_vs_area_iris": 35
+    },
+    {
+     "variant": "id",
+     "label": "area reference",
+     "ink": 130.74,
+     "ink_vs_area": 1.0
+    }
+   ],
+   "nodash_red_all3_iris": 3,
+   "nodash_vs_area_iris": {
+    "femtovg": 3,
+    "chr": 235,
+    "ff": 112,
+    "wk": 23
+   },
+   "p04_identical_to_p00": true
+  }
+ ],
+ "lines_z1": {
+  "line-plain": {
+   "target": "line-plain",
+   "ink_vs_exact": {
+    "femtovg": 1.001,
+    "chr": 0.998,
+    "ff": 1.004,
+    "wk": 1.0,
+    "id": 1.002
+   },
+   "red_all3_frame": 0,
+   "red_vs_area_frame": 0,
+   "red_vs_chr_frame": 0,
+   "browsers": {
+    "chr": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 0
+    },
+    "ff": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 0
+    },
+    "wk": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 0
+    }
+   }
+  },
+  "line-points": {
+   "target": "line-points",
+   "ink_vs_exact": {
+    "femtovg": 1.387,
+    "chr": 0.867,
+    "ff": 0.863,
+    "wk": 1.095,
+    "id": 1.002
+   },
+   "red_all3_frame": 2678,
+   "red_vs_area_frame": 2760,
+   "red_vs_chr_frame": 2960,
+   "browsers": {
+    "chr": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 920
+    },
+    "ff": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 960
+    },
+    "wk": {
+     "red_vs_other_two": 3020,
+     "red_vs_area": 2529
+    }
+   }
+  },
+  "line-points-1px": {
+   "target": "line-points-1px",
+   "ink_vs_exact": {
+    "femtovg": 0.948,
+    "chr": 0.944,
+    "ff": 0.942,
+    "wk": 1.049,
+    "id": 1.002
+   },
+   "red_all3_frame": 0,
+   "red_vs_area_frame": 520,
+   "red_vs_chr_frame": 0,
+   "browsers": {
+    "chr": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 520
+    },
+    "ff": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 520
+    },
+    "wk": {
+     "red_vs_other_two": 896,
+     "red_vs_area": 416
+    }
+   }
+  },
+  "line-split": {
+   "target": "line-points",
+   "ink_vs_exact": {
+    "femtovg": 1.387,
+    "chr": 0.867,
+    "ff": 0.863,
+    "wk": 1.03,
+    "id": 1.002
+   },
+   "red_all3_frame": 2678,
+   "red_vs_area_frame": 2760,
+   "red_vs_chr_frame": 2960,
+   "identical_to": "line-points",
+   "identical": true
+  },
+  "line-joined": {
+   "target": "line-points",
+   "ink_vs_exact": {
+    "femtovg": 1.001,
+    "chr": 0.867,
+    "ff": 0.863,
+    "wk": 1.03,
+    "id": 1.002
+   },
+   "red_all3_frame": 303,
+   "red_vs_area_frame": 0,
+   "red_vs_chr_frame": 920
+  },
+  "line-segments": {
+   "target": "line-points",
+   "ink_vs_exact": {
+    "femtovg": 1.001,
+    "chr": 0.998,
+    "ff": 0.998,
+    "wk": 1.0,
+    "id": 1.002
+   },
+   "red_all3_frame": 303,
+   "red_vs_area_frame": 0,
+   "red_vs_chr_frame": 920,
+   "identical_to": "line-plain",
+   "identical": true
+  },
+  "line-points-03": {
+   "target": "line-points-03",
+   "ink_vs_exact": {
+    "femtovg": 1.86,
+    "chr": 0.823,
+    "ff": 0.811,
+    "wk": 1.27,
+    "id": 1.002
+   },
+   "red_all3_frame": 3497,
+   "red_vs_area_frame": 3836,
+   "red_vs_chr_frame": 3956,
+   "browsers": {
+    "chr": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 1360
+    },
+    "ff": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 1453
+    },
+    "wk": {
+     "red_vs_other_two": 4200,
+     "red_vs_area": 3793
+    }
+   }
+  },
+  "line-joined-03": {
+   "target": "line-points-03",
+   "ink_vs_exact": {
+    "femtovg": 1.144,
+    "chr": 0.823,
+    "ff": 0.811,
+    "wk": 1.202,
+    "id": 1.002
+   },
+   "red_all3_frame": 1646,
+   "red_vs_area_frame": 930,
+   "red_vs_chr_frame": 1891
+  },
+  "line-segments@line-points-03": {
+   "target": "line-points-03",
+   "ink_vs_exact": {
+    "femtovg": 1.001,
+    "chr": 0.998,
+    "ff": 0.998,
+    "wk": 1.0,
+    "id": 1.002
+   },
+   "red_all3_frame": 1113,
+   "red_vs_area_frame": 0,
+   "red_vs_chr_frame": 1360
+  },
+  "pieces": {
+   "target": "pieces",
+   "ink_vs_exact": {
+    "femtovg": 1.203,
+    "chr": 0.993,
+    "ff": 0.993,
+    "wk": 1.017,
+    "id": 1.008
+   },
+   "red_all3_frame": 180,
+   "red_vs_area_frame": 180,
+   "red_vs_chr_frame": 180,
+   "browsers": {
+    "chr": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 0
+    },
+    "ff": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 0
+    },
+    "wk": {
+     "red_vs_other_two": 20,
+     "red_vs_area": 20
+    }
+   },
+   "per_length": {
+    "0.1": {
+     "femtovg": 8.735,
+     "chr": 0.902,
+     "ff": 0.902,
+     "wk": 2.137,
+     "id": 0.941
+    },
+    "0.2": {
+     "femtovg": 4.154,
+     "chr": 0.919,
+     "ff": 0.919,
+     "wk": 1.402,
+     "id": 0.98
+    },
+    "0.25": {
+     "femtovg": 3.498,
+     "chr": 0.986,
+     "ff": 0.986,
+     "wk": 1.261,
+     "id": 1.004
+    },
+    "0.3": {
+     "femtovg": 2.655,
+     "chr": 0.977,
+     "ff": 0.977,
+     "wk": 1.165,
+     "id": 1.046
+    },
+    "0.4": {
+     "femtovg": 2.154,
+     "chr": 0.96,
+     "ff": 0.96,
+     "wk": 1.076,
+     "id": 1.049
+    },
+    "0.5": {
+     "femtovg": 1.691,
+     "chr": 0.993,
+     "ff": 0.993,
+     "wk": 1.031,
+     "id": 1.004
+    },
+    "0.6": {
+     "femtovg": 1.356,
+     "chr": 0.98,
+     "ff": 0.98,
+     "wk": 1.007,
+     "id": 1.013
+    },
+    "0.7": {
+     "femtovg": 1.154,
+     "chr": 0.977,
+     "ff": 0.977,
+     "wk": 0.999,
+     "id": 0.983
+    },
+    "0.75": {
+     "femtovg": 1.207,
+     "chr": 0.995,
+     "ff": 0.995,
+     "wk": 0.997,
+     "id": 1.025
+    },
+    "0.8": {
+     "femtovg": 1.093,
+     "chr": 0.99,
+     "ff": 0.99,
+     "wk": 0.991,
+     "id": 1.026
+    },
+    "0.9": {
+     "femtovg": 0.998,
+     "chr": 0.985,
+     "ff": 0.985,
+     "wk": 0.994,
+     "id": 1.008
+    },
+    "1.0": {
+     "femtovg": 1.001,
+     "chr": 0.996,
+     "ff": 0.996,
+     "wk": 0.996,
+     "id": 1.018
+    },
+    "1.1": {
+     "femtovg": 1.001,
+     "chr": 0.991,
+     "ff": 0.991,
+     "wk": 0.995,
+     "id": 0.995
+    },
+    "1.25": {
+     "femtovg": 1.001,
+     "chr": 0.997,
+     "ff": 0.997,
+     "wk": 0.998,
+     "id": 1.014
+    },
+    "1.5": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 0.999,
+     "id": 1.001
+    },
+    "2.0": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.009
+    },
+    "3.0": {
+     "femtovg": 1.001,
+     "chr": 0.999,
+     "ff": 0.999,
+     "wk": 1.002,
+     "id": 1.001
+    },
+    "4.0": {
+     "femtovg": 1.001,
+     "chr": 0.999,
+     "ff": 0.999,
+     "wk": 1.002,
+     "id": 1.008
+    }
+   }
+  },
+  "pieces-scaled": {
+   "target": "pieces",
+   "ink_vs_exact": {
+    "femtovg": 1.001,
+    "chr": 0.996,
+    "ff": 0.996,
+    "wk": 0.999,
+    "id": 1.006
+   },
+   "red_all3_frame": 16,
+   "red_vs_area_frame": 18,
+   "red_vs_chr_frame": 18,
+   "red_all3_by_length": {
+    "0.5": 8,
+    "0.6": 4,
+    "0.7": 4
+   },
+   "red_all3_max_vs_area": 24,
+   "per_length": {
+    "0.1": {
+     "femtovg": 1.01,
+     "chr": 0.946,
+     "ff": 0.946,
+     "wk": 1.02,
+     "id": 1.01
+    },
+    "0.2": {
+     "femtovg": 0.998,
+     "chr": 0.961,
+     "ff": 0.961,
+     "wk": 0.993,
+     "id": 1.01
+    },
+    "0.25": {
+     "femtovg": 1.004,
+     "chr": 1.004,
+     "ff": 1.004,
+     "wk": 1.004,
+     "id": 1.004
+    },
+    "0.3": {
+     "femtovg": 1.002,
+     "chr": 0.98,
+     "ff": 0.98,
+     "wk": 1.002,
+     "id": 0.992
+    },
+    "0.4": {
+     "femtovg": 1.001,
+     "chr": 0.979,
+     "ff": 0.979,
+     "wk": 0.991,
+     "id": 1.002
+    },
+    "0.5": {
+     "femtovg": 1.004,
+     "chr": 1.004,
+     "ff": 1.004,
+     "wk": 1.005,
+     "id": 1.004
+    },
+    "0.6": {
+     "femtovg": 1.0,
+     "chr": 0.991,
+     "ff": 0.991,
+     "wk": 0.993,
+     "id": 1.002
+    },
+    "0.7": {
+     "femtovg": 0.999,
+     "chr": 0.999,
+     "ff": 0.999,
+     "wk": 0.995,
+     "id": 0.999
+    },
+    "0.75": {
+     "femtovg": 1.001,
+     "chr": 0.997,
+     "ff": 0.997,
+     "wk": 0.993,
+     "id": 1.016
+    },
+    "0.8": {
+     "femtovg": 0.998,
+     "chr": 0.994,
+     "ff": 0.994,
+     "wk": 0.992,
+     "id": 1.008
+    },
+    "0.9": {
+     "femtovg": 0.999,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 0.995,
+     "id": 0.999
+    },
+    "1.0": {
+     "femtovg": 1.001,
+     "chr": 0.996,
+     "ff": 0.996,
+     "wk": 0.996,
+     "id": 1.018
+    },
+    "1.1": {
+     "femtovg": 1.001,
+     "chr": 0.991,
+     "ff": 0.991,
+     "wk": 0.995,
+     "id": 0.995
+    },
+    "1.25": {
+     "femtovg": 1.001,
+     "chr": 0.997,
+     "ff": 0.997,
+     "wk": 0.998,
+     "id": 1.014
+    },
+    "1.5": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 0.999,
+     "id": 1.001
+    },
+    "2.0": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.009
+    },
+    "3.0": {
+     "femtovg": 1.001,
+     "chr": 0.999,
+     "ff": 0.999,
+     "wk": 1.002,
+     "id": 1.001
+    },
+    "4.0": {
+     "femtovg": 1.001,
+     "chr": 0.999,
+     "ff": 0.999,
+     "wk": 1.002,
+     "id": 1.008
+    }
+   }
+  },
+  "endchord-plain": {
+   "target": "endchord-plain",
+   "ink_vs_exact": {
+    "femtovg": 1.001,
+    "chr": 0.998,
+    "ff": 0.998,
+    "wk": 1.0,
+    "id": 1.006
+   },
+   "red_all3_frame": 0,
+   "red_vs_area_frame": 0,
+   "red_vs_chr_frame": 0,
+   "browsers": {
+    "chr": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 0
+    },
+    "ff": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 0
+    },
+    "wk": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 0
+    }
+   },
+   "per_length": {
+    "0.05": {
+     "femtovg": 1.002,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.002
+    },
+    "0.1": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.01
+    },
+    "0.2": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.001
+    },
+    "0.3": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.009
+    },
+    "0.4": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.001
+    },
+    "0.5": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.01
+    },
+    "0.6": {
+     "femtovg": 1.002,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.002
+    },
+    "0.8": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.01
+    },
+    "1.0": {
+     "femtovg": 1.001,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 0.999,
+     "id": 1.001
+    },
+    "1.5": {
+     "femtovg": 1.0,
+     "chr": 0.998,
+     "ff": 0.998,
+     "wk": 1.0,
+     "id": 1.009
+    }
+   }
+  },
+  "endchord-short": {
+   "target": "endchord-short",
+   "ink_vs_exact": {
+    "femtovg": 1.041,
+    "chr": 0.958,
+    "ff": 0.956,
+    "wk": 1.021,
+    "id": 1.002
+   },
+   "red_all3_frame": 104,
+   "red_vs_area_frame": 104,
+   "red_vs_chr_frame": 186,
+   "browsers": {
+    "chr": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 94
+    },
+    "ff": {
+     "red_vs_other_two": 0,
+     "red_vs_area": 98
+    },
+    "wk": {
+     "red_vs_other_two": 202,
+     "red_vs_area": 54
+    }
+   },
+   "per_length": {
+    "0.05": {
+     "femtovg": 1.122,
+     "chr": 0.987,
+     "ff": 0.985,
+     "wk": 1.068,
+     "id": 1.002
+    },
+    "0.1": {
+     "femtovg": 1.097,
+     "chr": 0.981,
+     "ff": 0.979,
+     "wk": 1.057,
+     "id": 1.002
+    },
+    "0.2": {
+     "femtovg": 1.094,
+     "chr": 0.972,
+     "ff": 0.971,
+     "wk": 1.038,
+     "id": 1.001
+    },
+    "0.3": {
+     "femtovg": 1.064,
+     "chr": 0.965,
+     "ff": 0.964,
+     "wk": 1.024,
+     "id": 1.001
+    },
+    "0.4": {
+     "femtovg": 1.027,
+     "chr": 0.959,
+     "ff": 0.956,
+     "wk": 1.013,
+     "id": 1.001
+    },
+    "0.5": {
+     "femtovg": 1.001,
+     "chr": 0.952,
+     "ff": 0.95,
+     "wk": 1.007,
+     "id": 1.002
+    },
+    "0.6": {
+     "femtovg": 1.002,
+     "chr": 0.946,
+     "ff": 0.944,
+     "wk": 1.0,
+     "id": 1.002
+    },
+    "0.8": {
+     "femtovg": 1.001,
+     "chr": 0.94,
+     "ff": 0.938,
+     "wk": 0.995,
+     "id": 1.002
+    },
+    "1.0": {
+     "femtovg": 1.001,
+     "chr": 0.935,
+     "ff": 0.933,
+     "wk": 0.997,
+     "id": 1.001
+    },
+    "1.5": {
+     "femtovg": 1.0,
+     "chr": 0.944,
+     "ff": 0.941,
+     "wk": 1.007,
+     "id": 1.001
+    }
+   }
+  }
+ },
+ "g38": [
+  {
+   "framing": "z1",
+   "box_half_px": 6,
+   "rows": [
+    {
+     "variant": "g38_orig",
+     "ink": 4.67,
+     "ink_vs_area": 3.474,
+     "ink_vs_chr": 5.29,
+     "ink_vs_ff": 4.749,
+     "ink_vs_wk": 5.444,
+     "red_all3_iris": 16,
+     "red_vs_area_iris": 23
+    },
+    {
+     "variant": "g38_arcs",
+     "ink": 3.22,
+     "ink_vs_area": 2.396,
+     "ink_vs_chr": 3.649,
+     "ink_vs_ff": 3.275,
+     "ink_vs_wk": 3.755,
+     "red_all3_iris": 3,
+     "red_vs_area_iris": 10
+    },
+    {
+     "variant": "chr",
+     "ink": 0.88,
+     "ink_vs_area": 0.657
+    },
+    {
+     "variant": "ff",
+     "ink": 0.98,
+     "ink_vs_area": 0.732
+    },
+    {
+     "variant": "wk",
+     "ink": 0.86,
+     "ink_vs_area": 0.638
+    },
+    {
+     "variant": "id",
+     "ink": 1.34,
+     "ink_vs_area": 1.0
+    }
+   ],
+   "nodash_red_all3_iris": 0
+  },
+  {
+   "framing": "z2",
+   "box_half_px": 9,
+   "rows": [
+    {
+     "variant": "g38_orig",
+     "ink": 9.79,
+     "ink_vs_area": 1.8,
+     "ink_vs_chr": 2.244,
+     "ink_vs_ff": 2.135,
+     "ink_vs_wk": 2.185,
+     "red_all3_iris": 31,
+     "red_vs_area_iris": 46
+    },
+    {
+     "variant": "g38_arcs",
+     "ink": 6.53,
+     "ink_vs_area": 1.2,
+     "ink_vs_chr": 1.497,
+     "ink_vs_ff": 1.424,
+     "ink_vs_wk": 1.457,
+     "red_all3_iris": 8,
+     "red_vs_area_iris": 15
+    },
+    {
+     "variant": "chr",
+     "ink": 4.36,
+     "ink_vs_area": 0.802
+    },
+    {
+     "variant": "ff",
+     "ink": 4.59,
+     "ink_vs_area": 0.843
+    },
+    {
+     "variant": "wk",
+     "ink": 4.48,
+     "ink_vs_area": 0.824
+    },
+    {
+     "variant": "id",
+     "ink": 5.44,
+     "ink_vs_area": 1.0
+    }
+   ],
+   "nodash_red_all3_iris": 0
+  },
+  {
+   "framing": "hd",
+   "box_half_px": 19,
+   "rows": [
+    {
+     "variant": "g38_orig",
+     "ink": 40.44,
+     "ink_vs_area": 1.021,
+     "ink_vs_chr": 1.026,
+     "ink_vs_ff": 1.047,
+     "ink_vs_wk": 1.075,
+     "red_all3_iris": 13,
+     "red_vs_area_iris": 37
+    },
+    {
+     "variant": "g38_arcs",
+     "ink": 38.87,
+     "ink_vs_area": 0.981,
+     "ink_vs_chr": 0.986,
+     "ink_vs_ff": 1.006,
+     "ink_vs_wk": 1.033,
+     "red_all3_iris": 2,
+     "red_vs_area_iris": 17
+    },
+    {
+     "variant": "chr",
+     "ink": 39.42,
+     "ink_vs_area": 0.995
+    },
+    {
+     "variant": "ff",
+     "ink": 38.62,
+     "ink_vs_area": 0.975
+    },
+    {
+     "variant": "wk",
+     "ink": 37.63,
+     "ink_vs_area": 0.95
+    },
+    {
+     "variant": "id",
+     "ink": 39.61,
+     "ink_vs_area": 1.0
+    }
+   ],
+   "nodash_red_all3_iris": 2
+  }
+ ],
+ "opus": [
+  {
+   "framing": "z1",
+   "corners": [
+    {
+     "corner": [
+      358,
+      924
+     ],
+     "frame_px": [
+      200,
+      210
+     ],
+     "orig": {
+      "red_all3": 0,
+      "red_vs_area": 0,
+      "all3_px_vs_area": []
+     },
+     "joined": {
+      "red_all3": 0,
+      "red_vs_area": 0,
+      "all3_px_vs_area": []
+     }
+    },
+    {
+     "corner": [
+      666,
+      924
+     ],
+     "frame_px": [
+      260,
+      210
+     ],
+     "orig": {
+      "red_all3": 0,
+      "red_vs_area": 0,
+      "all3_px_vs_area": []
+     },
+     "joined": {
+      "red_all3": 0,
+      "red_vs_area": 0,
+      "all3_px_vs_area": []
+     }
+    }
+   ],
+   "orig_vs_joined_px_differ": 6
+  },
+  {
+   "framing": "hd",
+   "corners": [
+    {
+     "corner": [
+      358,
+      924
+     ],
+     "frame_px": [
+      798,
+      975
+     ],
+     "orig": {
+      "red_all3": 2,
+      "red_vs_area": 2,
+      "all3_px_vs_area": [
+       45,
+       28
+      ]
+     },
+     "joined": {
+      "red_all3": 0,
+      "red_vs_area": 0,
+      "all3_px_vs_area": []
+     }
+    },
+    {
+     "corner": [
+      666,
+      924
+     ],
+     "frame_px": [
+      1122,
+      975
+     ],
+     "orig": {
+      "red_all3": 2,
+      "red_vs_area": 2,
+      "all3_px_vs_area": [
+       28,
+       45
+      ]
+     },
+     "joined": {
+      "red_all3": 0,
+      "red_vs_area": 0,
+      "all3_px_vs_area": []
+     }
+    }
+   ],
+   "orig_vs_joined_px_differ": 14
+  }
+ ],
+ "corner_z1": {
+  "square_mean": {
+   "chr": 255.0,
+   "ff": 255.0,
+   "wk": 255.0,
+   "id": 255.0
+  },
+  "corner": {
+   "square_mean": 0.0,
+   "red_all3": 64,
+   "red_vs_area": 64
+  },
+  "corner-joined": {
+   "square_mean": 255.0,
+   "red_all3": 0,
+   "red_vs_area": 0
+  },
+  "corner-split": {
+   "square_mean": 0.0,
+   "red_all3": 64,
+   "red_vs_area": 64
+  },
+  "split_identical_to_corner": true
+ },
+ "repro_z1": {
+  "plain": {
+   "femtovg": 1.004,
+   "chr": 1.0,
+   "ff": 1.004,
+   "wk": 1.004,
+   "id": 1.004
+  },
+  "points": {
+   "femtovg": 1.435,
+   "chr": 0.871,
+   "ff": 0.871,
+   "wk": 1.042,
+   "id": 1.004
+  }
+ }
+}

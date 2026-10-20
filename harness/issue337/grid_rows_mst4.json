@@ -1,0 +1,42 @@
+[
+ {
+  "name": "ox-alpha",
+  "crop": [
+   760,
+   40,
+   1160,
+   460
+  ],
+  "label": "feDisplacementMap (hairRough: feTurbulence displacing 13 hair strokes) is not implemented: femtovg draws them smooth"
+ },
+ {
+  "name": "gpt-5-6-terra-pro",
+  "crop": [
+   690,
+   590,
+   1240,
+   900
+  ],
+  "label": "feGaussianBlur > feOffset > feColorMatrix > feMerge, merged in linearRGB with its linearRGB colour (row 1 of the last grid)"
+ },
+ {
+  "name": "mistral-large-4",
+  "crop": [
+   620,
+   380,
+   860,
+   560
+  ],
+  "label": "feDropShadow on a group: its translucent glow over its own shadow, merged in linearRGB (row 2 of the last grid)"
+ },
+ {
+  "name": "gemini-3-1-pro-preview-custom-tools",
+  "crop": [
+   600,
+   50,
+   1240,
+   410
+  ],
+  "label": "feDropShadow: anti-aliased hair edges over their own shadow, merged in linearRGB (row 4 of the last grid)"
+ }
+]

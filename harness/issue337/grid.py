@@ -4,18 +4,19 @@ the region where femtovg master is furthest from the browsers: femtovg | Chromiu
 27.2) | femtovg against all three (red: more than 20/255 off all three; orange: off one or two; grey: the frame).
 ROWS.json: [{"name": ..., "crop": [x0, y0, x1, y1], "label": ...}, ...] (crop in the 1920x1080 frame). With AFTER, a
 sixth column: the same error map for build AFTER (e.g. master with a harness mapping switched on)."""
-import json, sys
+import json, os, sys
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 b, rows_path, out = sys.argv[1:4]
 after = sys.argv[4] if len(sys.argv) > 4 else None
 after_head = sys.argv[5] if len(sys.argv) > 5 else f'{after} vs all three'
+after_phrase = sys.argv[6] if len(sys.argv) > 6 else 'with the linear merge'
 rows = json.load(open(rows_path))
 font = lambda s: ImageFont.truetype('/System/Library/Fonts/Helvetica.ttc', s)
 L = lambda p: np.asarray(Image.open(p).convert('RGB'), dtype=np.int16)
 PW = 340  # panel width
-heads = ['femtovg (master)', 'Chromium 131', 'Firefox 159', 'WebKit (macOS 27.2)', 'femtovg vs all three']
+heads = [f'femtovg (master {os.environ.get("REV", "")})'.replace(' )', ')'), 'Chromium 131', 'Firefox 159', 'WebKit (macOS 27.2)', 'femtovg vs all three']
 built = []
 for r in rows:
     k = f"corpus__buseybench__{r['name']}"
@@ -55,7 +56,7 @@ for i, t in enumerate(heads + ([after_head] if after else [])):
 y = head
 for r, panels, ph, n_crop, n_frame in built:
     d.text((gap, y + 2), f"{r['name']}: {r['label']}", fill='black', font=font(13))
-    extra = f"; {r['after_frame']:,} with the linear merge" if 'after_frame' in r else ''
+    extra = f"; {r['after_frame']:,} {after_phrase}" if 'after_frame' in r else ''
     d.text((gap, y + 18), f"{n_frame:,} pixels of the 1080p frame more than 20/255 off all three browsers{extra}", fill=(90, 90, 90), font=font(11))
     y += cap
     for i, p in enumerate(panels):
