@@ -22,7 +22,14 @@ native frames are measured against), memory and compute. Builds: master 06243b80
 - `drive_chromium.mjs` (playwright-core), `wk_host.swift` (WKWebView; finds its WebContent and GPU process ids
   through `_webProcessIdentifier` and the pool's `_gpuProcessIdentifier`): one browser per job, a watchdog that
   reloads a stalled or crashed page.
-- `analyze.py`, `timing.py`: the summaries below.
+- `drive_safari.py`: Safari itself, which cannot be scripted without remote automation: it opens the job page
+  (`open -a Safari`, or `xcrun devicectl ... --payload-url` on an iOS device), passes the processes to sample, and
+  opens the page again when it stalls. For a device, `server.py ... bind=0.0.0.0 tls=CERT,KEY allow=192.168.7.`
+  serves the page over TLS (WebGPU needs a secure context) to the local network only; the certificate is a
+  temporary self-signed one, whose warning has to be accepted on the device.
+- A probe job (`"probe": "element-upload"`) runs `probe_element_upload` in place of frames: the order of a web image
+  source's upload against a frame flushed before it and submitted after it (#409).
+- `analyze.py`, `timing.py`, `gpu_memory_chart.py`: the summaries below.
 
 Corpus: the 1,279 demo-assets files, the 780 files of the extracted reftest suite (groups 01-22), 17 synthetic
 scenes (`perf`: 0-4,000 rounded rects, stars, lines, gradients, a clipped set, blurred circles), at 460x260 1x and
@@ -85,6 +92,15 @@ Steady state (frames 2-10), summed over the 106 frames (53 files, 1x and 1080p);
   encode 2.9-3.9 ms per 1,000 in both, as natively (native `rects-4000`: 14.5 ms encode). #305's ~0.5 ms per element
   (Chrome on an NVIDIA GPU, an older femtovg) is not what master costs here.
 - First use of a pipeline is slow in WebKit: a frame that first draws through the clip-path pipeline waited 1.9 s.
+
+## Safari itself
+
+Safari 27.2 on macOS, the same page opened as a tab: the 6,252-frame corpus run (the codec-enabled build) has no
+error, lost device or reload, and the same 12 Unicode frames off native, nothing else. Its GPU process does what
+the WKWebView's does: about 350 MiB through BuseyBench, 1,456 MiB at `perf__grads-1000`, 2.1-2.6 GB at
+`perf__rects-4000`, and 3,957 MiB on Babylon's 65,536-square `vertex-pulling` capture at 2x (the WKWebView's
+2,859 MiB, Chrome's GPU process 981 MiB, native peak footprint 1,067 MiB). `../../issue-webkit-gpu-memory.png`
+plots it.
 
 ## Files
 

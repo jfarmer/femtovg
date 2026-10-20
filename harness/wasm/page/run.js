@@ -65,6 +65,30 @@ async function main() {
   for (;;) {
     const task = await (await fetch(`/next?job=${encodeURIComponent(jobName)}`)).json();
     if (task.done) { log('done', n, 'frames'); await post('/event', { event: 'done', frames: n }); return; }
+    if (task.probe === 'element-upload') {
+      const header = { key: task.key, framing: task.framing };
+      try {
+        const el = document.createElement('canvas');
+        el.width = 4; el.height = 4;
+        const ctx = el.getContext('2d');
+        ctx.fillStyle = 'rgb(0, 0, 255)';
+        ctx.fillRect(0, 0, 4, 4);
+        h.probe_element_upload(el);
+        header.probe = {};
+        for (const [i, name] of [[0, 'A'], [1, 'B']]) {
+          h.select_probe_target(i);
+          h.request_pixels();
+          let px;
+          await waitFor(() => (px = h.pixels()) !== undefined, 'the readback', 30000);
+          const o = (8 * 16 + 8) * 4;
+          header.probe[name] = [px[o], px[o + 1], px[o + 2], px[o + 3]];
+        }
+      } catch (e) { header.error = String(e && e.stack ? e.stack : e); }
+      header.device_errors = h.take_errors();
+      await postResult(header, null);
+      n++;
+      continue;
+    }
     const header = { key: task.key, framing: task.framing, wasm_before: memory() };
     const t0 = performance.now();
     let rgba = null;

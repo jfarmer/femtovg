@@ -46,6 +46,8 @@ pub struct Harness {
     readback_pool: std::collections::HashMap<(u32, u32), wgpu::Buffer>,
     /// WebGL's adapter comes from a canvas's context.
     surface: Option<wgpu::Surface<'static>>,
+    /// The two frames of `probe_element_upload`.
+    probe_targets: Option<(wgpu::Texture, wgpu::Texture)>,
     submits: u32,
     info: String,
 }
@@ -131,6 +133,7 @@ pub async fn create_harness(backend: String) -> Result<Harness, JsValue> {
         readback: None,
         readback_pool: std::collections::HashMap::new(),
         surface,
+        probe_targets: None,
         submits: 0,
         info,
     })
@@ -369,6 +372,58 @@ impl Harness {
             FILLS.load(Relaxed),
             MASKED_FILLS.load(Relaxed),
         )
+    }
+
+    /// The order of an element upload against a frame flushed before it and
+    /// submitted after it, with slicing off: an image given red bytes, frame
+    /// A drawing it flushed and held, the image given `element`, frame B
+    /// drawing it flushed, A and B submitted together. A should draw red and
+    /// B the element; `select_probe_target` then `request_pixels` read them.
+    pub fn probe_element_upload(&mut self, element: web_sys::HtmlCanvasElement) -> Result<(), JsValue> {
+        let (w, h) = (16u32, 16u32);
+        let make = |device: &wgpu::Device| {
+            device.create_texture(&wgpu::TextureDescriptor {
+                label: None,
+                size: wgpu::Extent3d { width: w, height: h, depth_or_array_layers: 1 },
+                mip_level_count: 1,
+                sample_count: 1,
+                dimension: wgpu::TextureDimension::D2,
+                format: wgpu::TextureFormat::Rgba8Unorm,
+                usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::COPY_SRC,
+                view_formats: &[],
+            })
+        };
+        let (first, second) = (make(&self.device), make(&self.device));
+        self.canvas.set_size(w, h, 1.0);
+        #[cfg(harness_slices)]
+        self.canvas.renderer_mut().set_submission_slicing(None);
+        let red = vec![femtovg::rgb::RGBA8::new(255, 0, 0, 255); 16];
+        let image = self
+            .canvas
+            .create_image(femtovg::imgref::Img::new(red.as_slice(), 4, 4), ImageFlags::NEAREST)
+            .map_err(|e| js_err("create_image", e))?;
+        let mut whole = Path::new();
+        whole.rect(0.0, 0.0, w as f32, h as f32);
+        let paint = Paint::image(image, 0.0, 0.0, w as f32, h as f32, 0.0, 1.0);
+        self.canvas.fill_path(&whole, &paint);
+        let a = self.canvas.flush_to_output(&first);
+        self.canvas
+            .update_image(image, femtovg::ImageSource::HtmlCanvasElement(&element), 0, 0)
+            .map_err(|e| js_err("update_image", e))?;
+        self.canvas.fill_path(&whole, &paint);
+        let b = self.canvas.flush_to_output(&second);
+        self.queue.submit(a.into_iter().chain(b));
+        self.canvas.delete_image(image);
+        self.probe_targets = Some((first, second));
+        Ok(())
+    }
+
+    /// Makes frame A (0) or B (1) of the last probe what `request_pixels` reads.
+    pub fn select_probe_target(&mut self, which: u32) -> Result<(), JsValue> {
+        let (a, b) = self.probe_targets.as_ref().ok_or_else(|| JsValue::from_str("no probe"))?;
+        let texture = if which == 0 { a.clone() } else { b.clone() };
+        self.target = Some((16, 16, texture));
+        Ok(())
     }
 
     /// Uncaptured device errors since the last call.

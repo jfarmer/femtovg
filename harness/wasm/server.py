@@ -31,7 +31,13 @@ from common import FRAMINGS, SWEEP_ENV  # noqa: E402
 import procstat  # noqa: E402
 
 cfg = json.load(open(sys.argv[1]))
-PORT = int(dict(a.split('=', 1) for a in sys.argv[2:]).get('port', 8737))
+OPTS = dict(a.split('=', 1) for a in sys.argv[2:])
+PORT = int(OPTS.get('port', 8737))
+# bind=0.0.0.0 tls=CERT,KEY allow=192.168.7. : serve a device on the local network over TLS (WebGPU needs a secure
+# context), answering only loopback and the address prefixes listed.
+BIND = OPTS.get('bind', '127.0.0.1')
+TLS = OPTS.get('tls')
+ALLOW = tuple(p for p in OPTS.get('allow', '').split(',') if p) + ('127.0.0.1', '::1')
 RUN = cfg['run_dir']
 PKG = cfg['pkg_dir']
 FILES = {f['key']: f for f in json.load(open(cfg['files']))}
@@ -61,6 +67,9 @@ class Job:
         files = [f for f in FILES.values() if (keys is None or f['key'] in keys) and (groups is None or f['group'] in groups)]
         files.sort(key=lambda f: f['key'])
         self.tasks = [(f['key'], fr) for f in files for fr in spec['framings']]
+        if spec.get('probe'):
+            # A probe job: one pseudo-frame the page runs as the named probe.
+            self.tasks = [(f"probe__{spec['probe']}", 'z1')]
         done = set()
         self.results = f'{self.dir}/results.jsonl'
         if os.path.exists(self.results):
@@ -83,6 +92,8 @@ class Job:
 
     def task_json(self, task):
         key, framing = task
+        if self.spec.get('probe'):
+            return {'key': key, 'framing': framing, 'probe': self.spec['probe']}
         env, zoom = FRAMINGS[framing]
         return {'key': key, 'framing': framing, 'scale': zoom, 'dark': False, 'frames': self.spec.get('frames', 1),
                 'env': {**SWEEP_ENV, **env, **self.spec.get('env', {})}, 'svg': f'/svg?key={key}'}
@@ -211,6 +222,14 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, *args):
         pass
 
+    def parse_request(self):
+        if not super().parse_request():
+            return False
+        if not self.client_address[0].startswith(ALLOW):
+            self.send_error(403)
+            return False
+        return True
+
     def send(self, code, body, ctype='application/json'):
         if isinstance(body, (dict, list)):
             body = json.dumps(body).encode()
@@ -327,6 +346,13 @@ def sampler():
 
 
 threading.Thread(target=sampler, daemon=True).start()
-print(f'serving on http://127.0.0.1:{PORT}/ ({len(JOBS)} jobs, {sum(len(j.pending) for j in JOBS.values())} frames pending, '
-      f'{len(NATIVE)} native hashes)', flush=True)
-ThreadingHTTPServer(('127.0.0.1', PORT), Handler).serve_forever()
+httpd = ThreadingHTTPServer((BIND, PORT), Handler)
+if TLS:
+    import ssl
+    cert, key = TLS.split(',')
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    context.load_cert_chain(cert, key)
+    httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
+print(f'serving on {"https" if TLS else "http"}://{BIND}:{PORT}/ ({len(JOBS)} jobs, '
+      f'{sum(len(j.pending) for j in JOBS.values())} frames pending, {len(NATIVE)} native hashes)', flush=True)
+httpd.serve_forever()
