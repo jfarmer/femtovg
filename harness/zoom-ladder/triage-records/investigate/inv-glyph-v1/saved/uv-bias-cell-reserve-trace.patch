@@ -1,0 +1,45 @@
+diff --git a/src/text.rs b/src/text.rs
+index 9d5f8047..c21eff40 100644
+--- a/src/text.rs
++++ b/src/text.rs
+@@ -645,6 +645,24 @@ impl GlyphAtlas {
+                 q.s1 = (rendered.atlas_x + rendered.width) as f32 * itw;
+                 q.t1 = (rendered.atlas_y + rendered.height) as f32 * ith;
+ 
++                // SKEPTIC EXPERIMENT: shift UVs by a fraction of a texel (GLYPH_UV_BIAS="bx,by").
++                if let Ok(v) = std::env::var("GLYPH_UV_BIAS") {
++                    let mut it = v.split(',').map(|n| n.trim().parse::<f32>().unwrap_or(0.0));
++                    let bx = it.next().unwrap_or(0.0);
++                    let by = it.next().unwrap_or(0.0);
++                    q.s0 += bx * itw;
++                    q.s1 += bx * itw;
++                    q.t0 += by * ith;
++                    q.t1 += by * ith;
++                }
++                if std::env::var("GLYPH_TRACE").is_ok() {
++                    eprintln!(
++                        "GLYPH id={} size={} sub={} x={} y={} x0={} y0={} atlas=({},{}) w={} h={} tex={}",
++                        glyph.glyph_id, font_size, subpixel_location, glyph.x, glyph.y, q.x0, q.y0,
++                        rendered.atlas_x, rendered.atlas_y, rendered.width, rendered.height, rendered.texture_index
++                    );
++                }
++
+                 cmd.quads.push(q);
+             }
+ 
+@@ -908,6 +926,15 @@ impl GlyphAtlas {
+         if texture_search_result.is_none() {
+             // All atlases are exausted and a new one must be created
+             let mut atlas = Atlas::new(TEXTURE_SIZE, TEXTURE_SIZE);
++            // SKEPTIC EXPERIMENT: reserve a dummy rect first (ATLAS_PRE_RESERVE="w,h"), which moves
++            // every later cell without drawing anything.
++            if let Ok(v) = std::env::var("ATLAS_PRE_RESERVE") {
++                let mut it = v.split(',').map(|n| n.trim().parse::<usize>().unwrap_or(0));
++                let (w, h) = (it.next().unwrap_or(0), it.next().unwrap_or(0));
++                if w > 0 && h > 0 {
++                    let _ = atlas.add_rect(w, h);
++                }
++            }
+ 
+             let loc = atlas
+                 .add_rect(width, height)

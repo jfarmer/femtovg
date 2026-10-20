@@ -1,0 +1,65 @@
+diff --git a/src/gradient_store.rs b/src/gradient_store.rs
+index cdab515a..38d83ae1 100644
+--- a/src/gradient_store.rs
++++ b/src/gradient_store.rs
+@@ -45,9 +45,22 @@ impl GradientStore {
+             Ok(*gradient_image_id)
+         } else {
+             // We need to allocate a texture and synthesize the gradient image.
+-            let info = ImageInfo::new(ImageFlags::REPEAT_Y, 256, 1, crate::PixelFormat::Rgba8);
++            // SKEPTIC PROBE: FEMTOVG_PROBE_CENTRE=N bakes N texels, each the
++            // gradient function evaluated at its own centre (i+0.5)/N with
++            // Skia's interval pick (count of stops <= t); FEMTOVG_PROBE_NEAREST
++            // samples it unfiltered. Unset: master's 256-texel LUT, unchanged.
++            let probe_n: Option<usize> = std::env::var("FEMTOVG_PROBE_CENTRE").ok().and_then(|v| v.parse().ok());
++            let mut flags = ImageFlags::REPEAT_Y;
++            if std::env::var("FEMTOVG_PROBE_NEAREST").is_ok() {
++                flags |= ImageFlags::NEAREST;
++            }
++            let width = probe_n.unwrap_or(256);
++            let info = ImageInfo::new(flags, width, 1, crate::PixelFormat::Rgba8);
+             let gradient_image_id = images.alloc(renderer, info)?;
+-            let image = linear_gradient_stops(colors);
++            let image = match probe_n {
++                Some(n) => probe_centre_lut(colors, n),
++                None => linear_gradient_stops(colors),
++            };
+             images.update(renderer, gradient_image_id, ImageSource::Rgba(image.as_ref()), 0, 0)?;
+ 
+             self.this_frame.insert(colors.clone(), gradient_image_id);
+@@ -68,6 +81,35 @@ impl GradientStore {
+     }
+ }
+ 
++fn probe_centre_lut(gradient: &MultiStopGradient, n: usize) -> imgref::Img<Vec<rgb::RGBA8>> {
++    let stops: Vec<GradientStop> = (0..gradient.len())
++        .map(|i| gradient.get(i))
++        .filter(|s| s.0 <= 1.0)
++        .collect();
++    let mut out = Vec::with_capacity(n);
++    for i in 0..n {
++        let t = (i as f32 + 0.5) / n as f32;
++        let k = stops.iter().filter(|s| t >= s.0).count();
++        let c = if k == 0 {
++            stops[0].1
++        } else if k >= stops.len() {
++            stops[stops.len() - 1].1
++        } else {
++            let (a, b) = (stops[k - 1], stops[k]);
++            let w = (t - a.0) / (b.0 - a.0);
++            Color::rgbaf(
++                a.1.r + (b.1.r - a.1.r) * w,
++                a.1.g + (b.1.g - a.1.g) * w,
++                a.1.b + (b.1.b - a.1.b) * w,
++                a.1.a + (b.1.a - a.1.a) * w,
++            )
++        };
++        let q = |v: f32| (v * 255.0).round().clamp(0.0, 255.0) as u8;
++        out.push(rgb::RGBA8::new(q(c.r * c.a), q(c.g * c.a), q(c.b * c.a), q(c.a)));
++    }
++    imgref::Img::new(out, n, 1)
++}
++
+ #[allow(clippy::many_single_char_names)]
+ // Gradient filling, adapted from https://github.com/lieff/lvg/blob/master/render/common.c#L147
+ fn gradient_span(dest: &mut [rgb::RGBA8; 256], color0: Color, color1: Color, offset0: f32, offset1: f32) {

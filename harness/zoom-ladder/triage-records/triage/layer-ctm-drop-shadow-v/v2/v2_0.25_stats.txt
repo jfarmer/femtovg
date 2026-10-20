@@ -1,0 +1,9 @@
+layers begun: 6
+transient bytes held at flush: 194880
+layers passed through: 0
+clip coverage layers: 0
+harness cfgs: clip=true turbulence=true blend=true mix_blend=true slices=true blur_xy=true morph=true clip_paths=true crop=true
+filters skipped (SKIP_UNSUPPORTED_FILTERS): 0
+feTurbulence chains not run (no harness_turbulence): 0
+clip paths drawn unclipped (no harness_clip): 0
+filter attributes with invalid references dropped (Filter Effects 5): 0

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+<!-- A: one convex bar 1.2 px tall: ConvexFill, half fringe -->
+<path d="M20 20.3h160v1.2H20z"/>
+<!-- B: two such bars in one path: ConcaveFill, full fringe, but every contour convex -->
+<path d="M20 40.3h160v1.2H20zM20 50.3h160v1.2H20z"/>
+<!-- C: a rectangle ring, wall 1.2 px: outer clockwise, hole counter-clockwise -->
+<path d="M20.3 70.3h160v20h-160zM21.5 71.5v17.6h157.6v-17.6z"/>
+<!-- D: eight 10 px squares in one path, shared edges on pixel centres -->
+<path d="M20.5 110.5h10v10h-10zM30.5 110.5h10v10h-10zM40.5 110.5h10v10h-10zM50.5 110.5h10v10h-10zM60.5 110.5h10v10h-10zM70.5 110.5h10v10h-10zM80.5 110.5h10v10h-10zM90.5 110.5h10v10h-10z"/>
+<!-- E: the same union as one rectangle -->
+<path d="M20.5 140.5h80v10h-80z"/>
+</svg>

@@ -1,0 +1,40 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 64fe538c..04949379 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1604,15 +1604,6 @@ where
+         // The path cache saves a flattened and transformed version of the path.
+         let mut path_cache = path.cache(&transform, self.tess_tol, self.dist_tol);
+ 
+-        // Early out if path is outside the canvas bounds
+-        if path_cache.bounds.maxx < 0.0
+-            || path_cache.bounds.minx > self.width() as f32
+-            || path_cache.bounds.maxy < 0.0
+-            || path_cache.bounds.miny > self.height() as f32
+-        {
+-            return;
+-        }
+-
+         // Scale stroke width by current transform scale.
+         // Note: I don't know why the original author clamped the max stroke width to 200, but it didn't
+         // look correct when zooming in. There was probably a good reson for doing so and I may have
+@@ -1638,6 +1629,19 @@ where
+         paint_flavor.mul_alpha(self.state().alpha);
+ 
+         let reach = stroke.reach(line_width);
++
++        // Early out if the stroke is outside the canvas bounds. The path-cache
++        // bounds cover the centerline only: the outline reaches `reach` past
++        // it, and the fringe half a fringe further.
++        let cull = reach + self.fringe_width * 0.5;
++        if path_cache.bounds.maxx + cull < 0.0
++            || path_cache.bounds.minx - cull > self.width() as f32
++            || path_cache.bounds.maxy + cull < 0.0
++            || path_cache.bounds.miny - cull > self.height() as f32
++        {
++            return;
++        }
++
+         let clip = self.draw_clip(
+             || Bounds {
+                 minx: path_cache.bounds.minx - reach,

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200" fill="none" stroke="#000" stroke-width="20">
+  <path d="M10 20 H90.5" stroke-dasharray="40.25 0"/>
+  <path d="M10 60 H50.5 M50.5 60 H90.5"/>
+  <path d="M10 100 H50.5"/><path d="M50.5 100 H90.5"/>
+  <path d="M110 20 H190" stroke-dasharray="40.5 0"/>
+  <path d="M110 60 H150.25 M150.25 60 H190"/>
+  <path d="M110 140 H150.5 V180 M150.5 140 H190" stroke-width="10"/>
+</svg>

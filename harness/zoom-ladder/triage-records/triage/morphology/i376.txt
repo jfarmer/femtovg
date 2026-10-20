@@ -1,0 +1,25 @@
+## Problem
+
+A filter primitive's output is clipped to its subregion, which defaults to the filter region (Filter Effects, [filter primitive subregion](https://drafts.fxtf.org/filter-effects-1/#FilterPrimitiveSubRegion)). femtovg's chain keeps every intermediate whole: the layer store is padded by the chain's reach (`chain_reach`) so a blur, offset or dilation never loses content, and only the composite is scissored to the region. A chain whose later pass pulls content back from beyond the region therefore shows what Chromium and Firefox have already discarded.
+
+Two reftests (Chromium 131 and Firefox render them identically; px > 20/255 of the frame, worst framing on the #372/#373/#374 stack):
+
+| pair | what the chain does | femtovg vs browsers |
+|---|---|---:|
+| [offset-chained-cancelling](https://raw.githubusercontent.com/rebeckerspecialties/femtovg/demo-assets/corpus/wpt-feoffset-reftests/offset-chained-cancelling.svg) / [ref](https://raw.githubusercontent.com/rebeckerspecialties/femtovg/demo-assets/corpus/wpt-feoffset-reftests/offset-chained-cancelling-ref.svg) | `feOffset` (30, 40) then `feOffset` (-30, -40) under the default region: the first shift leaves the region, the browsers keep the part still inside, the second shift brings only that back | 33 % at 4x |
+| [morphology-closing-chain](https://raw.githubusercontent.com/rebeckerspecialties/femtovg/demo-assets/corpus/wpt-femorphology-reftests/morphology-closing-chain.svg) / [ref](https://raw.githubusercontent.com/rebeckerspecialties/femtovg/demo-assets/corpus/wpt-femorphology-reftests/morphology-closing-chain-ref.svg) | dilate 5 then erode 5: the dilation is clipped to the region, so the erosion shrinks the square | 10 % at 4x |
+
+Both suite references assume the unclipped result, so the browsers fail them too; the browsers agree with each other and with the spec.
+
+At 1x, femtovg (merged stack) / Chromium 131 / Firefox / diff:
+
+![offset-chained-cancelling and morphology-closing-chain: femtovg keeps what the browsers clip at the filter region](https://raw.githubusercontent.com/rebeckerspecialties/femtovg/demo-assets/issue376-subregion.png)
+
+## Proposal
+
+Clip each pass's output to its subregion rather than the chain's result only: a per-pass rect in the store's space (the filter region by default, a primitive's own `x`/`y`/`width`/`height` when given), applied as the scissor of that pass, which costs nothing per pixel. `LayerEffects` would carry the region, and `ImageFilter` passes an optional subregion. The default-region case needs no API beyond the region: the harness already scissors the composite to it.
+
+## Tests
+
+The two pairs above pixel-exact at 1x-4x; a chain unit test that an offset out and back under a region loses the part that left; the padded-store tests of #373/#374 unchanged (padding still serves the blur's and dilation's reach *within* the region).
+

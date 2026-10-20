@@ -1,0 +1,9178 @@
+{
+ "thin-frame-stroke-fractional": [
+  {
+   "key": "corpus__blend-probes__blend-in-opacity-and-clip",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/blend-probes/blend-in-opacity-and-clip.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 192,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1364,
+     "wk": 192,
+     "chr_ff": 180
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 166,
+     "best": "wk",
+     "chr": 265,
+     "ff": 422,
+     "wk": 166,
+     "chr_ff": 158
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 64,
+     "best": "wk",
+     "chr": 196,
+     "ff": 256,
+     "wk": 64,
+     "chr_ff": 60
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 166,
+     "best": "wk",
+     "chr": 265,
+     "ff": 422,
+     "wk": 166,
+     "chr_ff": 158
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 192,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1364,
+     "wk": 192,
+     "chr_ff": 180
+    }
+   ]
+  },
+  {
+   "key": "corpus__blend-probes__blend-nested",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/blend-probes/blend-nested.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 177,
+     "best": "wk",
+     "chr": 1187,
+     "ff": 1187,
+     "wk": 177,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 265,
+     "ff": 331,
+     "wk": 84,
+     "chr_ff": 66
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 59,
+     "best": "wk",
+     "chr": 199,
+     "ff": 199,
+     "wk": 59,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 265,
+     "ff": 331,
+     "wk": 84,
+     "chr_ff": 66
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 177,
+     "best": "wk",
+     "chr": 1187,
+     "ff": 1187,
+     "wk": 177,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__blend-probes__blend-with-filter",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/blend-probes/blend-with-filter.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 264,
+     "best": "ff",
+     "chr": 290,
+     "ff": 264,
+     "wk": 395,
+     "chr_ff": 19
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 264,
+     "best": "ff",
+     "chr": 290,
+     "ff": 264,
+     "wk": 395,
+     "chr_ff": 19
+    }
+   ]
+  },
+  {
+   "key": "corpus__blend-probes__feblend-after-blur",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/blend-probes/feblend-after-blur.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 267,
+     "best": "chr",
+     "chr": 267,
+     "ff": 267,
+     "wk": 489,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 267,
+     "best": "chr",
+     "chr": 267,
+     "ff": 267,
+     "wk": 489,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__blend-probes__feblend-in-clipped-layer",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/blend-probes/feblend-in-clipped-layer.svg",
+   "z1_best": [
+    8,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 36,
+     "best": "wk",
+     "chr": 208,
+     "ff": 102,
+     "wk": 36,
+     "chr_ff": 222
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 53,
+     "best": "wk",
+     "chr": 148,
+     "ff": 65,
+     "wk": 53,
+     "chr_ff": 160
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 36,
+     "best": "wk",
+     "chr": 208,
+     "ff": 102,
+     "wk": 36,
+     "chr_ff": 222
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 43,
+     "best": "wk",
+     "chr": 1332,
+     "ff": 1303,
+     "wk": 43,
+     "chr_ff": 88
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 44,
+     "best": "wk",
+     "chr": 352,
+     "ff": 298,
+     "wk": 44,
+     "chr_ff": 58
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 44,
+     "best": "wk",
+     "chr": 352,
+     "ff": 298,
+     "wk": 44,
+     "chr_ff": 58
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 43,
+     "best": "wk",
+     "chr": 1332,
+     "ff": 1303,
+     "wk": 43,
+     "chr_ff": 88
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-feblend__empty",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-feblend/empty.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 216,
+     "best": "wk",
+     "chr": 472,
+     "ff": 472,
+     "wk": 216,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 216,
+     "best": "wk",
+     "chr": 472,
+     "ff": 472,
+     "wk": 216,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-feblend__mode=color-burn",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-feblend/mode=color-burn.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 196,
+     "ff": 196,
+     "wk": 100,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-feblend__mode=darken",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-feblend/mode=darken.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 196,
+     "ff": 196,
+     "wk": 100,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-feblend__mode=hue",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-feblend/mode=hue.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 196,
+     "ff": 196,
+     "wk": 100,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-feblend__mode=lighten",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-feblend/mode=lighten.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 196,
+     "ff": 196,
+     "wk": 100,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-feblend__mode=multiply",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-feblend/mode=multiply.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 196,
+     "ff": 196,
+     "wk": 100,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-feblend__mode=normal",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-feblend/mode=normal.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 196,
+     "ff": 196,
+     "wk": 100,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-feblend__mode=screen",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-feblend/mode=screen.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 196,
+     "ff": 196,
+     "wk": 100,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 301,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 301,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-mix-blend__darken",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-mix-blend/darken.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 90,
+     "best": "wk",
+     "chr": 266,
+     "ff": 326,
+     "wk": 90,
+     "chr_ff": 60
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 90,
+     "best": "wk",
+     "chr": 266,
+     "ff": 326,
+     "wk": 90,
+     "chr_ff": 60
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-mix-blend__filter-multiple-primitives-4",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-mix-blend/filter-multiple-primitives-4.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 872,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 872,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 196,
+     "best": "wk",
+     "chr": 264,
+     "ff": 264,
+     "wk": 196,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 196,
+     "best": "chr",
+     "chr": 196,
+     "ff": 196,
+     "wk": 480,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 196,
+     "best": "wk",
+     "chr": 264,
+     "ff": 264,
+     "wk": 196,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 872,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 872,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-mix-blend__isolation-isolate",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-mix-blend/isolation-isolate.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 125,
+     "best": "wk",
+     "chr": 265,
+     "ff": 265,
+     "wk": 125,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 125,
+     "best": "wk",
+     "chr": 265,
+     "ff": 265,
+     "wk": 125,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-mix-blend__multiply",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-mix-blend/multiply.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 90,
+     "best": "wk",
+     "chr": 266,
+     "ff": 266,
+     "wk": 90,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 90,
+     "best": "wk",
+     "chr": 266,
+     "ff": 266,
+     "wk": 90,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__resvg-mix-blend__opacity-on-group",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/resvg-mix-blend/opacity-on-group.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 115,
+     "best": "wk",
+     "chr": 266,
+     "ff": 266,
+     "wk": 115,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 115,
+     "best": "wk",
+     "chr": 266,
+     "ff": 266,
+     "wk": 115,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-region-outside-canvas-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/19-filter-subregions-and-offcanvas/resvg-filter-region-outside-canvas-ref.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 1184,
+     "best": "ff",
+     "chr": 1188,
+     "ff": 1184,
+     "wk": 1892,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 192,
+     "best": "wk",
+     "chr": 268,
+     "ff": 260,
+     "wk": 192,
+     "chr_ff": 12
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 196,
+     "best": "ff",
+     "chr": 208,
+     "ff": 196,
+     "wk": 772,
+     "chr_ff": 8
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 192,
+     "best": "wk",
+     "chr": 268,
+     "ff": 260,
+     "wk": 192,
+     "chr_ff": 12
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 1184,
+     "best": "ff",
+     "chr": 1188,
+     "ff": 1184,
+     "wk": 1892,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-region-outside-canvas",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/19-filter-subregions-and-offcanvas/resvg-filter-region-outside-canvas.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 1184,
+     "best": "ff",
+     "chr": 1188,
+     "ff": 1184,
+     "wk": 1892,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 192,
+     "best": "wk",
+     "chr": 268,
+     "ff": 260,
+     "wk": 192,
+     "chr_ff": 12
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 196,
+     "best": "ff",
+     "chr": 208,
+     "ff": 196,
+     "wk": 772,
+     "chr_ff": 8
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 192,
+     "best": "wk",
+     "chr": 268,
+     "ff": 260,
+     "wk": 192,
+     "chr_ff": 12
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 1184,
+     "best": "ff",
+     "chr": 1188,
+     "ff": 1184,
+     "wk": 1892,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-with-subregion-1-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/19-filter-subregions-and-offcanvas/resvg-filter-with-subregion-1-ref.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 160,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1288,
+     "wk": 160,
+     "chr_ff": 104
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 66,
+     "best": "wk",
+     "chr": 196,
+     "ff": 231,
+     "wk": 66,
+     "chr_ff": 35
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 160,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1288,
+     "wk": 160,
+     "chr_ff": 104
+    }
+   ]
+  },
+  {
+   "key": "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-with-subregion-1",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/19-filter-subregions-and-offcanvas/resvg-filter-with-subregion-1.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 164,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 164,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 69,
+     "best": "wk",
+     "chr": 196,
+     "ff": 196,
+     "wk": 69,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 164,
+     "best": "wk",
+     "chr": 1184,
+     "ff": 1184,
+     "wk": 164,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-with-subregion-2-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/19-filter-subregions-and-offcanvas/resvg-filter-with-subregion-2-ref.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 856,
+     "best": "wk",
+     "chr": 1186,
+     "ff": 1184,
+     "wk": 856,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 86,
+     "best": "wk",
+     "chr": 264,
+     "ff": 316,
+     "wk": 86,
+     "chr_ff": 60
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 196,
+     "best": "ff",
+     "chr": 202,
+     "ff": 196,
+     "wk": 348,
+     "chr_ff": 4
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 86,
+     "best": "wk",
+     "chr": 264,
+     "ff": 316,
+     "wk": 86,
+     "chr_ff": 60
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 856,
+     "best": "wk",
+     "chr": 1186,
+     "ff": 1184,
+     "wk": 856,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-with-subregion-2",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/19-filter-subregions-and-offcanvas/resvg-filter-with-subregion-2.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 976,
+     "best": "wk",
+     "chr": 1186,
+     "ff": 1184,
+     "wk": 976,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 102,
+     "best": "wk",
+     "chr": 264,
+     "ff": 318,
+     "wk": 102,
+     "chr_ff": 62
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 196,
+     "best": "ff",
+     "chr": 202,
+     "ff": 196,
+     "wk": 398,
+     "chr_ff": 4
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 102,
+     "best": "wk",
+     "chr": 264,
+     "ff": 318,
+     "wk": 102,
+     "chr_ff": 62
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 976,
+     "best": "wk",
+     "chr": 1186,
+     "ff": 1184,
+     "wk": 976,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__22-gradient-stops-and-recursion-guards__resvg-radialgradient-negative-r-guard",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/22-gradient-stops-and-recursion-guards/resvg-radialgradient-negative-r-guard.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 1184,
+     "best": "chr",
+     "chr": 1184,
+     "ff": 11056,
+     "wk": 14412,
+     "chr_ff": 9872
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 264,
+     "best": "chr",
+     "chr": 264,
+     "ff": 2172,
+     "wk": 2920,
+     "chr_ff": 1908
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 196,
+     "best": "chr",
+     "chr": 196,
+     "ff": 1304,
+     "wk": 1604,
+     "chr_ff": 1108
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 264,
+     "best": "chr",
+     "chr": 264,
+     "ff": 2172,
+     "wk": 2920,
+     "chr_ff": 1908
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 1184,
+     "best": "chr",
+     "chr": 1184,
+     "ff": 11056,
+     "wk": 14412,
+     "chr_ff": 9872
+    }
+   ]
+  }
+ ],
+ "clip-edges": [
+  {
+   "key": "corpus__clip-probes__evenodd-clip-thin-ring",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/clip-probes/evenodd-clip-thin-ring.svg",
+   "z1_best": [
+    0,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 59,
+     "best": "wk",
+     "chr": 1166,
+     "ff": 1008,
+     "wk": 59,
+     "chr_ff": 1066
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 195,
+     "best": "wk",
+     "chr": 1148,
+     "ff": 864,
+     "wk": 195,
+     "chr_ff": 999
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 318,
+     "best": "wk",
+     "chr": 1161,
+     "ff": 881,
+     "wk": 318,
+     "chr_ff": 1035
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 198,
+     "best": "wk",
+     "chr": 1092,
+     "ff": 992,
+     "wk": 198,
+     "chr_ff": 1018
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 198,
+     "best": "wk",
+     "chr": 1092,
+     "ff": 992,
+     "wk": 198,
+     "chr_ff": 1018
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 318,
+     "best": "wk",
+     "chr": 1161,
+     "ff": 881,
+     "wk": 318,
+     "chr_ff": 1035
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 195,
+     "best": "wk",
+     "chr": 1148,
+     "ff": 864,
+     "wk": 195,
+     "chr_ff": 999
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 59,
+     "best": "wk",
+     "chr": 1166,
+     "ff": 1008,
+     "wk": 59,
+     "chr_ff": 1066
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 326,
+     "ff": 354,
+     "wk": 56,
+     "chr_ff": 329
+    },
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 270,
+     "ff": 203,
+     "wk": 48,
+     "chr_ff": 226
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 270,
+     "ff": 203,
+     "wk": 48,
+     "chr_ff": 226
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 326,
+     "ff": 354,
+     "wk": 56,
+     "chr_ff": 329
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-blend-reftests-2__11-blend-gradients-and-clips__blend-clip-path-nested-overlay-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-blend-reftests-2/11-blend-gradients-and-clips/blend-clip-path-nested-overlay-ref.svg",
+   "z1_best": [
+    0,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 31,
+     "best": "wk",
+     "chr": 116,
+     "ff": 72,
+     "wk": 31,
+     "chr_ff": 72
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 31,
+     "best": "wk",
+     "chr": 116,
+     "ff": 72,
+     "wk": 31,
+     "chr_ff": 72
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-blend-reftests-2__11-blend-gradients-and-clips__blend-clip-path-nested-overlay",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-blend-reftests-2/11-blend-gradients-and-clips/blend-clip-path-nested-overlay.svg",
+   "z1_best": [
+    0,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 25,
+     "best": "wk",
+     "chr": 105,
+     "ff": 60,
+     "wk": 25,
+     "chr_ff": 132
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 40,
+     "best": "wk",
+     "chr": 84,
+     "ff": 64,
+     "wk": 40,
+     "chr_ff": 66
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 40,
+     "best": "wk",
+     "chr": 84,
+     "ff": 64,
+     "wk": 40,
+     "chr_ff": 66
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-concentric-circles-evenodd",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-concentric-circles-evenodd.svg",
+   "z1_best": [
+    0,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 68,
+     "best": "wk",
+     "chr": 647,
+     "ff": 297,
+     "wk": 68,
+     "chr_ff": 504
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 124,
+     "best": "wk",
+     "chr": 723,
+     "ff": 396,
+     "wk": 124,
+     "chr_ff": 606
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 119,
+     "best": "wk",
+     "chr": 421,
+     "ff": 272,
+     "wk": 119,
+     "chr_ff": 333
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 119,
+     "best": "wk",
+     "chr": 421,
+     "ff": 272,
+     "wk": 119,
+     "chr_ff": 333
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 124,
+     "best": "wk",
+     "chr": 723,
+     "ff": 396,
+     "wk": 124,
+     "chr_ff": 606
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 68,
+     "best": "wk",
+     "chr": 647,
+     "ff": 297,
+     "wk": 68,
+     "chr_ff": 504
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 40,
+     "best": "wk",
+     "chr": 205,
+     "ff": 182,
+     "wk": 40,
+     "chr_ff": 151
+    },
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 28,
+     "best": "wk",
+     "chr": 147,
+     "ff": 114,
+     "wk": 28,
+     "chr_ff": 126
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 28,
+     "best": "wk",
+     "chr": 147,
+     "ff": 114,
+     "wk": 28,
+     "chr_ff": 126
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 40,
+     "best": "wk",
+     "chr": 205,
+     "ff": 182,
+     "wk": 40,
+     "chr_ff": 151
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-rounded-rect",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-rounded-rect.svg",
+   "z1_best": [
+    17,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 40,
+     "best": "wk",
+     "chr": 146,
+     "ff": 115,
+     "wk": 40,
+     "chr_ff": 128
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 219,
+     "ff": 550,
+     "wk": 88,
+     "chr_ff": 624
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 183,
+     "ff": 97,
+     "wk": 60,
+     "chr_ff": 170
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 39,
+     "best": "wk",
+     "chr": 98,
+     "ff": 151,
+     "wk": 39,
+     "chr_ff": 105
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 39,
+     "best": "wk",
+     "chr": 98,
+     "ff": 151,
+     "wk": 39,
+     "chr_ff": 105
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 183,
+     "ff": 97,
+     "wk": 60,
+     "chr_ff": 170
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 219,
+     "ff": 550,
+     "wk": 88,
+     "chr_ff": 624
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 40,
+     "best": "wk",
+     "chr": 146,
+     "ff": 115,
+     "wk": 40,
+     "chr_ff": 128
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-12",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-12.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 194,
+     "ff": 123,
+     "wk": 56,
+     "chr_ff": 182
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 201
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 220,
+     "ff": 189,
+     "wk": 56,
+     "chr_ff": 193
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 346,
+     "ff": 256,
+     "wk": 48,
+     "chr_ff": 231
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 346,
+     "ff": 256,
+     "wk": 48,
+     "chr_ff": 231
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 220,
+     "ff": 189,
+     "wk": 56,
+     "chr_ff": 193
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 201
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 194,
+     "ff": 123,
+     "wk": 56,
+     "chr_ff": 182
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 45,
+     "ff": 43,
+     "wk": 26,
+     "chr_ff": 37
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 45,
+     "ff": 43,
+     "wk": 26,
+     "chr_ff": 37
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-16",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-16.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 201,
+     "ff": 130,
+     "wk": 54,
+     "chr_ff": 179
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 224,
+     "ff": 174,
+     "wk": 88,
+     "chr_ff": 198
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 78,
+     "best": "wk",
+     "chr": 211,
+     "ff": 194,
+     "wk": 78,
+     "chr_ff": 196
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 44,
+     "best": "wk",
+     "chr": 209,
+     "ff": 140,
+     "wk": 44,
+     "chr_ff": 228
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 78,
+     "best": "wk",
+     "chr": 211,
+     "ff": 194,
+     "wk": 78,
+     "chr_ff": 196
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 224,
+     "ff": 174,
+     "wk": 88,
+     "chr_ff": 198
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 201,
+     "ff": 130,
+     "wk": 54,
+     "chr_ff": 179
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 106,
+     "ff": 111,
+     "wk": 26,
+     "chr_ff": 53
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "wk",
+     "chr": 40,
+     "ff": 49,
+     "wk": 25,
+     "chr_ff": 38
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "wk",
+     "chr": 40,
+     "ff": 49,
+     "wk": 25,
+     "chr_ff": 38
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 106,
+     "ff": 111,
+     "wk": 26,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-20",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-20.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 203,
+     "ff": 150,
+     "wk": 56,
+     "chr_ff": 172
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 201
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 183,
+     "ff": 157,
+     "wk": 56,
+     "chr_ff": 166
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 52,
+     "best": "wk",
+     "chr": 136,
+     "ff": 136,
+     "wk": 52,
+     "chr_ff": 97
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 52,
+     "best": "wk",
+     "chr": 136,
+     "ff": 136,
+     "wk": 52,
+     "chr_ff": 97
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 183,
+     "ff": 157,
+     "wk": 56,
+     "chr_ff": 166
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 201
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 203,
+     "ff": 150,
+     "wk": 56,
+     "chr_ff": 172
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 49,
+     "ff": 55,
+     "wk": 26,
+     "chr_ff": 34
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 49,
+     "ff": 55,
+     "wk": 26,
+     "chr_ff": 34
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-24",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-24.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 43,
+     "best": "wk",
+     "chr": 180,
+     "ff": 131,
+     "wk": 43,
+     "chr_ff": 167
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 203
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 210,
+     "ff": 189,
+     "wk": 100,
+     "chr_ff": 186
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 393,
+     "ff": 342,
+     "wk": 48,
+     "chr_ff": 245
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 43,
+     "best": "wk",
+     "chr": 248,
+     "ff": 184,
+     "wk": 43,
+     "chr_ff": 220
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 393,
+     "ff": 342,
+     "wk": 48,
+     "chr_ff": 245
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 210,
+     "ff": 189,
+     "wk": 100,
+     "chr_ff": 186
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 203
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 43,
+     "best": "wk",
+     "chr": 180,
+     "ff": 131,
+     "wk": 43,
+     "chr_ff": 167
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-28",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-28.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 194,
+     "ff": 134,
+     "wk": 54,
+     "chr_ff": 199
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 224,
+     "ff": 174,
+     "wk": 88,
+     "chr_ff": 198
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 80,
+     "best": "wk",
+     "chr": 207,
+     "ff": 199,
+     "wk": 80,
+     "chr_ff": 199
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 394,
+     "ff": 342,
+     "wk": 48,
+     "chr_ff": 246
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 87,
+     "best": "wk",
+     "chr": 488,
+     "ff": 353,
+     "wk": 87,
+     "chr_ff": 476
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 394,
+     "ff": 342,
+     "wk": 48,
+     "chr_ff": 246
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 80,
+     "best": "wk",
+     "chr": 207,
+     "ff": 199,
+     "wk": 80,
+     "chr_ff": 199
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 224,
+     "ff": 174,
+     "wk": 88,
+     "chr_ff": 198
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 194,
+     "ff": 134,
+     "wk": 54,
+     "chr_ff": 199
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 92,
+     "ff": 114,
+     "wk": 26,
+     "chr_ff": 64
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 92,
+     "ff": 114,
+     "wk": 26,
+     "chr_ff": 64
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-32",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-32.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 211,
+     "ff": 140,
+     "wk": 54,
+     "chr_ff": 190
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 201
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 193,
+     "ff": 205,
+     "wk": 96,
+     "chr_ff": 192
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 347,
+     "ff": 256,
+     "wk": 48,
+     "chr_ff": 232
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 46,
+     "best": "wk",
+     "chr": 320,
+     "ff": 195,
+     "wk": 46,
+     "chr_ff": 306
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 347,
+     "ff": 256,
+     "wk": 48,
+     "chr_ff": 232
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 193,
+     "ff": 205,
+     "wk": 96,
+     "chr_ff": 192
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 201
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 211,
+     "ff": 140,
+     "wk": 54,
+     "chr_ff": 190
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 47,
+     "ff": 45,
+     "wk": 26,
+     "chr_ff": 37
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 47,
+     "ff": 45,
+     "wk": 26,
+     "chr_ff": 37
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-36",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-36.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 201,
+     "ff": 130,
+     "wk": 54,
+     "chr_ff": 179
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 224,
+     "ff": 174,
+     "wk": 88,
+     "chr_ff": 198
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 78,
+     "best": "wk",
+     "chr": 211,
+     "ff": 194,
+     "wk": 78,
+     "chr_ff": 196
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 78,
+     "best": "wk",
+     "chr": 211,
+     "ff": 194,
+     "wk": 78,
+     "chr_ff": 196
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 224,
+     "ff": 174,
+     "wk": 88,
+     "chr_ff": 198
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 201,
+     "ff": 130,
+     "wk": 54,
+     "chr_ff": 179
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 106,
+     "ff": 111,
+     "wk": 26,
+     "chr_ff": 53
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 28,
+     "best": "wk",
+     "chr": 43,
+     "ff": 50,
+     "wk": 28,
+     "chr_ff": 37
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 28,
+     "best": "wk",
+     "chr": 43,
+     "ff": 50,
+     "wk": 28,
+     "chr_ff": 37
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 106,
+     "ff": 111,
+     "wk": 26,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-40",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-40.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 43,
+     "best": "wk",
+     "chr": 180,
+     "ff": 131,
+     "wk": 43,
+     "chr_ff": 167
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 201
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 185,
+     "ff": 154,
+     "wk": 100,
+     "chr_ff": 163
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 52,
+     "best": "wk",
+     "chr": 136,
+     "ff": 136,
+     "wk": 52,
+     "chr_ff": 97
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 52,
+     "best": "wk",
+     "chr": 136,
+     "ff": 136,
+     "wk": 52,
+     "chr_ff": 97
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 100,
+     "best": "wk",
+     "chr": 185,
+     "ff": 154,
+     "wk": 100,
+     "chr_ff": 163
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 201
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 43,
+     "best": "wk",
+     "chr": 180,
+     "ff": 131,
+     "wk": 43,
+     "chr_ff": 167
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-44",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-44.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 203,
+     "ff": 150,
+     "wk": 56,
+     "chr_ff": 172
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 203
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 206,
+     "ff": 178,
+     "wk": 56,
+     "chr_ff": 187
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 394,
+     "ff": 342,
+     "wk": 48,
+     "chr_ff": 246
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 86,
+     "best": "wk",
+     "chr": 427,
+     "ff": 326,
+     "wk": 86,
+     "chr_ff": 392
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 394,
+     "ff": 342,
+     "wk": 48,
+     "chr_ff": 246
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 206,
+     "ff": 178,
+     "wk": 56,
+     "chr_ff": 187
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 96,
+     "best": "wk",
+     "chr": 227,
+     "ff": 154,
+     "wk": 96,
+     "chr_ff": 203
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 56,
+     "best": "wk",
+     "chr": 203,
+     "ff": 150,
+     "wk": 56,
+     "chr_ff": 172
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "wk",
+     "chr": 44,
+     "ff": 48,
+     "wk": 25,
+     "chr_ff": 42
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "wk",
+     "chr": 44,
+     "ff": 48,
+     "wk": 25,
+     "chr_ff": 42
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-clip-path-reftests__clip-path-variation-48",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-clip-path-reftests/clip-path-variation-48.svg",
+   "z1_best": [
+    24,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 195,
+     "ff": 134,
+     "wk": 54,
+     "chr_ff": 200
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 224,
+     "ff": 174,
+     "wk": 88,
+     "chr_ff": 198
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 80,
+     "best": "wk",
+     "chr": 207,
+     "ff": 199,
+     "wk": 80,
+     "chr_ff": 199
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 393,
+     "ff": 342,
+     "wk": 48,
+     "chr_ff": 245
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 44,
+     "best": "wk",
+     "chr": 311,
+     "ff": 224,
+     "wk": 44,
+     "chr_ff": 291
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 48,
+     "best": "wk",
+     "chr": 393,
+     "ff": 342,
+     "wk": 48,
+     "chr_ff": 245
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 84,
+     "best": "wk",
+     "chr": 210,
+     "ff": 226,
+     "wk": 84,
+     "chr_ff": 168
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 80,
+     "best": "wk",
+     "chr": 207,
+     "ff": 199,
+     "wk": 80,
+     "chr_ff": 199
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 224,
+     "ff": 174,
+     "wk": 88,
+     "chr_ff": 198
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 54,
+     "best": "wk",
+     "chr": 195,
+     "ff": 134,
+     "wk": 54,
+     "chr_ff": 200
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 92,
+     "ff": 114,
+     "wk": 26,
+     "chr_ff": 64
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "wk",
+     "chr": 47,
+     "ff": 44,
+     "wk": 29,
+     "chr_ff": 44
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "wk",
+     "chr": 47,
+     "ff": 44,
+     "wk": 29,
+     "chr_ff": 44
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 92,
+     "ff": 114,
+     "wk": 26,
+     "chr_ff": 64
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-under-clip-path-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-under-clip-path-ref.svg",
+   "z1_best": [
+    21,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 27,
+     "best": "wk",
+     "chr": 214,
+     "ff": 123,
+     "wk": 27,
+     "chr_ff": 184
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 53,
+     "best": "wk",
+     "chr": 196,
+     "ff": 124,
+     "wk": 53,
+     "chr_ff": 177
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 88,
+     "best": "wk",
+     "chr": 168,
+     "ff": 105,
+     "wk": 88,
+     "chr_ff": 126
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 53,
+     "best": "wk",
+     "chr": 196,
+     "ff": 124,
+     "wk": 53,
+     "chr_ff": 177
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 27,
+     "best": "wk",
+     "chr": 214,
+     "ff": 123,
+     "wk": 27,
+     "chr_ff": 184
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 34,
+     "best": "wk",
+     "chr": 82,
+     "ff": 62,
+     "wk": 34,
+     "chr_ff": 70
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 34,
+     "best": "wk",
+     "chr": 82,
+     "ff": 62,
+     "wk": 34,
+     "chr_ff": 70
+    }
+   ]
+  },
+  {
+   "key": "wpt22__17-clip-path-tests__clip-path-concentric-circles-evenodd",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/17-clip-path-tests/clip-path-concentric-circles-evenodd.svg",
+   "z1_best": [
+    0,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 68,
+     "best": "wk",
+     "chr": 647,
+     "ff": null,
+     "wk": 68,
+     "chr_ff": null
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 124,
+     "best": "wk",
+     "chr": 723,
+     "ff": null,
+     "wk": 124,
+     "chr_ff": null
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 119,
+     "best": "wk",
+     "chr": 421,
+     "ff": null,
+     "wk": 119,
+     "chr_ff": null
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 119,
+     "best": "wk",
+     "chr": 421,
+     "ff": null,
+     "wk": 119,
+     "chr_ff": null
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 124,
+     "best": "wk",
+     "chr": 723,
+     "ff": null,
+     "wk": 124,
+     "chr_ff": null
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 68,
+     "best": "wk",
+     "chr": 647,
+     "ff": null,
+     "wk": 68,
+     "chr_ff": null
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 40,
+     "best": "wk",
+     "chr": 205,
+     "ff": null,
+     "wk": 40,
+     "chr_ff": null
+    },
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 28,
+     "best": "wk",
+     "chr": 147,
+     "ff": null,
+     "wk": 28,
+     "chr_ff": null
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 28,
+     "best": "wk",
+     "chr": 147,
+     "ff": null,
+     "wk": 28,
+     "chr_ff": null
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 40,
+     "best": "wk",
+     "chr": 205,
+     "ff": null,
+     "wk": 40,
+     "chr_ff": null
+    }
+   ]
+  },
+  {
+   "key": "wpt22__20-clippath-unions-and-masks__resvg-clippath-multiple-children",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/20-clippath-unions-and-masks/resvg-clippath-multiple-children.svg",
+   "z1_best": [
+    22,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 32,
+     "best": "wk",
+     "chr": 204,
+     "ff": null,
+     "wk": 32,
+     "chr_ff": null
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 200,
+     "ff": null,
+     "wk": 26,
+     "chr_ff": null
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 42,
+     "best": "wk",
+     "chr": 239,
+     "ff": null,
+     "wk": 42,
+     "chr_ff": null
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 126,
+     "best": "wk",
+     "chr": 529,
+     "ff": null,
+     "wk": 126,
+     "chr_ff": null
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 198,
+     "best": "wk",
+     "chr": 478,
+     "ff": null,
+     "wk": 198,
+     "chr_ff": null
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 126,
+     "best": "wk",
+     "chr": 529,
+     "ff": null,
+     "wk": 126,
+     "chr_ff": null
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 42,
+     "best": "wk",
+     "chr": 239,
+     "ff": null,
+     "wk": 42,
+     "chr_ff": null
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 200,
+     "ff": null,
+     "wk": 26,
+     "chr_ff": null
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 32,
+     "best": "wk",
+     "chr": 204,
+     "ff": null,
+     "wk": 32,
+     "chr_ff": null
+    }
+   ]
+  }
+ ],
+ "firefox-artwork": [
+  {
+   "key": "corpus__firefox__lists-empty-state-light",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/firefox/lists-empty-state-light.svg",
+   "z1_best": [
+    19,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 52,
+     "ff": 51,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 45,
+     "best": "wk",
+     "chr": 78,
+     "ff": 77,
+     "wk": 45,
+     "chr_ff": 33
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 113,
+     "ff": 117,
+     "wk": 60,
+     "chr_ff": 5
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 45,
+     "ff": 42,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 45,
+     "ff": 42,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 113,
+     "ff": 117,
+     "wk": 60,
+     "chr_ff": 5
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 45,
+     "best": "wk",
+     "chr": 78,
+     "ff": 77,
+     "wk": 45,
+     "chr_ff": 33
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "wk",
+     "chr": 52,
+     "ff": 51,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 32,
+     "best": "wk",
+     "chr": 55,
+     "ff": 52,
+     "wk": 32,
+     "chr_ff": 2
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 37,
+     "best": "chr",
+     "chr": 37,
+     "ff": 37,
+     "wk": 39,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 32,
+     "best": "wk",
+     "chr": 55,
+     "ff": 52,
+     "wk": 32,
+     "chr_ff": 2
+    }
+   ]
+  },
+  {
+   "key": "corpus__firefox__wallpaper-landscape-planet",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/firefox/wallpaper-landscape-planet.svg",
+   "z1_best": [
+    0,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 61,
+     "best": "chr",
+     "chr": 61,
+     "ff": 62,
+     "wk": 253,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 134,
+     "best": "chr",
+     "chr": 134,
+     "ff": 216,
+     "wk": 363,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 134,
+     "best": "chr",
+     "chr": 134,
+     "ff": 216,
+     "wk": 363,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 61,
+     "best": "chr",
+     "chr": 61,
+     "ff": 62,
+     "wk": 253,
+     "chr_ff": 0
+    },
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 129,
+     "wk": 101,
+     "chr_ff": 100
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 78,
+     "best": "chr",
+     "chr": 78,
+     "ff": 79,
+     "wk": 135,
+     "chr_ff": 66
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 67,
+     "best": "chr",
+     "chr": 67,
+     "ff": 67,
+     "wk": 100,
+     "chr_ff": 50
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 78,
+     "best": "chr",
+     "chr": 78,
+     "ff": 79,
+     "wk": 135,
+     "chr_ff": 66
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 129,
+     "wk": 101,
+     "chr_ff": 100
+    }
+   ]
+  }
+ ],
+ "blur": [
+  {
+   "key": "corpus__probes__bigblur",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/probes/bigblur.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 40,
+     "best": "chr",
+     "chr": 40,
+     "ff": 239,
+     "wk": 581,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 40,
+     "best": "chr",
+     "chr": 40,
+     "ff": 239,
+     "wk": 581,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-ancestor-clip-containment",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-ancestor-clip-containment.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 52,
+     "best": "chr",
+     "chr": 52,
+     "ff": 52,
+     "wk": 66,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 52,
+     "best": "chr",
+     "chr": 52,
+     "ff": 52,
+     "wk": 66,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-4-4-15-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-4-4-15-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-4-4-15",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-4-4-15.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-4-4-27-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-4-4-27-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-4-4-27",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-4-4-27.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-4-4-39-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-4-4-39-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-4-4-39",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-4-4-39.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-6-4-11-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-6-4-11-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-6-4-11",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-6-4-11.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-6-4-23-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-6-4-23-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-6-4-23",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-6-4-23.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-6-4-35-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-6-4-35-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-6-4-35",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-6-4-35.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-6-4-47-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-6-4-47-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fegaussianblur-reftests__blur-variation-6-4-47",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fegaussianblur-reftests/blur-variation-6-4-47.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-layer-blur-reftests__2d.layer.anisotropic-blur.isotropic",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-layer-blur-reftests/2d.layer.anisotropic-blur.isotropic.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 1136,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 1136,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-ancestor-clip-containment",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-ancestor-clip-containment.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 52,
+     "best": "chr",
+     "chr": 52,
+     "ff": 52,
+     "wk": 66,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 52,
+     "best": "chr",
+     "chr": 52,
+     "ff": 52,
+     "wk": 66,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-4-4-15-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-4-4-15-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-4-4-15",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-4-4-15.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-4-4-27-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-4-4-27-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-4-4-27",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-4-4-27.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-4-4-39-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-4-4-39-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-4-4-39",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-4-4-39.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 416,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-6-4-11-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-6-4-11-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-6-4-11",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-6-4-11.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-6-4-23-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-6-4-23-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-6-4-23",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-6-4-23.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-6-4-35-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-6-4-35-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-6-4-35",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-6-4-35.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-6-4-47-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-6-4-47-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__16-fegaussianblur-tests__blur-variation-6-4-47",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/16-fegaussianblur-tests/blur-variation-6-4-47.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 36,
+     "best": "chr",
+     "chr": 36,
+     "ff": 36,
+     "wk": 419,
+     "chr_ff": 0
+    }
+   ]
+  }
+ ],
+ "svgenius-033": [
+  {
+   "key": "svgenius__page_70_\u50cf\u7d20\u978b\u5b50\u56fe\u6807_40194_icon_17",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/svgenius/hard/page_70_\u50cf\u7d20\u978b\u5b50\u56fe\u6807_40194_icon_17.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 136,
+     "best": "wk",
+     "chr": 165,
+     "ff": 164,
+     "wk": 136,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 136,
+     "best": "wk",
+     "chr": 165,
+     "ff": 164,
+     "wk": 136,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "svgenius__page_275_\u5316\u5986\u54c1\u88c5\u9970_25821_icon_24",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/svgenius/medium/page_275_\u5316\u5986\u54c1\u88c5\u9970_25821_icon_24.svg",
+   "z1_best": [
+    3,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 496,
+     "best": "ff",
+     "chr": 502,
+     "ff": 496,
+     "wk": 525,
+     "chr_ff": 145
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 496,
+     "best": "ff",
+     "chr": 502,
+     "ff": 496,
+     "wk": 525,
+     "chr_ff": 145
+    }
+   ]
+  }
+ ],
+ "morphology": [
+  {
+   "key": "corpus__wpt-femorphology-reftests__morphology-dilate-horizontal-only",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-femorphology-reftests/morphology-dilate-horizontal-only.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 63,
+     "best": "chr",
+     "chr": 63,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 88,
+     "wk": 88,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 88,
+     "wk": 88,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 63,
+     "best": "chr",
+     "chr": 63,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 0
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-femorphology-reftests__morphology-dilate-vertical-only",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-femorphology-reftests/morphology-dilate-vertical-only.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 63,
+     "best": "chr",
+     "chr": 63,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 88,
+     "wk": 88,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 88,
+     "wk": 88,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 63,
+     "best": "chr",
+     "chr": 63,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 0
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__15-femorphology-tests__morphology-dilate-horizontal-only",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/15-femorphology-tests/morphology-dilate-horizontal-only.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 63,
+     "best": "chr",
+     "chr": 63,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 88,
+     "wk": 88,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 88,
+     "wk": 88,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 63,
+     "best": "chr",
+     "chr": 63,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 0
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__15-femorphology-tests__morphology-dilate-vertical-only",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/15-femorphology-tests/morphology-dilate-vertical-only.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 63,
+     "best": "chr",
+     "chr": 63,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 88,
+     "wk": 88,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 88,
+     "wk": 88,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 63,
+     "best": "chr",
+     "chr": 63,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 0
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    }
+   ]
+  }
+ ],
+ "feoffset": [
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-border-stroke-fill",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-border-stroke-fill.svg",
+   "z1_best": [
+    0,
+    "ff"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 152,
+     "best": "wk",
+     "chr": 817,
+     "ff": 241,
+     "wk": 152,
+     "chr_ff": 576
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 180,
+     "best": "wk",
+     "chr": 1197,
+     "ff": 285,
+     "wk": 180,
+     "chr_ff": 1092
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 337,
+     "best": "ff",
+     "chr": 1549,
+     "ff": 337,
+     "wk": 337,
+     "chr_ff": 1424
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 337,
+     "best": "ff",
+     "chr": 1549,
+     "ff": 337,
+     "wk": 337,
+     "chr_ff": 1424
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 180,
+     "best": "wk",
+     "chr": 1197,
+     "ff": 285,
+     "wk": 180,
+     "chr_ff": 1092
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 152,
+     "best": "wk",
+     "chr": 817,
+     "ff": 241,
+     "wk": 152,
+     "chr_ff": 576
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 147,
+     "best": "ff",
+     "chr": 384,
+     "ff": 147,
+     "wk": 147,
+     "chr_ff": 329
+    },
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 212,
+     "ff": 95,
+     "wk": 60,
+     "chr_ff": 177
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 65,
+     "best": "ff",
+     "chr": 92,
+     "ff": 65,
+     "wk": 65,
+     "chr_ff": 27
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 32,
+     "best": "wk",
+     "chr": 72,
+     "ff": 51,
+     "wk": 32,
+     "chr_ff": 21
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 65,
+     "best": "ff",
+     "chr": 92,
+     "ff": 65,
+     "wk": 65,
+     "chr_ff": 27
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 212,
+     "ff": 95,
+     "wk": 60,
+     "chr_ff": 177
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 147,
+     "best": "ff",
+     "chr": 384,
+     "ff": 147,
+     "wk": 147,
+     "chr_ff": 329
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-chained-cancelling",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-chained-cancelling.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 52,
+     "best": "chr",
+     "chr": 52,
+     "ff": 52,
+     "wk": 53,
+     "chr_ff": 78
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 72,
+     "best": "chr",
+     "chr": 72,
+     "ff": 72,
+     "wk": 73,
+     "chr_ff": 108
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 72,
+     "best": "chr",
+     "chr": 72,
+     "ff": 72,
+     "wk": 73,
+     "chr_ff": 108
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 52,
+     "best": "chr",
+     "chr": 52,
+     "ff": 52,
+     "wk": 53,
+     "chr_ff": 78
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 33,
+     "chr_ff": 48
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 35,
+     "wk": 32,
+     "chr_ff": 30
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 35,
+     "wk": 32,
+     "chr_ff": 30
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 33,
+     "chr_ff": 48
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-chained-sequential",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-chained-sequential.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 31,
+     "best": "chr",
+     "chr": 31,
+     "ff": 94,
+     "wk": 31,
+     "chr_ff": 63
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 44,
+     "best": "chr",
+     "chr": 44,
+     "ff": 131,
+     "wk": 88,
+     "chr_ff": 131
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 44,
+     "best": "chr",
+     "chr": 44,
+     "ff": 131,
+     "wk": 88,
+     "chr_ff": 131
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 31,
+     "best": "chr",
+     "chr": 31,
+     "ff": 94,
+     "wk": 31,
+     "chr_ff": 63
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 44,
+     "wk": 44,
+     "chr_ff": 28
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 44,
+     "wk": 44,
+     "chr_ff": 28
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-circle-shape",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-circle-shape.svg",
+   "z1_best": [
+    8,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 37,
+     "best": "wk",
+     "chr": 52,
+     "ff": 44,
+     "wk": 37,
+     "chr_ff": 52
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 37,
+     "best": "wk",
+     "chr": 52,
+     "ff": 44,
+     "wk": 37,
+     "chr_ff": 52
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-color-interpolation-linearrgb",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-color-interpolation-linearrgb.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 55,
+     "wk": 55,
+     "chr_ff": 53
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 55,
+     "wk": 55,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-color-interpolation-srgb",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-color-interpolation-srgb.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 55,
+     "wk": 55,
+     "chr_ff": 53
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 55,
+     "wk": 55,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-composite-in",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-composite-in.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 40,
+     "best": "chr",
+     "chr": 40,
+     "ff": 40,
+     "wk": 40,
+     "chr_ff": 20
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 40,
+     "best": "chr",
+     "chr": 40,
+     "ff": 40,
+     "wk": 40,
+     "chr_ff": 20
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-fractional-subpixel-half",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-fractional-subpixel-half.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 63,
+     "wk": 33,
+     "chr_ff": 33
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 63,
+     "wk": 33,
+     "chr_ff": 33
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-fractional-subpixel-quarter",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-fractional-subpixel-quarter.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 35,
+     "best": "chr",
+     "chr": 35,
+     "ff": 68,
+     "wk": 51,
+     "chr_ff": 51
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 35,
+     "best": "chr",
+     "chr": 35,
+     "ff": 68,
+     "wk": 51,
+     "chr_ff": 51
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-linear-gradient-fill",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-linear-gradient-fill.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 205,
+     "wk": 55,
+     "chr_ff": 224
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 205,
+     "wk": 55,
+     "chr_ff": 224
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-negative-dx-dy",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-negative-dx-dy.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 56
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 56
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-parameter-variation-43",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-parameter-variation-43.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 112,
+     "best": "chr",
+     "chr": 112,
+     "ff": 223,
+     "wk": 112,
+     "chr_ff": 113
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 159,
+     "best": "chr",
+     "chr": 159,
+     "ff": 316,
+     "wk": 315,
+     "chr_ff": 316
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 159,
+     "best": "chr",
+     "chr": 159,
+     "ff": 316,
+     "wk": 315,
+     "chr_ff": 316
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 112,
+     "best": "chr",
+     "chr": 112,
+     "ff": 223,
+     "wk": 112,
+     "chr_ff": 113
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 69,
+     "best": "chr",
+     "chr": 69,
+     "ff": 136,
+     "wk": 135,
+     "chr_ff": 136
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 31,
+     "best": "chr",
+     "chr": 31,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 61
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 31,
+     "best": "chr",
+     "chr": 31,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 61
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 69,
+     "best": "chr",
+     "chr": 69,
+     "ff": 136,
+     "wk": 135,
+     "chr_ff": 136
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-parameter-variation-44",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-parameter-variation-44.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 49,
+     "best": "chr",
+     "chr": 49,
+     "ff": 94,
+     "wk": 49,
+     "chr_ff": 96
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 68,
+     "best": "chr",
+     "chr": 68,
+     "ff": 132,
+     "wk": 68,
+     "chr_ff": 134
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 68,
+     "best": "chr",
+     "chr": 68,
+     "ff": 132,
+     "wk": 68,
+     "chr_ff": 134
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 49,
+     "best": "chr",
+     "chr": 49,
+     "ff": 94,
+     "wk": 49,
+     "chr_ff": 96
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 30,
+     "chr_ff": 58
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "chr",
+     "chr": 25,
+     "ff": 25,
+     "wk": 25,
+     "chr_ff": 25
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "chr",
+     "chr": 25,
+     "ff": 25,
+     "wk": 25,
+     "chr_ff": 25
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 30,
+     "chr_ff": 58
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-parameter-variation-45",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-parameter-variation-45.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 51,
+     "best": "chr",
+     "chr": 51,
+     "ff": 145,
+     "wk": 102,
+     "chr_ff": 145
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 70,
+     "best": "wk",
+     "chr": 71,
+     "ff": 202,
+     "wk": 70,
+     "chr_ff": 132
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 70,
+     "best": "wk",
+     "chr": 71,
+     "ff": 202,
+     "wk": 70,
+     "chr_ff": 132
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 51,
+     "best": "chr",
+     "chr": 51,
+     "ff": 145,
+     "wk": 102,
+     "chr_ff": 145
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 30,
+     "best": "wk",
+     "chr": 31,
+     "ff": 87,
+     "wk": 30,
+     "chr_ff": 57
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 39,
+     "wk": 27,
+     "chr_ff": 27
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 39,
+     "wk": 27,
+     "chr_ff": 27
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 30,
+     "best": "wk",
+     "chr": 31,
+     "ff": 87,
+     "wk": 30,
+     "chr_ff": 57
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-parameter-variation-46",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-parameter-variation-46.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 44,
+     "best": "chr",
+     "chr": 44,
+     "ff": 120,
+     "wk": 44,
+     "chr_ff": 76
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 62,
+     "best": "chr",
+     "chr": 62,
+     "ff": 167,
+     "wk": 124,
+     "chr_ff": 167
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 62,
+     "best": "chr",
+     "chr": 62,
+     "ff": 167,
+     "wk": 124,
+     "chr_ff": 167
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 44,
+     "best": "chr",
+     "chr": 44,
+     "ff": 120,
+     "wk": 44,
+     "chr_ff": 76
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 72,
+     "wk": 54,
+     "chr_ff": 72
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 72,
+     "wk": 54,
+     "chr_ff": 72
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-parameter-variation-47",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-parameter-variation-47.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 126,
+     "best": "chr",
+     "chr": 126,
+     "ff": 248,
+     "wk": 248,
+     "chr_ff": 248
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 173,
+     "best": "chr",
+     "chr": 173,
+     "ff": 348,
+     "wk": 347,
+     "chr_ff": 348
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 173,
+     "best": "chr",
+     "chr": 173,
+     "ff": 348,
+     "wk": 347,
+     "chr_ff": 348
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 126,
+     "best": "chr",
+     "chr": 126,
+     "ff": 248,
+     "wk": 248,
+     "chr_ff": 248
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 74,
+     "best": "chr",
+     "chr": 74,
+     "ff": 148,
+     "wk": 76,
+     "chr_ff": 75
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 67,
+     "best": "chr",
+     "chr": 67,
+     "ff": 67,
+     "wk": 99,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 67,
+     "best": "chr",
+     "chr": 67,
+     "ff": 67,
+     "wk": 99,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 74,
+     "best": "chr",
+     "chr": 74,
+     "ff": 148,
+     "wk": 76,
+     "chr_ff": 75
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-parameter-variation-48",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-parameter-variation-48.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 70,
+     "best": "chr",
+     "chr": 70,
+     "ff": 138,
+     "wk": 120,
+     "chr_ff": 138
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 97,
+     "best": "chr",
+     "chr": 97,
+     "ff": 192,
+     "wk": 97,
+     "chr_ff": 123
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 97,
+     "best": "chr",
+     "chr": 97,
+     "ff": 192,
+     "wk": 97,
+     "chr_ff": 123
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 70,
+     "best": "chr",
+     "chr": 70,
+     "ff": 138,
+     "wk": 120,
+     "chr_ff": 138
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 42,
+     "best": "chr",
+     "chr": 42,
+     "ff": 82,
+     "wk": 42,
+     "chr_ff": 53
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 42,
+     "best": "chr",
+     "chr": 42,
+     "ff": 82,
+     "wk": 42,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-parameter-variation-49",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-parameter-variation-49.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 70,
+     "best": "chr",
+     "chr": 70,
+     "ff": 138,
+     "wk": 120,
+     "chr_ff": 138
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 97,
+     "best": "chr",
+     "chr": 97,
+     "ff": 192,
+     "wk": 97,
+     "chr_ff": 123
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 97,
+     "best": "chr",
+     "chr": 97,
+     "ff": 192,
+     "wk": 97,
+     "chr_ff": 123
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 70,
+     "best": "chr",
+     "chr": 70,
+     "ff": 138,
+     "wk": 120,
+     "chr_ff": 138
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 42,
+     "best": "chr",
+     "chr": 42,
+     "ff": 82,
+     "wk": 42,
+     "chr_ff": 53
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 42,
+     "best": "chr",
+     "chr": 42,
+     "ff": 82,
+     "wk": 42,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-primitive-units-non-square",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-primitive-units-non-square.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 41,
+     "best": "chr",
+     "chr": 41,
+     "ff": 83,
+     "wk": 83,
+     "chr_ff": 81
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 41,
+     "best": "chr",
+     "chr": 41,
+     "ff": 83,
+     "wk": 83,
+     "chr_ff": 81
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-primitive-units-objectboundingbox-25",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-primitive-units-objectboundingbox-25.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 50,
+     "best": "chr",
+     "chr": 50,
+     "ff": 100,
+     "wk": 50,
+     "chr_ff": 51
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 50,
+     "best": "chr",
+     "chr": 50,
+     "ff": 100,
+     "wk": 50,
+     "chr_ff": 51
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-primitive-units-objectboundingbox-50",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-primitive-units-objectboundingbox-50.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 81,
+     "wk": 26,
+     "chr_ff": 56
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 81,
+     "wk": 26,
+     "chr_ff": 56
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-primitive-units-objectboundingbox-negative",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-primitive-units-objectboundingbox-negative.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 51,
+     "best": "chr",
+     "chr": 51,
+     "ff": 101,
+     "wk": 55,
+     "chr_ff": 100
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 51,
+     "best": "chr",
+     "chr": 51,
+     "ff": 101,
+     "wk": 55,
+     "chr_ff": 100
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-sourcealpha-flood",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-sourcealpha-flood.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 28,
+     "best": "chr",
+     "chr": 28,
+     "ff": 28,
+     "wk": 28,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 28,
+     "best": "chr",
+     "chr": 28,
+     "ff": 28,
+     "wk": 28,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-subregion-clipping",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-subregion-clipping.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 53,
+     "best": "chr",
+     "chr": 53,
+     "ff": 53,
+     "wk": 53,
+     "chr_ff": 53
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 53,
+     "best": "chr",
+     "chr": 53,
+     "ff": 53,
+     "wk": 53,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-triple-chain-rgb-shadow",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-triple-chain-rgb-shadow.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 101,
+     "best": "chr",
+     "chr": 101,
+     "ff": 101,
+     "wk": 101,
+     "chr_ff": 2
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 141,
+     "best": "chr",
+     "chr": 141,
+     "ff": 141,
+     "wk": 141,
+     "chr_ff": 2
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 141,
+     "best": "chr",
+     "chr": 141,
+     "ff": 141,
+     "wk": 141,
+     "chr_ff": 2
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 101,
+     "best": "chr",
+     "chr": 101,
+     "ff": 101,
+     "wk": 101,
+     "chr_ff": 2
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 61,
+     "best": "chr",
+     "chr": 61,
+     "ff": 61,
+     "wk": 61,
+     "chr_ff": 2
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 32,
+     "chr_ff": 2
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 32,
+     "chr_ff": 2
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 61,
+     "best": "chr",
+     "chr": 61,
+     "ff": 61,
+     "wk": 61,
+     "chr_ff": 2
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-with-element-transform-scale",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-with-element-transform-scale.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 56
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 56
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-with-group-opacity",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-with-group-opacity.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 175,
+     "wk": 175,
+     "chr_ff": 89
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 247,
+     "best": "chr",
+     "chr": 247,
+     "ff": 248,
+     "wk": 368,
+     "chr_ff": 248
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 247,
+     "best": "chr",
+     "chr": 247,
+     "ff": 248,
+     "wk": 368,
+     "chr_ff": 248
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 175,
+     "wk": 175,
+     "chr_ff": 89
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 107,
+     "best": "chr",
+     "chr": 107,
+     "ff": 108,
+     "wk": 158,
+     "chr_ff": 108
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 107,
+     "best": "chr",
+     "chr": 107,
+     "ff": 108,
+     "wk": 158,
+     "chr_ff": 108
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-with-mix-blend-mode-multiply",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-with-mix-blend-mode-multiply.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 71,
+     "best": "chr",
+     "chr": 71,
+     "ff": 71,
+     "wk": 71,
+     "chr_ff": 33
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 71,
+     "best": "chr",
+     "chr": 71,
+     "ff": 71,
+     "wk": 71,
+     "chr_ff": 33
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-feoffset-reftests__offset-with-parent-transform-scale",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-feoffset-reftests/offset-with-parent-transform-scale.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 94,
+     "best": "chr",
+     "chr": 94,
+     "ff": 188,
+     "wk": 94,
+     "chr_ff": 95
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 132,
+     "best": "chr",
+     "chr": 132,
+     "ff": 264,
+     "wk": 134,
+     "chr_ff": 133
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 132,
+     "best": "chr",
+     "chr": 132,
+     "ff": 264,
+     "wk": 134,
+     "chr_ff": 133
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 94,
+     "best": "chr",
+     "chr": 94,
+     "ff": 188,
+     "wk": 94,
+     "chr_ff": 95
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 57,
+     "best": "chr",
+     "chr": 57,
+     "ff": 116,
+     "wk": 115,
+     "chr_ff": 116
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "chr",
+     "chr": 25,
+     "ff": 51,
+     "wk": 52,
+     "chr_ff": 26
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "chr",
+     "chr": 25,
+     "ff": 51,
+     "wk": 52,
+     "chr_ff": 26
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 57,
+     "best": "chr",
+     "chr": 57,
+     "ff": 116,
+     "wk": 115,
+     "chr_ff": 116
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-border-stroke-fill",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-border-stroke-fill.svg",
+   "z1_best": [
+    0,
+    "wk"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 152,
+     "best": "wk",
+     "chr": 817,
+     "ff": null,
+     "wk": 152,
+     "chr_ff": null
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 180,
+     "best": "wk",
+     "chr": 1197,
+     "ff": null,
+     "wk": 180,
+     "chr_ff": null
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 337,
+     "best": "wk",
+     "chr": 1549,
+     "ff": null,
+     "wk": 337,
+     "chr_ff": null
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 337,
+     "best": "wk",
+     "chr": 1549,
+     "ff": null,
+     "wk": 337,
+     "chr_ff": null
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 180,
+     "best": "wk",
+     "chr": 1197,
+     "ff": null,
+     "wk": 180,
+     "chr_ff": null
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 152,
+     "best": "wk",
+     "chr": 817,
+     "ff": null,
+     "wk": 152,
+     "chr_ff": null
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 147,
+     "best": "wk",
+     "chr": 384,
+     "ff": null,
+     "wk": 147,
+     "chr_ff": null
+    },
+    {
+     "step": 14,
+     "zoom": 0.5,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 212,
+     "ff": null,
+     "wk": 60,
+     "chr_ff": null
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 65,
+     "best": "wk",
+     "chr": 92,
+     "ff": null,
+     "wk": 65,
+     "chr_ff": null
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 32,
+     "best": "wk",
+     "chr": 72,
+     "ff": null,
+     "wk": 32,
+     "chr_ff": null
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 65,
+     "best": "wk",
+     "chr": 92,
+     "ff": null,
+     "wk": 65,
+     "chr_ff": null
+    },
+    {
+     "step": 18,
+     "zoom": 0.5,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 212,
+     "ff": null,
+     "wk": 60,
+     "chr_ff": null
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 147,
+     "best": "wk",
+     "chr": 384,
+     "ff": null,
+     "wk": 147,
+     "chr_ff": null
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-chained-cancelling",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-chained-cancelling.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 52,
+     "best": "chr",
+     "chr": 52,
+     "ff": 52,
+     "wk": 53,
+     "chr_ff": 78
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 72,
+     "best": "chr",
+     "chr": 72,
+     "ff": 72,
+     "wk": 73,
+     "chr_ff": 108
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 72,
+     "best": "chr",
+     "chr": 72,
+     "ff": 72,
+     "wk": 73,
+     "chr_ff": 108
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 52,
+     "best": "chr",
+     "chr": 52,
+     "ff": 52,
+     "wk": 53,
+     "chr_ff": 78
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 33,
+     "chr_ff": 48
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 35,
+     "wk": 32,
+     "chr_ff": 30
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 35,
+     "wk": 32,
+     "chr_ff": 30
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 33,
+     "chr_ff": 48
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-chained-sequential",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-chained-sequential.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 31,
+     "best": "chr",
+     "chr": 31,
+     "ff": 94,
+     "wk": 31,
+     "chr_ff": 63
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 44,
+     "best": "chr",
+     "chr": 44,
+     "ff": 131,
+     "wk": 88,
+     "chr_ff": 131
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 44,
+     "best": "chr",
+     "chr": 44,
+     "ff": 131,
+     "wk": 88,
+     "chr_ff": 131
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 31,
+     "best": "chr",
+     "chr": 31,
+     "ff": 94,
+     "wk": 31,
+     "chr_ff": 63
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 44,
+     "wk": 44,
+     "chr_ff": 28
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 44,
+     "wk": 44,
+     "chr_ff": 28
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-color-interpolation-linearrgb",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-color-interpolation-linearrgb.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 55,
+     "wk": 55,
+     "chr_ff": 53
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 55,
+     "wk": 55,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-color-interpolation-srgb",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-color-interpolation-srgb.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 55,
+     "wk": 55,
+     "chr_ff": 53
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 29,
+     "best": "chr",
+     "chr": 29,
+     "ff": 55,
+     "wk": 55,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-composite-in",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-composite-in.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 40,
+     "best": "chr",
+     "chr": 40,
+     "ff": 40,
+     "wk": 40,
+     "chr_ff": 20
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 40,
+     "best": "chr",
+     "chr": 40,
+     "ff": 40,
+     "wk": 40,
+     "chr_ff": 20
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-fractional-subpixel-half",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-fractional-subpixel-half.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 63,
+     "wk": 33,
+     "chr_ff": 33
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 63,
+     "wk": 33,
+     "chr_ff": 33
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-fractional-subpixel-quarter",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-fractional-subpixel-quarter.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 35,
+     "best": "chr",
+     "chr": 35,
+     "ff": 68,
+     "wk": 51,
+     "chr_ff": 51
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 35,
+     "best": "chr",
+     "chr": 35,
+     "ff": 68,
+     "wk": 51,
+     "chr_ff": 51
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-linear-gradient-fill",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-linear-gradient-fill.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 205,
+     "wk": 55,
+     "chr_ff": 224
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 205,
+     "wk": 55,
+     "chr_ff": 224
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-negative-dx-dy",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-negative-dx-dy.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 56
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 56
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-parameter-variation-43",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-parameter-variation-43.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 112,
+     "best": "chr",
+     "chr": 112,
+     "ff": 223,
+     "wk": 112,
+     "chr_ff": 113
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 159,
+     "best": "chr",
+     "chr": 159,
+     "ff": 316,
+     "wk": 315,
+     "chr_ff": 316
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 159,
+     "best": "chr",
+     "chr": 159,
+     "ff": 316,
+     "wk": 315,
+     "chr_ff": 316
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 112,
+     "best": "chr",
+     "chr": 112,
+     "ff": 223,
+     "wk": 112,
+     "chr_ff": 113
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 69,
+     "best": "chr",
+     "chr": 69,
+     "ff": 136,
+     "wk": 135,
+     "chr_ff": 136
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 31,
+     "best": "chr",
+     "chr": 31,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 61
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 31,
+     "best": "chr",
+     "chr": 31,
+     "ff": 63,
+     "wk": 63,
+     "chr_ff": 61
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 69,
+     "best": "chr",
+     "chr": 69,
+     "ff": 136,
+     "wk": 135,
+     "chr_ff": 136
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-parameter-variation-44",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-parameter-variation-44.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 49,
+     "best": "chr",
+     "chr": 49,
+     "ff": 94,
+     "wk": 49,
+     "chr_ff": 96
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 68,
+     "best": "chr",
+     "chr": 68,
+     "ff": 132,
+     "wk": 68,
+     "chr_ff": 134
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 68,
+     "best": "chr",
+     "chr": 68,
+     "ff": 132,
+     "wk": 68,
+     "chr_ff": 134
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 49,
+     "best": "chr",
+     "chr": 49,
+     "ff": 94,
+     "wk": 49,
+     "chr_ff": 96
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 30,
+     "chr_ff": 58
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "chr",
+     "chr": 25,
+     "ff": 25,
+     "wk": 25,
+     "chr_ff": 25
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "chr",
+     "chr": 25,
+     "ff": 25,
+     "wk": 25,
+     "chr_ff": 25
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 30,
+     "chr_ff": 58
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-parameter-variation-45",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-parameter-variation-45.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 51,
+     "best": "chr",
+     "chr": 51,
+     "ff": 145,
+     "wk": 102,
+     "chr_ff": 145
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 70,
+     "best": "wk",
+     "chr": 71,
+     "ff": 202,
+     "wk": 70,
+     "chr_ff": 132
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 70,
+     "best": "wk",
+     "chr": 71,
+     "ff": 202,
+     "wk": 70,
+     "chr_ff": 132
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 51,
+     "best": "chr",
+     "chr": 51,
+     "ff": 145,
+     "wk": 102,
+     "chr_ff": 145
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 30,
+     "best": "wk",
+     "chr": 31,
+     "ff": 87,
+     "wk": 30,
+     "chr_ff": 57
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 39,
+     "wk": 27,
+     "chr_ff": 27
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 39,
+     "wk": 27,
+     "chr_ff": 27
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 30,
+     "best": "wk",
+     "chr": 31,
+     "ff": 87,
+     "wk": 30,
+     "chr_ff": 57
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-parameter-variation-46",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-parameter-variation-46.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 44,
+     "best": "chr",
+     "chr": 44,
+     "ff": 120,
+     "wk": 44,
+     "chr_ff": 76
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 62,
+     "best": "chr",
+     "chr": 62,
+     "ff": 167,
+     "wk": 124,
+     "chr_ff": 167
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 62,
+     "best": "chr",
+     "chr": 62,
+     "ff": 167,
+     "wk": 124,
+     "chr_ff": 167
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 44,
+     "best": "chr",
+     "chr": 44,
+     "ff": 120,
+     "wk": 44,
+     "chr_ff": 76
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 72,
+     "wk": 54,
+     "chr_ff": 72
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 27,
+     "best": "chr",
+     "chr": 27,
+     "ff": 72,
+     "wk": 54,
+     "chr_ff": 72
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-parameter-variation-47",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-parameter-variation-47.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 126,
+     "best": "chr",
+     "chr": 126,
+     "ff": 248,
+     "wk": 248,
+     "chr_ff": 248
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 173,
+     "best": "chr",
+     "chr": 173,
+     "ff": 348,
+     "wk": 347,
+     "chr_ff": 348
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 173,
+     "best": "chr",
+     "chr": 173,
+     "ff": 348,
+     "wk": 347,
+     "chr_ff": 348
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 126,
+     "best": "chr",
+     "chr": 126,
+     "ff": 248,
+     "wk": 248,
+     "chr_ff": 248
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 74,
+     "best": "chr",
+     "chr": 74,
+     "ff": 148,
+     "wk": 76,
+     "chr_ff": 75
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 67,
+     "best": "chr",
+     "chr": 67,
+     "ff": 67,
+     "wk": 99,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 67,
+     "best": "chr",
+     "chr": 67,
+     "ff": 67,
+     "wk": 99,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 74,
+     "best": "chr",
+     "chr": 74,
+     "ff": 148,
+     "wk": 76,
+     "chr_ff": 75
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-parameter-variation-48",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-parameter-variation-48.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 70,
+     "best": "chr",
+     "chr": 70,
+     "ff": 138,
+     "wk": 120,
+     "chr_ff": 138
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 97,
+     "best": "chr",
+     "chr": 97,
+     "ff": 192,
+     "wk": 97,
+     "chr_ff": 123
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 97,
+     "best": "chr",
+     "chr": 97,
+     "ff": 192,
+     "wk": 97,
+     "chr_ff": 123
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 70,
+     "best": "chr",
+     "chr": 70,
+     "ff": 138,
+     "wk": 120,
+     "chr_ff": 138
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 42,
+     "best": "chr",
+     "chr": 42,
+     "ff": 82,
+     "wk": 42,
+     "chr_ff": 53
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 42,
+     "best": "chr",
+     "chr": 42,
+     "ff": 82,
+     "wk": 42,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-parameter-variation-49",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-parameter-variation-49.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 70,
+     "best": "chr",
+     "chr": 70,
+     "ff": 138,
+     "wk": 120,
+     "chr_ff": 138
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 97,
+     "best": "chr",
+     "chr": 97,
+     "ff": 192,
+     "wk": 97,
+     "chr_ff": 123
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 97,
+     "best": "chr",
+     "chr": 97,
+     "ff": 192,
+     "wk": 97,
+     "chr_ff": 123
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 70,
+     "best": "chr",
+     "chr": 70,
+     "ff": 138,
+     "wk": 120,
+     "chr_ff": 138
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 42,
+     "best": "chr",
+     "chr": 42,
+     "ff": 82,
+     "wk": 42,
+     "chr_ff": 53
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 42,
+     "best": "chr",
+     "chr": 42,
+     "ff": 82,
+     "wk": 42,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-primitive-units-non-square",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-primitive-units-non-square.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 41,
+     "best": "chr",
+     "chr": 41,
+     "ff": 83,
+     "wk": 83,
+     "chr_ff": 81
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 41,
+     "best": "chr",
+     "chr": 41,
+     "ff": 83,
+     "wk": 83,
+     "chr_ff": 81
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-primitive-units-objectboundingbox-25",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-primitive-units-objectboundingbox-25.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 50,
+     "best": "chr",
+     "chr": 50,
+     "ff": 100,
+     "wk": 50,
+     "chr_ff": 51
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 50,
+     "best": "chr",
+     "chr": 50,
+     "ff": 100,
+     "wk": 50,
+     "chr_ff": 51
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-primitive-units-objectboundingbox-50",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-primitive-units-objectboundingbox-50.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 81,
+     "wk": 26,
+     "chr_ff": 56
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 81,
+     "wk": 26,
+     "chr_ff": 56
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-primitive-units-objectboundingbox-negative",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-primitive-units-objectboundingbox-negative.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 51,
+     "best": "chr",
+     "chr": 51,
+     "ff": 101,
+     "wk": 55,
+     "chr_ff": 100
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 51,
+     "best": "chr",
+     "chr": 51,
+     "ff": 101,
+     "wk": 55,
+     "chr_ff": 100
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-sourcealpha-flood",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-sourcealpha-flood.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 28,
+     "best": "chr",
+     "chr": 28,
+     "ff": 28,
+     "wk": 28,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 28,
+     "best": "chr",
+     "chr": 28,
+     "ff": 28,
+     "wk": 28,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-subregion-clipping",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-subregion-clipping.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 53,
+     "best": "chr",
+     "chr": 53,
+     "ff": 53,
+     "wk": 53,
+     "chr_ff": 53
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 53,
+     "best": "chr",
+     "chr": 53,
+     "ff": 53,
+     "wk": 53,
+     "chr_ff": 53
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-triple-chain-rgb-shadow",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-triple-chain-rgb-shadow.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 101,
+     "best": "chr",
+     "chr": 101,
+     "ff": 101,
+     "wk": 101,
+     "chr_ff": 2
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 141,
+     "best": "chr",
+     "chr": 141,
+     "ff": 141,
+     "wk": 141,
+     "chr_ff": 2
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 141,
+     "best": "chr",
+     "chr": 141,
+     "ff": 141,
+     "wk": 141,
+     "chr_ff": 2
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 101,
+     "best": "chr",
+     "chr": 101,
+     "ff": 101,
+     "wk": 101,
+     "chr_ff": 2
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 61,
+     "best": "chr",
+     "chr": 61,
+     "ff": 61,
+     "wk": 61,
+     "chr_ff": 2
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 32,
+     "chr_ff": 2
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 32,
+     "best": "chr",
+     "chr": 32,
+     "ff": 32,
+     "wk": 32,
+     "chr_ff": 2
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 61,
+     "best": "chr",
+     "chr": 61,
+     "ff": 61,
+     "wk": 61,
+     "chr_ff": 2
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-with-element-transform-scale",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-with-element-transform-scale.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 56
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 30,
+     "best": "chr",
+     "chr": 30,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 56
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-with-group-opacity",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-with-group-opacity.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 175,
+     "wk": 175,
+     "chr_ff": 89
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 247,
+     "best": "chr",
+     "chr": 247,
+     "ff": 248,
+     "wk": 368,
+     "chr_ff": 248
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 247,
+     "best": "chr",
+     "chr": 247,
+     "ff": 248,
+     "wk": 368,
+     "chr_ff": 248
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 88,
+     "best": "chr",
+     "chr": 88,
+     "ff": 175,
+     "wk": 175,
+     "chr_ff": 89
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 107,
+     "best": "chr",
+     "chr": 107,
+     "ff": 108,
+     "wk": 158,
+     "chr_ff": 108
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 107,
+     "best": "chr",
+     "chr": 107,
+     "ff": 108,
+     "wk": 158,
+     "chr_ff": 108
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-with-mix-blend-mode-multiply",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-with-mix-blend-mode-multiply.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 71,
+     "best": "chr",
+     "chr": 71,
+     "ff": 71,
+     "wk": 71,
+     "chr_ff": 33
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 71,
+     "best": "chr",
+     "chr": 71,
+     "ff": 71,
+     "wk": 71,
+     "chr_ff": 33
+    }
+   ]
+  },
+  {
+   "key": "wpt22__14-feoffset-tests__offset-with-parent-transform-scale",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/14-feoffset-tests/offset-with-parent-transform-scale.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 94,
+     "best": "chr",
+     "chr": 94,
+     "ff": 188,
+     "wk": 94,
+     "chr_ff": 95
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 132,
+     "best": "chr",
+     "chr": 132,
+     "ff": 264,
+     "wk": 134,
+     "chr_ff": 133
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 132,
+     "best": "chr",
+     "chr": 132,
+     "ff": 264,
+     "wk": 134,
+     "chr_ff": 133
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 94,
+     "best": "chr",
+     "chr": 94,
+     "ff": 188,
+     "wk": 94,
+     "chr_ff": 95
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 57,
+     "best": "chr",
+     "chr": 57,
+     "ff": 116,
+     "wk": 115,
+     "chr_ff": 116
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "chr",
+     "chr": 25,
+     "ff": 51,
+     "wk": 52,
+     "chr_ff": 26
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 25,
+     "best": "chr",
+     "chr": 25,
+     "ff": 51,
+     "wk": 52,
+     "chr_ff": 26
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 57,
+     "best": "chr",
+     "chr": 57,
+     "ff": 116,
+     "wk": 115,
+     "chr_ff": 116
+    }
+   ]
+  }
+ ],
+ "subpixel-sliver": [
+  {
+   "key": "corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fill-blur-reftests/07-zero-area-collinear-fills/fill-path-subpixel-sliver-control-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 397,
+     "best": "chr",
+     "chr": 397,
+     "ff": 397,
+     "wk": 403,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 386,
+     "best": "chr",
+     "chr": 386,
+     "ff": 386,
+     "wk": 393,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 397,
+     "best": "chr",
+     "chr": 397,
+     "ff": 397,
+     "wk": 403,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt-fill-blur-reftests/07-zero-area-collinear-fills/fill-path-subpixel-sliver-control.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 397,
+     "best": "chr",
+     "chr": 397,
+     "ff": 397,
+     "wk": 403,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 386,
+     "best": "chr",
+     "chr": 386,
+     "ff": 386,
+     "wk": 393,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 397,
+     "best": "chr",
+     "chr": 397,
+     "ff": 397,
+     "wk": 403,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/07-zero-area-collinear-fills/fill-path-subpixel-sliver-control-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 397,
+     "best": "chr",
+     "chr": 397,
+     "ff": 397,
+     "wk": 403,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 386,
+     "best": "chr",
+     "chr": 386,
+     "ff": 386,
+     "wk": 393,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 397,
+     "best": "chr",
+     "chr": 397,
+     "ff": 397,
+     "wk": 403,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/07-zero-area-collinear-fills/fill-path-subpixel-sliver-control.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 397,
+     "best": "chr",
+     "chr": 397,
+     "ff": 397,
+     "wk": 403,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 386,
+     "best": "chr",
+     "chr": 386,
+     "ff": 386,
+     "wk": 393,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 397,
+     "best": "chr",
+     "chr": 397,
+     "ff": 397,
+     "wk": 403,
+     "chr_ff": 0
+    }
+   ]
+  }
+ ],
+ "mask-thin-stroke-3x": [
+  {
+   "key": "corpus__wpt__framed__mask-on-thin-stroked-path-userspaceonuse-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt/framed/mask-on-thin-stroked-path-userspaceonuse-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt__framed__mask-on-thin-stroked-path-userspaceonuse",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt/framed/mask-on-thin-stroked-path-userspaceonuse.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt__refs__mask-on-thin-stroked-path-userspaceonuse-expected",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt/refs/mask-on-thin-stroked-path-userspaceonuse-expected.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt__refs__mask-on-thin-stroked-path-userspaceonuse-ref",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt/refs/mask-on-thin-stroked-path-userspaceonuse-ref.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "corpus__wpt__tests__mask-on-thin-stroked-path-userspaceonuse",
+   "path": "/Users/matt/src/femtovg-wt/da/corpus/wpt/tests/mask-on-thin-stroked-path-userspaceonuse.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 7500,
+     "best": "chr",
+     "chr": 7500,
+     "ff": 7500,
+     "wk": 7500,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 38,
+     "best": "chr",
+     "chr": 38,
+     "ff": 38,
+     "wk": 38,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 26,
+     "best": "chr",
+     "chr": 26,
+     "ff": 26,
+     "wk": 26,
+     "chr_ff": 0
+    }
+   ]
+  }
+ ],
+ "layer-ctm-drop-shadow": [
+  {
+   "key": "wpt22__19-filter-subregions-and-offcanvas__wpt-2d-layer-ctm-drop-shadow-filter",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/19-filter-subregions-and-offcanvas/wpt-2d-layer-ctm-drop-shadow-filter.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 2635,
+     "best": "wk",
+     "chr": 2936,
+     "ff": 2814,
+     "wk": 2635,
+     "chr_ff": 1344
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 3899,
+     "best": "wk",
+     "chr": 4104,
+     "ff": 4160,
+     "wk": 3899,
+     "chr_ff": 1892
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 3899,
+     "best": "wk",
+     "chr": 4104,
+     "ff": 4160,
+     "wk": 3899,
+     "chr_ff": 1892
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 2635,
+     "best": "wk",
+     "chr": 2936,
+     "ff": 2814,
+     "wk": 2635,
+     "chr_ff": 1344
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 1684,
+     "best": "wk",
+     "chr": 1769,
+     "ff": 1780,
+     "wk": 1684,
+     "chr_ff": 807
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 336,
+     "best": "chr",
+     "chr": 336,
+     "ff": 557,
+     "wk": 487,
+     "chr_ff": 231
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 514,
+     "best": "wk",
+     "chr": 570,
+     "ff": 531,
+     "wk": 514,
+     "chr_ff": 258
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 336,
+     "best": "chr",
+     "chr": 336,
+     "ff": 557,
+     "wk": 487,
+     "chr_ff": 231
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 1684,
+     "best": "wk",
+     "chr": 1769,
+     "ff": 1780,
+     "wk": 1684,
+     "chr_ff": 807
+    }
+   ]
+  }
+ ],
+ "dasharray": [
+  {
+   "key": "wpt22__21-degenerate-paths-dashes-and-joins__resvg-dasharray-0-n-square-caps-ref",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/21-degenerate-paths-dashes-and-joins/resvg-dasharray-0-n-square-caps-ref.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 56,
+     "best": "chr",
+     "chr": 56,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 48,
+     "best": "chr",
+     "chr": 48,
+     "ff": 48,
+     "wk": 48,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 48,
+     "best": "chr",
+     "chr": 48,
+     "ff": 48,
+     "wk": 48,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 56,
+     "best": "chr",
+     "chr": 56,
+     "ff": 56,
+     "wk": 56,
+     "chr_ff": 0
+    },
+    {
+     "step": 13,
+     "zoom": 0.75,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 1232,
+     "ff": 1232,
+     "wk": 60,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 44,
+     "best": "wk",
+     "chr": 292,
+     "ff": 292,
+     "wk": 44,
+     "chr_ff": 0
+    },
+    {
+     "step": 16,
+     "zoom": 0.25,
+     "best_n8": 52,
+     "best": "wk",
+     "chr": 244,
+     "ff": 244,
+     "wk": 52,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 44,
+     "best": "wk",
+     "chr": 292,
+     "ff": 292,
+     "wk": 44,
+     "chr_ff": 0
+    },
+    {
+     "step": 19,
+     "zoom": 0.75,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 1232,
+     "ff": 1232,
+     "wk": 60,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__21-degenerate-paths-dashes-and-joins__resvg-dasharray-n-0-solid",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/21-degenerate-paths-dashes-and-joins/resvg-dasharray-n-0-solid.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 408,
+     "ff": 404,
+     "wk": 60,
+     "chr_ff": 168
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 60,
+     "best": "wk",
+     "chr": 408,
+     "ff": 404,
+     "wk": 60,
+     "chr_ff": 168
+    }
+   ]
+  }
+ ],
+ "miter-limit": [
+  {
+   "key": "wpt22__21-degenerate-paths-dashes-and-joins__wpt-2d-line-miter-acute",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/21-degenerate-paths-dashes-and-joins/wpt-2d-line-miter-acute.svg",
+   "z1_best": [
+    0,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 39000,
+     "best": "chr",
+     "chr": 39000,
+     "ff": 39000,
+     "wk": 39000,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 45500,
+     "best": "chr",
+     "chr": 45500,
+     "ff": 45500,
+     "wk": 45500,
+     "chr_ff": 0
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 52000,
+     "best": "chr",
+     "chr": 52000,
+     "ff": 52000,
+     "wk": 52000,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 59800,
+     "best": "chr",
+     "chr": 59800,
+     "ff": 59800,
+     "wk": 59800,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 59800,
+     "best": "chr",
+     "chr": 59800,
+     "ff": 59800,
+     "wk": 59800,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 59800,
+     "best": "chr",
+     "chr": 59800,
+     "ff": 59800,
+     "wk": 59800,
+     "chr_ff": 0
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 52000,
+     "best": "chr",
+     "chr": 52000,
+     "ff": 52000,
+     "wk": 52000,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 45500,
+     "best": "chr",
+     "chr": 45500,
+     "ff": 45500,
+     "wk": 45500,
+     "chr_ff": 0
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 39000,
+     "best": "chr",
+     "chr": 39000,
+     "ff": 39000,
+     "wk": 39000,
+     "chr_ff": 0
+    }
+   ]
+  }
+ ],
+ "gradient-hard-stops": [
+  {
+   "key": "wpt22__22-gradient-stops-and-recursion-guards__resvg-stop-with-smaller-offset-monotonic",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/22-gradient-stops-and-recursion-guards/resvg-stop-with-smaller-offset-monotonic.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 208,
+     "best": "chr",
+     "chr": 208,
+     "ff": 208,
+     "wk": 208,
+     "chr_ff": 0
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 240,
+     "best": "chr",
+     "chr": 240,
+     "ff": 240,
+     "wk": 240,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 780,
+     "best": "chr",
+     "chr": 780,
+     "ff": 780,
+     "wk": 780,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 240,
+     "best": "chr",
+     "chr": 240,
+     "ff": 240,
+     "wk": 240,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 208,
+     "best": "chr",
+     "chr": 208,
+     "ff": 208,
+     "wk": 208,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 62,
+     "best": "wk",
+     "chr": 318,
+     "ff": 318,
+     "wk": 62,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 62,
+     "best": "wk",
+     "chr": 318,
+     "ff": 318,
+     "wk": 62,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__22-gradient-stops-and-recursion-guards__resvg-stop-zero-offset-in-the-middle",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/22-gradient-stops-and-recursion-guards/resvg-stop-zero-offset-in-the-middle.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 520,
+     "best": "chr",
+     "chr": 520,
+     "ff": 520,
+     "wk": 520,
+     "chr_ff": 0
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 520,
+     "best": "chr",
+     "chr": 520,
+     "ff": 520,
+     "wk": 520,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 520,
+     "best": "chr",
+     "chr": 520,
+     "ff": 520,
+     "wk": 520,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 520,
+     "best": "chr",
+     "chr": 520,
+     "ff": 520,
+     "wk": 520,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 520,
+     "best": "chr",
+     "chr": 520,
+     "ff": 520,
+     "wk": 520,
+     "chr_ff": 0
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 520,
+     "best": "chr",
+     "chr": 520,
+     "ff": 520,
+     "wk": 520,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 520,
+     "best": "chr",
+     "chr": 520,
+     "ff": 520,
+     "wk": 520,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__22-gradient-stops-and-recursion-guards__resvg-stops-with-equal-offset-1",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/22-gradient-stops-and-recursion-guards/resvg-stops-with-equal-offset-1.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 208,
+     "best": "chr",
+     "chr": 208,
+     "ff": 208,
+     "wk": 208,
+     "chr_ff": 0
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 240,
+     "best": "chr",
+     "chr": 240,
+     "ff": 240,
+     "wk": 240,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 780,
+     "best": "chr",
+     "chr": 780,
+     "ff": 780,
+     "wk": 780,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 240,
+     "best": "chr",
+     "chr": 240,
+     "ff": 240,
+     "wk": 240,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 208,
+     "best": "chr",
+     "chr": 208,
+     "ff": 208,
+     "wk": 208,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 62,
+     "best": "wk",
+     "chr": 318,
+     "ff": 318,
+     "wk": 62,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 62,
+     "best": "wk",
+     "chr": 318,
+     "ff": 318,
+     "wk": 62,
+     "chr_ff": 0
+    }
+   ]
+  },
+  {
+   "key": "wpt22__22-gradient-stops-and-recursion-guards__resvg-stops-with-equal-offset-2",
+   "path": "/Users/matt/.gemini/antigravity/scratch/wpt_svg_reftests/22-gradient-stops-and-recursion-guards/resvg-stops-with-equal-offset-2.svg",
+   "z1_best": [
+    8,
+    "chr"
+   ],
+   "bad": [
+    {
+     "step": 1,
+     "zoom": 1.25,
+     "best_n8": 208,
+     "best": "chr",
+     "chr": 208,
+     "ff": 208,
+     "wk": 208,
+     "chr_ff": 0
+    },
+    {
+     "step": 2,
+     "zoom": 1.5,
+     "best_n8": 240,
+     "best": "chr",
+     "chr": 240,
+     "ff": 240,
+     "wk": 240,
+     "chr_ff": 0
+    },
+    {
+     "step": 3,
+     "zoom": 1.75,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 4,
+     "zoom": 2,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 5,
+     "zoom": 3,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 6,
+     "zoom": 4,
+     "best_n8": 780,
+     "best": "chr",
+     "chr": 780,
+     "ff": 780,
+     "wk": 780,
+     "chr_ff": 0
+    },
+    {
+     "step": 7,
+     "zoom": 3,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 8,
+     "zoom": 2,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 9,
+     "zoom": 1.75,
+     "best_n8": 260,
+     "best": "chr",
+     "chr": 260,
+     "ff": 260,
+     "wk": 260,
+     "chr_ff": 0
+    },
+    {
+     "step": 10,
+     "zoom": 1.5,
+     "best_n8": 240,
+     "best": "chr",
+     "chr": 240,
+     "ff": 240,
+     "wk": 240,
+     "chr_ff": 0
+    },
+    {
+     "step": 11,
+     "zoom": 1.25,
+     "best_n8": 208,
+     "best": "chr",
+     "chr": 208,
+     "ff": 208,
+     "wk": 208,
+     "chr_ff": 0
+    },
+    {
+     "step": 15,
+     "zoom": 0.33,
+     "best_n8": 62,
+     "best": "wk",
+     "chr": 318,
+     "ff": 318,
+     "wk": 62,
+     "chr_ff": 0
+    },
+    {
+     "step": 17,
+     "zoom": 0.33,
+     "best_n8": 62,
+     "best": "wk",
+     "chr": 318,
+     "ff": 318,
+     "wk": 62,
+     "chr_ff": 0
+    }
+   ]
+  }
+ ]
+}
