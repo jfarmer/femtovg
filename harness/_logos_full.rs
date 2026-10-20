@@ -949,6 +949,9 @@ struct ShadowChain {
     dx: f32,
     dy: f32,
     sigma: f32,
+    /// The shadow's colour in sRGB, as a composite outside the merge paints
+    /// it: one shadow layer (`SINGLE_SHADOW_LAYER`), or a group that draws
+    /// only its shadow.
     color: Color,
     merged: bool,
     /// The merge - `feMerge`, or `feDropShadow`'s own composite of the
@@ -1001,6 +1004,20 @@ fn drop_shadow(group: &usvg::Group) -> Option<ShadowChain> {
         });
     }
     shadow_chain(f.primitives())
+}
+
+/// A linearRGB colour's sRGB encoding, alpha kept, rounded to 8 bits as
+/// `matrix_shadow_color` rounds an sRGB matrix's constants.
+fn srgb_encoded(c: Color) -> Color {
+    let channel = |x: f32| {
+        let s = if x <= 0.003_130_8 {
+            x * 12.92
+        } else {
+            1.055 * x.powf(1.0 / 2.4) - 0.055
+        };
+        (s.clamp(0.0, 1.0) * 255.0).round() / 255.0
+    };
+    Color::rgbaf(channel(c.r), channel(c.g), channel(c.b), c.a)
 }
 
 /// The shadow colour of an `feDropShadow` as Chromium draws it. Skia's drop
@@ -1099,12 +1116,18 @@ fn shadow_chain(prims: &[usvg::filter::Primitive]) -> Option<ShadowChain> {
             }
             Kind::ColorMatrix(cm) if color.is_none() => {
                 let constants = matrix_shadow_color(cm.kind())?;
-                color = Some(constants);
-                linear = Some(if cursor.color_interpolation() == ColorInterpolation::LinearRGB {
-                    matrix_constants(cm.kind())?
+                // A matrix that runs in linearRGB sets linear values: the
+                // colour it paints in sRGB is their encoding (gpt-5-6-terra-pro's
+                // 0/.03/.06 is rgb(0, 48, 69), as the browsers draw it, not
+                // rgb(0, 8, 15)).
+                if cursor.color_interpolation() == ColorInterpolation::LinearRGB {
+                    let constants = matrix_constants(cm.kind())?;
+                    color = Some(srgb_encoded(constants));
+                    linear = Some(constants);
                 } else {
-                    linear_rgb(constants)
-                });
+                    color = Some(constants);
+                    linear = Some(linear_rgb(constants));
+                }
                 cursor = by_result(cm.input())?;
                 accounted += 1;
             }

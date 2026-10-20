@@ -34,17 +34,23 @@ DEFAULT_FRAMINGS = ['z1', 'z2', 'z4', 'hd']
 
 class Builds(dict):
     """build -> (binary, extra env). A name with no entry below is the binary harness/build.sh writes for it,
-    HARNESS_BIN/_logos_full_<name>, run as every build since the shadow merge is: with one shadow layer;
-    <name>_off is that binary with the thin-fill masks off (NO_THIN_FILL_MASKS)."""
+    HARNESS_BIN/_logos_full_<name>, run with the harness's own defaults: since 2026-10-19 that is rule 4a's
+    shadow merge in linearRGB, as the browsers merge (the library runs its lone colour-space conversions in the
+    layer composite since #400). Suffixes, in this order: <name>_single runs it with one shadow layer
+    (SINGLE_SHADOW_LAYER, the merge in sRGB, every build's default before 2026-10-19, which the entries below
+    keep); <name>_off with the thin-fill masks off (NO_THIN_FILL_MASKS)."""
 
     def __missing__(self, name):
-        base = name.removesuffix('_off')
+        base, extra = name, {}
+        if base.endswith('_off'):
+            base = base.removesuffix('_off')
+            extra['NO_THIN_FILL_MASKS'] = '1'
+        if base.endswith('_single'):
+            base = base.removesuffix('_single')
+            extra['SINGLE_SHADOW_LAYER'] = '1'
         binary = f'{BIN}/_logos_full_{base}'
         if not os.path.exists(binary):
             raise KeyError(f'no build {name!r}: build {binary} with harness/build.sh {base}:<femtovg checkout>')
-        extra = {'SINGLE_SHADOW_LAYER': '1'}
-        if base != name:
-            extra['NO_THIN_FILL_MASKS'] = '1'
         return (binary, extra)
 
 
