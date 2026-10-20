@@ -1,0 +1,84 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 64fe538c..f565170c 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1604,11 +1604,12 @@ where
+         // The path cache saves a flattened and transformed version of the path.
+         let mut path_cache = path.cache(&transform, self.tess_tol, self.dist_tol);
+ 
+-        // Early out if path is outside the canvas bounds
+-        if path_cache.bounds.maxx < 0.0
+-            || path_cache.bounds.minx > self.width() as f32
+-            || path_cache.bounds.maxy < 0.0
+-            || path_cache.bounds.miny > self.height() as f32
++        // Early out if the stroke is outside the canvas bounds (inflated by its reach).
++        let r = stroke.reach((stroke.line_width * transform.average_scale()).max(self.fringe_width) + self.fringe_width);
++        if path_cache.bounds.maxx + r < 0.0
++            || path_cache.bounds.minx - r > self.width() as f32
++            || path_cache.bounds.maxy + r < 0.0
++            || path_cache.bounds.miny - r > self.height() as f32
+         {
+             return;
+         }
+@@ -2788,6 +2789,61 @@ fn a_contour_longer_than_a_fan_goes_as_several() {
+     assert_eq!(joined, contour_fan);
+ }
+ 
++#[cfg(test)]
++fn strokes_drawn(draw: impl FnOnce(&mut Canvas<RecordingRenderer>)) -> usize {
++    use renderer::CommandType;
++
++    let renderer = RecordingRenderer::default();
++    let recorded_commands = renderer.last_commands.clone();
++    let mut canvas = Canvas::new(renderer).unwrap();
++    canvas.set_size(100, 100, 1.0);
++    draw(&mut canvas);
++    canvas.flush_to_output(());
++    let n = recorded_commands
++        .borrow()
++        .iter()
++        .filter(|c| matches!(c.cmd_type, CommandType::Stroke { .. } | CommandType::StencilStroke { .. }))
++        .count();
++    n
++}
++
++#[test]
++fn a_stroke_whose_width_reaches_the_canvas_from_a_centreline_off_it_is_drawn() {
++    // A horizontal line 20 px below the canvas, 60 px wide: rows 90..99 are covered.
++    let wide = strokes_drawn(|canvas| {
++        let mut path = Path::new();
++        path.move_to(0.0, 120.0);
++        path.line_to(100.0, 120.0);
++        canvas.stroke_path(&path, &Paint::color(Color::white()).with_line_width(60.0));
++    });
++    // A corner 10 px below the canvas whose miter tip (ratio 3.16, under the
++    // limit of 4) reaches 31.6 px up from it, to y = 78.4.
++    let miter = strokes_drawn(|canvas| {
++        let mut path = Path::new();
++        path.move_to(20.0, 200.0);
++        path.line_to(50.0, 110.0);
++        path.line_to(80.0, 200.0);
++        canvas.stroke_path(
++            &path,
++            &Paint::color(Color::white()).with_line_width(20.0).with_miter_limit(4.0),
++        );
++    });
++    // Control: the same wide line, too far below to reach (bevel joins, so
++    // no miter can reach further than the half width).
++    let away = strokes_drawn(|canvas| {
++        let mut path = Path::new();
++        path.move_to(0.0, 140.0);
++        path.line_to(100.0, 140.0);
++        canvas.stroke_path(
++            &path,
++            &Paint::color(Color::white())
++                .with_line_width(60.0)
++                .with_line_join(LineJoin::Bevel),
++        );
++    });
++    assert_eq!((wide, miter, away), (1, 1, 0));
++}
++
+ #[test]
+ fn test_image_blit_fast_path() {
+     use renderer::{Command, CommandType};

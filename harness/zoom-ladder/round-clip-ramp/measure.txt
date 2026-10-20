@@ -1,0 +1,24 @@
+zoom                  master             prototype                WebKit           Chromium sw          Chromium GPU               Firefox   (px > 8/255 (max) [on the diagonals])
+0.25               4 (9) [2]             0 (4) [0]             0 (6) [0]          38 (59) [10]          27 (41) [10]                     -
+0.33              8 (13) [8]             0 (3) [0]            9 (10) [3]          45 (68) [16]          44 (40) [21]                     -
+0.5                4 (9) [4]             0 (2) [0]          12 (17) [12]          48 (53) [18]          54 (34) [26]                     -
+0.75            26 (12) [22]             0 (2) [0]             0 (6) [0]          87 (50) [27]         103 (35) [47]        112 (127) [34]
+1               20 (11) [12]             0 (1) [0]             0 (7) [0]         143 (64) [40]         120 (34) [68]          57 (30) [24]
+1.25            32 (11) [32]             0 (1) [0]          24 (11) [10]         196 (77) [72]         163 (36) [76]        128 (127) [35]
+1.5             24 (10) [24]             0 (1) [0]          70 (13) [28]         216 (84) [75]         200 (36) [96]        163 (127) [53]
+1.75            38 (10) [38]             0 (1) [0]          62 (16) [40]         189 (63) [34]        241 (35) [107]        185 (127) [50]
+2               52 (11) [52]             0 (1) [0]          48 (16) [48]         212 (52) [95]        252 (35) [140]         223 (34) [84]
+3               72 (11) [56]             0 (1) [0]             0 (7) [0]        380 (57) [136]        380 (35) [180]         313 (63) [99]
+4             108 (11) [108]             0 (1) [0]             8 (9) [8]        493 (53) [144]        524 (34) [244]         305 (34) [91]
+
+0.25   master vs the ramp 0.50/255; 16 arcs bit-identical; master vs WebKit 14 px apart, 14 with errors of opposite sign; master off: 2 at 30-60, 2 at 15-30/60-75; area reference vs exact 1.2/255
+0.33   master vs the ramp 0.85/255; 16 arcs bit-identical; master vs WebKit 22 px apart, 22 with errors of opposite sign; master off: 8 at 30-60, 0 at 15-30/60-75; area reference vs exact 1.1/255
+0.5    master vs the ramp 0.50/255; 16 arcs bit-identical; master vs WebKit 16 px apart, 12 with errors of opposite sign; master off: 4 at 30-60, 0 at 15-30/60-75; area reference vs exact 1.2/255
+0.75   master vs the ramp 0.50/255; 16 arcs bit-identical; master vs WebKit 26 px apart, 26 with errors of opposite sign; master off: 22 at 30-60, 4 at 15-30/60-75; area reference vs exact 1.3/255
+1      master vs the ramp 0.49/255; 16 arcs bit-identical; master vs WebKit 24 px apart, 24 with errors of opposite sign; master off: 12 at 30-60, 8 at 15-30/60-75; area reference vs exact 1.0/255
+1.25   master vs the ramp 0.50/255; 16 arcs bit-identical; master vs WebKit 54 px apart, 52 with errors of opposite sign; master off: 32 at 30-60, 0 at 15-30/60-75; area reference vs exact 1.3/255
+1.5    master vs the ramp 0.50/255; 16 arcs bit-identical; master vs WebKit 88 px apart, 72 with errors of opposite sign; master off: 24 at 30-60, 0 at 15-30/60-75; area reference vs exact 1.2/255
+1.75   master vs the ramp 0.50/255; 16 arcs bit-identical; master vs WebKit 80 px apart, 72 with errors of opposite sign; master off: 38 at 30-60, 0 at 15-30/60-75; area reference vs exact 1.3/255
+2      master vs the ramp 0.49/255; 16 arcs bit-identical; master vs WebKit 84 px apart, 76 with errors of opposite sign; master off: 52 at 30-60, 0 at 15-30/60-75; area reference vs exact 1.1/255
+3      master vs the ramp 0.47/255; 16 arcs bit-identical; master vs WebKit 48 px apart, 48 with errors of opposite sign; master off: 56 at 30-60, 16 at 15-30/60-75; area reference vs exact 1.0/255
+4      master vs the ramp 0.50/255; 16 arcs bit-identical; master vs WebKit 87 px apart, 75 with errors of opposite sign; master off: 108 at 30-60, 0 at 15-30/60-75; area reference vs exact 1.1/255

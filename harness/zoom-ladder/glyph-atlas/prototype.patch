@@ -1,0 +1,117 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 64fe538c..a7b81ecd 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1992,6 +1992,22 @@ where
+     /// using a custom font rasterizer/layout.
+     pub fn draw_glyph_commands(&mut self, draw_commands: GlyphDrawCommands, paint: &Paint) {
+         let transform = self.state().transform;
++        self.draw_glyph_commands_with(draw_commands, paint, transform, transform);
++    }
++
++    fn draw_glyph_commands_in_device_space(&mut self, draw_commands: GlyphDrawCommands, paint: &Paint) {
++        let transform = self.state().transform;
++        self.draw_glyph_commands_with(draw_commands, paint, Transform2D::identity(), transform);
++    }
++
++    fn draw_glyph_commands_with(
++        &mut self,
++        draw_commands: GlyphDrawCommands,
++        paint: &Paint,
++        vertex_transform: Transform2D,
++        paint_transform: Transform2D,
++    ) {
++        let transform = vertex_transform;
+         let create_vertices = |quads: &Vec<text::Quad>| {
+             let mut verts = Vec::with_capacity(quads.len() * 6);
+ 
+@@ -2023,7 +2039,7 @@ where
+         for cmd in draw_commands.alpha_glyphs {
+             let verts = create_vertices(&cmd.quads);
+ 
+-            self.render_triangles(&verts, &transform, &paint_flavor, GlyphTexture::AlphaMask(cmd.image_id));
++            self.render_triangles(&verts, &paint_transform, &paint_flavor, GlyphTexture::AlphaMask(cmd.image_id));
+         }
+ 
+         for cmd in draw_commands.color_glyphs {
+@@ -2031,7 +2047,7 @@ where
+ 
+             self.render_triangles(
+                 &verts,
+-                &transform,
++                &paint_transform,
+                 &paint_flavor,
+                 GlyphTexture::ColorTexture(cmd.image_id),
+             );
+@@ -2356,10 +2372,23 @@ where
+         // When baking scale into the rasterization, pre-multiply glyph positions
+         // by `effective_scale` so that under a translation-only canvas transform
+         // they still land at the original screen position.
+-        let scaled = |g: &PositionedGlyph| PositionedGlyph {
+-            x: g.x * effective_scale,
+-            y: g.y * effective_scale,
+-            glyph_id: g.glyph_id,
++        // EXPERIMENT (GLYPH_DEVICE_GRID): place atlas glyphs in device space. Each glyph's origin
++        // is mapped through the true canvas transform, so render_atlas takes the subpixel bucket
++        // from the device-space fraction and puts the quad on whole device pixels; the bitmap
++        // (rasterized at the quantized scale) is then presented 1:1 under the identity.
++        let device_grid = std::env::var_os("GLYPH_DEVICE_GRID").is_some();
++        let canvas_transform = self.state().transform;
++        let scaled = |g: &PositionedGlyph| {
++            if device_grid {
++                let (x, y) = canvas_transform.transform_point(g.x, g.y);
++                PositionedGlyph { x, y, glyph_id: g.glyph_id }
++            } else {
++                PositionedGlyph {
++                    x: g.x * effective_scale,
++                    y: g.y * effective_scale,
++                    glyph_id: g.glyph_id,
++                }
++            }
+         };
+ 
+         let mut draw_commands = if need_direct_rendering {
+@@ -2439,6 +2468,11 @@ where
+         // only draw_glyph_commands (which applies the canvas transform) needs the
+         // swap — and since it is infallible, the transform is always restored even
+         // though the fallible rendering above used `?`.
++        if device_grid && !need_direct_rendering {
++            // Quads are in device space; the paint keeps the canvas transform.
++            self.draw_glyph_commands_in_device_space(draw_commands, paint);
++            return Ok(());
++        }
+         match rasterization {
+             Rasterization::ScaledAtlas {
+                 scale,
+diff --git a/src/text.rs b/src/text.rs
+index 9d5f8047..8de723c9 100644
+--- a/src/text.rs
++++ b/src/text.rs
+@@ -645,6 +645,13 @@ impl GlyphAtlas {
+                 q.s1 = (rendered.atlas_x + rendered.width) as f32 * itw;
+                 q.t1 = (rendered.atlas_y + rendered.height) as f32 * ith;
+ 
++                if std::env::var_os("GLYPH_TRACE").is_some() {
++                    eprintln!(
++                        "GLYPH id={} size={} sub={} gx={:.4} atlas=({},{}) w={} q.x0={} s0*512={}",
++                        glyph.glyph_id, font_size, subpixel_location, glyph.x, rendered.atlas_x, rendered.atlas_y,
++                        rendered.width, q.x0, q.s0 * size.0 as f32
++                    );
++                }
+                 cmd.quads.push(q);
+             }
+ 
+@@ -750,7 +757,12 @@ impl GlyphAtlas {
+                 path,
+                 image_id: dst_image_id,
+                 cell: (dst_x as u32, TEXTURE_SIZE as u32 - dst_y as u32 - height, width, height),
+-                origin: Transform2D::translation(x, y),
++                // EXPERIMENT (GLYPH_SUBPIXEL_MASK): draw the outline at the key's subpixel offset,
++                // as swash does (and as this path did before 530e539f).
++                origin: Transform2D::translation(
++                    x + if std::env::var_os("GLYPH_SUBPIXEL_MASK").is_some() { _subpixel_x } else { 0.0 },
++                    y,
++                ),
+                 scale,
+                 line_width: line_width / scale,
+             }),

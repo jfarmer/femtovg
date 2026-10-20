@@ -1,0 +1,36 @@
+ring walls (paths 0, 1, 3, 4, 6), units of the 1024-unit viewBox drawn at 200 px: path 0 16.95/18.00/18.00/16.95; path 1 17.48/17.48/17.48/17.30; path 3 17.48/17.48/17.48/17.48; path 4 17.48/17.48/17.48/17.48; path 6 17.48/17.48/17.48/17.48
+  all rings: 0.25 -> 0.83-0.88 px, 0.33 -> 1.09-1.16 px, 0.5 -> 1.66-1.76 px, 1 -> 3.31-3.52 px
+
+1. makeup icon, px beyond 8/255, master -> gate fix (ladder steps, 0-based)
+  zoom 0.5: chr 149 -> 184, wk 4 -> 0
+  zoom 0.33: chr 502 -> 289, ff 496 -> 209, wk 525 -> 0
+    browsers among themselves: chr-ff 145, chr-wk 215, ff-wk 155
+  zoom 0.25: chr 172 -> 172, wk 0 -> 0
+
+2. each path of the icon drawn alone at 0.33, ink over the 8x area reference (Chromium at 8x, averaged)
+  path 0: master 1.189  gate fix 0.999  every fill masked 0.999  Chromium 1.087
+  path 1: master 1.191  gate fix 1.005  every fill masked 1.005  Chromium 0.978
+  path 2: master 1.007  gate fix 1.007  every fill masked 1.007  Chromium 1.091
+  path 3: master 1.114  gate fix 1.003  every fill masked 1.003  Chromium 1.045
+  path 4: master 1.231  gate fix 0.998  every fill masked 0.998  Chromium 1.084
+  path 5: master 1.000  gate fix 1.000  every fill masked 0.999  Chromium 0.997
+  path 6: master 1.215  gate fix 0.997  every fill masked 0.997  Chromium 1.082
+  path 7: master 1.001  gate fix 1.001  every fill masked 1.001  Chromium 0.999
+  path 8: master 1.000  gate fix 1.000  every fill masked 1.000  Chromium 1.048
+  path 9: master 1.013  gate fix 1.013  every fill masked 1.000  Chromium 1.003
+  (rings of two convex contours: paths 0, 1, 3, 4, 6; the gate fix here is SKV_GATE of half_fringe_toggles.patch, which counts drawn contours; on the whole icon at 0.33 its frame and FV_GATE_FIX's are identical)
+  pixels where SKV_GATE and FV_GATE_FIX differ on the icon at 0.33: 0
+
+3. repro.svg at 1x, ink over the exact area (axis-aligned edges on a 0.1 px grid, rasterized 10x)
+  A one bar: master 0.997, gate fix 0.997, Chromium 1.042, WebKit 1.000
+  B two bars, one path: master 1.246, gate fix 1.000, Chromium 1.046, WebKit 1.003
+  C ring: master 1.183, gate fix 1.000, Chromium 1.040, WebKit 1.002
+  px beyond 8/255 off WebKit in rows A-C (frame rows 40-129): master 1345, gate fix 0, Chromium 957
+  B, column 230, rows 70-71 and 80-81: {'master': [39, 90, 39, 90], 'gate fix': [77, 127, 77, 127], 'Chromium': [63, 127, 63, 127], 'WebKit': [76, 127, 76, 127]} exact 76.5, 127.5
+
+4. #327's ring, R = 8, at 1x: ink over the exact area pi (R^2 - r^2)
+  wall 1.0 px: master 1.348  gate fix 1.009  every fill masked 1.009
+
+5. the alternative: every concave ramp ends 0.5 px inside its edge (SKV_HALF in half_fringe_toggles.patch, no masks), at 0.33
+  icon, px beyond 8/255 off WebKit: 0
+  rings drawn alone, ink over the 8x area reference: path 0 0.998, path 1 1.004, path 3 1.002, path 4 1.002, path 6 0.999

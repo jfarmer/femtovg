@@ -1,0 +1,96 @@
+== the shoe (corpus/svgenius/hard/page_70_..._40194_icon_17.svg): 14 paths of 40.96-unit squares, 1 to 41 a path, 162 in all; 123 square edges shared within a path
+shared edges at x = 230 + (8k - 100) z, y = 130 + (8j - 40) z; furthest from a whole pixel, per ladder zoom:
+  1: 0.00 px
+  1.25: 0.00 px
+  1.5: 0.00 px
+  1.75: 0.00 px
+  2: 0.00 px
+  3: 0.00 px
+  4: 0.00 px
+  0.75: 0.00 px
+  0.5: 0.00 px
+  0.33: 0.48 px
+  0.25: 0.00 px
+off the ladder, the edge lines on whole pixels:
+  0.6: squares 4.8 px; x lines k = [0, 5, 10, 15, 20, 25], y lines j = [0, 5, 10, 15, 20, 25] of 0-25
+  0.9: squares 7.2 px; x lines k = [0, 5, 10, 15, 20, 25], y lines j = [0, 5, 10, 15, 20, 25] of 0-25
+  1.1: squares 8.8 px; x lines k = [0, 5, 10, 15, 20, 25], y lines j = [0, 5, 10, 15, 20, 25] of 0-25
+  1.3: squares 10.4 px; x lines k = [0, 5, 10, 15, 20, 25], y lines j = [0, 5, 10, 15, 20, 25] of 0-25
+shoe at 0.33 (ladder steps 16 and 18)
+  master     vs wk  136  vs chr  165  vs ff  164   (beyond 20/255 vs wk 32, max 100/255)
+  masked     vs wk    0  vs chr   41  vs ff   41   (beyond 20/255 vs wk 0, max 2/255)
+  merged     vs wk    7  vs chr   53  vs ff   53   (beyond 20/255 vs wk 0, max 18/255)
+  gate       vs wk    0  vs chr   40  vs ff   40   (beyond 20/255 vs wk 0, max 4/255)
+  halffringe vs wk  121  vs chr  156  vs ff  154   (beyond 20/255 vs wk 28, max 63/255)
+  browsers: wk-chr 38  wk-ff 38  chr-ff 0
+shoe at 0.6
+  master     vs wk  163  vs chr  249   (beyond 20/255 vs wk 56, max 61/255)
+  masked     vs wk    0  vs chr  104   (beyond 20/255 vs wk 0, max 3/255)
+  gate       vs wk  163  vs chr  249   (beyond 20/255 vs wk 56, max 61/255)
+  browsers: wk-chr 103
+shoe at 0.9
+  master     vs wk  236  vs chr  406   (beyond 20/255 vs wk 73, max 64/255)
+  masked     vs wk    0  vs chr  178   (beyond 20/255 vs wk 0, max 2/255)
+  merged     vs wk   76  vs chr  255   (beyond 20/255 vs wk 27, max 129/255)
+  gate       vs wk  236  vs chr  406   (beyond 20/255 vs wk 73, max 64/255)
+  browsers: wk-chr 177
+shoe at 1.1
+  master     vs wk  291  vs chr  466   (beyond 20/255 vs wk 92, max 61/255)
+  masked     vs wk    0  vs chr  192   (beyond 20/255 vs wk 0, max 3/255)
+  merged     vs wk   81  vs chr  263   (beyond 20/255 vs wk 33, max 118/255)
+  gate       vs wk  291  vs chr  466   (beyond 20/255 vs wk 92, max 61/255)
+  halffringe vs wk  291  vs chr  466   (beyond 20/255 vs wk 92, max 61/255)
+  browsers: wk-chr 191
+shoe at 1.3
+  master     vs wk  425  vs chr  662   (beyond 20/255 vs wk 82, max 61/255)
+  masked     vs wk    0  vs chr  241   (beyond 20/255 vs wk 0, max 3/255)
+  gate       vs wk  425  vs chr  662   (beyond 20/255 vs wk 82, max 61/255)
+  browsers: wk-chr 231
+where the pixels off WebKit lie, for master and merged (no shared edge): within 2 px of a square's corner, else within 0.5 px of an edge line
+  0.9 master   236 px: 135 near a corner, 101 along an edge, 0 other
+  0.9 merged    76 px: 76 near a corner, 0 along an edge, 0 other
+  1.1 master   291 px: 136 near a corner, 155 along an edge, 0 other
+  1.1 merged    81 px: 81 near a corner, 0 along an edge, 0 other
+how many paths each off pixel touches (shoe.svg = the corpus file): one = inside a path or on its outer edge, two or more = where separate paths meet, as in #411
+  0.33 master  vs wk  136 px: 92 touch one path, 44 two or more
+  0.33 chr     vs wk   38 px: 0 touch one path, 38 two or more
+  0.6 master  vs wk  163 px: 128 touch one path, 35 two or more
+  0.6 chr     vs wk  103 px: 0 touch one path, 103 two or more
+  0.9 master  vs wk  236 px: 202 touch one path, 34 two or more
+  0.9 chr     vs wk  177 px: 0 touch one path, 177 two or more
+  1.1 master  vs wk  291 px: 256 touch one path, 35 two or more
+  1.1 chr     vs wk  191 px: 0 touch one path, 191 two or more
+  1.3 master  vs wk  425 px: 388 touch one path, 37 two or more
+  1.3 chr     vs wk  231 px: 0 touch one path, 231 two or more
+
+== seam.svg at 1x: four 10 px squares a row; frame x = 130 + svg x, y = 30 + svg y
+one path, shared edges through pixel centres (d = 0):  model 255 (1 - (0.75 + d^2)) = 63.8
+  master  columns 160, 170, 180 in row 55: [64, 64, 64]
+  masked  columns 160, 170, 180 in row 55: [0, 0, 0]
+  chr     columns 160, 170, 180 in row 55: [0, 0, 0]
+  ff      columns 160, 170, 180 in row 55: [0, 0, 0]
+  wk      columns 160, 170, 180 in row 55: [0, 0, 0]
+one path, a quarter pixel off them (d = 0.25):  model 255 (1 - (0.75 + d^2)) = 47.8
+  master  columns 160, 170, 180 in row 70: [48, 48, 48]
+  masked  columns 160, 170, 180 in row 70: [0, 0, 0]
+  chr     columns 160, 170, 180 in row 70: [0, 0, 0]
+  ff      columns 160, 170, 180 in row 70: [0, 0, 0]
+  wk      columns 160, 170, 180 in row 70: [0, 0, 0]
+one path, on pixel edges (d = 0.5):  model 255 (1 - (0.75 + d^2)) = 0.0
+  master  columns 160, 170, 180 in row 85: [0, 0, 0]
+  masked  columns 160, 170, 180 in row 85: [0, 0, 0]
+  chr     columns 160, 170, 180 in row 85: [0, 0, 0]
+  ff      columns 160, 170, 180 in row 85: [0, 0, 0]
+  wk      columns 160, 170, 180 in row 85: [0, 0, 0]
+four paths, edges through pixel centres:
+  master  columns 160, 170, 180 in row 100: [64, 64, 64]
+  masked  columns 160, 170, 180 in row 100: [63, 63, 63]
+  chr     columns 160, 170, 180 in row 100: [64, 64, 64]
+  ff      columns 160, 170, 180 in row 100: [63, 63, 63]
+  wk      columns 160, 170, 180 in row 100: [64, 64, 64]
+whole frame: master vs chr 84  master vs ff 84  master vs wk 84  masked vs chr 0  masked vs ff 0  masked vs wk 0
+browsers: chr-ff 0  chr-wk 0  ff-wk 0
+  master vs wk, row 1: 27 px in the seam columns inside the row, 10 on its top and bottom edge pixels (squares' corners, which the fringe covers by min(cx, cy) where the area is cx cy, #13), 0 elsewhere
+  master vs wk, row 2: 27 px in the seam columns inside the row, 10 on its top and bottom edge pixels (squares' corners, which the fringe covers by min(cx, cy) where the area is cx cy, #13), 0 elsewhere
+  master vs wk, row 3: 0 px in the seam columns inside the row, 0 on its top and bottom edge pixels (squares' corners, which the fringe covers by min(cx, cy) where the area is cx cy, #13), 0 elsewhere
+  master vs wk, row 4: 0 px in the seam columns inside the row, 10 on its top and bottom edge pixels (squares' corners, which the fringe covers by min(cx, cy) where the area is cx cy, #13), 0 elsewhere

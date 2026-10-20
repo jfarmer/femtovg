@@ -1,0 +1,66 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 64fe538c..eb097e52 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -2452,11 +2452,20 @@ where
+                 // as vector geometry under any zoom, instead of snapping by the
+                 // quantization error times the glyph's distance from the origin.
+                 let residual = true_scale / scale;
++                // EXPERIMENT (inv-glyph-v2): GLYPH_ROUND_T rounds the presentation translation.
++                let (tx, ty) = if std::env::var_os("GLYPH_ROUND_T").is_some() { (tx.round(), ty.round()) } else { (tx, ty) };
+                 let saved = self.state().transform;
+                 self.state_mut().transform = Transform2D::new(residual, 0.0, 0.0, residual, tx, ty);
+                 self.draw_glyph_commands(draw_commands, paint);
+                 self.state_mut().transform = saved;
+             }
++            _ if std::env::var_os("GLYPH_ROUND_T").is_some() => {
++                let saved = self.state().transform;
++                self.state_mut().transform.0[4] = saved.0[4].round();
++                self.state_mut().transform.0[5] = saved.0[5].round();
++                self.draw_glyph_commands(draw_commands, paint);
++                self.state_mut().transform = saved;
++            }
+             _ => self.draw_glyph_commands(draw_commands, paint),
+         }
+ 
+diff --git a/src/text.rs b/src/text.rs
+index 9d5f8047..4aa58f86 100644
+--- a/src/text.rs
++++ b/src/text.rs
+@@ -645,6 +645,13 @@ impl GlyphAtlas {
+                 q.s1 = (rendered.atlas_x + rendered.width) as f32 * itw;
+                 q.t1 = (rendered.atlas_y + rendered.height) as f32 * ith;
+ 
++                if std::env::var_os("GLYPH_TRACE").is_some() {
++                    eprintln!(
++                        "GLYPH id {} size {} sub {} x {} y {} q.x0 {} q.y0 {} atlas ({}, {}) tex {}",
++                        glyph.glyph_id, font_size, subpixel_location, glyph.x, glyph.y, q.x0, q.y0,
++                        rendered.atlas_x, rendered.atlas_y, rendered.texture_index
++                    );
++                }
+                 cmd.quads.push(q);
+             }
+ 
+@@ -908,6 +915,11 @@ impl GlyphAtlas {
+         if texture_search_result.is_none() {
+             // All atlases are exausted and a new one must be created
+             let mut atlas = Atlas::new(TEXTURE_SIZE, TEXTURE_SIZE);
++            if let Some(n) = std::env::var("GLYPH_SKIP").ok().and_then(|v| v.parse::<usize>().ok()) {
++                if n > 0 {
++                    let _ = atlas.add_rect(n, 64);
++                }
++            }
+ 
+             let loc = atlas
+                 .add_rect(width, height)
+@@ -918,7 +930,9 @@ impl GlyphAtlas {
+             // anti-aliasing (ClearType®), and the atlas debug display is much
+             // clearer with different colors. Also, Rgba8 is required for color
+             // fonts (typically used for emojis).
+-            let info = ImageInfo::new(ImageFlags::NEAREST, atlas.size().0, atlas.size().1, PixelFormat::Rgba8);
++            // EXPERIMENT (inv-glyph-v2): GLYPH_LINEAR samples the atlas bilinearly.
++            let flags = if std::env::var_os("GLYPH_LINEAR").is_some() { ImageFlags::empty() } else { ImageFlags::NEAREST };
++            let info = ImageInfo::new(flags, atlas.size().0, atlas.size().1, PixelFormat::Rgba8);
+             let image_id = canvas.images.alloc(&mut canvas.renderer, info)?;
+ 
+             #[cfg(feature = "debug_inspector")]

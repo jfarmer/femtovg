@@ -1,0 +1,52 @@
+# px more than 8/255 off the nearest of Chromium 131 (c), Firefox (f), WebKit (w); (2) = only two browser frames at that zoom
+# master = femtovg 06243b80; p1024/p4096 = lut-env-probe.patch FEMTOVG_GRADIENT_LUT=N (master's fill, wider); near256/near4096 = FEMTOVG_GRADIENT_NEAREST; cNl/cNn = centre-lut-probe.patch FEMTOVG_PROBE_CENTRE=N, linear/nearest
+resvg-stop-with-smaller-offset-monotonic
+   master    z1:8c z125:208c z15:240c z175:260c z2:260c z3:260c z4:780c z075:12w z05:0w(2) z033:62w z025:4w
+   p1024     z1:8c z125:8c z15:0c z175:0c z2:0c z3:260c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   p4096     z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   near256   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   near4096  z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c256l     z1:8c z125:208c z15:240c z175:260c z2:260c z3:260c z4:780c z075:12w z05:0w(2) z033:62w z025:4w
+   c256n     z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   c1024l    z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c16384l   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c16384n   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+resvg-stop-zero-offset-in-the-middle
+   master    z1:8c z125:8c(2) z15:0c(2) z175:520c z2:520c z3:520c z4:520c z075:12w z05:0w(2) z033:8w z025:4w
+   p1024     z1:8c z125:8c(2) z15:0c(2) z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:8w z025:4w
+   p4096     z1:8c z125:8c(2) z15:0c(2) z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:8w z025:4w
+   near256   z1:8c z125:8c(2) z15:0c(2) z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:8w z025:4w
+   near4096  z1:8c z125:8c(2) z15:0c(2) z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:8w z025:4w
+   c256l     z1:8c z125:8c(2) z15:0c(2) z175:520c z2:520c z3:520c z4:520c z075:12w z05:0w(2) z033:8w z025:4w
+   c256n     z1:8c z125:8c(2) z15:0c(2) z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:8w z025:4w
+   c1024l    z1:8c z125:8c(2) z15:0c(2) z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:8w z025:4w
+   c16384l   z1:8c z125:8c(2) z15:0c(2) z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:8w z025:4w
+   c16384n   z1:8c z125:8c(2) z15:0c(2) z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:8w z025:4w
+resvg-stops-with-equal-offset-1
+   master    z1:8c z125:208c z15:240c z175:260c z2:260c z3:260c z4:780c z075:12w z05:0w(2) z033:62w z025:4w
+   p1024     z1:8c z125:8c z15:0c z175:0c z2:0c z3:260c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   p4096     z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   near256   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   near4096  z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c256l     z1:8c z125:208c z15:240c z175:260c z2:260c z3:260c z4:780c z075:12w z05:0w(2) z033:62w z025:4w
+   c256n     z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   c1024l    z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c16384l   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c16384n   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+resvg-stops-with-equal-offset-2
+   master    z1:8c z125:208c z15:240c z175:260c z2:260c z3:260c z4:780c z075:12w z05:0w(2) z033:62w z025:4w
+   p1024     z1:8c z125:8c z15:0c z175:0c z2:0c z3:260c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   p4096     z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   near256   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   near4096  z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c256l     z1:8c z125:208c z15:240c z175:260c z2:260c z3:260c z4:780c z075:12w z05:0w(2) z033:62w z025:4w
+   c256n     z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:260c z075:12w z05:0w(2) z033:62w z025:4w
+   c1024l    z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c16384l   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+   c16384n   z1:8c z125:8c z15:0c z175:0c z2:0c z3:0c z4:0c z075:12w z05:0w(2) z033:62w z025:4w
+repro.svg, px > 8/255 off Chromium (columns)
+   master    z1: 60 [446, 447, 448] | z2: 80 [573, 574, 575, 576]
+   near256   z1: 20 [447] | z2: 20 [575]
+   p1024     z1: 20 [447] | z2: 40 [574, 575]
+   c1024l    z1: 0 [] | z2: 20 [576]
+   p4096     z1: 0 [] | z2: 0 []

@@ -1,0 +1,44 @@
+Ladder file, every zoom, against each browser (ff only where Firefox frames exist):
+  zoom 1      chr: master      0 (2) prototype      0 (2)  ff: master      0 (2) prototype      0 (2)  wk: master      0 (1) prototype      0 (1)
+  zoom 1.25   chr: master      0 (5) prototype      0 (5)  wk: master      0 (1) prototype      0 (1)
+  zoom 1.5    chr: master      0 (5) prototype      0 (5)  wk: master      0 (1) prototype      0 (1)
+  zoom 1.75   chr: master      0 (5) prototype      0 (5)  wk: master      0 (2) prototype      0 (2)
+  zoom 2      chr: master      0 (2) prototype      0 (2)  wk: master      0 (2) prototype      0 (2)
+  zoom 3      chr: master  397 (135) prototype   332 (31)  ff: master  397 (135) prototype   332 (31)  wk: master  403 (109) prototype      0 (3)
+  zoom 4      chr: master  386 (112) prototype   332 (31)  ff: master  386 (112) prototype   332 (31)  wk: master   393 (85) prototype      0 (3)
+  zoom 0.75   chr: master      0 (5) prototype      0 (5)  wk: master      0 (1) prototype      0 (1)
+  zoom 0.5    chr: master      0 (5) prototype      0 (5)  wk: master      0 (1) prototype      0 (1)
+  zoom 0.33   chr: master    30 (19) prototype    30 (19)  wk: master      0 (1) prototype      0 (1)
+  zoom 0.25   chr: master      0 (5) prototype      0 (5)  wk: master      0 (1) prototype      0 (1)
+
+zoom 3, against the 8x area reference: master 406 (109), prototype 0 (5), Chromium 334 (33), Firefox 334 (33), WebKit 0 (6)
+  beyond 32/255: Chromium vs area 3 (33), Chromium vs WebKit 0 (29), master vs WebKit 248 (109); Chromium vs Firefox 0 (0); Chromium vs WebKit 324 (29)
+
+zoom 4, against the 8x area reference: master 396 (86), prototype 0 (5), Chromium 334 (33), Firefox 334 (33), WebKit 0 (6)
+  beyond 32/255: Chromium vs area 3 (33), Chromium vs WebKit 0 (29), master vs WebKit 234 (85); Chromium vs Firefox 0 (0); Chromium vs WebKit 324 (29)
+
+zoom 3, the variants against WebKit / the area (1 any-of on every fill, 2 uncapped inset only, 3 convex BEVEL takes bevel_join only, 4 = 3 + uncapped = the prototype):
+  master_z3      403 (109) / 406 (109)
+  variant1_z3    299 (104) / 301 (109)
+  variant2_z3        0 (3) / 0 (5)
+  variant3_z3    299 (104) / 301 (109)
+  prototype_z3       0 (3) / 0 (5)
+
+Master zoom 3, coverage along the rows (255 - red channel; green #008000 on white), and the exact area:
+  row 130: master 0 for x < 24 (4 at x = 24), 238 at x = 38, 255 from x = 39, where the area is 158; area 33 at x = 0, full from x = 70
+  row 131: master 0 for x < 92 (1 at x = 92), 153 at x = 133, 255 from x = 134, where the area is 206; area 0 at x = 0, full from x = 150
+
+Probes at zoom 3 against the exact area (and WebKit where shot): master / prototype / variant 1 / variant 2
+  flat_dy0.25   master  612 (179)  prototype      0 (1)  variant1  537 (179)  variant2   118 (64)
+  flat_dy0.25  vs WebKit (WebKit vs area 0 (8)):  master 620 (171)  prototype 0 (8)  variant1 528 (171)  variant2 116 (62), rows [130], 27 past the tips
+  acute2        master   393 (97)  prototype     1 (47)  variant1   293 (95)  variant2    20 (50)
+  acute5        master     9 (48)  prototype     1 (35)
+  shortedge     master  230 (189)  prototype  230 (189)
+
+Derived (calculate_joins / expand_fill arithmetic at 06243b80, fringe 1 px, woff 0.5):
+  miter limit 2.4 bevels corners under 49.25 deg; the 600 cap shortens miters under 4.679 deg
+  corner angle 0.716 deg; |dm| = sin(theta/2) = 0.006250; capped |dmpos| = 3.7498, uncapped 160.01; inset at woff: 1.8749 px from the corner, 0.0117 px inside each edge (fringe at the corner 0.0234 px); uncapped inset 80.00 px
+  at B: dmpos = (-3.7497, 0.02343), fan vertex [468.12514647 130.01171738], outer fringe vertex [471.87485353 129.98828262] (the instrumented builds printed dm (+-3.7497, 0.02346), fan (468.125, 130.0117), outer (471.875, 129.988))
+  row 130 (centres y = 130.5): the fan edge crosses at x = 38.6, the fringe outer line at x = 23.4
+  mean width (2 area / perimeter) at zoom 3: 1.500 px; at zoom z: z/2
+  s_shortedge: corner 26.6 deg beside an edge 1.118 px long

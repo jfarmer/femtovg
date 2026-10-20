@@ -1,0 +1,10 @@
+pen   stencil on  master:   40 px > 8/255 off the area reference (over-inked 40, under 0), max 65
+pen   stencil on  fold  :   18 px > 8/255 off the area reference (over-inked 18, under 0), max 41
+pen   stencil off master:  586 px > 8/255 off the area reference (over-inked 586, under 0), max 97
+pen   stencil off fold  :  342 px > 8/255 off the area reference (over-inked 342, under 0), max 72
+pen Chromium 1x vs area: 8
+loop  stencil on  master:   15 px > 8/255 off the area reference (over-inked 15, under 0), max 56
+loop  stencil on  fold  :    2 px > 8/255 off the area reference (over-inked 2, under 0), max 17
+loop  stencil off master:  220 px > 8/255 off the area reference (over-inked 220, under 0), max 72
+loop  stencil off fold  :   30 px > 8/255 off the area reference (over-inked 30, under 0), max 44
+loop Chromium 1x vs area: 6

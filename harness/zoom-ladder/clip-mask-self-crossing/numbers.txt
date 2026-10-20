@@ -1,0 +1,63 @@
+
+== multiple-children: the pentagram under evenodd and the r = 10 circle
+zoom | femtovg off the area by > 8/255 inside the star (max) | femtovg off the fold by > 2/255 | pixels where 0 and 2 meet: count, femtovg - exact max, fold - exact max | worst pixel
+0.25 | 4 (112) | 0 | 8, 111, 111 | (237,133): femtovg 230, exact 119, fold 229
+0.33 | 4 (29) | 0 | 10, 29, 29 | (236,121): femtovg 93, exact 64, fold 93
+0.5 | 6 (115) | 0 | 8, 115, 116 | (239,117): femtovg 223, exact 108, fold 223
+0.75 | 4 (68) | 0 | 8, 68, 69 | (244,111): femtovg 227, exact 159, fold 227
+1 | 6 (71) | 8 | 6, 71, 71 | (260,143): femtovg 235, exact 164, fold 235
+1.25 | 8 (60) | 8 | 8, 60, 61 | (253,98): femtovg 155, exact 95, fold 155
+1.5 | 4 (52) | 0 | 8, 52, 52 | (258,92): femtovg 160, exact 108, fold 160
+1.75 | 6 (86) | 0 | 10, 86, 86 | (283,152): femtovg 182, exact 96, fold 182
+2 | 4 (51) | 0 | 6, 51, 51 | (291,155): femtovg 218, exact 167, fold 218
+3 | 4 (49) | 24 | 6, 49, 49 | (230,239): femtovg 217, exact 168, fold 217
+4 | 4 (69) | 56 | 4, 69, 69 | (352,181): femtovg 203, exact 134, fold 203
+
+== repro: the pentagram under evenodd
+zoom | femtovg off the area by > 8/255 inside the star (max) | femtovg off the fold by > 2/255 | pixels where 0 and 2 meet: count, femtovg - exact max, fold - exact max | worst pixel
+0.25 | 4 (112) | 0 | 8, 111, 111 | (237,133): femtovg 230, exact 119, fold 229
+0.33 | 4 (29) | 0 | 10, 29, 29 | (236,121): femtovg 93, exact 64, fold 93
+0.5 | 6 (115) | 0 | 8, 115, 116 | (239,117): femtovg 223, exact 108, fold 223
+0.75 | 4 (68) | 0 | 8, 68, 69 | (244,111): femtovg 227, exact 159, fold 227
+1 | 6 (71) | 0 | 6, 71, 71 | (260,143): femtovg 235, exact 164, fold 235
+1.25 | 8 (60) | 0 | 8, 60, 61 | (253,98): femtovg 155, exact 95, fold 155
+1.5 | 4 (52) | 0 | 8, 52, 52 | (258,92): femtovg 160, exact 108, fold 160
+1.75 | 6 (86) | 0 | 10, 86, 86 | (283,152): femtovg 182, exact 96, fold 182
+2 | 4 (51) | 0 | 6, 51, 51 | (291,155): femtovg 218, exact 167, fold 218
+3 | 4 (49) | 0 | 6, 49, 49 | (230,239): femtovg 217, exact 168, fold 217
+4 | 4 (69) | 0 | 4, 69, 69 | (352,181): femtovg 203, exact 134, fold 203
+
+== repro-nonzero: the pentagram under nonzero
+zoom | femtovg off the area by > 8/255 inside the star (max) | femtovg off the fold by > 2/255 | pixels where 0 and 2 meet: count, femtovg - exact max, fold - exact max | worst pixel
+0.25 | 4 (56) | 0 | 8, 55, 55 | (237,133): femtovg 255, exact 200, fold 255
+0.33 | 2 (15) | 0 | 10, 15, 14 | (236,121): femtovg 93, exact 78, fold 93
+0.5 | 6 (58) | 0 | 8, 58, 58 | (239,117): femtovg 223, exact 165, fold 223
+0.75 | 4 (34) | 0 | 8, 34, 34 | (244,111): femtovg 227, exact 193, fold 227
+1 | 6 (36) | 0 | 6, 36, 35 | (260,143): femtovg 235, exact 199, fold 235
+1.25 | 8 (30) | 0 | 8, 30, 30 | (253,98): femtovg 155, exact 125, fold 155
+1.5 | 2 (26) | 0 | 8, 26, 26 | (258,92): femtovg 160, exact 134, fold 160
+1.75 | 4 (43) | 0 | 10, 43, 43 | (283,152): femtovg 255, exact 212, fold 255
+2 | 2 (26) | 0 | 6, 26, 25 | (291,155): femtovg 218, exact 192, fold 218
+3 | 2 (24) | 0 | 6, 24, 24 | (230,239): femtovg 255, exact 231, fold 255
+4 | 4 (34) | 0 | 4, 34, 34 | (352,181): femtovg 255, exact 221, fold 255
+
+== multiple-children against WebKit, px > 8/255 (vertex + frame corner + other) | uncrossed redraw | WebKit off the exact star (inside the star, max) | Chromium off it | master and uncrossed vs the 8x area reference, whole frame | the pixels where 0 and 2 meet
+0.25 | 8 (4 + 4 + 0) | 4 (vertex 0) | 0 (5) | 46 (29) | 200 -> 196 | at the 8 meeting pixels, off the exact area by at most: master 111, uncrossed 0, WebKit 1
+0.33 | 8 (4 + 4 + 0) | 4 (vertex 0) | 0 (4) | 47 (40) | 264 -> 260 | at the 10 meeting pixels, off the exact area by at most: master 29, uncrossed 0, WebKit 1
+0.5 | 6 (6 + 0 + 0) | 0 (vertex 0) | 0 (6) | 28 (42) | 7 -> 1 | at the 8 meeting pixels, off the exact area by at most: master 115, uncrossed 1, WebKit 1
+0.75 | 16 (4 + 12 + 0) | 12 (vertex 0) | 0 (8) | 131 (47) | 1188 -> 1184 | at the 8 meeting pixels, off the exact area by at most: master 68, uncrossed 1, WebKit 1
+1 | 22 (6 + 8 + 8) | 16 (vertex 0) | 16 (13) | 111 (69) | 14 -> 8 | at the 6 meeting pixels, off the exact area by at most: master 71, uncrossed 0, WebKit 1
+1.25 | 32 (8 + 8 + 16) | 24 (vertex 0) | 16 (10) | 209 (49) | 16 -> 8 | at the 8 meeting pixels, off the exact area by at most: master 60, uncrossed 1, WebKit 2
+1.5 | 10 (4 + 0 + 6) | 8 (vertex 0) | 12 (10) | 174 (57) | 5 -> 1 | at the 8 meeting pixels, off the exact area by at most: master 52, uncrossed 0, WebKit 2
+1.75 | 26 (6 + 0 + 20) | 20 (vertex 0) | 26 (11) | 212 (59) | 8 -> 2 | at the 10 meeting pixels, off the exact area by at most: master 86, uncrossed 0, WebKit 2
+2 | 42 (4 + 0 + 38) | 34 (vertex 0) | 42 (12) | 247 (41) | 3 -> 0 | at the 6 meeting pixels, off the exact area by at most: master 51, uncrossed 0, WebKit 5
+3 | 126 (6 + 0 + 120) | 120 (vertex 2) | 122 (18) | 551 (43) | 4 -> 0 | at the 6 meeting pixels, off the exact area by at most: master 49, uncrossed 0, WebKit 4
+4 | 198 (4 + 0 + 194) | 194 (vertex 0) | 182 (21) | 501 (85) | 4 -> 0 | at the 4 meeting pixels, off the exact area by at most: master 69, uncrossed 0, WebKit 2
+
+== the uncrossed redraw against WebKit at the failing zooms: px > 8/255 by place | uncrossed and WebKit off the 8x area reference there (range /255)
+1.25 frame corners: 8 px, uncrossed 28-60, WebKit 0-1
+1.25 the r = 10 circle: 16 px, uncrossed 0-4, WebKit 6-11
+1.25 elsewhere: 0 px
+1.75 frame corners: 0 px
+1.75 the r = 10 circle: 0 px
+1.75 elsewhere: 20 px, uncrossed 0-0, WebKit 9-11

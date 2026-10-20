@@ -1,0 +1,98 @@
+Thin-fill mask frames: every number in the issue and where it comes from.
+
+Builds
+  master       femtovg 06243b80, demo-assets harness _logos_full.rs on WGPU (binary _logos_full_zm2)
+  share lifted 06243b80 + instrumentation.patch, INV_MASKS_A_FRAME=100000000 (no other switch); with no switch set
+               the instrumented build's frames are bit-identical to master's (checked at zoom 2, frames 00 and 01)
+  key first    same, INV_KEY_FIRST=1 (the outline lookup runs before may_make)
+  184a8ebe     747eee31^ (the #408 branch before the review commit), 747eee31 itself
+Framing: 460 x 260, the SVG fitted into a 200 px box at (130, 30), zoomed about the frame's centre;
+  SKIP_UNSUPPORTED_FILTERS=1 VIEWPORT_CLIP=1 TRANSIENT_BUDGET_MB=1024. A still scene: ZOOM_LADDER=z,z,z,...
+  (one flush per step). #411's framing p240: 426 x 240, the SVG fitted into 240 px.
+References: Chromium 131 headless, software raster (chr_), WebKit macOS 27.2 (wk_), Firefox (ff_, p240 only).
+n8 = pixels more than 8/255 off in any channel over the whole frame (119,600 px; p240 102,240 px).
+
+File: corpus/babylon/vertex-pulling-normals-uvs-colors-tangents__1.svg, 256 x 256 cells, each its own path.
+
+1. Per zoom (frame 00 = a fresh canvas's first frame = every ladder step but step 9)
+   zoom  settles at  frame 00 n8 vs chr / wk   settled frame n8 vs chr / wk   chr vs wk
+   0.25      64        2,500 /  2,500              676 / 2,080                 1,684
+   0.33      64        4,356 /  4,356              868 /   484                 1,980
+   0.5       16        9,900 /  9,900                0 /    48                    64
+   0.75      64       22,425 / 22,425                0 /     0                     0
+   1          4       38,921 / 38,974            1,108 /     0                   848
+   1.25      64       41,372 / 45,377            2,172 /     0                 1,792
+   1.5       16       36,577 / 38,490            2,206 /     0                 2,042
+   1.75      66       31,641 / 33,544            1,724 /     0                 1,670
+   2          1       27,123 / 25,627            2,278 /     0                 2,018
+   3, 4       0       16,034 / 15,114, 9,181 / 8,838 (no thin fill; masks off identical)    0, 68
+   "settles at" = first frame equal to every later one (70-80 still frames). The settled frame is bit-identical to
+   the share-lifted frame 00 at every zoom above (checked 0.25, 0.33, 0.5, 0.75 with 70-80 master frames here;
+   1-2 in investigate/inv-masks/var). Settled frame, max channel difference: vs Chromium 8-18, vs WebKit 4-5 at
+   zooms 1-2 and 7-15 below; beyond 20/255: 0 against either at every zoom. Frame 00: max 40-60.
+   Distinct outlines (instrumented): 0.25 16,384; 0.5 4,096; 0.75 16,384; 1 1,024; 1.25 16,384; 1.5 4,224;
+   1.75 16,896; 2 320. Settle frame = floor(distinct / 256), the first frame that makes fewer than 256.
+   0.33 measured here: settles at 64 (frame 63 -> 64 changes 2,211 px; earlier frames 33-66 each).
+   Flip at the settle frame (px changed): 0.25 1,275; 0.5 7,575; 0.75 11,325; 0.33 2,211; 1.25 31,375.
+   The sheet's orange (share lifted vs Chromium, beyond 8/255): Chromium is 6-17/255 off WebKit at those pixels
+   (zoom 1.25: 2,172 px, 1,684 of them beyond 8/255 between the browsers; zoom 2: 2,278, 1,942), and the share-
+   lifted frame is at most 4/255 off WebKit.
+
+2. Counters, instrumented (thin / found by request / found by key / made / refused past the share)
+   zoom 2   f0  43,008 /     0 /  3,600 / 256 / 39,152
+            f1  43,008 / 3,856 / 39,088 /  64 /      0
+            f2  43,008 /     0 / 43,008 /   0 /      0   (asked, 4,096 kept, cleared mid-frame from f2 on)
+   zoom 1.25 f0 65,536 /     0 /    128 / 256 / 65,152
+            f63 65,536 /     0 / 32,384 / 256 / 32,896  (16,384 masks held)
+            f64 65,536 /     0 / 65,536 /   0 /      0
+   zoom 1   f0  65,536 /     0 /  1,568 / 256 / 63,712
+   zoom 2, frame 00 vs 01: 46,468 px differ (n8 26,642, max 41); frame 01 == 02.
+   Zoom 1.25 still scene, n8 vs Chromium at frames 0/8/16/24/32/40/48/56/64:
+     41,372 39,052 35,897 34,758 31,598 28,337 27,023 23,710 2,172. Frame 32 differs from 00 in rows 5-69
+     (content rows 5-255).
+
+3. The zoom ladder (zoom_zm_svg.jsonl): every step equals a fresh frame of its zoom except step 9 (zoom 2 after
+   2, 3, 4, 3): 46,468 px off fresh, and equal to the settled zoom-2 frame. Zooms 3 and 4 make no masks, so the
+   zoom-2 atlas and its 3,856 requests survive to step 9; elsewhere the motion restart (made >= found) starts the
+   atlas over after steps 2, 4, 10, 12, 14, 16, 18 and 20 (1-based; instrumented), and outlines differ between
+   zooms, so each revisit is a fresh frame 00 again.
+   Gestures ending at zoom 2 (investigate/inv-masks/gest): 1 -> 2 in 9 steps, 3 -> 2, 4 -> 2 end on frame 00
+   (27,123 / 25,627); 2,3,4,3,2 and 1,1.5,2,2 end on the settled frame.
+
+4. Never settling (master, ZOOM_LADDER=1,1,1,1,1,1, measured here)
+   sl511.svg (511 slivers 0.4 px wide, each its own outline): frame 00 -> 01 2,697 px (n8 2,182, max 150), then
+   identical.
+   sl512.svg (the same plus one): every frame differs from the last, 2,701 px (n8 2,184, max 150), period 2.
+   tiger9.svg (3 x 3 Ghostscript tigers, 1,656 thin fills): every frame differs from the last, 2,374 px
+   (n8 1,812, max 255), period 2.
+   Exactly 512 distinct outlines each drawn once flicker, 511 settle at frame 1 (inv-masks-v1 gen.py rects).
+   Babylon at 1.25 has 16,384 distinct outlines and never restarts: frame 1 finds 640, makes 256.
+   With the restart off (INV_NO_MOTION_RESTART=1) the 1,500 slivers settle at frame 5, tiger9 at frame 6.
+
+5. History (frames in investigate/inv-masks-v2/hist)
+   747eee31 (2026-10-18, #408 review, squashed into b503cb84) put may_make before the outline lookup and
+   replaced the restart condition found == 0 by made >= found.
+   zoom 2 frame 00   184a8ebe: 5,444 / 4,988 vs chr / wk, frame 00 -> 01 9,790 px
+                     747eee31: 27,123 / 25,627, 46,468 px (bit-identical to master)
+   p240 frame 00     184a8ebe: 990 / 1,762 vs chr / ff (beyond 20/255: 32 / 26 = 0.03 %, #411's figure)
+                     747eee31 and master: 38,720 / 40,437; frame 00 -> 01 54,225 px; frame 01: 2,056 / 0 (max 4
+                     vs Firefox). Chromium vs Firefox at p240: 1,388.
+   tiger9 and the 1,500 slivers settle at frames 6 and 5 on 184a8ebe and flicker on 747eee31.
+   Before 747eee31 zoom 1.25 already took 63 frames and zoom 1 three: the makes-only share is from #408's first
+   revision. Master with INV_KEY_FIRST draws 184a8ebe's zoom-2 frame 00 bit for bit.
+
+6. Prototype switches over frames 0-69 (variants.txt): key first: zoom 2 frame 00 5,444 / 4,988, zooms 1.25 /
+   1.75 settle at 63 / 65, sl512 still flickers. Counting draws (Skia's rule): stable from frame 0, n8 27,800 vs
+   WebKit at zoom 2 (masks off 27,814). Share lifted: frame 00 final at every zoom.
+
+7. Corpus survey (instrumented, 2,215 files, zooms 0.25 / 0.5 / 1 / 2 / 4, three frames each): only this file
+   refuses a fill and only its frames change; the next most thin fills in a frame: Ghostscript Tiger, 200 at 0.25.
+
+8. Time in fill_mask (min of 3 runs on the M4 at load average 67-95, rough): master frame 00 0.3-0.5 ms; master
+   settled about 12 ms a frame (65,536 requests overflow the 4,096 kept in `asked`, so every fill rebuilds its
+   outline and key each frame); share lifted, frame 00 at 1.25 (16,384 masks made) about 17 ms, then about 12 ms.
+
+9. Skia (google/skia 97f9f021bb44, src/gpu/graphite/Device.cpp): kMaxSmallPathAtlasCount = 256 applies under
+   PathRendererStrategy::kTessellationAndSmallAtlas only (L2234-L2242); fAtlasedPathCount++ after every successful
+   addShape, cache hit or new raster (L1914); reset in internalFlush (L2388); past it a path is tessellated (MSAA).
+   kRasterAtlas has no count (L2244-L2246). The limit came with d31a6ef0 (2025-09-18), "a short term solution".

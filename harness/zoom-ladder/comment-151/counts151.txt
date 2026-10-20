@@ -1,0 +1,91 @@
+== pen path with #151's paint (pen.svg), zoom 1
+Chromium 1x vs area: 8 (over 6, under 2, >20: 0, max 12)
+none  vs area: 40 (over 40, under 0, >20: 30, max 65) | vs Chromium 1x: 48 (over 40, under 8, >20: 32, max 77)
+fold  vs area: 18 (over 18, under 0, >20: 11, max 41) | vs Chromium 1x: 27 (over 18, under 9, >20: 12, max 45)
+once  vs area: 23 (over 0, under 23, >20: 11, max 60) | vs Chromium 1x: 30 (over 0, under 30, >20: 11, max 59)
+chords 2.52-4.00 px; 69 joins, 34 inner bevels on master, 15 still beveled by the fold test (turns up to 39.7 deg, W tan(theta/2) up to 2.35 px)
+none : 40 over-inked px, all within 6.31 px of a join with an inner bevel
+fold : 18 over-inked px, all within 6.31 px of a join the fold test still bevels
+
+== loop.svg (#151's paint, 16 points on a radius-10 circle, 3.47 px chords turning 20 deg), zoom 1
+Chromium 1x vs area: 6 (over 0, under 6, >20: 5, max 62)
+none  vs area: 15 (over 15, under 0, >20: 12, max 56)
+fold  vs area: 2 (over 2, under 0, >20: 0, max 17)
+once  vs area: 11 (over 0, under 11, >20: 6, max 44)
+
+== lists-empty-state-light, whole frame
+z025 vs area: master 13 (over 5, under 8, >20: 0, max 17) | fold 10 (over 3, under 7, >20: 0, max 17) | once 15 (over 1, under 14, >20: 0, max 18) | p421fold 9 (over 3, under 6, >20: 0, max 17)
+     WebKit vs area 32 | Chromium vs area 34
+z033 vs area: master 12 (over 5, under 7, >20: 0, max 14) | fold 7 (over 0, under 7, >20: 0, max 11) | once 10 (over 0, under 10, >20: 0, max 11) | p421fold 4 (over 0, under 4, >20: 0, max 10)
+     WebKit vs area 5 | Chromium vs area 7
+z05 vs area: master 20 (over 11, under 9, >20: 0, max 17) | fold 9 (over 0, under 9, >20: 0, max 14) | once 11 (over 0, under 11, >20: 0, max 15) | p421fold 4 (over 0, under 4, >20: 0, max 12)
+     WebKit vs area 7 | Chromium vs area 6
+z075 vs area: master 34 (over 20, under 14, >20: 3, max 25) | fold 15 (over 1, under 14, >20: 3, max 25) | once 15 (over 1, under 14, >20: 3, max 25) | p421fold 1 (over 0, under 1, >20: 0, max 10)
+     WebKit vs area 0 | Chromium vs area 14
+z1 vs area: master 21 (over 18, under 3, >20: 0, max 17) | fold 3 (over 0, under 3, >20: 0, max 12) | once 4 (over 0, under 4, >20: 0, max 12) | p421fold 3 (over 0, under 3, >20: 0, max 12)
+     WebKit vs area 1 | Chromium vs area 20
+z125 vs area: master 37 (over 27, under 10, >20: 0, max 18) | fold 13 (over 3, under 10, >20: 0, max 10) | once 17 (over 3, under 14, >20: 0, max 12) | p421fold 1 (over 1, under 0, >20: 0, max 9)
+     WebKit vs area 2 | Chromium vs area 39
+z15 vs area: master 49 (over 33, under 16, >20: 0, max 15) | fold 17 (over 1, under 16, >20: 0, max 13) | once 23 (over 1, under 22, >20: 0, max 15) | p421fold 5 (over 1, under 4, >20: 0, max 13)
+     WebKit vs area 2 | Chromium vs area 45
+z175 vs area: master 64 (over 43, under 21, >20: 0, max 16) | fold 23 (over 2, under 21, >20: 0, max 15) | once 28 (over 1, under 27, >20: 0, max 15) | p421fold 3 (over 1, under 2, >20: 0, max 10)
+     WebKit vs area 1 | Chromium vs area 78
+z2 vs area: master 12 (over 10, under 2, >20: 0, max 12) | fold 4 (over 2, under 2, >20: 0, max 10) | once 8 (over 2, under 6, >20: 0, max 12) | p421fold 4 (over 2, under 2, >20: 0, max 10)
+     WebKit vs area 4 | Chromium vs area 65
+z3 vs area: master 24 (over 0, under 24, >20: 0, max 12) | fold 24 (over 0, under 24, >20: 0, max 12) | once 24 (over 0, under 24, >20: 0, max 12) | p421fold 2 (over 0, under 2, >20: 0, max 11)
+     WebKit vs area 0 | Chromium vs area 40
+z4 vs area: master 6 (over 2, under 4, >20: 0, max 11) | fold 6 (over 2, under 4, >20: 0, max 11) | once 6 (over 2, under 4, >20: 0, max 11) | p421fold 1 (over 0, under 1, >20: 0, max 11)
+     WebKit vs area 0 | Chromium vs area 47
+
+== strip window (32 x 24 px following frame point (240.86, 111.14)) vs WebKit; residuals vs area
+0.25  master 19, fold 18 (fold within 6/255 of the area on them, WebKit 17/255)
+0.33  master 6, fold 2 (fold within 3/255 of the area on them, WebKit 16/255)
+0.5   master 5, fold 1 (fold within 1/255 of the area on them, WebKit 16/255)
+0.75  master 2, fold 0 
+1     master 3, fold 0 
+1.25  master 1, fold 0 
+1.5   master 3, fold 0 
+1.75  master 7, fold 1 (fold within 6/255 of the area on them, WebKit 3/255)
+2     master 0, fold 0 
+3     master 0, fold 0 
+4     master 0, fold 0 
+
+== coincident butt ends: mask-on-thin-stroked-path-userspaceonuse
+1.25 chr master 26 fold 26 once 2
+1.25 ff master 26 fold 26 once 2
+1.25 wk master 26 fold 26 once 2
+1.75 chr master 38 fold 38 once 2
+1.75 ff master 38 fold 38 once 2
+1.75 wk master 38 fold 38 once 2
+1.25 once leftover (167, 73): coverage 0.376, Chromium 0.502
+1.25 once leftover (292, 73): coverage 0.376, Chromium 0.502
+
+== zero-gap dashes: resvg-dasharray-n-0-solid, zoom 0.33
+chr none 408 fold 408 once 419
+ff none 404 fold 404 once 416
+wk none 60 fold 60 once 76
+
+== abutting subpaths (abutting.svg), zoom 1: coverage of green at the seam column x=230
+none  vs Chromium 20 px; seam 0.75 Chromium 1.00
+once  vs Chromium 20 px; seam 0.50 Chromium 1.00
+
+== geometry
+nanovg inner-bevel test fires above a turn of 2 acos(1/1.01) = 16.1 deg
+chords of one line width (12) with W = 6.5 bevel only past 2 acos(6.5/12) = 114.4 deg
+pill end at 1.75: W = 3.68, 22.5 deg turn: miter foot W tan(11.25 deg) = 0.73 px
+loop.svg: chord 3.47 px, W tan(10 deg) = 1.15 px
+
+== fold-test sweep (firefox-artwork/sweep.py): key, zoom, px changed, WebKit master/fold, Chromium master/fold
+80 stroke files x zooms 1 and 1.75; frames that moved:
+corpus__firefox__lists-empty-state-light z175 133 60 28 113 95
+corpus__firefox__lists-empty-state-light z1 66 19 4 39 29
+wpttext__23-text-gradients-and-runs__resvg-text-stroke-linear-gradient-ref z1 29 1755 1757 674 668
+wpttext__23-text-gradients-and-runs__text-gradient-both-fill-and-stroke-ref z1 27 1586 1586 2128 2126
+wpttext__23-text-gradients-and-runs__text-gradient-both-fill-and-stroke z1 27 1586 1586 2128 2126
+corpus__babylon__show-multiple-guis__1 z175 23 575 576 379 377
+wpttext__23-text-gradients-and-runs__text-gradient-both-fill-and-stroke-ref z175 22 2185 2185 2963 2961
+wpttext__23-text-gradients-and-runs__text-gradient-both-fill-and-stroke z175 22 2185 2185 2963 2961
+wpttext__23-text-gradients-and-runs__resvg-text-stroke-linear-gradient-ref z175 19 4517 4517 1747 1749
+corpus__babylon__show-multiple-guis__1 z1 2 328 328 268 267
+corpus__babylon__default-render-pipeline z175 1 609 609 902 902
+{'moved': 11, 'toward_wk': 2, 'away_wk': 2, 'toward_chr': 9, 'away_chr': 1}

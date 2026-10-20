@@ -1,0 +1,341 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 64fe538c..8cf7f851 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -2389,11 +2389,20 @@ where
+             )?
+         };
+ 
++        let direct_color_scale = if need_direct_rendering && std::env::var_os("EMOJI_DIRECT_SCALE").is_some() {
++            self.state().transform.average_scale()
++        } else {
++            1.0
++        };
+         if !color_glyphs.is_empty() {
+             let color_commands = {
+                 let atlas = if need_direct_rendering {
+                     self.ephemeral_glyph_atlas
+-                        .get_or_insert_with(|| Rc::new(GlyphAtlas::new(&self.text_context)))
++                        .get_or_insert_with(|| {
++                            let atlas = GlyphAtlas::new(&self.text_context);
++                            atlas.linear.set(true);
++                            Rc::new(atlas)
++                        })
+                         .clone()
+                 } else {
+                     self.glyph_atlas.clone()
+@@ -2403,13 +2412,20 @@ where
+                 // On the direct path we leave them at the original font_size —
+                 // that already matches today's behavior.
+                 if need_direct_rendering {
++                    // EXPERIMENT (inv-emoji): EMOJI_DIRECT_SCALE bakes the transform's scale into
++                    // the colour glyphs' size, as the scaled atlas does, and divides it out below.
++                    let s = direct_color_scale;
+                     atlas.render_atlas(
+                         self,
+                         font_id,
+                         font,
+                         &font_face,
+-                        color_glyphs.into_iter(),
+-                        paint.text.font_size,
++                        color_glyphs.iter().map(|g| PositionedGlyph {
++                            x: g.x * s,
++                            y: g.y * s,
++                            glyph_id: g.glyph_id,
++                        }),
++                        paint.text.font_size * s,
+                         stroke.line_width,
+                         render_mode,
+                         normalized_coords,
+@@ -2457,6 +2473,14 @@ where
+                 self.draw_glyph_commands(draw_commands, paint);
+                 self.state_mut().transform = saved;
+             }
++            _ if direct_color_scale != 1.0 => {
++                let saved = self.state().transform;
++                let k = 1.0 / direct_color_scale;
++                let [a, b, c, d, x, y] = saved.0;
++                self.state_mut().transform = Transform2D([a * k, b * k, c * k, d * k, x, y]);
++                self.draw_glyph_commands(draw_commands, paint);
++                self.state_mut().transform = saved;
++            }
+             _ => self.draw_glyph_commands(draw_commands, paint),
+         }
+ 
+@@ -5376,3 +5400,66 @@ fn random_api_sequences_keep_one_consistent_stack() {
+         canvas.flush_to_output(());
+     }
+ }
++
++/// inv-emoji repro: a PNG (sbix) glyph is drawn at its size, inside the quad's empty padding.
++/// The test font's only glyph is a 24 by 24 PNG of one colour in a 24 ppem strike with
++/// originOffset (0, 0), so at font size 48 the bitmap must cover x 50..98 and y 52..100
++/// (its bottom-left corner on the pen at (50, 100), sbix spec) - 48 by 48 pixels.
++#[cfg(all(feature = "textlayout", feature = "image-loading"))]
++#[test]
++fn inv_emoji_png_glyph_covers_its_size_inside_the_padding() {
++    use crate::paint::GlyphTexture;
++    use crate::text::test_fonts::png_glyph_font;
++
++    let mut renderer = RecordingRenderer::default();
++    renderer.retain_image_updates = true;
++    let recorded_commands = renderer.last_commands.clone();
++    let recorded_verts = renderer.last_verts.clone();
++    let text_context = TextContext::default();
++    let font = text_context.add_font_mem(&png_glyph_font()).unwrap();
++    let mut canvas = Canvas::new_with_text_context(renderer, text_context).unwrap();
++    canvas.set_size(400, 400, 1.0);
++    let paint = Paint::color(Color::black()).with_font_size(48.0);
++    canvas
++        .fill_glyph_run(font, &[], [PositionedGlyph { x: 50.0, y: 100.0, glyph_id: 0 }], &paint)
++        .unwrap();
++    // The upload, before the flush releases nothing (the main atlas persists).
++    let command_image = {
++        canvas.flush_to_output(());
++        let commands = recorded_commands.borrow();
++        let command = commands
++            .iter()
++            .find(|c| matches!(c.glyph_texture, GlyphTexture::ColorTexture(_)))
++            .expect("a colour glyph draw");
++        let (offset, count) = command.triangles_verts.unwrap();
++        let verts = &recorded_verts.borrow()[offset..offset + count];
++        eprintln!(
++            "quad: x {}..{} y {}..{}",
++            verts[0].x, verts[1].x, verts[0].y, verts[1].y
++        );
++        match command.glyph_texture {
++            GlyphTexture::ColorTexture(id) => id,
++            _ => unreachable!(),
++        }
++    };
++    let image = canvas.images.get(command_image).unwrap();
++    let (x, y, upload) = image.updates.last().expect("the bitmap's upload");
++    let opaque: Vec<(usize, usize)> = upload
++        .pixels()
++        .enumerate()
++        .filter(|(_, p)| p.a > 0)
++        .map(|(i, _)| (i % upload.width(), i / upload.width()))
++        .collect();
++    let (min_x, max_x) = (opaque.iter().map(|p| p.0).min().unwrap(), opaque.iter().map(|p| p.0).max().unwrap());
++    let (min_y, max_y) = (opaque.iter().map(|p| p.1).min().unwrap(), opaque.iter().map(|p| p.1).max().unwrap());
++    eprintln!(
++        "upload at ({x}, {y}): {}x{}, opaque texels x {min_x}..={max_x} y {min_y}..={max_y}",
++        upload.width(),
++        upload.height()
++    );
++    assert_eq!(
++        (max_x - min_x + 1, max_y - min_y + 1),
++        (48, 48),
++        "the 24 px strike at font size 48 should cover 48 by 48 texels, not the padded cell"
++    );
++}
+diff --git a/src/text.rs b/src/text.rs
+index 9d5f8047..5dae0535 100644
+--- a/src/text.rs
++++ b/src/text.rs
+@@ -139,6 +139,8 @@ pub struct RenderedGlyph {
+     atlas_x: u32,
+     atlas_y: u32,
+     color_glyph: bool,
++    // EXPERIMENT (inv-emoji): EMOJI_SNAPBL - the bitmap's bottom edge below the pen, in pixels, unrounded.
++    bitmap_bottom: Option<f32>,
+ }
+ 
+ #[derive(Debug)]
+@@ -520,6 +522,8 @@ impl PendingMask<'_> {
+ pub struct GlyphAtlas {
+     pub rendered_glyphs: RefCell<FnvHashMap<RenderedGlyphId, Option<RenderedGlyph>>>,
+     pub glyph_textures: RefCell<Vec<FontTexture>>,
++    // EXPERIMENT (inv-emoji): set on the ephemeral atlas, which holds only colour glyphs.
++    pub linear: std::cell::Cell<bool>,
+     #[cfg(feature = "swash")]
+     swash_scale_context: Rc<RefCell<swash::scale::ScaleContext>>,
+ }
+@@ -529,6 +533,7 @@ impl GlyphAtlas {
+         Self {
+             rendered_glyphs: RefCell::default(),
+             glyph_textures: RefCell::default(),
++            linear: std::cell::Cell::new(false),
+             #[cfg(feature = "swash")]
+             swash_scale_context: (**_text_context).borrow().swash_scale_context(),
+         }
+@@ -635,8 +640,24 @@ impl GlyphAtlas {
+ 
+                 let line_width_offset = if rendered.color_glyph { 0. } else { line_width_offset };
+ 
+-                q.x0 = glyph.x.trunc() + rendered.bearing_x as f32 - line_width_offset - GLYPH_PADDING as f32;
+-                q.y0 = glyph.y.round() - rendered.bearing_y as f32 - line_width_offset - GLYPH_PADDING as f32;
++                // EXPERIMENT (inv-emoji): EMOJI_ROUNDX snaps a colour glyph's left edge to the nearest pixel.
++                let gx = if rendered.color_glyph && std::env::var_os("EMOJI_QUARTERX").is_some() {
++                    // Skia quantizes the pen to 1/4 px, then CoreText snaps the bitmap half up.
++                    ((glyph.x * 4.0).round() / 4.0 + 0.5).floor()
++                } else if rendered.color_glyph && std::env::var_os("EMOJI_ROUNDX").is_some() {
++                    glyph.x.round()
++                } else {
++                    glyph.x.trunc()
++                };
++                q.x0 = gx + rendered.bearing_x as f32 - line_width_offset - GLYPH_PADDING as f32;
++                q.y0 = match rendered.bitmap_bottom {
++                    // round(y + bottom) is the bitmap's bottom edge; the cell is its whole-pixel height.
++                    Some(bottom) => {
++                        // CoreText rounds the corner half up in y-up device space, i.e. half down here.
++                        (glyph.y.round() + bottom - 0.5).ceil() - (rendered.height - 2 * GLYPH_PADDING) as f32 - GLYPH_PADDING as f32
++                    }
++                    None => glyph.y.round() - rendered.bearing_y as f32 - line_width_offset - GLYPH_PADDING as f32,
++                };
+                 q.x1 = q.x0 + rendered.width as f32;
+                 q.y1 = q.y0 + rendered.height as f32;
+ 
+@@ -701,7 +722,17 @@ impl GlyphAtlas {
+                 .map(|g| g.metrics.clone());
+ 
+             if let (Some(glyph_representation), Some(glyph_metrics)) = (
+-                font.glyph_rendering_representation(font_face, glyph_id, font_size as u16, normalized_coords),
++                font.glyph_rendering_representation(
++                    font_face,
++                    glyph_id,
++                    // EXPERIMENT (inv-emoji): EMOJI_CEILSTRIKE asks for the strike at or above the size.
++                    if std::env::var_os("EMOJI_CEILSTRIKE").is_some() {
++                        font_size.ceil() as u16
++                    } else {
++                        font_size as u16
++                    },
++                    normalized_coords,
++                ),
+                 maybe_glyph_metrics,
+             ) {
+                 (glyph_representation, glyph_metrics, scale)
+@@ -723,14 +754,38 @@ impl GlyphAtlas {
+ 
+         let line_width_offset = (line_width / 2.0).ceil();
+ 
+-        let width = (glyph_metrics.width * scale).ceil() as u32 + (line_width_offset * 2.0) as u32 + padding * 2;
+-        let height = (glyph_metrics.height * scale).ceil() as u32 + (line_width_offset * 2.0) as u32 + padding * 2;
++        // EXPERIMENT (inv-emoji): EMOJI_CTSMALL imitates CoreText's enlargement of Apple Color Emoji
++        // below 24 px (1.25x up to 16 px, then linear to 1x at 24 px, with the drop of its bounds).
++        let mut glyph_metrics = glyph_metrics;
++        if color_glyph && std::env::var_os("EMOJI_CTSMALL").is_some() && font_size < 24.0 {
++            let e = if font_size <= 16.0 { 1.25 * font_size } else { 20.0 + (font_size - 16.0) * 0.5 };
++            let k = e / font_size;
++            let drop_px = if font_size <= 16.0 { 0.25 * font_size } else { 4.0 - (font_size - 16.0) * 0.125 };
++            glyph_metrics.width *= k;
++            glyph_metrics.height *= k;
++            glyph_metrics.bearing_y = (e - drop_px) / scale;
++        }
++        // EXPERIMENT (inv-emoji): EMOJI_ROUNDSIZE rounds a colour glyph's size instead of ceil().
++        let round_size = color_glyph && std::env::var_os("EMOJI_ROUNDSIZE").is_some();
++        let px = |v: f32| {
++            if round_size {
++                font.units_to_px(v, font_size).round()
++            } else {
++                (v * scale).ceil()
++            }
++        };
++        let width = px(glyph_metrics.width) as u32 + (line_width_offset * 2.0) as u32 + padding * 2;
++        let height = px(glyph_metrics.height) as u32 + (line_width_offset * 2.0) as u32 + padding * 2;
+ 
+         let (dst_index, dst_image_id, (dst_x, dst_y)) =
+             self.find_texture_or_alloc(canvas, width as usize, height as usize)?;
+ 
+         let rendered_bearing_x = (glyph_metrics.bearing_x * scale).round();
+         let rendered_bearing_y = (glyph_metrics.bearing_y * scale).round();
++        // EXPERIMENT (inv-emoji): EMOJI_SNAPBL snaps a colour bitmap's bottom-left corner (the sbix
++        // origin) and keeps its whole-pixel size, so its top is that corner minus the size.
++        let bitmap_bottom = (color_glyph && std::env::var_os("EMOJI_SNAPBL").is_some())
++            .then(|| font.units_to_px(glyph_metrics.height - glyph_metrics.bearing_y, font_size));
+         let x = dst_x as f32 - rendered_bearing_x + line_width_offset + padding as f32;
+         let y = TEXTURE_SIZE as f32 - dst_y as f32 - rendered_bearing_y - line_width_offset - padding as f32;
+ 
+@@ -743,6 +798,7 @@ impl GlyphAtlas {
+             atlas_y: dst_y as u32 + GLYPH_MARGIN,
+             texture_index: dst_index,
+             color_glyph,
++            bitmap_bottom,
+         };
+ 
+         let pending_mask = match glyph_representation {
+@@ -761,8 +817,26 @@ impl GlyphAtlas {
+                 let target_width = rendered_glyph.width;
+                 let target_height = rendered_glyph.height;
+ 
+-                let image_buffer =
+-                    image_buffer.resize(target_width, target_height, image::imageops::FilterType::Nearest);
++                // EXPERIMENT (inv-emoji): EMOJI_FILTER picks the resampling filter, EMOJI_NOPAD
++                // resamples to the unpadded cell and leaves the padding ring transparent.
++                use image::imageops::FilterType;
++                let filter = match std::env::var("EMOJI_FILTER").as_deref() {
++                    Ok("triangle") => FilterType::Triangle,
++                    Ok("catmullrom") => FilterType::CatmullRom,
++                    Ok("gaussian") => FilterType::Gaussian,
++                    Ok("lanczos3") => FilterType::Lanczos3,
++                    _ => FilterType::Nearest,
++                };
++                let image_buffer = if std::env::var_os("EMOJI_NOPAD").is_some() {
++                    let inner = image_buffer
++                        .resize_exact(target_width - 2 * GLYPH_PADDING, target_height - 2 * GLYPH_PADDING, filter)
++                        .to_rgba8();
++                    let mut padded = image::RgbaImage::new(target_width, target_height);
++                    image::imageops::overlay(&mut padded, &inner, GLYPH_PADDING as i64, GLYPH_PADDING as i64);
++                    image::DynamicImage::ImageRgba8(padded)
++                } else {
++                    image_buffer.resize(target_width, target_height, filter)
++                };
+                 if let Ok(image) = crate::image::ImageSource::try_from(&image_buffer) {
+                     canvas.update_image(dst_image_id, image, target_x, target_y)?;
+                 }
+@@ -883,6 +957,7 @@ impl GlyphAtlas {
+             atlas_x: dst_x as u32 + GLYPH_MARGIN,
+             atlas_y: dst_y as u32 + GLYPH_MARGIN,
+             color_glyph: is_color,
++            bitmap_bottom: None,
+         }))
+     }
+ 
+@@ -918,7 +993,15 @@ impl GlyphAtlas {
+             // anti-aliasing (ClearType®), and the atlas debug display is much
+             // clearer with different colors. Also, Rgba8 is required for color
+             // fonts (typically used for emojis).
+-            let info = ImageInfo::new(ImageFlags::NEAREST, atlas.size().0, atlas.size().1, PixelFormat::Rgba8);
++            // EXPERIMENT (inv-emoji): EMOJI_LINEAR samples atlas textures bilinearly.
++            let flags = if std::env::var_os("EMOJI_LINEAR").is_some()
++                && (self.linear.get() || std::env::var_os("EMOJI_LINEAR_ALL").is_some())
++            {
++                ImageFlags::empty()
++            } else {
++                ImageFlags::NEAREST
++            };
++            let info = ImageInfo::new(flags, atlas.size().0, atlas.size().1, PixelFormat::Rgba8);
+             let image_id = canvas.images.alloc(&mut canvas.renderer, info)?;
+ 
+             #[cfg(feature = "debug_inspector")]
+diff --git a/src/text/font.rs b/src/text/font.rs
+index 55ab3323..c51cb80e 100644
+--- a/src/text/font.rs
++++ b/src/text/font.rs
+@@ -730,6 +730,11 @@ impl Font {
+         size / self.units_per_em as f32
+     }
+ 
++    // EXPERIMENT (inv-emoji): font units to pixels without rounding through `scale`.
++    pub(crate) fn units_to_px(&self, units: f32, size: f32) -> f32 {
++        units * size / self.units_per_em as f32
++    }
++
+     #[cfg(feature = "textlayout")]
+     pub fn variation_axes(&self) -> Vec<VariationAxisInfo> {
+         let face = self.face_ref();
+@@ -822,7 +827,13 @@ impl Font {
+                         width: image.width as f32 * scale,
+                         height: image.height as f32 * scale,
+                         bearing_x: image.x as f32 * scale,
+-                        bearing_y: (image.y as f32 + image.height as f32) * scale,
++                        // EXPERIMENT (inv-emoji): EMOJI_DROP moves the bitmap down by that many ems.
++                        bearing_y: (image.y as f32 + image.height as f32) * scale
++                            - std::env::var("EMOJI_DROP")
++                                .ok()
++                                .and_then(|v| v.parse::<f32>().ok())
++                                .unwrap_or(0.0)
++                                * self.units_per_em as f32,
+                     },
+                 })
+             } else {

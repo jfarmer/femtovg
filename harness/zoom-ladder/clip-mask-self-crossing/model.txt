@@ -1,0 +1,24 @@
+zoom rule | model vs master frame: px off, max | per way: px > 8/255 off the exact area (max), work added | cells in the star's box
+0.25 evenodd | 1, 1 | pixel (master) 4 (111) +0 | rows 4 2 (84) +1814 % strips | 4x4 0 (7) x16 | 4x4, shared cells 0 (7) 14 cells x16 | 1806
+0.33 evenodd | 0, 0 | pixel (master) 4 (29) +0 | rows 4 2 (11) +1393 % strips | 4x4 0 (6) x16 | 4x4, shared cells 0 (6) 16 cells x16 | 3136
+0.5 evenodd | 2, 1 | pixel (master) 6 (115) +0 | rows 4 2 (77) +940 % strips | 4x4 0 (3) x16 | 4x4, shared cells 0 (3) 14 cells x16 | 6806
+0.75 evenodd | 0, 0 | pixel (master) 4 (68) +0 | rows 4 0 (3) +634 % strips | 4x4 0 (3) x16 | 4x4, shared cells 0 (3) 16 cells x16 | 15006
+1 evenodd | 18, 1 | pixel (master) 6 (71) +0 | rows 4 4 (58) +481 % strips | 4x4 0 (4) x16 | 4x4, shared cells 0 (4) 16 cells x16 | 26244
+1.25 evenodd | 0, 0 | pixel (master) 8 (60) +0 | rows 4 4 (43) +384 % strips | 4x4 0 (2) x16 | 4x4, shared cells 0 (2) 14 cells x16 | 41006
+1.5 evenodd | 4, 1 | pixel (master) 4 (52) +0 | rows 4 0 (5) +321 % strips | 4x4 0 (5) x16 | 4x4, shared cells 0 (5) 16 cells x16 | 58806
+1.75 evenodd | 0, 0 | pixel (master) 6 (86) +0 | rows 4 4 (86) +300 % strips | 4x4 0 (7) x16 | 4x4, shared cells 0 (7) 12 cells x16 | 73320
+2 evenodd | 29, 1 | pixel (master) 2 (51) +0 | rows 4 2 (48) +300 % strips | 4x4 0 (2) x16 | 4x4, shared cells 0 (2) 12 cells x16 | 83720
+3 evenodd | 30, 1 | pixel (master) 4 (49) +0 | rows 4 2 (13) +300 % strips | 4x4 0 (7) x16 | 4x4, shared cells 0 (7) 8 cells x16 | 119600
+4 evenodd | 31, 1 | pixel (master) 4 (69) +0 | rows 4 4 (69) +300 % strips | 4x4 0 (1) x16 | 4x4, shared cells 0 (1) 6 cells x16 | 119600
+0.25 nonzero | 0, 0 | pixel (master) 4 (56) +0 | rows 4 2 (42) +1814 % strips | 4x4 0 (4) x16 | 4x4, shared cells 0 (4) 14 cells x16 | 1806
+0.33 nonzero | 0, 0 | pixel (master) 2 (15) +0 | rows 4 0 (6) +1393 % strips | 4x4 0 (3) x16 | 4x4, shared cells 0 (3) 16 cells x16 | 3136
+0.5 nonzero | 0, 0 | pixel (master) 6 (58) +0 | rows 4 2 (39) +940 % strips | 4x4 0 (2) x16 | 4x4, shared cells 0 (2) 14 cells x16 | 6806
+0.75 nonzero | 0, 0 | pixel (master) 4 (34) +0 | rows 4 0 (2) +634 % strips | 4x4 0 (2) x16 | 4x4, shared cells 0 (2) 16 cells x16 | 15006
+1 nonzero | 14, 1 | pixel (master) 6 (36) +0 | rows 4 4 (29) +481 % strips | 4x4 0 (3) x16 | 4x4, shared cells 0 (3) 16 cells x16 | 26244
+1.25 nonzero | 0, 0 | pixel (master) 8 (30) +0 | rows 4 4 (22) +384 % strips | 4x4 0 (1) x16 | 4x4, shared cells 0 (1) 14 cells x16 | 41006
+1.5 nonzero | 1, 1 | pixel (master) 2 (26) +0 | rows 4 0 (2) +321 % strips | 4x4 0 (2) x16 | 4x4, shared cells 0 (2) 16 cells x16 | 58806
+1.75 nonzero | 0, 0 | pixel (master) 4 (43) +0 | rows 4 2 (43) +300 % strips | 4x4 0 (3) x16 | 4x4, shared cells 0 (3) 12 cells x16 | 73320
+2 nonzero | 22, 1 | pixel (master) 2 (26) +0 | rows 4 2 (24) +300 % strips | 4x4 0 (1) x16 | 4x4, shared cells 0 (1) 12 cells x16 | 83720
+3 nonzero | 16, 1 | pixel (master) 2 (24) +0 | rows 4 0 (6) +300 % strips | 4x4 0 (3) x16 | 4x4, shared cells 0 (3) 8 cells x16 | 119600
+4 nonzero | 11, 1 | pixel (master) 4 (34) +0 | rows 4 4 (34) +300 % strips | 4x4 0 (1) x16 | 4x4, shared cells 0 (1) 6 cells x16 | 119600
+API repro, pixel (148, 93): model 155, exact 95

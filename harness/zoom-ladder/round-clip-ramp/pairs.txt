@@ -1,0 +1,95 @@
+blend-clip-path-nested-overlay-ref (largest difference from the area reference over the zooms: master 6, prototype 1)
+    0.75: 31 -> 0
+blend-clip-path-nested-overlay (largest difference from the area reference over the zooms: master 6, prototype 1)
+    0.33: 40 -> 40 (area 40: browser off the area)
+    4: 25 -> 0
+clip-path-rounded-rect (largest difference from the area reference over the zooms: master 11, prototype 4)
+    1.5: 40 -> 24
+    1.75: 88 -> 53 (area 48: browser off the area)
+    2: 60 -> 62 (area 56: browser off the area)
+    3: 39 -> 0
+clip-path-variation-12 (largest difference from the area reference over the zooms: master 12, prototype 3)
+    0.33: 26 -> 16
+    1.25: 56 -> 20
+    1.5: 96 -> 64 (area 60: browser off the area)
+    1.75: 56 -> 56 (area 64: browser off the area)
+    2: 84 -> 40 (area 40: browser off the area)
+    3: 48 -> 0
+clip-path-variation-16 (largest difference from the area reference over the zooms: master 11, prototype 3)
+    0.33: 25 -> 17
+    0.75: 26 -> 0
+    1.25: 54 -> 26 (area 22: the browser is off the area within the pass mark; in 4 px both are within 8/255 of the area and add up)
+    1.5: 88 -> 70 (area 68: browser off the area)
+    1.75: 78 -> 58 (area 60: browser off the area)
+    2: 84 -> 40 (area 40: browser off the area)
+    4: 44 -> 4
+clip-path-variation-20 (largest difference from the area reference over the zooms: master 12, prototype 3)
+    0.33: 26 -> 16
+    1.25: 56 -> 20
+    1.5: 96 -> 64 (area 60: browser off the area)
+    1.75: 56 -> 56 (area 64: browser off the area)
+    2: 52 -> 24
+clip-path-variation-24 (largest difference from the area reference over the zooms: master 11, prototype 2)
+    1.25: 43 -> 43 (area 43: browser off the area)
+    1.5: 96 -> 64 (area 60: browser off the area)
+    1.75: 100 -> 52 (area 48: browser off the area)
+    2: 84 -> 40 (area 40: browser off the area)
+    3: 48 -> 0
+    4: 43 -> 4
+clip-path-variation-28 (largest difference from the area reference over the zooms: master 12, prototype 3)
+    0.75: 26 -> 0
+    1.25: 54 -> 24
+    1.5: 88 -> 70 (area 68: browser off the area)
+    1.75: 80 -> 58 (area 60: browser off the area)
+    2: 84 -> 40 (area 40: browser off the area)
+    3: 48 -> 0
+    4: 87 -> 8
+clip-path-variation-32 (largest difference from the area reference over the zooms: master 11, prototype 2)
+    0.33: 26 -> 17
+    1.25: 54 -> 29 (area 21: the browser is off the area within the pass mark; in 8 px both are within 8/255 of the area and add up)
+    1.5: 96 -> 64 (area 60: browser off the area)
+    1.75: 96 -> 56 (area 56: browser off the area)
+    2: 84 -> 40 (area 40: browser off the area)
+    3: 48 -> 0
+    4: 46 -> 4
+clip-path-variation-36 (largest difference from the area reference over the zooms: master 12, prototype 3)
+    0.33: 28 -> 16
+    0.75: 26 -> 0
+    1.25: 54 -> 26 (area 22: the browser is off the area within the pass mark; in 4 px both are within 8/255 of the area and add up)
+    1.5: 88 -> 70 (area 68: browser off the area)
+    1.75: 78 -> 58 (area 60: browser off the area)
+    2: 84 -> 40 (area 40: browser off the area)
+clip-path-variation-40 (largest difference from the area reference over the zooms: master 11, prototype 2)
+    1.25: 43 -> 43 (area 43: browser off the area)
+    1.5: 96 -> 64 (area 60: browser off the area)
+    1.75: 100 -> 52 (area 48: browser off the area)
+    2: 52 -> 24
+clip-path-variation-44 (largest difference from the area reference over the zooms: master 11, prototype 3)
+    0.33: 25 -> 17
+    1.25: 56 -> 20
+    1.5: 96 -> 64 (area 60: browser off the area)
+    1.75: 56 -> 56 (area 64: browser off the area)
+    2: 84 -> 40 (area 40: browser off the area)
+    3: 48 -> 0
+    4: 86 -> 8
+clip-path-variation-48 (largest difference from the area reference over the zooms: master 11, prototype 3)
+    0.33: 29 -> 16
+    0.75: 26 -> 0
+    1.25: 54 -> 24
+    1.5: 88 -> 70 (area 68: browser off the area)
+    1.75: 80 -> 58 (area 60: browser off the area)
+    2: 84 -> 40 (area 40: browser off the area)
+    3: 48 -> 0
+    4: 44 -> 4
+offset-under-clip-path-ref (largest difference from the area reference over the zooms: master 61, prototype 61)
+    0.75: 34 -> 26 (area 24: the browser is off the area within the pass mark; in 2 px both are within 8/255 of the area and add up)
+    1.75: 27 -> 0
+    3: 53 -> 29 (area 30: browser off the area)
+    4: 88 -> 73 (area 71: browser off the area)
+feblend-in-clipped-layer (largest difference from the area reference over the zooms: master 66, prototype 66)
+    0.33: 44 -> 44 (not classified: 36 of the 44 px off WebKit lie on the clip's edge within 15 degrees of an axis, where the ramp is nearly exact; the prototype moves them by at most 1/255)
+    0.75: 43 -> 12
+    3: 36 -> 4
+    4: 53 -> 5
+master frames bit-identical to the ladder: 165 / 165
+failing pairs: master 78, prototype 40; of those left, the area itself fails against the nearest browser in 35, the nearest browser is within the pass mark of the area in 4
