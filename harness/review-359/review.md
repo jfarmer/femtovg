@@ -10,7 +10,7 @@ Reviewed at head 45398ede, trial-merged with master cbc175e8 (CHANGELOG.md is th
 - CHANGELOG entry present; tronical's stale-comment nit is reworded.
 
 **Results**
-- Merged tree: 683 tests pass with `--features wgpu` (including 20-odd new unit tests); `cargo fmt --check` clean; `--no-default-features` and wasm32 builds clean; clippy reports the same 12 warnings as master (none new).
+- Merged tree: 683 tests pass with `--features wgpu`; `cargo fmt --check` clean; `--no-default-features` and wasm32 builds clean; clippy reports the same 12 warnings as master (none new).
 - #350: closes it. The NaN probe from the issue (a `[0, 0.5, 1]` gradient drawn first, then `[0, NaN, 1]`): on master the NaN bar takes the first gradient's ramp (centre pixel (220, 30, 30) after it, (124, 124, 30) alone, 190 levels apart); with the PR the NaN stop is dropped and both are (30, 125, 124), 0 levels apart. The PR covers all three bullets of #350's proposal and its test list (non-finite stops through every constructor, differing LUTs, `[0, 0.5, 1]` unchanged, #329/#326 tests green).
 - #378: closes its femtovg half. A 256 x 64 horizontal red-to-lime gradient against Chromium 131 (CSS `in <space>` gradients and an SVG `color-interpolation="linearRGB"` gradient; middle row, levels in any channel):
 
