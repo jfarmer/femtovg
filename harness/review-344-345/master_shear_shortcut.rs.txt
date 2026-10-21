@@ -1,0 +1,47 @@
+#![cfg(feature = "wgpu")]
+use femtovg::{Color, ImageFlags, ImageSource, Paint, Path};
+use imgref::Img;
+use rgb::RGBA8;
+mod common;
+use common::{headless_device, render_rgba};
+const W: u32 = 64;
+const H: u32 = 64;
+
+fn run(chop: bool, aa: bool) -> Vec<u8> {
+    let (device, queue) = headless_device().unwrap();
+    render_rgba(&device, &queue, W, H, Color::rgba(0, 0, 0, 0), |canvas| {
+        let tex: Vec<RGBA8> = [[255, 0, 0, 255], [0, 255, 0, 255], [0, 0, 255, 255], [255, 255, 255, 255]]
+            .iter().map(|c| RGBA8::new(c[0], c[1], c[2], c[3])).collect();
+        let image = canvas.create_image(ImageSource::Rgba(Img::new(&tex[..], 2, 2)), ImageFlags::NEAREST | ImageFlags::REPEAT_X | ImageFlags::REPEAT_Y).unwrap();
+        let paint = Paint::image(image, 0.0, 0.0, 8.0, 8.0, 0.0, 1.0).with_anti_alias(aa);
+        // canvas shear: device = (x + y, y). The user-space parallelogram below is the device rect 8..56.
+        canvas.set_transform(&femtovg::Transform2D([1.0, 0.0, 1.0, 1.0, 0.0, 0.0]));
+        let mut path = Path::new();
+        let pts: &[(f32, f32)] = if chop {
+            &[(0.0, 8.0), (48.0, 8.0), (0.0, 56.0), (-40.0, 56.0), (-40.0, 48.0)]
+        } else {
+            &[(0.0, 8.0), (48.0, 8.0), (0.0, 56.0), (-48.0, 56.0)]
+        };
+        // winding: (0,8) (48,8) (0,56) (-48,56) is not a simple parallelogram order; use the correct order
+        let pts: Vec<(f32, f32)> = if chop {
+            vec![(0.0, 8.0), (48.0, 8.0), (0.0, 56.0), (-40.0, 56.0), (-40.0, 48.0)]
+        } else {
+            vec![(0.0, 8.0), (48.0, 8.0), (0.0, 56.0), (-48.0, 56.0)]
+        };
+        let _ = pts.len();
+        for (i, (x, y)) in pts.iter().enumerate() { if i == 0 { path.move_to(*x, *y) } else { path.line_to(*x, *y) } }
+        path.close();
+        canvas.fill_path(&path, &paint);
+    })
+}
+fn px(r: &[u8], x: u32, y: u32) -> [u8; 3] { let i = ((y * W + x) * 4) as usize; [r[i], r[i + 1], r[i + 2]] }
+#[test]
+fn review_345c() {
+    if headless_device().is_none() { return; }
+    for aa in [false, true] {
+        let (a, b) = (run(false, aa), run(true, aa));
+        let mut n = 0;
+        for y in 16..40 { for x in 16..40 { if px(&a, x, y) != px(&b, x, y) { n += 1; } } }
+        eprintln!("REVIEW master, aa={aa}: a parallelogram under a canvas shear (an axis-aligned rect on screen), plain image paint: {n} of 576 interior px differ from the same shape with a notch");
+    }
+}
