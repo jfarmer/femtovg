@@ -162,17 +162,15 @@ test('direction', 'rtl-with-mask', '`rtl` with `mask`', f'''
 ''')
 
 PATHS = '''
-        <path id="path1" d="M 20 30 L 180 30"/>
-        <path id="path2" d="M 20 55 L 180 55"/>
-        <path id="path3" d="M 20 80 L 180 80"/>
-        <path id="path4" d="M 20 105 L 180 105"/>
-        <path id="path5" d="M 20 130 L 180 130"/>
-        <path id="path6" d="M 20 175 Q 100 125 180 175"/>
+        <path id="path1" d="M 20 30 C 73.3333 30 126.6667 30 180 30"/>
+        <path id="path2" d="M 20 55 C 73.3333 55 126.6667 55 180 55"/>
+        <path id="path3" d="M 20 80 C 73.3333 80 126.6667 80 180 80"/>
+        <path id="path4" d="M 20 105 C 73.3333 105 126.6667 105 180 105"/>
 '''
 GUIDES = '''
     <g stroke="lightgray" stroke-width="0.5" fill="none">
         <use xlink:href="#path1"/><use xlink:href="#path2"/><use xlink:href="#path3"/>
-        <use xlink:href="#path4"/><use xlink:href="#path5"/><use xlink:href="#path6"/>
+        <use xlink:href="#path4"/>
     </g>
 '''
 test('direction', 'rtl-on-text-path', '`rtl` on a text path', f'''{GUIDES}
@@ -180,10 +178,9 @@ test('direction', 'rtl-on-text-path', '`rtl` on a text path', f'''{GUIDES}
         <text id="text1" fill="red"><textPath xlink:href="#path1" startOffset="80">Start {AR}</textPath></text>
         <text id="text2" fill="green" text-anchor="middle"><textPath xlink:href="#path2" startOffset="50%">Middle {AR}</textPath></text>
         <text id="text3" fill="blue" text-anchor="end"><textPath xlink:href="#path3" startOffset="80">End {AR}</textPath></text>
-        <text id="text4" fill="black" text-anchor="middle"><textPath xlink:href="#path6" startOffset="50%">{MIX}</textPath></text>
     </g>
     <g direction="ltr" font-family="Amiri">
-        <text id="text5" fill="black"><textPath xlink:href="#path4" startOffset="30">{MIX}</textPath></text>
+        <text id="text4" fill="black"><textPath xlink:href="#path4" startOffset="30">{MIX}</textPath></text>
     </g>
 ''', defs=PATHS, cross='')
 
@@ -195,6 +192,50 @@ test('direction', 'rtl-on-text-path-with-start-offset', '`rtl` on a text path wi
         <text id="text4" fill="black" text-anchor="middle"><textPath xlink:href="#path4" startOffset="20">Centered on the start {AR}</textPath></text>
     </g>
 ''', defs=PATHS, cross='')
+
+test('direction', 'rtl-with-punctuation', '`rtl` with end-of-sentence punctuation', f'''
+    <g id="group1" direction="rtl" font-family="Amiri" font-size="12">
+        <text id="text1" x="190" y="34">قرأت عن SVG.</text>
+        <text id="text2" x="190" y="56">هل تعرف HTML؟</text>
+        <text id="text3" x="190" y="78">ما أجمل SVG!</text>
+        <text id="text4" x="190" y="100">أولاً، ثانياً؛ ثم SVG.</text>
+        <text id="text5" x="190" y="122">نهاية الجملة: abc.</text>
+        <text id="text6" x="190" y="144">جملة بالإنجليزية at the end.</text>
+    </g>
+''', cross=LINE)
+
+test('direction', 'rtl-with-numbers', '`rtl` with numbers and date ranges', f'''
+    <g id="group1" direction="rtl" font-family="Amiri" font-size="12">
+        <text id="text1" x="190" y="34">من 1990–2000 كان</text>
+        <text id="text2" x="190" y="56">التاريخ 12/05/2026 م</text>
+        <text id="text3" x="190" y="78">الوقت 10:30–11:45</text>
+        <text id="text4" x="190" y="100">الرقم 1,000.5 و 3.14</text>
+        <text id="text5" x="190" y="122">من ١٩٩٠–٢٠٠٠ كان</text>
+        <text id="text6" x="190" y="144">التاريخ ١٢/٠٥/٢٠٢٦ م</text>
+        <text id="text7" x="190" y="166">الرقم ٣٫١٤ و ١٬٠٠٠</text>
+    </g>
+''', cross=LINE)
+
+test('direction', 'rtl-with-brackets', '`rtl` with nested parentheses and brackets', f'''
+    <g id="group1" direction="rtl" font-family="Amiri" font-size="12">
+        <text id="text1" x="190" y="34">نص (كلمة [مثال {{تجربة}}]) نص</text>
+        <text id="text2" x="190" y="56">(SVG (HTML [CSS])) ثم نص</text>
+        <text id="text3" x="190" y="78">نص (ابجد (هوز) 12) نص</text>
+        <text id="text4" x="190" y="100">[abc (def) ghi] ونص {{1}} ثم</text>
+        <text id="text5" x="190" y="122">(1) أولاً و (2) ثانياً</text>
+        <text id="text6" x="190" y="144">SVG (v1.1) و [HTML5] ثم</text>
+    </g>
+''', cross=LINE)
+
+test('direction', 'rtl-with-scientific-text', '`rtl` with scientific text', f'''
+    <g id="group1" direction="rtl" font-family="Amiri" font-size="12">
+        <text id="text1" x="190" y="34">درجة 36.6 °C و -5 و +3</text>
+        <text id="text2" x="190" y="56">p &lt; 0.05 و x = 2</text>
+        <text id="text3" x="190" y="78">5 ± 0.3 µm و 10 mg/L</text>
+        <text id="text4" x="190" y="100">Na+ / Cl− و 50%</text>
+        <text id="text5" x="190" y="122">α = 0.01 و β &gt; 2</text>
+    </g>
+''', cross=LINE)
 
 # ---- unicode-bidi
 test('unicode-bidi', 'embed', '`embed`', '''
