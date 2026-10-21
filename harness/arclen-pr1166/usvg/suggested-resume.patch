@@ -1,0 +1,83 @@
+diff --git a/crates/usvg/src/text/layout.rs b/crates/usvg/src/text/layout.rs
+index d102726..6de5ad6 100644
+--- a/crates/usvg/src/text/layout.rs
++++ b/crates/usvg/src/text/layout.rs
+@@ -764,6 +764,46 @@ pub(crate) struct PathNormal {
+     pub(crate) angle: f32,
+ }
+ 
++/// Finds the parameter at which `curve` has covered `target` arc length, resuming from a point behind it:
++/// `(t0, s0)` is a parameter and the arc length measured there. Glyph offsets normally ascend, so the
++/// previous glyph is such a point. Newton's method on the arc length of the short piece `t0..t`, with the
++/// speed `|B'(t)|` as the derivative, takes a step or two and never measures the whole curve again.
++/// Returns the parameter and the arc length there, or `None` (target behind `t0`, zero speed, no
++/// convergence) so that the caller can use `inv_arclen`.
++fn inv_arclen_resume(
++    curve: &kurbo::CubicBez,
++    t0: f64,
++    s0: f64,
++    target: f64,
++    accuracy: f64,
++) -> Option<(f64, f64)> {
++    let wanted = target - s0;
++    if wanted < 0.0 {
++        return None;
++    }
++    let deriv = curve.deriv();
++    let inner = accuracy * 0.25;
++    let (mut t, mut piece) = (t0, 0.0);
++    for _ in 0..6 {
++        let d = deriv.eval(t);
++        let speed = d.x.hypot(d.y);
++        if !speed.is_finite() || speed <= 1.0e-9 {
++            return None;
++        }
++        let err = piece - wanted;
++        if err.abs() <= inner {
++            return Some((t, s0 + piece));
++        }
++        let next = t - err / speed;
++        if !(t0..=1.0).contains(&next) {
++            return None;
++        }
++        t = next;
++        piece = curve.subsegment(t0..t).arclen(inner);
++    }
++    ((piece - wanted).abs() <= inner).then_some((t, s0 + piece))
++}
++
+ fn collect_normals(
+     text: &Text,
+     clusters: &[GlyphCluster],
+@@ -855,9 +895,30 @@ fn collect_normals(
+ 
+         let curve_len = curve.arclen(arclen_accuracy as f64);
+ 
++        // The previous glyph on this segment: its parameter, the arc length there, and how many glyphs
++        // ago that arc length was measured from the start of the segment.
++        let mut resume = (0.0, 0.0, 0);
++
+         for offset in &offsets[normals.len()..] {
+             if *offset >= length && *offset <= length + curve_len {
+-                let mut offset = curve.inv_arclen(offset - length, arclen_accuracy as f64);
++                let target = offset - length;
++                let accuracy = arclen_accuracy as f64;
++                let mut offset =
++                    match inv_arclen_resume(&curve, resume.0, resume.1, target, accuracy) {
++                        Some((t, s)) => {
++                            resume = (t, s, resume.2 + 1);
++                            // The pieces' small errors add up: measure from the start again now and then.
++                            if resume.2 >= 16 {
++                                resume = (t, curve.subsegment(0.0..t).arclen(accuracy * 0.25), 0);
++                            }
++                            t
++                        }
++                        None => {
++                            let t = curve.inv_arclen(target, accuracy);
++                            resume = (t, curve.subsegment(0.0..t).arclen(accuracy * 0.25), 0);
++                            t
++                        }
++                    };
+                 // some rounding error may occur, so we give offset a little tolerance
+                 debug_assert!((-1.0e-3..=1.0 + 1.0e-3).contains(&offset));
+                 offset = offset.clamp(0.0, 1.0);

@@ -1,0 +1,27 @@
+name: ArclenBench
+options:
+  bundleIdPrefix: co.rbckr
+settings:
+  base:
+    DEVELOPMENT_TEAM: 4GWK4YU2PW
+    CODE_SIGN_STYLE: Automatic
+    SWIFT_VERSION: "5.9"
+    GENERATE_INFOPLIST_FILE: YES
+    SWIFT_OBJC_BRIDGING_HEADER: Sources/Bridging-Header.h
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    TARGETED_DEVICE_FAMILY: "1"
+    DEAD_CODE_STRIPPING: YES
+targets:
+  ArclenBench:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources: [Sources]
+    dependencies:
+      - sdk: UIKit.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: co.rbckr.arclenbench
+        LIBRARY_SEARCH_PATHS: ["$(SRCROOT)/lib"]
+        OTHER_LDFLAGS: ["-larclen_bench"]
