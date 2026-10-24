@@ -5,7 +5,7 @@ import os, sys
 import numpy as np
 from PIL import Image, ImageDraw
 HERE = os.path.dirname(os.path.abspath(__file__))
-LABEL = {'r49': 'resvg 0.49.0', 'rB2': 'patched', 'rU': 'patched', 'chrome': 'Chrome Canary 158', 'firefox': 'Firefox 159b5', 'stp': 'Safari TP (WebKit 22627)'}
+LABEL = {'r49': 'resvg 0.49.0', 'rB2': 'this PR', 'rU': 'this PR', 'chrome': 'Chrome Canary 158', 'firefox': 'Firefox 159b5', 'stp': 'Safari TP (WebKit 22627)'}
 def diffimg(a, b):
     d = np.abs(np.asarray(a, np.int16) - np.asarray(b, np.int16)).max(2)
     out = np.full(d.shape + (3,), 255, np.uint8); out[(d > 8) & (d <= 20)] = (255, 165, 0); out[d > 20] = (220, 0, 0)
