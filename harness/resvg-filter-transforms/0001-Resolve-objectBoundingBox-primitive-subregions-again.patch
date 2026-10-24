@@ -1,0 +1,277 @@
+From 52e889b5936d410d681519772e156ebd1ece141e Mon Sep 17 00:00:00 2001
+From: Matt Hargett <plaztiksyke@gmail.com>
+Date: Sat, 24 Oct 2026 14:07:51 -0700
+Subject: [PATCH] Resolve objectBoundingBox primitive subregions against the
+ bounding box, defaulting to the filter region
+
+---
+ .../filters/feFlood/complex-transform.png     | Bin 2811 -> 2170 bytes
+ ...and-primitiveUnits=objectBoundingBox-1.png | Bin 1032 -> 1039 bytes
+ ...and-primitiveUnits=objectBoundingBox-2.png | Bin 1032 -> 1039 bytes
+ crates/usvg/src/parser/filter.rs              |  81 ++++++------------
+ 4 files changed, 24 insertions(+), 57 deletions(-)
+
+diff --git a/crates/resvg/tests/tests/filters/feFlood/complex-transform.png b/crates/resvg/tests/tests/filters/feFlood/complex-transform.png
+index 1137ef330eb0a9dd390ff349eca0f7e2177b240c..cc102ec569b193fb13a249afc233685054e2c039 100644
+GIT binary patch
+literal 2170
+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
+
+literal 2811
+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
+
+diff --git a/crates/resvg/tests/tests/filters/filter/subregion-and-primitiveUnits=objectBoundingBox-1.png b/crates/resvg/tests/tests/filters/filter/subregion-and-primitiveUnits=objectBoundingBox-1.png
+index 6e84747e97102361a7fb52361a8ddb873daf7b09..e360101fe7b9ff2200e58474339b75fcf43b1fec 100644
+GIT binary patch
+delta 581
+zcmeC+=;xSVV8_6~u!@190Z1`0q@^*W0l5tzkx97>4GkdizEFmS1cvTdhK5j(V26u$
+zdlbVoZw4UAz%VgeT~wz(T&FW!w=GhmFI1x^%A_mWuqSNdDtk8l?r>co>%Cw7;w9OM
+zK-EztL4Lsw42;Z7OsuSIZ0u}ooE+RdeEfoff&xOq!Xn}lvT{mFs%q+*ni{&s)^_%e
+zE^dCIQPJ@U$tfAxIr#-OZ5{oSC(WKcd(NuOTej~!cI?8HtJiKmdHMSN*YCgoYCl?A
+z!@$54;OXKRQgQ3;UE4fqLxF~iKOffTO)+^_(pjSQc=3-jpJJJ|wwZTLjN0As@WiHj
+z?B7`A+H`Ihe6u%SR(oW!nOORo;}_cG?r%`qy3jbJ)ht{wVnf2grmdC{O|0BvIuRRK
+zz+^(^k)=jfc3Y;eZ<-qD9e%W<|MeHw4V&W2LnD>7!<t0b7oRVl`&zX`a&^@|!?3f;
+z*20&$!t_3y)V^Qowl?!%*SouSKIes86Z*f?SuUSz_3~AQZ<pmyow~3)Vq;2be`QH(
+zVbsB{z`y0bGf!r+W<S|4bxkWQBt0xN?O@c=F4dxw+nwTMCwno6$i6cKyN}fy<VsfV
+zX%JF=Zk*rp2`48{WR{f6+b$?>eI&H%g?8?rKXPk&w5OU|L>}Ma)o!zE^F8s&vzZkp
+zdopKnEft)<F@5q=iF?75cQVPSnJCr$?fd#g;Q2hWWgWFSKELh#&ndB3gophFMkIr$
+LtDnm{r-UW|m1gZ<
+
+delta 543
+zcmV+)0^t3R2#5%fFgt(%00000ssI3HW&maY0IGlhssI3hfB=910FrG0fM5WQRRD`!
+z0Dx5hl5GHpL;wH)ONUwjmP-JKT9Ixi7%hfbERR<#iB~9&RVa*FG>Tg>j8*^u0FkOc
+z1}%(MFN;@^?@oU$GzIYh003HaQchC<0RjR81qB8M1_lQR2@4Dk4-gR%5fT#<6c-pB
+z9wH(oCMPH<DJ?TQK0iP~L`F_kT3cUWV`OM+Y;SOUhKP@nlbf5HoT{_5x4Fi~(A3q|
+z+2rZ#@Adcl{itYV&j0`dNl8RORCwC$)Wv-mF%ZVlnUOmd!cd0y=yF_gnC|W%cns4q
+z(FRTLU%<lqeNx;$(9UkhcBGwc6><DfJ35Z&5ig#_IBgLXyHkZ=?GBT$0~CKAKPyiJ
+z^W7Q5%E-#<k@25<bM~;Za;}!GWx*ORtM_H9Pi2Kh%bG7wOUs^#X@Hfr%+sYdSFasf
+zmbENxS$pOG$2!crX9}x&Rh!posjLx}WmQ$SKKJH=A7e$U-mCR#d<<db_u3E(R#bkf
+zDzk=Iu%aTr2J1VB{sop`!Ge=x17MSi105*p@q^yIc|+$PEX%UKb{HqpjdnsWzV|0s
+z87EYp!DZcz6X`JTy0iY1KLdmjC0MXv!GZ-#Jx*iyF4D3bLzAEb94JzcxN#5~cOxRU
+hBkgR9+uP1``y-+zIXmWMPVfK#002ovPDHLkV1lHe<3a!c
+
+diff --git a/crates/resvg/tests/tests/filters/filter/subregion-and-primitiveUnits=objectBoundingBox-2.png b/crates/resvg/tests/tests/filters/filter/subregion-and-primitiveUnits=objectBoundingBox-2.png
+index 6e84747e97102361a7fb52361a8ddb873daf7b09..e360101fe7b9ff2200e58474339b75fcf43b1fec 100644
+GIT binary patch
+delta 581
+zcmeC+=;xSVV8_6~u!@190Z1`0q@^*W0l5tzkx97>4GkdizEFmS1cvTdhK5j(V26u$
+zdlbVoZw4UAz%VgeT~wz(T&FW!w=GhmFI1x^%A_mWuqSNdDtk8l?r>co>%Cw7;w9OM
+zK-EztL4Lsw42;Z7OsuSIZ0u}ooE+RdeEfoff&xOq!Xn}lvT{mFs%q+*ni{&s)^_%e
+zE^dCIQPJ@U$tfAxIr#-OZ5{oSC(WKcd(NuOTej~!cI?8HtJiKmdHMSN*YCgoYCl?A
+z!@$54;OXKRQgQ3;UE4fqLxF~iKOffTO)+^_(pjSQc=3-jpJJJ|wwZTLjN0As@WiHj
+z?B7`A+H`Ihe6u%SR(oW!nOORo;}_cG?r%`qy3jbJ)ht{wVnf2grmdC{O|0BvIuRRK
+zz+^(^k)=jfc3Y;eZ<-qD9e%W<|MeHw4V&W2LnD>7!<t0b7oRVl`&zX`a&^@|!?3f;
+z*20&$!t_3y)V^Qowl?!%*SouSKIes86Z*f?SuUSz_3~AQZ<pmyow~3)Vq;2be`QH(
+zVbsB{z`y0bGf!r+W<S|4bxkWQBt0xN?O@c=F4dxw+nwTMCwno6$i6cKyN}fy<VsfV
+zX%JF=Zk*rp2`48{WR{f6+b$?>eI&H%g?8?rKXPk&w5OU|L>}Ma)o!zE^F8s&vzZkp
+zdopKnEft)<F@5q=iF?75cQVPSnJCr$?fd#g;Q2hWWgWFSKELh#&ndB3gophFMkIr$
+LtDnm{r-UW|m1gZ<
+
+delta 543
+zcmV+)0^t3R2#5%fFgt(%00000ssI3HW&maY0IGlhssI3hfB=910FrG0fM5WQRRD`!
+z0Dx5hl5GHpL;wH)ONUwjmP-JKT9Ixi7%hfbERR<#iB~9&RVa*FG>Tg>j8*^u0FkOc
+z1}%(MFN;@^?@oU$GzIYh003HaQchC<0RjR81qB8M1_lQR2@4Dk4-gR%5fT#<6c-pB
+z9wH(oCMPH<DJ?TQK0iP~L`F_kT3cUWV`OM+Y;SOUhKP@nlbf5HoT{_5x4Fi~(A3q|
+z+2rZ#@Adcl{itYV&j0`dNl8RORCwC$)Wv-mF%ZVlnUOmd!cd0y=yF_gnC|W%cns4q
+z(FRTLU%<lqeNx;$(9UkhcBGwc6><DfJ35Z&5ig#_IBgLXyHkZ=?GBT$0~CKAKPyiJ
+z^W7Q5%E-#<k@25<bM~;Za;}!GWx*ORtM_H9Pi2Kh%bG7wOUs^#X@Hfr%+sYdSFasf
+zmbENxS$pOG$2!crX9}x&Rh!posjLx}WmQ$SKKJH=A7e$U-mCR#d<<db_u3E(R#bkf
+zDzk=Iu%aTr2J1VB{sop`!Ge=x17MSi105*p@q^yIc|+$PEX%UKb{HqpjdnsWzV|0s
+z87EYp!DZcz6X`JTy0iY1KLdmjC0MXv!GZ-#Jx*iyF4D3bLzAEb94JzcxN#5~cOxRU
+hBkgR9+uP1``y-+zIXmWMPVfK#002ovPDHLkV1lHe<3a!c
+
+diff --git a/crates/usvg/src/parser/filter.rs b/crates/usvg/src/parser/filter.rs
+index 542f1dd..5eed9a8 100644
+--- a/crates/usvg/src/parser/filter.rs
++++ b/crates/usvg/src/parser/filter.rs
+@@ -321,17 +321,11 @@ fn collect_children(
+             None => continue,
+         };
+ 
+-        let filter_subregion = match resolve_primitive_region(
+-            child,
+-            tag_name,
+-            units,
+-            state,
+-            object_bbox,
+-            filter_region,
+-        ) {
+-            Some(v) => v,
+-            None => break,
+-        };
++        let filter_subregion =
++            match resolve_primitive_region(child, units, state, object_bbox, filter_region) {
++                Some(v) => v,
++                None => break,
++            };
+ 
+         let kind =
+             match tag_name {
+@@ -378,62 +372,35 @@ fn collect_children(
+     primitives
+ }
+ 
+-// TODO: rewrite/simplify/explain/whatever
++/// Resolves a primitive subregion: an attribute that is not specified takes the filter region's
++/// value, and with `primitiveUnits="objectBoundingBox"` a specified one is a fraction of the
++/// element's bounding box.
+ fn resolve_primitive_region(
+     fe: SvgNode,
+-    kind: EId,
+     units: Units,
+     state: &converter::State,
+     bbox: Option<NonZeroRect>,
+     filter_region: NonZeroRect,
+ ) -> Option<NonZeroRect> {
+-    let x = fe.try_convert_length(AId::X, units, state);
+-    let y = fe.try_convert_length(AId::Y, units, state);
+-    let width = fe.try_convert_length(AId::Width, units, state);
+-    let height = fe.try_convert_length(AId::Height, units, state);
+-
+-    let region = match kind {
+-        EId::FeFlood | EId::FeImage => {
+-            // `feImage` uses the object bbox.
+-            if units == Units::ObjectBoundingBox {
+-                let bbox = bbox?;
+-
+-                // TODO: wrong
+-                // let ts_bbox = tiny_skia::Rect::new(ts.e, ts.f, ts.a, ts.d).unwrap();
+-
+-                let r = NonZeroRect::from_xywh(
+-                    x.unwrap_or(0.0),
+-                    y.unwrap_or(0.0),
+-                    width.unwrap_or(1.0),
+-                    height.unwrap_or(1.0),
+-                )?;
+-
+-                return Some(r.bbox_transform(bbox));
+-            } else {
+-                filter_region
+-            }
+-        }
+-        _ => filter_region,
+-    };
++    let mut x = fe.try_convert_length(AId::X, units, state);
++    let mut y = fe.try_convert_length(AId::Y, units, state);
++    let mut width = fe.try_convert_length(AId::Width, units, state);
++    let mut height = fe.try_convert_length(AId::Height, units, state);
+ 
+-    // TODO: Wrong! Does not account rotate and skew.
+     if units == Units::ObjectBoundingBox {
+-        let subregion_bbox = NonZeroRect::from_xywh(
+-            x.unwrap_or(0.0),
+-            y.unwrap_or(0.0),
+-            width.unwrap_or(1.0),
+-            height.unwrap_or(1.0),
+-        )?;
+-
+-        Some(region.bbox_transform(subregion_bbox))
+-    } else {
+-        NonZeroRect::from_xywh(
+-            x.unwrap_or(region.x()),
+-            y.unwrap_or(region.y()),
+-            width.unwrap_or(region.width()),
+-            height.unwrap_or(region.height()),
+-        )
++        let bbox = bbox?;
++        x = x.map(|v| bbox.x() + v * bbox.width());
++        y = y.map(|v| bbox.y() + v * bbox.height());
++        width = width.map(|v| v * bbox.width());
++        height = height.map(|v| v * bbox.height());
+     }
++
++    NonZeroRect::from_xywh(
++        x.unwrap_or(filter_region.x()),
++        y.unwrap_or(filter_region.y()),
++        width.unwrap_or(filter_region.width()),
++        height.unwrap_or(filter_region.height()),
++    )
+ }
+ 
+ // A malformed filter primitive usually should produce a transparent image.
+-- 
+2.55.0
+
