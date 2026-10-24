@@ -46,7 +46,8 @@ as long as it did (+0.1 %).
 `gl_clip_check.rs` is the OpenGL backend's run-time check: eleven clips (plain, turned, skewed, tight corners, one
 pixel thick) against each pixel's exact share inside the shape, worst difference 0.048, and a concave fill under a
 small shape that must leave neither winding nor scissor behind, in an image and in the window. `gl_mask_check.rs`
-and `gl_crop_check.rs` are the same for coverage masks and for `ImageFilter::Crop`. `mask_cost.rs` is `draw_cost.rs`
+and `gl_crop_check.rs` are the same for coverage masks and for `ImageFilter::Crop`, `gl_plus_lighter_check.rs` for
+`BlendMode::PlusLighter` (the blend pass's mode 16 and a plus-lighter layer, on an image and on the screen). `mask_cost.rs` is `draw_cost.rs`
 for a clip that is no box: what taking it and filling a rect under it costs the canvas once its mask exists, with
 masks and with the stencil.
 

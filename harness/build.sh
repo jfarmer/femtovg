@@ -58,6 +58,9 @@ cfgs_for() {
   has 'fn set_submission_slicing' && flags+=(--cfg harness_slices)
   has 'fn debug_image_count' && flags+=(--cfg harness_image_count)
   has 'pub fn set_thin_fill_masks' && flags+=(--cfg harness_thin_fill_masks)
+  has 'PlusLighter,' && flags+=(--cfg harness_plus_lighter)
+  # usvg 0.49 added BlendMode::PlusLighter and CompositeOperator::Lighter.
+  grep -qE '^usvg = \{ version = "0\.(49|[5-9][0-9])' "$1/Cargo.toml" && flags+=(--cfg harness_usvg49)
   echo "${flags[@]}"
 }
 

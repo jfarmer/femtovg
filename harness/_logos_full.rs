@@ -627,6 +627,8 @@ fn composites_with_source(
                 CompositeOperator::Out => CompositeOperation::SourceOut,
                 CompositeOperator::Atop => CompositeOperation::Atop,
                 CompositeOperator::Xor => CompositeOperation::Xor,
+                #[cfg(harness_usvg49)]
+                CompositeOperator::Lighter => CompositeOperation::Lighter,
                 CompositeOperator::Arithmetic { .. } => return None,
             };
             let alpha_only = matches!(op, CompositeOperation::SourceIn | CompositeOperation::SourceOut);
@@ -1531,6 +1533,29 @@ fn turbulence_plan(canvas: &Canvas<WGPURenderer>, group: &usvg::Group) -> Option
                 });
                 stencil = false;
             }
+            // `feComposite operator="lighter"` with the source graphic, last:
+            // the clamped sum of premultiplied color and alpha, which is the
+            // blend mode plus-lighter (and commutes).
+            #[cfg(all(harness_blend, harness_usvg49, harness_plus_lighter))]
+            Kind::Composite(c)
+                if i == prims.len() - 1
+                    && matches!(c.operator(), CompositeOperator::Lighter)
+                    && ((from_previous(c.input1()) && matches!(c.input2(), Input::SourceGraphic))
+                        || (matches!(c.input1(), Input::SourceGraphic) && from_previous(c.input2()))) =>
+            {
+                let mut root = *ROOT_DEVICE.lock().unwrap();
+                root.premultiply(&ts_to_t2d(group.abs_transform()));
+                let (rx0, ry0) = root.transform_point(ux0.min(ux1), uy0.min(uy1));
+                let (rx1, ry1) = root.transform_point(ux0.max(ux1), uy0.max(uy1));
+                blend = Some(BlendPlan {
+                    mode: BlendMode::PlusLighter,
+                    linear: p.color_interpolation() == ColorInterpolation::LinearRGB,
+                    root_rect: (rx0.min(rx1), ry0.min(ry1), (rx1 - rx0).abs(), (ry1 - ry0).abs()),
+                    stencilled: stencil,
+                    swapped: false,
+                });
+                stencil = false;
+            }
             _ => return None,
         }
     }
@@ -1603,6 +1628,11 @@ fn blend_mode(mode: usvg::BlendMode) -> BlendMode {
         M::Saturation => BlendMode::Saturation,
         M::Color => BlendMode::Color,
         M::Luminosity => BlendMode::Luminosity,
+        // usvg 0.48 parsed plus-lighter as normal; a femtovg without the mode keeps that.
+        #[cfg(all(harness_usvg49, harness_plus_lighter))]
+        M::PlusLighter => BlendMode::PlusLighter,
+        #[cfg(all(harness_usvg49, not(harness_plus_lighter)))]
+        M::PlusLighter => BlendMode::Normal,
     }
 }
 
@@ -3370,7 +3400,7 @@ fn print_stats() {
             CLIP_COVERAGE_LAYERS.load(std::sync::atomic::Ordering::Relaxed)
         );
         eprintln!(
-            "harness cfgs: clip={} turbulence={} blend={} mix_blend={} slices={} blur_xy={} morph={} clip_paths={} crop={}",
+            "harness cfgs: clip={} turbulence={} blend={} mix_blend={} slices={} blur_xy={} morph={} clip_paths={} crop={} usvg49={} plus_lighter={}",
             cfg!(harness_clip),
             cfg!(harness_turbulence),
             cfg!(harness_blend),
@@ -3379,7 +3409,9 @@ fn print_stats() {
             cfg!(harness_blur_xy),
             cfg!(harness_morph),
             cfg!(harness_clip_paths),
-            cfg!(harness_crop)
+            cfg!(harness_crop),
+            cfg!(harness_usvg49),
+            cfg!(harness_plus_lighter)
         );
         eprintln!(
             "filters skipped (SKIP_UNSUPPORTED_FILTERS): {}",
