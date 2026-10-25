@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <filter id="f">
+    <feTurbulence type="turbulence" baseFrequency="-114.562" numOctaves="10000" seed="756874686" stitchTiles="stitch" width="4.85632e-05" result="r2"/>
+  </filter>
+  <g id="grp" filter="url(#f)" transform=""><path id="shape" d="M 20 20 L 180 40 L 60 180 Z" fill="orange" stroke="black"/></g>
+</svg>

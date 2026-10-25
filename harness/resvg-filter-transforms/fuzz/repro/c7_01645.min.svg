@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <filter id="f">
+    <feTile in="r0" y="0" result="r1"/>
+  </filter>
+  <g transform="matrix(-1.48807 0.477439 -1.4880849 0.47744377 -90.6227 71.8958) skewX(-89.9999) skewX(89.99)" filter="url(#f)"><g transform="skewX(90)"><g id="grp" filter="url(#f)" transform="skewY(-48.1771)"><circle id="shape" cx="100" cy="100" r="50" fill="#36c"/></g></g></g>
+</svg>

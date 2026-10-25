@@ -1,0 +1,13 @@
+tiny_skia                    instructions    44751 ->    44837   NEON    3379 ->    3385
+tiny_skia::pipeline          instructions    17891 ->    17891   NEON    2316 ->    2316
+resvg::filter                instructions    11794 ->    11794   NEON     235 ->     235
+resvg::render|resvg::geom    instructions     2202 ->     2595   NEON      84 ->     110
+usvg                         instructions    90721 ->    90707   NEON    4868 ->    4874
+.                            instructions   545833 ->   546344   NEON   20170 ->   20208
+
+functions whose NEON count changed (or that vanished/appeared with NEON):
+      0 ->     2 NEON  (     0 ->     42 instr)  _$LT$tiny_skia..pixmap..Pixmap$u20$as$u20$resvg..filter..PixmapExt$GT$::copy_region
+      0 ->     2 NEON  (     0 ->    110 instr)  resvg::geom::to_int_rect
+     80 ->   104 NEON  (  1897 ->   2180 instr)  resvg::render::render_group
+      0 ->     4 NEON  (     0 ->     43 instr)  tiny_skia_path::rect::Rect::inset
+    327 ->   333 NEON  (  3014 ->   3000 instr)  usvg::parser::converter::convert_group

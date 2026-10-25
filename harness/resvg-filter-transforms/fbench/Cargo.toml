@@ -1,0 +1,19 @@
+[package]
+name = "fbench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tiny-skia = "0.12.0"
+usvg = { path = "/Users/matt/src/femtovg-wt/runs/rvbase/crates/usvg" }
+resvg = { path = "/Users/matt/src/femtovg-wt/runs/rvbase/crates/resvg" }
+
+# resvg's `production` profile, with line tables for the profiler and the disassembly.
+[profile.release]
+opt-level = 3
+debug = 1
+lto = true
+codegen-units = 1
+incremental = false
+
+[workspace]

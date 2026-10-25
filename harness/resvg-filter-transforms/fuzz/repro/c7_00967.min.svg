@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <filter id="f">
+    <feComposite in="r3" in2="r3" operator="lighter"  y="0" result="r4"/>
+  </filter>
+  <g transform="rotate(4.24901 107.565 57.2533) skewX(89.99)"><g transform="skewY(89.3192)" filter="url(#f)"><g transform="rotate(334.976 129.335 9.1376) skewX(-89.5313)"><g id="grp" filter="url(#f)" transform="skewX(89.5571)"><rect id="shape" x="40" y="50" width="120" height="80" fill="seagreen"/></g></g></g></g>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <filter id="f" filterUnits="userSpaceOnUse">
+    <feDropShadow in="SourceGraphic" dx="0" dy="17.518" stdDeviation="0.00701123" x="5.42132e-05" width="87545.8" result="r0"/>
+  </filter>
+  <g id="grp" filter="url(#f)" transform="rotate(-34.9778 137.172 93.4634) skewX(90)"><rect id="shape" x="40" y="50" width="120" height="80" fill="seagreen"/></g>
+</svg>

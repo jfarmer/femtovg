@@ -1,0 +1,21 @@
+rotated set, 1x          files   35 (identical output   16)  instructions    9.339 G ->    9.340 G (+0.02 %)  cycles    3.834 G ->    3.815 G (-0.51 %)  IPC 2.44 -> 2.45
+     i874__rotate20.svg                                           instr  -0.29 %  cycles  -1.74 %
+     i874__group-rotate20.svg                                     instr  +0.28 %  cycles  +1.03 %
+     resvg__filters__feImage__with-subregion-5.svg                instr  -6.99 %  cycles  -5.74 %
+     units__matrix-obb-subregion.svg                              instr  +3.85 %  cycles  +4.28 %
+     resvg__filters__filter__with-multiple-transforms-1.svg       instr  -0.48 %  cycles  -0.17 %
+     i874__rotate0.svg                                            instr  -0.14 %  cycles  -1.00 %
+rotated set, 2x          files   35 (identical output   18)  instructions   35.447 G ->   35.505 G (+0.16 %)  cycles   13.017 G ->   13.103 G (+0.66 %)  IPC 2.72 -> 2.71
+     i874__rotate0.svg                                            instr  +0.32 %  cycles  +1.52 %
+     units__matrix-obb-subregion.svg                              instr  +4.27 %  cycles  +4.88 %
+     resvg__filters__filter__with-multiple-transforms-1.svg       instr  +0.32 %  cycles  +0.42 %
+     i874__rotate20.svg                                           instr  +0.06 %  cycles  +2.22 %
+     i874__group-rotate20.svg                                     instr  +0.06 %  cycles  -1.09 %
+     resvg__filters__feTurbulence__complex-transform.svg          instr  +0.59 %  cycles  +0.37 %
+all filter tests, 1.5x   files  406 (identical output  388)  instructions   51.889 G ->   51.905 G (+0.03 %)  cycles   17.171 G ->   17.246 G (+0.43 %)  IPC 3.02 -> 3.01
+     fractional-radius.svg                                        instr  -0.21 %  cycles  -1.00 %
+     huge-region.svg                                              instr  +0.21 %  cycles  +4.11 %
+     color-interpolation-filters=sRGB.svg                         instr  -0.80 %  cycles  -1.31 %
+     radius=0.5-with-objectBoundingBox.svg                        instr  +0.05 %  cycles  -0.01 %
+     operator=dilate.svg                                          instr  -0.11 %  cycles  -0.76 %
+     color-interpolation-filters=linearRGB.svg                    instr  -0.47 %  cycles  -1.29 %
