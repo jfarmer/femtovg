@@ -578,14 +578,20 @@ impl GlyphAtlas {
             // offset of the glyph from `glyph.x.trunc()`, where the quad is placed below.
             // `quantize` rounds to the nearest step only for a non-negative value, so it is given
             // the absolute value.
+            // Only swash shifts a filled mask by this fraction. Every other mask is keyed at 0, so
+            // that it is rasterized once instead of once for each tenth.
             let fract = glyph.x.fract();
-            let subpixel_location = (crate::geometry::quantize(fract.abs(), 0.1) * 10.0).copysign(fract) as i8;
+            let subpixel_location = if cfg!(feature = "swash") && mode == RenderMode::Fill {
+                (crate::geometry::quantize(fract.abs(), 0.1) * 10.0).copysign(fract) as i8
+            } else {
+                0
+            };
 
             let id = RenderedGlyphId::new(
                 glyph.glyph_id,
                 font_id,
                 font_size,
-                line_width,
+                if mode == RenderMode::Stroke { line_width } else { 0.0 },
                 mode,
                 subpixel_location,
                 normalized_coords,
