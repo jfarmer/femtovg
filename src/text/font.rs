@@ -367,7 +367,7 @@ pub struct Font {
     swash_identity: Option<(u32, swash::CacheKey)>,
     units_per_em: u16,
     metrics: FontMetrics,
-    glyphs: RefCell<FnvHashMap<GlyphCacheKey, Glyph>>,
+    glyphs: RefCell<FnvHashMap<GlyphCacheKey, Option<Glyph>>>,
     #[cfg(all(feature = "swash", not(feature = "textlayout")))]
     swash_scale_context: Rc<RefCell<swash::scale::ScaleContext>>,
 }
@@ -837,12 +837,10 @@ impl Font {
                 })
             };
 
-            if let Some(glyph) = maybe_glyph {
-                entry.insert(glyph);
-            }
+            entry.insert(maybe_glyph);
         }
 
-        Ref::filter_map(self.glyphs.borrow(), |glyphs| glyphs.get(&cache_key)).ok()
+        Ref::filter_map(self.glyphs.borrow(), |glyphs| glyphs.get(&cache_key)?.as_ref()).ok()
     }
 
     #[cfg(not(any(feature = "textlayout", feature = "swash")))]
@@ -926,12 +924,10 @@ impl Font {
                 None
             };
 
-            if let Some(glyph) = maybe_glyph {
-                entry.insert(glyph);
-            }
+            entry.insert(maybe_glyph);
         }
 
-        Ref::filter_map(self.glyphs.borrow(), |glyphs| glyphs.get(&cache_key)).ok()
+        Ref::filter_map(self.glyphs.borrow(), |glyphs| glyphs.get(&cache_key)?.as_ref()).ok()
     }
 
     /// Returns true if the glyph has no path, so that the atlas draws it as an image (e.g., a PNG color emoji).
