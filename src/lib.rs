@@ -2312,19 +2312,16 @@ where
         enum Rasterization {
             Path,
             Atlas,
-            ScaledAtlas {
-                scale: f32,
-                true_scale: f32,
-                translation: (f32, f32),
-            },
+            ScaledAtlas { scale: f32 },
         }
 
         // Classify the canvas transform. 1e-3 epsilon: tight enough to catch any
         // intentional transform, loose enough to tolerate matrix-op drift.
-        let rasterization = match self.state().transform.as_uniform_scale_translation(1e-3) {
+        let uniform = self.state().transform.as_uniform_scale_translation(1e-3);
+        let rasterization = match uniform {
             // Rotation / skew / non-uniform / negative scale: outline rendering.
             None => Rasterization::Path,
-            Some((true_scale, tx, ty)) => {
+            Some((true_scale, _, _)) => {
                 // Quantize the baked scale so small animation steps don't churn the
                 // atlas; 1/16 steps (≈6%) are imperceptible at typical zoom levels.
                 let scale = geometry::quantize(true_scale, 1.0 / 16.0).max(1.0 / 16.0);
@@ -2335,15 +2332,8 @@ where
                     // Pure translation (within a quantization step): nothing to bake.
                     Rasterization::Atlas
                 } else if matches!(paint.flavor, PaintFlavor::Color(_)) {
-                    Rasterization::ScaledAtlas {
-                        scale,
-                        true_scale,
-                        translation: (tx, ty),
-                    }
+                    Rasterization::ScaledAtlas { scale }
                 } else {
-                    // Gradients/images map their coordinates through the canvas
-                    // transform that the atlas path swaps out for a translation,
-                    // which would shift them; keep those direct.
                     Rasterization::Path
                 }
             }
@@ -2428,13 +2418,23 @@ where
             }
         }
 
-        // When baking scale into the rasterization, pre-multiply glyph positions
-        // by `effective_scale` so that under a translation-only canvas transform
-        // they still land at the original screen position.
-        let scaled = |g: &PositionedGlyph| PositionedGlyph {
-            x: g.x * effective_scale,
-            y: g.y * effective_scale,
-            glyph_id: g.glyph_id,
+        // render_atlas() places each quad at a whole pixel of the space where one texel of the
+        // atlas is one unit, and `raster` maps glyph positions to that space. Under a uniform
+        // scale and translation, it is the canvas transform followed by a scale of 1 / `residual`,
+        // where `residual` is the canvas scale divided by the scale the glyphs are rasterized at.
+        // When `residual` is 1, the quads land on whole device pixels. Otherwise the canvas
+        // transform stretches them by `residual`.
+        let raster = uniform.map_or_else(Transform2D::identity, |(true_scale, tx, ty)| {
+            let residual = true_scale / effective_scale;
+            Transform2D::new(effective_scale, 0.0, 0.0, effective_scale, tx / residual, ty / residual)
+        });
+        let to_raster = |g: &PositionedGlyph| {
+            let (x, y) = raster.transform_point(g.x, g.y);
+            PositionedGlyph {
+                x,
+                y,
+                glyph_id: g.glyph_id,
+            }
         };
 
         let mut draw_commands = if need_direct_rendering {
@@ -2463,7 +2463,7 @@ where
                 font_id,
                 font,
                 &font_face,
-                non_color_glyphs.iter().map(scaled),
+                non_color_glyphs.iter().map(to_raster),
                 effective_font_size,
                 stroke.line_width,
                 render_mode,
@@ -2495,7 +2495,7 @@ where
                         font_id,
                         font,
                         &font_face,
-                        color_glyphs.into_iter().map(whole_pixel),
+                        color_glyphs.iter().map(to_raster).map(whole_pixel),
                         paint.text.font_size,
                         stroke.line_width,
                         render_mode,
@@ -2507,7 +2507,7 @@ where
                         font_id,
                         font,
                         &font_face,
-                        color_glyphs.iter().map(scaled).map(whole_pixel),
+                        color_glyphs.iter().map(to_raster).map(whole_pixel),
                         effective_font_size,
                         stroke.line_width,
                         render_mode,
@@ -2520,32 +2520,18 @@ where
             draw_commands.color_glyphs.extend(color_commands.color_glyphs);
         }
 
-        // For the scaled-atlas path, present the pre-scaled glyph quads with a
-        // translation-only transform so the bitmap shows at its on-screen pixel
-        // size. render_atlas already emitted quads in the scaled glyph space, so
-        // only draw_glyph_commands (which applies the canvas transform) needs the
-        // swap — and since it is infallible, the transform is always restored even
-        // though the fallible rendering above used `?`.
-        match rasterization {
-            Rasterization::ScaledAtlas {
-                scale,
-                true_scale,
-                translation: (tx, ty),
-            } => {
-                // Rasterize at the quantized scale (cache-stable) but position with
-                // the TRUE scale: present the pre-scaled quads under the residual
-                // scale true/quantized (within one 1/16 step of 1.0) plus the true
-                // translation. This keeps glyphs locked to the same on-screen point
-                // as vector geometry under any zoom, instead of snapping by the
-                // quantization error times the glyph's distance from the origin.
-                let residual = true_scale / scale;
-                let saved = self.state().transform;
-                self.state_mut().transform = Transform2D::new(residual, 0.0, 0.0, residual, tx, ty);
-                self.draw_glyph_commands(draw_commands, paint);
-                self.state_mut().transform = saved;
-            }
-            _ => self.draw_glyph_commands(draw_commands, paint),
+        // draw_glyph_commands() takes quads in user space and maps them through the canvas transform.
+        let inverse = raster.inverse();
+        for quad in draw_commands
+            .alpha_glyphs
+            .iter_mut()
+            .chain(&mut draw_commands.color_glyphs)
+            .flat_map(|cmd| &mut cmd.quads)
+        {
+            (quad.x0, quad.y0) = inverse.transform_point(quad.x0, quad.y0);
+            (quad.x1, quad.y1) = inverse.transform_point(quad.x1, quad.y1);
         }
+        self.draw_glyph_commands(draw_commands, paint);
 
         Ok(())
     }
@@ -3274,8 +3260,7 @@ fn fill_text_selects_atlas_or_path_rendering() {
             PaintKind::Solid,
             Expect::Atlas,
         ),
-        // Gradients can't bake scale (their coords map through the swapped-out
-        // transform), so a scaled gradient falls back to outlines.
+        // A scaled gradient falls back to outlines.
         (
             "uniform scale, gradient",
             Transform2D::scaling(2.0, 2.0),
@@ -4311,6 +4296,91 @@ fn decoration_rect_tracks_scaled_atlas_transform() {
     assert!(
         (center - expected).abs() <= 2.0,
         "scaled underline center {center} should be near {expected}"
+    );
+}
+
+/// When the canvas scale is one the atlas rasterizes glyphs at, the atlas places a glyph's quad
+/// at whole device pixels, at the same pixels for every canvas transform that puts the glyph at
+/// the same device position and size. At other scales the quad is stretched to the canvas scale.
+#[cfg(feature = "textlayout")]
+#[test]
+fn atlas_glyphs_are_placed_at_whole_device_pixels() {
+    use crate::paint::GlyphTexture;
+
+    // Returns the left, top, right, and bottom device coordinates of the glyph's quad, and its
+    // width in texels.
+    let quad = |transform: Transform2D, font_size: f32, (x, y): (f32, f32)| -> ([f32; 4], f32) {
+        let renderer = RecordingRenderer::default();
+        let recorded_commands = renderer.last_commands.clone();
+        let recorded_verts = renderer.last_verts.clone();
+        let mut canvas = Canvas::new(renderer).unwrap();
+        canvas.set_size(400, 400, 1.0);
+        let font = canvas
+            .add_font_mem(include_bytes!("../examples/assets/RobotoFlex-VariableFont.ttf"))
+            .expect("failed to load test font");
+        let paint = Paint::color(Color::black())
+            .with_font(&[font])
+            .with_font_size(font_size);
+        let glyph_id = canvas.measure_text(0.0, 0.0, "H", &paint).unwrap().glyphs[0].glyph_id;
+
+        canvas.set_transform(&transform);
+        canvas
+            .fill_glyph_run(font, &[], [PositionedGlyph { x, y, glyph_id }], &paint)
+            .unwrap();
+        canvas.flush_to_output(());
+
+        let (offset, _) = recorded_commands
+            .borrow()
+            .iter()
+            .filter(|command| matches!(command.glyph_texture, GlyphTexture::AlphaMask(_)))
+            .find_map(|command| command.triangles_verts)
+            .expect("expected a glyph draw");
+        // The first two vertices are the quad's top left and bottom right corners.
+        let verts = &recorded_verts.borrow()[offset..offset + 2];
+        let texels = (verts[1].u - verts[0].u) * crate::text::TEXTURE_SIZE as f32;
+        ([verts[0].x, verts[0].y, verts[1].x, verts[1].y], texels)
+    };
+
+    // Each case rasterizes the glyph at 48 px and draws it at the device position (10.5, 40.5).
+    let (expected, _) = quad(Transform2D::identity(), 48.0, (10.5, 40.5));
+    assert!(expected.iter().all(|edge| edge.fract() == 0.0), "{expected:?}");
+    let cases = [
+        (
+            "half-pixel translation",
+            Transform2D::translation(0.5, 0.5),
+            48.0,
+            (10.0, 40.0),
+        ),
+        (
+            "scale 2",
+            Transform2D::new(2.0, 0.0, 0.0, 2.0, 0.5, 0.5),
+            24.0,
+            (5.0, 20.0),
+        ),
+        ("scale 1.5", Transform2D::scaling(1.5, 1.5), 32.0, (7.0, 27.0)),
+        (
+            "scale 1.25",
+            Transform2D::new(1.25, 0.0, 0.0, 1.25, 0.5, 0.5),
+            38.4,
+            (8.0, 32.0),
+        ),
+    ];
+    for (case, transform, font_size, position) in cases {
+        let (actual, _) = quad(transform, font_size, position);
+        for (actual, expected) in actual.into_iter().zip(expected) {
+            assert!(
+                (actual - expected).abs() < 1e-3,
+                "{case}: the quad is at {actual:?}, expected {expected:?}"
+            );
+        }
+    }
+
+    // 0.09 rounds to the atlas scale 1/16, so the quad is stretched by 0.09 * 16.
+    let ([left, _, right, _], texels) = quad(Transform2D::scaling(0.09, 0.09), 48.0, (100.0, 400.0));
+    assert!(
+        ((right - left) - texels * 0.09 * 16.0).abs() < 1e-3,
+        "the quad is {} wide, {texels} texels",
+        right - left
     );
 }
 
