@@ -1,0 +1,32 @@
+frames within 1.0 % of pixels beyond 20/255 of the reference (780 files x 4 framings)
+Chromium 131            v027:  1484 / 3120  v028:  3054 / 3120  newly within 1570, no longer within 0
+Firefox 158             v027:  1487 / 3120  v028:  3048 / 3120  newly within 1565, no longer within 4
+WebKit (Safari 27.2)    v027:  1629 / 3120  v028:  2762 / 3120  newly within 1295, no longer within 162
+within Firefox or WebKit: v027 1652, v028 3056
+Firefox 158 vs Chromium 131: 3102 / 3120 within
+WebKit (Safari 27.2) vs Chromium 131: 2810 / 3120 within
+WebKit (Safari 27.2) vs Firefox 158: 2805 / 3120 within
+
+per group, within Firefox or WebKit:
+  01-clip-and-blend                        v027    8  v028   40  of 40
+  02-filter-and-blend                      v027   12  v028   24  of 24
+  03-mask-and-blend                        v027   17  v028   24  of 24
+  04-stacking-context-and-isolation        v027   28  v028   48  of 48
+  05-filter-clip-regressions               v027   14  v028   24  of 24
+  06-svg-compositing-primitives            v027   15  v028   24  of 24
+  07-zero-area-collinear-fills             v027   48  v028   64  of 64
+  08-gaussian-blur-edge-and-kernel         v027   10  v028   56  of 56
+  09-feblend-modes                         v027   74  v028  144  of 144
+  10-mix-blend-modes-all                   v027   72  v028  128  of 128
+  11-blend-gradients-and-clips             v027   27  v028   48  of 48
+  12-blend-filter-chains                   v027   28  v028   32  of 48
+  13-blend-color-spaces                    v027   24  v028   40  of 48
+  14-feoffset-tests                        v027  238  v028  400  of 400
+  15-femorphology-tests                    v027  392  v028  400  of 400
+  16-fegaussianblur-tests                  v027  238  v028  400  of 400
+  17-clip-path-tests                       v027  192  v028  400  of 400
+  18-hard-mask-composite-concave-winding   v027    4  v028  384  of 384
+  19-filter-subregions-and-offcanvas       v027   35  v028  104  of 112
+  20-clippath-unions-and-masks             v027   25  v028   94  of 112
+  21-degenerate-paths-dashes-and-joins     v027   83  v028   86  of 96
+  22-gradient-stops-and-recursion-guards   v027   68  v028   92  of 96

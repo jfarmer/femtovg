@@ -27,3 +27,21 @@ Amiri lines 150 px off the anchor (Firefox and femtovg agree within a pixel), so
 left is glyph rasterization (swash vs Core Text).
 
 `strips.py` composes the strips from the renders.
+
+## WPT SVG reftest set: frames within 0.1 % of each browser
+
+`near_counts.py` over runs/wpt22 (corpus wpt22: 780 files x z1/z2/z4/hd = 3,120 frames), counting frames whose
+share of pixels more than 20/255 off the reference is at most 0.1 % (`near_counts_0.1.txt`; 1 % in
+`near_counts_1.txt`). References: Chromium 131 headless shell, Firefox Developer Edition 158, system WebKit
+(Safari 27.2) through `wk_shot`. 0.27 is the `harness_no_layers` build above, so filters, masks and blend modes
+are missing there by construction: that is what 0.27 could draw.
+
+| reference | 0.27 | 0.28 |
+|---|---:|---:|
+| Chromium | 513 | 2,820 |
+| Firefox | 517 | 2,865 |
+| WebKit | 724 | 2,553 |
+| Firefox or WebKit | 736 | 3,005 |
+
+The 216 frames within WebKit on 0.27 but not on 0.28 are all blur and morphology tests where WebKit itself is
+more than 0.1 % off Chromium (median 0.28-vs-WebKit 2.3 %); 0.28 is within Firefox on 210 of them.
