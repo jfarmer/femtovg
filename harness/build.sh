@@ -47,6 +47,7 @@ default_src() {
 cfgs_for() {
   local src=$1/src flags=()
   has() { grep -rqF -- "$1" "$src"; }
+  has 'pub fn begin_layer(' || flags+=(--cfg harness_no_layers)
   has 'pub fn clip_path(' && flags+=(--cfg harness_clip)
   has 'TurbulenceKind' && flags+=(--cfg harness_turbulence)
   has 'Blend {' && flags+=(--cfg harness_blend)
@@ -61,7 +62,7 @@ cfgs_for() {
   has 'PlusLighter,' && flags+=(--cfg harness_plus_lighter)
   # usvg 0.49 added BlendMode::PlusLighter and CompositeOperator::Lighter.
   grep -qE '^usvg = \{ version = "0\.(49|[5-9][0-9])' "$1/Cargo.toml" && flags+=(--cfg harness_usvg49)
-  echo "${flags[@]}"
+  echo "${flags[@]+"${flags[@]}"}"
 }
 
 for spec in "$@"; do

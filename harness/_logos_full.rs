@@ -24,10 +24,106 @@
 use femtovg::BlendMode;
 #[cfg(harness_turbulence)]
 use femtovg::TurbulenceKind;
+#[cfg(harness_no_layers)]
+use compat::{CanvasCompat, LayerEffects, MaskKind};
+#[cfg(not(harness_no_layers))]
+use femtovg::{LayerEffects, MaskKind};
 use femtovg::{
-    renderer::WGPURenderer, Canvas, Color, CompositeOperation, FillRule, ImageFilter, ImageFlags, LayerEffects,
-    MaskKind, Paint, Path, PixelFormat, RenderTarget, Transform2D,
+    renderer::WGPURenderer, Canvas, Color, CompositeOperation, FillRule, ImageFilter, ImageFlags, Paint, Path,
+    PixelFormat, RenderTarget, Transform2D,
 };
+
+/// `--cfg harness_no_layers`: femtovg before the layer API (0.27). Every
+/// layer is a pass-through, as when one cannot be allocated: its content is
+/// drawn directly and its filters, mask and shadow are lost; its opacity
+/// goes onto each shape, as a 0.27 caller would apply it.
+/// Gradients: see `paint_for`.
+#[cfg(harness_no_layers)]
+mod compat {
+    use femtovg::{renderer::WGPURenderer, Canvas, ImageFilter, ImageId};
+
+    #[derive(Clone, Copy, Debug)]
+    pub enum MaskKind {
+        Luminance,
+        Alpha,
+    }
+
+    pub struct LayerEffects {
+        opacity: f32,
+    }
+
+    impl LayerEffects {
+        pub fn new() -> Self {
+            Self { opacity: 1.0 }
+        }
+        pub fn with_opacity(self, opacity: f32) -> Self {
+            Self { opacity }
+        }
+        pub fn with_filters(self, _: &[ImageFilter]) -> Self {
+            self
+        }
+        pub fn with_mask(self, _: ImageId, _: MaskKind, _: f32, _: f32, _: f32, _: f32) -> Self {
+            self
+        }
+    }
+
+    thread_local! {
+        static GROUP_ALPHA: std::cell::RefCell<Vec<f32>> = const { std::cell::RefCell::new(Vec::new()) };
+    }
+
+    /// The opacity of the groups being drawn, which 0.27 can only apply to
+    /// each shape in them (where shapes overlap, the result differs from a
+    /// group's).
+    pub fn group_alpha() -> f32 {
+        GROUP_ALPHA.with_borrow(|stack| stack.last().copied().unwrap_or(1.0))
+    }
+
+    pub trait CanvasCompat {
+        fn begin_layer(&mut self, fx: &LayerEffects) -> bool;
+        fn end_layer(&mut self);
+        fn transient_image_bytes(&self) -> usize;
+        fn set_transient_image_budget(&mut self, bytes: usize);
+        fn set_filter_work_budget(&mut self, samples: u64);
+        fn filter_image_chain(&mut self, target: ImageId, chain: &[ImageFilter], source: ImageId) -> Result<(), ()>;
+    }
+
+    impl CanvasCompat for Canvas<WGPURenderer> {
+        fn begin_layer(&mut self, fx: &LayerEffects) -> bool {
+            self.save();
+            GROUP_ALPHA.with_borrow_mut(|stack| {
+                let outer = stack.last().copied().unwrap_or(1.0);
+                stack.push(outer * fx.opacity);
+            });
+            false
+        }
+        fn end_layer(&mut self) {
+            GROUP_ALPHA.with_borrow_mut(|stack| stack.pop());
+            self.restore();
+        }
+        fn transient_image_bytes(&self) -> usize {
+            0
+        }
+        fn set_transient_image_budget(&mut self, _: usize) {}
+        fn set_filter_work_budget(&mut self, _: u64) {}
+        fn filter_image_chain(&mut self, target: ImageId, chain: &[ImageFilter], source: ImageId) -> Result<(), ()> {
+            match chain {
+                [one] => {
+                    self.filter_image(target, one.clone(), source);
+                    Ok(())
+                }
+                _ => Err(()),
+            }
+        }
+    }
+}
+
+/// `set_global_alpha` times the opacity of the groups a 0.27 build draws
+/// without layers.
+fn set_alpha(canvas: &mut Canvas<WGPURenderer>, alpha: f32) {
+    #[cfg(harness_no_layers)]
+    let alpha = alpha * compat::group_alpha();
+    canvas.set_global_alpha(alpha);
+}
 
 /// Frame and layout, overridable for other framings (1080p: FRAME_W=1920
 /// FRAME_H=1080 BOX=1080 BOX_X=420 BOX_Y=0); make_ref.py reads the same names.
@@ -85,6 +181,28 @@ fn to_paint(p: &usvg::Paint) -> Option<Paint> {
         paint.set_anti_alias(true);
         return Some(paint);
     }
+    // 0.27 has no gradient transform and no focal point: map the geometry
+    // through the transform (exact without rotation or skew) and draw a
+    // radial gradient from its end circle, as an ellipse.
+    #[cfg(harness_no_layers)]
+    let mut paint = match p {
+        usvg::Paint::Color(c) => Paint::color(Color::rgb(c.red, c.green, c.blue)),
+        usvg::Paint::LinearGradient(g) => {
+            let t = g.transform();
+            let (x1, y1) = (t.sx * g.x1() + t.kx * g.y1() + t.tx, t.ky * g.x1() + t.sy * g.y1() + t.ty);
+            let (x2, y2) = (t.sx * g.x2() + t.kx * g.y2() + t.tx, t.ky * g.x2() + t.sy * g.y2() + t.ty);
+            Paint::linear_gradient_stops(x1, y1, x2, y2, stop_list(g.stops()))
+        }
+        usvg::Paint::RadialGradient(g) => {
+            let t = g.transform();
+            let (cx, cy) = (t.sx * g.cx() + t.kx * g.cy() + t.tx, t.ky * g.cx() + t.sy * g.cy() + t.ty);
+            let r = g.r().get();
+            let (rx, ry) = (r * t.sx.hypot(t.ky), r * t.kx.hypot(t.sy));
+            Paint::elliptical_gradient_stops(cx, cy, 0.0, 0.0, rx, ry, stop_list(g.stops()))
+        }
+        usvg::Paint::Pattern(_) => return None,
+    };
+    #[cfg(not(harness_no_layers))]
     let mut paint = match p {
         usvg::Paint::Color(c) => Paint::color(Color::rgb(c.red, c.green, c.blue)),
         usvg::Paint::LinearGradient(g) => {
@@ -2471,7 +2589,7 @@ fn draw_text_glyphs(canvas: &mut Canvas<WGPURenderer>, text: &usvg::Text, scale:
             canvas.save();
             canvas.set_transform(&ts_to_t2d(base));
             shift_for_shadow(canvas);
-            canvas.set_global_alpha(alpha);
+            set_alpha(canvas, alpha);
             let mut draw = |canvas: &mut Canvas<WGPURenderer>, face: femtovg::FontId, size: f32, run: &[(f32, f32, u16)]| {
                 let glyphs = run.iter().map(|&(x, y, glyph_id)| PositionedGlyph { x, y, glyph_id });
                 paint.set_font(&[face]);
@@ -2664,7 +2782,7 @@ fn draw_text_shaped(canvas: &mut Canvas<WGPURenderer>, text: &usvg::Text) -> boo
             canvas.save();
             canvas.set_transform(&ts_to_t2d(base));
             shift_for_shadow(canvas);
-            canvas.set_global_alpha(alpha);
+            set_alpha(canvas, alpha);
             let drawn = if stroked {
                 canvas.stroke_text(x, y, &string, &paint).map(drop)
             } else {
@@ -2893,7 +3011,7 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                             usvg::FillRule::NonZero => FillRule::NonZero,
                             usvg::FillRule::EvenOdd => FillRule::EvenOdd,
                         });
-                        canvas.set_global_alpha(fill.opacity().get());
+                        set_alpha(canvas, fill.opacity().get());
                         #[cfg(harness_clip_paths)]
                         let masked = fill_through_mask(canvas, svg_path, &path, &paint, fill.rule());
                         #[cfg(not(harness_clip_paths))]
@@ -2901,14 +3019,14 @@ fn draw_nodes(canvas: &mut Canvas<WGPURenderer>, children: &[usvg::Node], scale:
                         if !masked {
                             canvas.fill_path(&path, &paint);
                         }
-                        canvas.set_global_alpha(1.0);
+                        set_alpha(canvas, 1.0);
                     }
                 }
                 if let Some(stroke) = svg_path.stroke() {
                     if let Some(paint) = stroke_paint(stroke) {
-                        canvas.set_global_alpha(stroke.opacity().get());
+                        set_alpha(canvas, stroke.opacity().get());
                         canvas.stroke_path(&path, &paint);
-                        canvas.set_global_alpha(1.0);
+                        set_alpha(canvas, 1.0);
                     }
                 }
                 canvas.restore();
@@ -3072,6 +3190,8 @@ fn render_scene(canvas: &mut Canvas<WGPURenderer>, tree: &usvg::Tree, scale: f32
     if page_layer {
         canvas.end_layer();
     }
+    // 0.27 deletes an image at once, before the flush that draws from it.
+    #[cfg(not(harness_no_layers))]
     for image in FRAME_IMAGES.lock().unwrap().drain(..) {
         canvas.delete_image(image);
     }
