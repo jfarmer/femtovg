@@ -574,12 +574,12 @@ impl GlyphAtlas {
         };
 
         let mut add_glyph = |canvas: &mut Canvas<T>, glyph: PositionedGlyph| -> Result<(), ErrorKind> {
-            // The fraction of x in tenths of a pixel, -10 to 10, with the sign of x. It is the
+            // The fraction of x in quarters of a pixel, -4 to 4, with the sign of x. It is the
             // offset of the glyph from `glyph.x.trunc()`, where the quad is placed below.
             // `quantize` rounds to the nearest step only for a non-negative value, so it is given
             // the absolute value.
             let fract = glyph.x.fract();
-            let subpixel_location = (crate::geometry::quantize(fract.abs(), 0.1) * 10.0).copysign(fract) as i8;
+            let subpixel_location = (crate::geometry::quantize(fract.abs(), 0.25) * 4.0).copysign(fract) as i8;
 
             let id = RenderedGlyphId::new(
                 glyph.glyph_id,
@@ -604,7 +604,7 @@ impl GlyphAtlas {
                         font,
                         font_face,
                         glyph.glyph_id,
-                        f32::from(subpixel_location) / 10.0,
+                        f32::from(subpixel_location) / 4.0,
                         normalized_coords,
                     )?;
                     if let Some((_, Some(mask))) = &placed {

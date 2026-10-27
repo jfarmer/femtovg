@@ -537,12 +537,12 @@ fn swash_fill_at_negative_x_uses_the_mask_for_its_subpixel_offset() {
     let font = text_context.font(font_id).unwrap();
     let font_face = font.face_ref_with_normalized_coords(&[]);
 
-    // Each entry is (x, pixel, tenths). x rounded to a tenth of a pixel is
-    // `pixel + tenths / 10`, where `pixel` is a whole number. -0.96 rounds to -1.0.
-    for (x, pixel, tenths) in [
-        (-0.3, -1.0, 7_u8),
-        (-0.7, -1.0, 3),
-        (0.3, 0.0, 3),
+    // Each entry is (x, pixel, quarters). x rounded to a quarter of a pixel is
+    // `pixel + quarters / 4`, where `pixel` is a whole number. -0.96 rounds to -1.0.
+    for (x, pixel, quarters) in [
+        (-0.3, -1.0, 3_u8),
+        (-0.7, -1.0, 1),
+        (0.3, 0.0, 1),
         (5.0, 5.0, 0),
         (-0.96, -1.0, 0),
         (-2.0, -2.0, 0),
@@ -580,11 +580,11 @@ fn swash_fill_at_negative_x_uses_the_mask_for_its_subpixel_offset() {
         let mask = upload.as_ref().sub_image(padding, padding, width, height);
         let coverage: Vec<u8> = mask.pixels().map(|pixel| pixel.r).collect();
 
-        let expected = swash_image(glyph_id, FONT_SIZE, f32::from(tenths) / 10.0);
+        let expected = swash_image(glyph_id, FONT_SIZE, f32::from(quarters) / 4.0);
         // `assert!`, not `assert_eq!`, so that a failure does not print both pixel arrays.
         assert!(
             (width, coverage) == (expected.placement.width as usize, expected.data),
-            "the glyph at x = {x} should sample Swash's image for the subpixel offset 0.{tenths}"
+            "the glyph at x = {x} should sample Swash's image for the subpixel offset {quarters}/4"
         );
         assert_eq!(
             quad.x0,
