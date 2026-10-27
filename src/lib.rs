@@ -2468,6 +2468,7 @@ where
                 stroke.line_width,
                 render_mode,
                 normalized_coords,
+                raster.0[4],
             )?
         };
 
@@ -2500,6 +2501,7 @@ where
                         stroke.line_width,
                         render_mode,
                         normalized_coords,
+                        raster.0[4],
                     )?
                 } else {
                     atlas.render_atlas(
@@ -2512,6 +2514,7 @@ where
                         stroke.line_width,
                         render_mode,
                         normalized_coords,
+                        raster.0[4],
                     )?
                 }
             };

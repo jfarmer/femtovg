@@ -563,6 +563,7 @@ impl GlyphAtlas {
         line_width: f32,
         mode: RenderMode,
         normalized_coords: &[i16],
+        key_offset: f32,
     ) -> Result<GlyphDrawCommands, ErrorKind> {
         let mut alpha_cmd_map = FnvHashMap::default();
         let mut color_cmd_map = FnvHashMap::default();
@@ -578,7 +579,9 @@ impl GlyphAtlas {
             // offset of the glyph from `glyph.x.trunc()`, where the quad is placed below.
             // `quantize` rounds to the nearest step only for a non-negative value, so it is given
             // the absolute value.
-            let fract = glyph.x.fract();
+            // Scratch prototype (user key): the subpixel key comes from the position before the
+            // canvas translation, as on master.
+            let fract = (glyph.x - key_offset).fract();
             let subpixel_location = (crate::geometry::quantize(fract.abs(), 0.1) * 10.0).copysign(fract) as i8;
 
             let id = RenderedGlyphId::new(

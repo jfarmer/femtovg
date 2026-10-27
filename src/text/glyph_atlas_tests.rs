@@ -559,6 +559,7 @@ fn swash_fill_at_negative_x_uses_the_mask_for_its_subpixel_offset() {
                 0.0,
                 RenderMode::Fill,
                 &[],
+                0.0,
             )
             .unwrap();
         let command = &commands.alpha_glyphs[0];
