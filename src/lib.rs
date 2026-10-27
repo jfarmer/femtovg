@@ -2520,6 +2520,34 @@ where
             draw_commands.color_glyphs.extend(color_commands.color_glyphs);
         }
 
+        // Scratch prototype (quick fix): shift atlas quads so that the fraction of the translation
+        // they are drawn under is removed, as if the translation were rounded.
+        if !need_direct_rendering {
+            let [a, _, _, d, tx, ty] = match rasterization {
+                Rasterization::ScaledAtlas {
+                    scale,
+                    true_scale,
+                    translation: (tx, ty),
+                } => {
+                    let residual = true_scale / scale;
+                    [residual, 0.0, 0.0, residual, tx, ty]
+                }
+                _ => self.state().transform.0,
+            };
+            let (dx, dy) = ((tx.round() - tx) / a, (ty.round() - ty) / d);
+            for quad in draw_commands
+                .alpha_glyphs
+                .iter_mut()
+                .chain(&mut draw_commands.color_glyphs)
+                .flat_map(|cmd| &mut cmd.quads)
+            {
+                quad.x0 += dx;
+                quad.x1 += dx;
+                quad.y0 += dy;
+                quad.y1 += dy;
+            }
+        }
+
         // For the scaled-atlas path, present the pre-scaled glyph quads with a
         // translation-only transform so the bitmap shows at its on-screen pixel
         // size. render_atlas already emitted quads in the scaled glyph space, so
