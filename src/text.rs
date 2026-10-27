@@ -642,7 +642,11 @@ impl GlyphAtlas {
                 let line_width_offset = if rendered.color_glyph { 0. } else { line_width_offset };
 
                 let [texel_width, texel_height] = rendered.texel_size;
-                q.x0 = glyph.x.trunc() + rendered.bearing_x - (line_width_offset + GLYPH_PADDING as f32) * texel_width;
+                // Scratch prototype (round): a mask that swash does not shift by the fraction of x is
+                // placed at the nearest whole pixel instead of the one below.
+                let shifted = cfg!(feature = "swash") && mode == RenderMode::Fill && !rendered.color_glyph;
+                let x = if shifted { glyph.x.trunc() } else { glyph.x.round() };
+                q.x0 = x + rendered.bearing_x - (line_width_offset + GLYPH_PADDING as f32) * texel_width;
                 q.y0 = glyph.y.round() - rendered.bearing_y - (line_width_offset + GLYPH_PADDING as f32) * texel_height;
                 q.x1 = q.x0 + rendered.width as f32 * texel_width;
                 q.y1 = q.y0 + rendered.height as f32 * texel_height;

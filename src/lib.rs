@@ -2484,7 +2484,7 @@ where
                 // A bitmap glyph is drawn at a whole pixel: neither rasterizer shifts it by the
                 // fraction of x. Truncating x, as render_atlas() does to place the quad, gives the
                 // glyph one atlas entry instead of one for each subpixel offset.
-                let whole_pixel = |g: PositionedGlyph| PositionedGlyph { x: g.x.trunc(), ..g };
+                let whole_pixel = |g: PositionedGlyph| PositionedGlyph { x: g.x.round(), ..g };
 
                 // Color glyphs on the atlas path follow the same scale baking.
                 // On the direct path we leave them at the original font_size —
