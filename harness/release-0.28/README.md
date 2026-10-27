@@ -26,7 +26,7 @@ Developer Edition 158 (`--screenshot`, fonts copied beside the page). Chromium 1
 Amiri lines 150 px off the anchor (Firefox and femtovg agree within a pixel), so it is not used here. The 2.3 %
 left is glyph rasterization (swash vs Core Text).
 
-`strips.py` composes the strips from the renders.
+`strips.py` composes the strips from the renders; `busey_mobile.py` then replaces the BuseyBench one with a version for narrow screens: where 0.27 and 0.28 differ from Chromium by more than 20/255 (red, each such pixel grown by 1 px and kept when the panel is reduced, over a faint copy of the reference) and the 0.28 render.
 
 ## WPT SVG reftest set: frames within 0.1 % of each browser
 
