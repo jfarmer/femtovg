@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Fixed PNG glyphs (color emoji) drawn as blocks of pixels under a canvas
+  scale when a run is drawn as outlines (e.g., under rotation, at a large size,
+  or with a gradient paint).
 - Fixed `fill_glyph_run()` and `stroke_glyph_run()` casting a shadow for each
   glyph drawn as an outline, and none for glyphs drawn from the glyph atlas. A
   glyph run now casts one shadow, as `fill_text()` does.

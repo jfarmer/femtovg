@@ -2365,8 +2365,21 @@ where
         // Splitting these -- scaling some quantities and not others, or scaling
         // one of them twice -- is what made stroke widths change with the zoom
         // regime rather than the zoom.
+        // PNG glyphs on the direct route are the exception: they cross through
+        // `color_scale` (below).
         let mut stroke = paint.stroke.clone();
         stroke.line_width *= effective_scale;
+
+        // render_direct() cannot draw a PNG glyph, which is a bitmap. On the direct route it is
+        // rasterized at the scale of the canvas transform instead, so that the transform does
+        // not enlarge its texels. The ephemeral atlas it goes to is emptied at every flush, so
+        // the scale is not quantized for reuse. Its floor of 1/16 keeps the quads from being
+        // divided by zero (below).
+        let color_scale = if need_direct_rendering {
+            self.state().transform.average_scale().max(1.0 / 16.0)
+        } else {
+            effective_scale
+        };
 
         let Some(font) = text_context.font(font_id) else {
             return Err(ErrorKind::NoFontFound);
@@ -2429,12 +2442,14 @@ where
         }
 
         // When baking scale into the rasterization, pre-multiply glyph positions
-        // by `effective_scale` so that under a translation-only canvas transform
+        // by the scale they are rasterized at so that under a translation-only canvas transform
         // they still land at the original screen position.
-        let scaled = |g: &PositionedGlyph| PositionedGlyph {
-            x: g.x * effective_scale,
-            y: g.y * effective_scale,
-            glyph_id: g.glyph_id,
+        let scaled = |scale: f32| {
+            move |g: &PositionedGlyph| PositionedGlyph {
+                x: g.x * scale,
+                y: g.y * scale,
+                glyph_id: g.glyph_id,
+            }
         };
 
         let mut draw_commands = if need_direct_rendering {
@@ -2463,7 +2478,7 @@ where
                 font_id,
                 font,
                 &font_face,
-                non_color_glyphs.iter().map(scaled),
+                non_color_glyphs.iter().map(scaled(effective_scale)),
                 effective_font_size,
                 stroke.line_width,
                 render_mode,
@@ -2486,34 +2501,36 @@ where
                 // glyph one atlas entry instead of one for each subpixel offset.
                 let whole_pixel = |g: PositionedGlyph| PositionedGlyph { x: g.x.trunc(), ..g };
 
-                // Color glyphs on the atlas path follow the same scale baking.
-                // On the direct path we leave them at the original font_size —
-                // that already matches today's behavior.
+                let mut commands = atlas.render_atlas(
+                    self,
+                    font_id,
+                    font,
+                    &font_face,
+                    color_glyphs.iter().map(scaled(color_scale)).map(whole_pixel),
+                    paint.text.font_size * color_scale,
+                    paint.stroke.line_width * color_scale,
+                    render_mode,
+                    normalized_coords,
+                )?;
+
+                // On the direct route draw_glyph_commands() applies the scale again with the
+                // canvas transform, so draw_glyph_run() divides the quads by it here. Drawing them
+                // under the canvas transform divided by the scale would also scale the paint of a
+                // glyph whose PNG does not decode and is drawn from its outline.
                 if need_direct_rendering {
-                    atlas.render_atlas(
-                        self,
-                        font_id,
-                        font,
-                        &font_face,
-                        color_glyphs.into_iter().map(whole_pixel),
-                        paint.text.font_size,
-                        stroke.line_width,
-                        render_mode,
-                        normalized_coords,
-                    )?
-                } else {
-                    atlas.render_atlas(
-                        self,
-                        font_id,
-                        font,
-                        &font_face,
-                        color_glyphs.iter().map(scaled).map(whole_pixel),
-                        effective_font_size,
-                        stroke.line_width,
-                        render_mode,
-                        normalized_coords,
-                    )?
+                    for quad in commands
+                        .alpha_glyphs
+                        .iter_mut()
+                        .chain(&mut commands.color_glyphs)
+                        .flat_map(|cmd| &mut cmd.quads)
+                    {
+                        quad.x0 /= color_scale;
+                        quad.y0 /= color_scale;
+                        quad.x1 /= color_scale;
+                        quad.y1 /= color_scale;
+                    }
                 }
+                commands
             };
 
             draw_commands.alpha_glyphs.extend(color_commands.alpha_glyphs);
@@ -5353,6 +5370,72 @@ fn png_glyphs_drawn_directly_use_an_ephemeral_atlas() {
                 assert_eq!(color_draws.count(), fills_and_strokes, "{case}");
             }
         }
+    }
+}
+
+/// A PNG glyph drawn directly is rasterized at the average scale of the canvas transform, so that
+/// under a uniform scale one texel of its bitmap covers one device pixel, and is drawn at its
+/// position.
+#[cfg(any(feature = "swash", all(feature = "textlayout", feature = "image-loading")))]
+#[test]
+fn png_glyphs_drawn_directly_are_rasterized_at_the_canvas_scale() {
+    use crate::paint::GlyphTexture;
+    use crate::text::test_fonts::png_glyph_font;
+    use crate::text::TEXTURE_SIZE;
+
+    let solid = Paint::color(Color::black());
+    let gradient = Paint::linear_gradient(0.0, 0.0, 100.0, 0.0, Color::black(), Color::white());
+    let mut rotated_and_scaled = Transform2D::rotation(0.3);
+    rotated_and_scaled.scale(2.0, 2.0);
+    // `draw_glyph_run` draws a run directly when its font size times the scale of the canvas
+    // transform is above 92.
+    let cases = [
+        ("scaled gradient", Transform2D::scaling(2.0, 2.0), &gradient, 24.0),
+        ("oversized", Transform2D::scaling(2.0, 2.0), &solid, 48.0),
+        ("rotated and scaled", rotated_and_scaled, &solid, 24.0),
+    ];
+    for (case, transform, paint, font_size) in cases {
+        let renderer = RecordingRenderer::default();
+        let recorded_commands = renderer.last_commands.clone();
+        let recorded_verts = renderer.last_verts.clone();
+        let text_context = TextContext::default();
+        let font = text_context.add_font_mem(&png_glyph_font()).unwrap();
+        let mut canvas = Canvas::new_with_text_context(renderer, text_context).unwrap();
+        canvas.set_size(400, 400, 1.0);
+        canvas.set_transform(&transform);
+        let paint = paint.clone().with_font_size(font_size);
+        let glyph = PositionedGlyph {
+            x: 50.0,
+            y: 100.0,
+            glyph_id: 0,
+        };
+        canvas.fill_glyph_run(font, &[], [glyph.clone()], &paint).unwrap();
+        canvas.flush_to_output(());
+
+        let (offset, _) = recorded_commands
+            .borrow()
+            .iter()
+            .filter(|command| matches!(command.glyph_texture, GlyphTexture::ColorTexture(_)))
+            .find_map(|command| command.triangles_verts)
+            .expect("expected a PNG glyph draw");
+        // The first three vertices are the quad's top left, bottom right, and top right corners.
+        let verts = &recorded_verts.borrow()[offset..offset + 3];
+        let top_edge = (verts[2].x - verts[0].x).hypot(verts[2].y - verts[0].y);
+        let texels = (verts[2].u - verts[0].u) * TEXTURE_SIZE as f32;
+        assert!(
+            (top_edge / texels - 1.0).abs() < 1e-3,
+            "{case}: {texels} texels are {top_edge} pixels wide"
+        );
+
+        // The bitmap is a square of the font size on the baseline, and the padding around it is
+        // the same on each side, so the quad's center is the bitmap's center. Placing the quad
+        // at a whole pixel moves it by less than one pixel.
+        let center = (verts[0].x.midpoint(verts[1].x), verts[0].y.midpoint(verts[1].y));
+        let expected = transform.transform_point(glyph.x + font_size / 2.0, glyph.y - font_size / 2.0);
+        assert!(
+            (center.0 - expected.0).hypot(center.1 - expected.1) < 1.0,
+            "{case}: the quad's center is {center:?}, expected {expected:?}"
+        );
     }
 }
 
