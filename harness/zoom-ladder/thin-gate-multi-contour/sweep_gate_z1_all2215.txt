@@ -1,0 +1,29 @@
+same 2189 moved 26
+best-browser n8 better 26 worse 0 equal 0
+sum best n8 base 20914 gate 20027
+   879 ->    656  moved  1695  svgenius__page_87_食物图标_36583_icon_12 {'ff': (879, 656)}
+  1131 ->    922  moved   445  svgenius__page_93_男装_35256_icon_17 {'ff': (1131, 922)}
+   333 ->    269  moved   286  svgenius__page_98_客户服务彩色图标_34253_icon_70 {'chr': (1692, 1639), 'ff': (1687, 1634), 'wk': (333, 269)}
+  1570 ->   1507  moved   932  svgenius__page_245_情人节七夕节_15460_icon_6 {'chr': (1586, 1507), 'ff': (1570, 1514)}
+   761 ->    714  moved   391  svgenius__page_95_手绘人物_34981_icon_5 {'ff': (761, 714)}
+  1438 ->   1395  moved   179  svgenius__page_92_线性游戏兴趣爱好_35314_icon_5 {'ff': (1438, 1395)}
+   536 ->    497  moved   163  corpus__firefox-com__btn-app-store.1cfd5dba4a92 {'chr': (1184, 1168), 'ff': (1159, 1143), 'wk': (536, 497)}
+   705 ->    670  moved    93  corpus__firefox__diners {'chr': (1733, 1731), 'ff': (1726, 1723), 'wk': (705, 670)}
+   320 ->    286  moved    97  svgenius__page_304_005_12482_icon_57 {'ff': (320, 286)}
+  1213 ->   1190  moved   190  svgenius__page_371_MBE金融图标_7976_icon_8 {'ff': (1213, 1190)}
+  1560 ->   1539  moved    44  svgenius__page_397_多色施工类icon_6158_icon_9 {'ff': (1560, 1539)}
+   438 ->    421  moved   104  corpus__firefox-com__firefox-enterprise-browser-img.52254889d4cf {'chr': (438, 421), 'ff': (1390, 1372)}
+  1134 ->   1124  moved   165  svgenius__page_308_智慧_11927_icon_19 {'ff': (1134, 1124)}
+   517 ->    508  moved   149  svgenius__page_201_铂爵旅拍_为爱焕新_婚庆图标_20821_icon_15 {'ff': (517, 508)}
+   822 ->    813  moved    75  svgenius__page_308_智慧_11927_icon_8 {'ff': (822, 813)}
+   265 ->    256  moved   216  svgenius__page_3_低代码APP图标_50138_icon_18 {'ff': (265, 256)}
+   762 ->    754  moved    31  svgenius__page_78_新年图标-春节图标_38307_icon_16 {'ff': (762, 754)}
+   695 ->    687  moved    86  svgenius__page_676_中间页前链_1653_icon_5 {'ff': (695, 687)}
+   113 ->    109  moved    16  svgenius__page_68_家居家具_40497_icon_14 {'chr': (505, 501), 'ff': (113, 109)}
+   317 ->    314  moved    25  svgenius__page_300_马上创业网_12940_icon_61 {'ff': (317, 314)}
+  1692 ->   1689  moved    87  svgenius__page_308_mbe小图标一套_11989_icon_5 {'ff': (1692, 1689)}
+   771 ->    769  moved   143  svgenius__page_310_零食_MBE图标_11782_icon_4 {'ff': (771, 769)}
+   511 ->    510  moved    39  corpus__buseybench__gpt-6-sol {'chr': (995, 993), 'ff': (767, 766), 'wk': (511, 510)}
+   339 ->    338  moved    41  svgenius__page_397_MBE_夏日icon_5856_icon_10 {'chr': (834, 833), 'ff': (826, 825), 'wk': (339, 338)}
+  1590 ->   1589  moved   201  svgenius__page_88_化妆品_36497_icon_2 {'ff': (1590, 1589)}
+   502 ->    501  moved    53  svgenius__page_302_心医国际-闭环_12761_icon_116 {'ff': (502, 501)}

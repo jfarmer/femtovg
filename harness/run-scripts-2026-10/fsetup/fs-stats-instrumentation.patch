@@ -1,0 +1,121 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 79170d93..21f8ab9b 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -63,6 +63,52 @@ use super::Params;
+ use super::Vertex;
+ use crate::clip::{ClipCoverage, MaskCoverage};
+ 
++// TEMPORARY instrumentation (never committed).
++pub(crate) mod fs_stats {
++    use std::sync::atomic::{AtomicU64, Ordering::Relaxed};
++    pub static VIEWPORT_GROUPS: AtomicU64 = AtomicU64::new(0);
++    pub static PASSES: AtomicU64 = AtomicU64::new(0);
++    pub static STAGING_GROWS: AtomicU64 = AtomicU64::new(0);
++    pub static UNIFORM_BYTES: AtomicU64 = AtomicU64::new(0);
++    pub static VERTEX_BYTES: AtomicU64 = AtomicU64::new(0);
++    pub static INDEX_BYTES: AtomicU64 = AtomicU64::new(0);
++    pub static RENDERS: AtomicU64 = AtomicU64::new(0);
++    pub static COMMANDS: AtomicU64 = AtomicU64::new(0);
++    pub static DISTINCT: AtomicU64 = AtomicU64::new(0);
++    thread_local! {
++        pub static SIZES: std::cell::RefCell<Vec<[u32; 2]>> = const { std::cell::RefCell::new(Vec::new()) };
++    }
++    pub fn size(v: [f32; 2]) {
++        SIZES.with(|s| {
++            let k = [v[0] as u32, v[1] as u32];
++            let mut s = s.borrow_mut();
++            if !s.contains(&k) {
++                s.push(k);
++            }
++        });
++    }
++    pub fn end_frame() {
++        SIZES.with(|s| {
++            let mut s = s.borrow_mut();
++            DISTINCT.store(s.len() as u64, Relaxed);
++            s.clear();
++        });
++    }
++    pub fn add(c: &AtomicU64, n: u64) {
++        c.fetch_add(n, Relaxed);
++    }
++    pub fn report() {
++        if std::env::var_os("FS_STATS").is_none() {
++            return;
++        }
++        let g = |c: &AtomicU64| c.load(Relaxed);
++        eprintln!(
++            "FSSTATS distinct_sizes={} renders={} commands={} viewport_groups={} passes={} staging_grows={} uniform_bytes={} vertex_bytes={} index_bytes={}",
++            g(&DISTINCT), g(&RENDERS), g(&COMMANDS), g(&VIEWPORT_GROUPS), g(&PASSES), g(&STAGING_GROWS), g(&UNIFORM_BYTES), g(&VERTEX_BYTES), g(&INDEX_BYTES)
++        );
++    }
++}
++
+ const UNIFORMARRAY_SIZE: usize = 16;
+ const UNIFORM_BYTES: u64 = (UNIFORMARRAY_SIZE * 4 * 4) as u64;
+ // A concave fill and a stencil stroke record two sets of params, every other command one.
+@@ -755,6 +801,7 @@ impl Renderer for WGPURenderer {
+         if commands.is_empty() {
+             return None;
+         }
++        fs_stats::add(&fs_stats::COMMANDS, commands.len() as u64);
+         self.flush_count += 1;
+ 
+         // The bind groups recorded below hold this buffer, so it cannot grow mid-frame.
+@@ -785,6 +832,7 @@ impl Renderer for WGPURenderer {
+             VERTEX_BUFFER_USAGE,
+         );
+         if !vertex_bytes.is_empty() {
++            fs_stats::add(&fs_stats::VERTEX_BYTES, vertex_bytes.len() as u64);
+             self.queue.write_buffer(&self.vertex_buffer, 0, vertex_bytes);
+         }
+         let vertex_buffer = self.vertex_buffer.clone();
+@@ -798,6 +846,7 @@ impl Renderer for WGPURenderer {
+             FAN_INDEX_USAGE,
+         );
+         if !fan_index_bytes.is_empty() {
++            fs_stats::add(&fs_stats::INDEX_BYTES, fan_index_bytes.len() as u64);
+             self.queue.write_buffer(&self.fan_index_buffer, 0, fan_index_bytes);
+         }
+ 
+@@ -1001,8 +1050,12 @@ impl Renderer for WGPURenderer {
+             "a command recorded more than UNIFORM_SLOTS_PER_COMMAND uniform slots"
+         );
+         if !uniform_staging.is_empty() {
++            fs_stats::add(&fs_stats::UNIFORM_BYTES, uniform_staging.len() as u64);
+             self.queue.write_buffer(&self.uniform_buffer, 0, uniform_staging);
+         }
++        fs_stats::add(&fs_stats::RENDERS, 1);
++        fs_stats::end_frame();
++        fs_stats::report();
+ 
+         let command_buffer = encoder.finish();
+ 
+@@ -2489,6 +2542,8 @@ impl<'a> RenderPassBuilder<'a> {
+         viewport: &[f32; 2],
+         viewport_bind_group_layout: &wgpu::BindGroupLayout,
+     ) -> wgpu::BindGroup {
++        fs_stats::add(&fs_stats::VIEWPORT_GROUPS, 1);
++        fs_stats::size(*viewport);
+         // WebGL requires 16 byte alignment for uniforms, so pad accordingly.
+         let viewport_padded: [f32; 4] = [viewport[0], viewport[1], 0.0, 0.0];
+ 
+@@ -2649,6 +2704,7 @@ impl<'a> RenderPassBuilder<'a> {
+         self.current_bound_offset = None;
+         self.current_clip_bounds = None;
+         drop(self.rpass.take());
++        fs_stats::add(&fs_stats::PASSES, 1);
+         let stencil_view = self
+             .stencil_buffer
+             .as_ref()
+@@ -2806,6 +2862,9 @@ impl CommandToPipelineAndBindGroupMapper {
+         let uniforms = UniformArray::from(params);
+         if self.current_uniforms.as_ref() != Some(&uniforms) {
+             let end = self.uniform_staging.len() + self.uniform_stride as usize;
++            if end > self.uniform_staging.capacity() {
++                fs_stats::add(&fs_stats::STAGING_GROWS, 1);
++            }
+             self.uniform_staging
+                 .extend_from_slice(bytemuck::cast_slice(uniforms.as_slice()));
+             self.uniform_staging.resize(end, 0);

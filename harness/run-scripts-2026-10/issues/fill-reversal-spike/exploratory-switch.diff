@@ -1,0 +1,95 @@
+diff --git a/src/path/cache.rs b/src/path/cache.rs
+index 05737d8a..290d019e 100644
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -948,6 +948,8 @@ impl PathCache {
+ 
+             if has_fringe {
+                 for (p0, p1) in contour.point_pairs(&self.points) {
++                    let q1 = spike_bound(p1, miter_limit);
++                    let p1 = &q1;
+                     if p1.flags.contains(PointFlags::BEVEL) {
+                         if p1.flags.contains(PointFlags::LEFT) {
+                             let lpos = p1.pos + p1.dmpos * woff;
+@@ -995,7 +997,14 @@ impl PathCache {
+                 };
+ 
+                 for (p0, p1) in contour.point_pairs(&self.points) {
+-                    if p1.flags.contains(PointFlags::BEVEL | PointFlags::INNERBEVEL) {
++                    let q1 = spike_bound(p1, miter_limit);
++                    let p1 = &q1;
++                    let joined = if spike_mode() == 1 {
++                        p1.flags.intersects(PointFlags::BEVEL | PointFlags::INNERBEVEL)
++                    } else {
++                        p1.flags.contains(PointFlags::BEVEL | PointFlags::INNERBEVEL)
++                    };
++                    if joined {
+                         bevel_join(&mut contour.stroke, p0, p1, lw, rw, lu, ru);
+                     } else {
+                         contour.stroke.push(Vertex::pos(p1.pos + p1.dmpos * lw, lu, 1.0));
+@@ -1390,6 +1399,27 @@ fn round_join(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, lw: f32, rw: f32,
+     }
+ }
+ 
++// SPIKE PROTOTYPE (env FV_SPIKE): 0 master, 1 any-of bevel test in expand_fill, 2 the extrusion of a point that is
++// not a beveled corner bounded to the miter limit, 3 every point's extrusion bounded to the miter limit.
++fn spike_mode() -> u8 {
++    static MODE: std::sync::OnceLock<u8> = std::sync::OnceLock::new();
++    *MODE.get_or_init(|| std::env::var("FV_SPIKE").ok().and_then(|v| v.parse().ok()).unwrap_or(0))
++}
++
++fn spike_bound(p: &Point, miter_limit: f32) -> Point {
++    let mut q = *p;
++    let bounded = match spike_mode() {
++        2 => !p.flags.contains(PointFlags::BEVEL),
++        3 => true,
++        _ => false,
++    };
++    let m2 = p.dmpos.mag2();
++    if bounded && m2 > miter_limit * miter_limit {
++        q.dmpos = p.dmpos * (miter_limit / m2.sqrt());
++    }
++    q
++}
++
+ #[allow(clippy::branches_sharing_code)]
+ fn bevel_join(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, lw: f32, rw: f32, lu: f32, ru: f32) {
+     let dlpos0 = p0.dpos.orthogonal();
+@@ -1685,6 +1715,37 @@ mod tests {
+         }
+     }
+ 
++    #[test]
++    fn spike_probe_ear() {
++        let s = 0.390625;
++        let t = Transform2D::new(s, 0.0, 0.0, s, 30.0, -70.0);
++        let mut path = Path::new();
++        path.move_to(252.0, 465.0);
++        path.bezier_to(218.0, 465.0, 218.0, 535.0, 252.0, 535.0);
++        path.bezier_to(278.0, 535.0, 285.0, 500.0, 272.0, 478.0);
++        path.bezier_to(260.0, 460.0, 242.0, 465.0, 252.0, 465.0);
++        path.close();
++        let mut cache = PathCache::new(path.verbs(), &t, 0.125, 0.01);
++        cache.expand_fill(1.0, LineJoin::Miter, 2.4, FillRule::NonZero);
++        let n = cache.points.len();
++        for (i, p) in cache.points.iter().enumerate() {
++            if p.dmpos.mag2() > 4.0 || p.flags.intersects(PointFlags::BEVEL | PointFlags::INNERBEVEL) {
++                println!("#{i}/{n} ({:.3},{:.3}) {:?} |dmpos| {:.2}", p.pos.x, p.pos.y, p.flags, p.dmpos.mag2().sqrt());
++            }
++        }
++        let left = cache.points.iter().map(|p| p.pos.x).fold(f32::INFINITY, f32::min);
++        let c = &cache.contours[0];
++        let sx = c.stroke.iter().map(|v| v.x).fold(f32::INFINITY, f32::min);
++        let fx = c.fill.iter().map(|v| v.x).fold(f32::INFINITY, f32::min);
++        let far = c.stroke.iter().map(|v| {
++            cache.points.iter().map(|p| ((v.x - p.pos.x).powi(2) + (v.y - p.pos.y).powi(2)).sqrt()).fold(f32::INFINITY, f32::min)
++        }).fold(0.0f32, f32::max);
++        let ffar = c.fill.iter().map(|v| {
++            cache.points.iter().map(|p| ((v.x - p.pos.x).powi(2) + (v.y - p.pos.y).powi(2)).sqrt()).fold(f32::INFINITY, f32::min)
++        }).fold(0.0f32, f32::max);
++        println!("points {n} leftmost outline x {left:.3}; fringe min x {sx:.3} ({:.2} px past); fan min x {fx:.3}; farthest fringe vertex from any outline point {far:.2} px, fan {ffar:.2} px", left - sx);
++    }
++
+     #[test]
+     fn self_intersecting_polygon_is_concave() {
+         // star

@@ -1,0 +1,39 @@
+diff --git a/src/path/cache.rs b/src/path/cache.rs
+index 05737d8a..4cac0fb0 100644
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -1041,6 +1041,34 @@ impl PathCache {
+ 
+         self.calculate_joins(stroke_width, line_join, miter_limit);
+ 
++        // TRIAGE EXPERIMENT: FV_INNER=miter clears every inner bevel (inner miter points everywhere);
++        // FV_INNER=fold clears it where the inner miter point's foot stays within half of each neighbouring chord.
++        match std::env::var("FV_INNER").as_deref() {
++            Ok("miter") => {
++                for p in &mut self.points {
++                    p.flags.remove(PointFlags::INNERBEVEL);
++                }
++            }
++            Ok("fold") => {
++                for contour in &self.contours {
++                    let r = contour.point_range.clone();
++                    let n = r.len();
++                    for i in 0..n {
++                        let i0 = if i == 0 { n - 1 } else { i - 1 };
++                        let (len0, len1, dm2) = {
++                            let pts = &self.points[r.clone()];
++                            (pts[i0].len, pts[i].len, pts[i].dmpos.mag2())
++                        };
++                        let half = 0.5 * len0.min(len1);
++                        if stroke_width * stroke_width * (dm2 - 1.0).max(0.0) <= half * half {
++                            self.points[r.start + i].flags.remove(PointFlags::INNERBEVEL);
++                        }
++                    }
++                }
++            }
++            _ => {}
++        }
++
+         for contour in &mut self.contours {
+             contour.stroke.clear();
+ 

@@ -1,0 +1,77 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index 6a7a95a8..037743db 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -490,6 +490,7 @@ where
+         path: &Path,
+         path_cache: &mut PathCache,
+         transform: &Transform2D,
++        paint_transform: &Transform2D,
+         paint_flavor: &PaintFlavor,
+         fill_rule: FillRule,
+     ) -> bool {
+@@ -546,7 +547,7 @@ where
+             Vertex::new(x0, y1, s_below, t_below),
+             Vertex::new(x1, y1, s1, t1),
+         ];
+-        self.render_triangles(&verts, transform, paint_flavor, GlyphTexture::AlphaMask(image));
++        self.render_triangles(&verts, paint_transform, paint_flavor, GlyphTexture::AlphaMask(image));
+         true
+     }
+ 
+diff --git a/src/lib.rs b/src/lib.rs
+index 8dce0950..c558c398 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1334,7 +1334,7 @@ where
+             let bounds = path_cache.bounds;
+             if (bounds.maxx - bounds.minx) * (bounds.maxy - bounds.miny) <= THIN_FILL_SPAN
+                 && clip::is_thin(path_cache.mean_width(fill_rule))
+-                && self.fill_through_mask(path, &mut path_cache, &transform, &paint_flavor, fill_rule)
++                && self.fill_through_mask(path, &mut path_cache, &transform, &paint_transform, &paint_flavor, fill_rule)
+             {
+                 return;
+             }
+@@ -3231,6 +3231,42 @@ fn fill_text_selects_atlas_or_path_rendering() {
+ /// drawn under the same transform gets, so a gradient or image paint continues
+ /// across the text and does not start again in each glyph.
+ #[cfg(feature = "textlayout")]
++#[test]
++fn thin_text_drawn_through_masks_uses_one_paint_matrix_for_the_run() {
++    use renderer::CommandType;
++
++    let renderer = RecordingRenderer::default();
++    let recorded = renderer.last_commands.clone();
++    let mut canvas = Canvas::new(renderer).unwrap();
++    canvas.set_size(400, 400, 1.0);
++    let font = canvas
++        .add_font_mem(include_bytes!("../examples/assets/RobotoFlex-VariableFont.ttf"))
++        .expect("failed to load test font");
++    canvas.scale(2.0, 2.0);
++    let paint = Paint::linear_gradient(0.0, 0.0, 100.0, 0.0, Color::black(), Color::white());
++    let mut path = Path::new();
++    path.circle(50.0, 50.0, 40.0);
++    canvas.fill_path(&path, &paint);
++    canvas
++        .fill_text(10.0, 40.0, "MI", &paint.clone().with_font(&[font]).with_font_size(3.0))
++        .unwrap();
++    canvas.flush_to_output(());
++
++    let commands = recorded.borrow();
++    let mut matrices = Vec::new();
++    for command in commands.iter() {
++        match &command.cmd_type {
++            CommandType::ConvexFill { params } => matrices.push(("convex", params.paint_mat)),
++            CommandType::ConcaveFill { fill_params, .. } => matrices.push(("concave", fill_params.paint_mat)),
++            CommandType::Triangles { params } => matrices.push(("triangles", params.paint_mat)),
++            _ => {}
++        }
++    }
++    eprintln!("{matrices:?}");
++    assert!(matrices.len() >= 2 && matrices.iter().any(|(kind, _)| *kind == "triangles"), "{matrices:?}");
++    assert!(matrices.iter().all(|(_, matrix)| *matrix == matrices[0].1), "{matrices:?}");
++}
++
+ #[test]
+ fn text_drawn_as_outlines_uses_one_paint_matrix_for_the_run() {
+     use renderer::CommandType;

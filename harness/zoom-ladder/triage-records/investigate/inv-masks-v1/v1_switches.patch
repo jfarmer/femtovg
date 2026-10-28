@@ -1,0 +1,121 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index 45703734..93eb60d2 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -514,7 +514,12 @@ where
+         let b = path_cache.bounds;
+         let r = mask::pixel_rect([b.minx, b.miny, b.maxx, b.maxy], within);
+         let size = [(r[2] - r[0]) as usize, (r[3] - r[1]) as usize];
+-        if mask.is_none() && self.fill_masks.may_make(size) {
++        fill::v1::bump(&fill::v1::THIN);
++        let may = self.fill_masks.may_make(size);
++        if mask.is_none() && !may {
++            fill::v1::bump(&fill::v1::GATED);
++        }
++        if mask.is_none() && (may || fill::v1::key_first()) {
+             mask = self.fill_mask(path_cache, fill_rule, within);
+             if let Some(mask) = mask {
+                 self.fill_masks.remember(request.clone(), mask);
+diff --git a/src/clip/fill.rs b/src/clip/fill.rs
+index 71540354..52c35932 100644
+--- a/src/clip/fill.rs
++++ b/src/clip/fill.rs
+@@ -39,6 +39,42 @@ const MASKS_A_FRAME: usize = 256;
+ /// The most requests remembered bit for bit.
+ const ASKED_KEPT: usize = 4096;
+ 
++/// inv-masks-v1-v1 experiment switches and counters (env-gated; none set = master).
++pub(crate) mod v1 {
++    use std::sync::atomic::{AtomicUsize, Ordering::Relaxed};
++    use std::sync::OnceLock;
++    pub(crate) static THIN: AtomicUsize = AtomicUsize::new(0);
++    pub(crate) static REQ: AtomicUsize = AtomicUsize::new(0);
++    pub(crate) static KEY: AtomicUsize = AtomicUsize::new(0);
++    pub(crate) static GATED: AtomicUsize = AtomicUsize::new(0);
++    pub(crate) static FRAME: AtomicUsize = AtomicUsize::new(0);
++    fn env_usize(name: &str) -> Option<usize> {
++        std::env::var(name).ok().and_then(|v| v.parse().ok())
++    }
++    pub(crate) fn cap() -> usize {
++        static C: OnceLock<usize> = OnceLock::new();
++        *C.get_or_init(|| env_usize("V1_CAP").unwrap_or(super::MASKS_A_FRAME))
++    }
++    pub(crate) fn no_motion() -> bool {
++        static C: OnceLock<bool> = OnceLock::new();
++        *C.get_or_init(|| std::env::var_os("V1_NO_MOTION").is_some())
++    }
++    pub(crate) fn key_first() -> bool {
++        static C: OnceLock<bool> = OnceLock::new();
++        *C.get_or_init(|| std::env::var_os("V1_KEY_FIRST").is_some())
++    }
++    pub(crate) fn stats() -> bool {
++        static C: OnceLock<bool> = OnceLock::new();
++        *C.get_or_init(|| std::env::var_os("V1_STATS").is_some())
++    }
++    pub(crate) fn bump(c: &AtomicUsize) {
++        c.fetch_add(1, Relaxed);
++    }
++    pub(crate) fn take(c: &AtomicUsize) -> usize {
++        c.swap(0, Relaxed)
++    }
++}
++
+ /// Start-overs in a row whose masks would have fitted a smaller atlas before
+ /// it is made smaller: one sliver on its way through the scene does not keep
+ /// it long, nor does a scene whose masks alternate make and remake it.
+@@ -175,6 +211,9 @@ impl FillMasks {
+     pub(crate) fn asked(&mut self, request: &[u32]) -> Option<PlacedMask> {
+         let mask = self.asked.get(request).copied().filter(|_| !self.failed);
+         self.found += usize::from(mask.is_some());
++        if mask.is_some() {
++            v1::bump(&v1::REQ);
++        }
+         mask
+     }
+ 
+@@ -190,6 +229,9 @@ impl FillMasks {
+     pub(crate) fn get(&mut self, key: &MaskKey) -> Option<[u32; 2]> {
+         let at = self.masks.get(key).copied().filter(|_| !self.failed);
+         self.found += usize::from(at.is_some());
++        if at.is_some() {
++            v1::bump(&v1::KEY);
++        }
+         at
+     }
+ 
+@@ -198,7 +240,7 @@ impl FillMasks {
+     /// largest holds it. Asked before a fill's outline is built, so that the
+     /// fills past the frame's share cost no more than a fringe.
+     pub(crate) fn may_make(&self, size: [usize; 2]) -> bool {
+-        !self.failed && self.made < MASKS_A_FRAME && size[0] <= self.most && size[1] <= self.most
++        !self.failed && self.made < v1::cap() && size[0] <= self.most && size[1] <= self.most
+     }
+ 
+     /// The atlas's image could not be made or written: the frame finds and
+@@ -326,9 +368,25 @@ impl FillMasks {
+     /// does not grow to pack them frame after frame. Returns the images of
+     /// the atlases the frame outgrew, to be freed.
+     pub(crate) fn end_frame(&mut self) -> Vec<ImageId> {
+-        if self.made > 0 && self.made_before > 0 && self.made >= self.found {
++        let motion = self.made > 0 && self.made_before > 0 && self.made >= self.found;
++        if motion && !v1::no_motion() {
+             self.full = true;
+         }
++        if v1::stats() {
++            eprintln!(
++                "V1 frame={} thin={} req_hits={} key_hits={} made={} gated={} found={} made_before={} motion={} restart={}",
++                v1::FRAME.fetch_add(1, std::sync::atomic::Ordering::Relaxed),
++                v1::take(&v1::THIN),
++                v1::take(&v1::REQ),
++                v1::take(&v1::KEY),
++                self.made,
++                v1::take(&v1::GATED),
++                self.found,
++                self.made_before,
++                motion,
++                self.full
++            );
++        }
+         self.made_before = self.made;
+         self.made = 0;
+         self.found = 0;

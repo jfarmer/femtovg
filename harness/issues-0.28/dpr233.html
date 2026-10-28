@@ -1,0 +1,14 @@
+<!doctype html><meta charset=utf-8>
+<!-- femtovg#233: the lines of _dpr233.rs, drawn with Canvas 2D at a scale of 1.566667 on a 1:1 page. -->
+<style>@font-face{font-family:RF;src:url(RobotoFlex-VariableFont.ttf)} body{margin:0;background:#fafafa}</style>
+<canvas id=c width=502 height=236></canvas>
+<script>
+const dpr = +(new URLSearchParams(location.search).get("s") || 1.566667), lines = [[12,"Keyboard backlight brightness"],[13,"Keyboard  Battery  Display"],[14,"Keyboard settings and shortcuts"],[16,"Keyboard layout: English (US)"],[20,"Keyboard Brightness 75%"]];
+document.fonts.load('16px RF').then(() => {
+  const g = document.getElementById('c').getContext('2d');
+  g.fillStyle = 'rgb(250,250,250)'; g.fillRect(0, 0, 502, 236);
+  g.scale(dpr, dpr); g.fillStyle = 'rgb(30,30,30)';
+  let y = 6;
+  for (const [s, t] of lines) { y += s * 1.35; g.font = s + 'px RF'; g.fillText(t, 8, y); }
+});
+</script>

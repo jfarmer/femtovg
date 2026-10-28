@@ -1,0 +1,63 @@
+{
+ "N9-thin-gate-multi-contour": {
+  "number": 423,
+  "url": "https://github.com/femtovg/femtovg/issues/423",
+  "title": "The thin-fill gate counts multi-contour fills as convex: 1-2 px rings and bars draw up to 35 % too dark"
+ },
+ "N8-fill-contour-seam": {
+  "number": 424,
+  "url": "https://github.com/femtovg/femtovg/issues/424",
+  "title": "Contours of one fill leave a seam along a shared edge: pixel art shows its grid"
+ },
+ "N1-stroke-cull": {
+  "number": 425,
+  "url": "https://github.com/femtovg/femtovg/issues/425",
+  "title": "A stroke vanishes when its centreline is off the canvas, though its width reaches onto it"
+ },
+ "N2-glyph-atlas": {
+  "number": 426,
+  "url": "https://github.com/femtovg/femtovg/issues/426",
+  "title": "Atlas text at a half-pixel translation shifts a pixel depending on earlier draws"
+ },
+ "N3-thin-fill-mask-frames": {
+  "number": 427,
+  "url": "https://github.com/femtovg/femtovg/issues/427",
+  "title": "Thin fills of a still scene flicker, or take up to 66 frames to settle"
+ },
+ "N4-colour-bitmap-glyphs": {
+  "number": 428,
+  "url": "https://github.com/femtovg/femtovg/issues/428",
+  "title": "Colour emoji draw 2 px too big and 1/8 em too high, and blocky when zoomed in"
+ },
+ "N5-gradient-hard-stops": {
+  "number": 429,
+  "url": "https://github.com/femtovg/femtovg/issues/429",
+  "title": "Hard gradient stops snap to a 1/256 grid and blur into a ramp when zoomed in"
+ },
+ "N6-round-clip-ramp": {
+  "number": 430,
+  "url": "https://github.com/femtovg/femtovg/issues/430",
+  "title": "Round clip edges take a distance ramp: up to 13/255 off on the diagonals"
+ },
+ "N7-clip-mask-self-crossing": {
+  "number": 431,
+  "url": "https://github.com/femtovg/femtovg/issues/431",
+  "title": "A clip mask over-covers where its path crosses itself: dark specks at a pentagram's inner vertices"
+ },
+ "N10-corner-coverage": {
+  "number": 432,
+  "url": "https://github.com/femtovg/femtovg/issues/432",
+  "title": "Corners on a fractional pixel take one edge's coverage: twice the ink at a half pixel"
+ },
+ "N11-acute-convex-corner": {
+  "number": 433,
+  "url": "https://github.com/femtovg/femtovg/issues/433",
+  "title": "A convex fill loses its antialiasing at corners under 4.7\u00b0: a sliver's ends step to solid"
+ },
+ "C1-comment-151@151": {
+  "url": "https://github.com/femtovg/femtovg/issues/151#issuecomment-6289977376"
+ },
+ "C2-comment-421@421": {
+  "url": "https://github.com/femtovg/femtovg/issues/421#issuecomment-6289977928"
+ }
+}

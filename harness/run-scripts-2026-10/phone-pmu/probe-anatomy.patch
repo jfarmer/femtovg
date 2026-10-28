@@ -1,0 +1,257 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 5ccd04e..c2a3b12 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -483,7 +483,7 @@ where
+             pending_image_deletions: HashSet::new(),
+             fringe_width: 1.0,
+             device_px_ratio: 1.0,
+-            tess_tol: 0.25,
++            tess_tol: probe_tess_tol(),
+             dist_tol: 0.01,
+             gradients: GradientStore::new(),
+             transients: TransientPool::new(transient::DEFAULT_BUDGET),
+@@ -526,7 +526,7 @@ where
+             pending_image_deletions: HashSet::new(),
+             fringe_width: 1.0,
+             device_px_ratio: 1.0,
+-            tess_tol: 0.25,
++            tess_tol: probe_tess_tol(),
+             dist_tol: 0.01,
+             gradients: GradientStore::new(),
+             transients: TransientPool::new(transient::DEFAULT_BUDGET),
+@@ -552,7 +552,7 @@ where
+         self.width = width;
+         self.height = height;
+         self.fringe_width = 1.0 / dpi;
+-        self.tess_tol = 0.25 / dpi;
++        self.tess_tol = probe_tess_tol() / dpi;
+         self.dist_tol = 0.01 / dpi;
+         self.device_px_ratio = dpi;
+ 
+@@ -659,6 +659,13 @@ where
+     ///
+     /// Call this at the end of each frame.
+     pub fn flush_to_output(&mut self, output: impl Into<T::RenderOutput>) -> T::CommandBuffer {
++        crate::path::cache::probe::add(&crate::path::cache::probe::FLUSH_VERTS, self.verts.len());
++        crate::path::cache::probe::add(&crate::path::cache::probe::FLUSHES, 1);
++        crate::path::cache::probe::max(&crate::path::cache::probe::MAX_FLUSH_VERTS, self.verts.len());
++        crate::path::cache::probe::add(
++            &crate::path::cache::probe::DRAWABLES,
++            self.commands.iter().map(|c| c.drawables.len()).sum::<usize>(),
++        );
+         let command_buffer = self.renderer.render(
+             output,
+             &mut self.images,
+@@ -2475,8 +2482,16 @@ where
+     }
+ }
+ 
++/// Anatomy probe: FEMTOVG_TESS_TOL overrides the flattening tolerance (0.25).
++fn probe_tess_tol() -> f32 {
++    std::env::var("FEMTOVG_TESS_TOL").ok().and_then(|v| v.parse().ok()).unwrap_or(0.25)
++}
++
+ impl<T: Renderer> Drop for Canvas<T> {
+     fn drop(&mut self) {
++        if std::env::var_os("FEMTOVG_PROBE").is_some() {
++            crate::path::cache::probe::report();
++        }
+         self.images.clear(&mut self.renderer);
+     }
+ }
+diff --git a/src/path.rs b/src/path.rs
+index ef8eeaf..19cd690 100644
+--- a/src/path.rs
++++ b/src/path.rs
+@@ -8,7 +8,7 @@ use crate::geometry::{Position, Transform2D, Vector};
+ #[cfg(feature = "textlayout")]
+ use rustybuzz::ttf_parser;
+ 
+-mod cache;
++pub(crate) mod cache;
+ pub use cache::{Convexity, PathCache};
+ 
+ // Length proportional to radius of a cubic bezier handle for 90deg arcs.
+diff --git a/src/path/cache.rs b/src/path/cache.rs
+index ed63733..c89015e 100644
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -10,6 +10,68 @@ use crate::{
+ 
+ use super::Verb;
+ 
++/// Anatomy probe (scratch worktree only): per-run counts of the geometry pipeline.
++pub(crate) mod probe {
++    use std::sync::atomic::{AtomicU64, Ordering::Relaxed};
++    pub static CACHES: AtomicU64 = AtomicU64::new(0);
++    pub static POINTS: AtomicU64 = AtomicU64::new(0);
++    pub static CONTOURS: AtomicU64 = AtomicU64::new(0);
++    pub static BEZIERS: AtomicU64 = AtomicU64::new(0);
++    pub static TESS_CALLS: AtomicU64 = AtomicU64::new(0);
++    pub static DUP_POINTS: AtomicU64 = AtomicU64::new(0);
++    pub static FILLS: AtomicU64 = AtomicU64::new(0);
++    pub static FILL_POINTS: AtomicU64 = AtomicU64::new(0);
++    pub static FILL_CONTOURS: AtomicU64 = AtomicU64::new(0);
++    pub static REVERSED_POINTS: AtomicU64 = AtomicU64::new(0);
++    pub static SIDES_POINTS: AtomicU64 = AtomicU64::new(0);
++    pub static FAN_VERTS: AtomicU64 = AtomicU64::new(0);
++    pub static FILL_VERTS: AtomicU64 = AtomicU64::new(0);
++    pub static FRINGE_VERTS: AtomicU64 = AtomicU64::new(0);
++    pub static STROKES: AtomicU64 = AtomicU64::new(0);
++    pub static STROKE_POINTS: AtomicU64 = AtomicU64::new(0);
++    pub static STROKE_VERTS: AtomicU64 = AtomicU64::new(0);
++    pub static JOIN_POINTS: AtomicU64 = AtomicU64::new(0);
++    pub static BEVEL_POINTS: AtomicU64 = AtomicU64::new(0);
++    pub static CONVEX_FILLS: AtomicU64 = AtomicU64::new(0);
++    pub static FLUSH_VERTS: AtomicU64 = AtomicU64::new(0);
++    pub static FLUSHES: AtomicU64 = AtomicU64::new(0);
++    pub static MAX_FLUSH_VERTS: AtomicU64 = AtomicU64::new(0);
++    pub static DRAWABLES: AtomicU64 = AtomicU64::new(0);
++    pub static MAX_CACHE_POINTS: AtomicU64 = AtomicU64::new(0);
++    pub fn add(c: &AtomicU64, n: usize) {
++        c.fetch_add(n as u64, Relaxed);
++    }
++    pub fn max(c: &AtomicU64, n: usize) {
++        c.fetch_max(n as u64, Relaxed);
++    }
++    pub fn report() {
++        let all = [
++            ("caches", &CACHES), ("points", &POINTS), ("contours", &CONTOURS), ("beziers", &BEZIERS),
++            ("tess_calls", &TESS_CALLS), ("dup_points", &DUP_POINTS), ("fills", &FILLS), ("fill_points", &FILL_POINTS),
++            ("fill_contours", &FILL_CONTOURS), ("reversed_points", &REVERSED_POINTS), ("sides_points", &SIDES_POINTS),
++            ("fan_verts", &FAN_VERTS), ("fill_verts", &FILL_VERTS), ("fringe_verts", &FRINGE_VERTS),
++            ("strokes", &STROKES), ("stroke_points", &STROKE_POINTS), ("stroke_verts", &STROKE_VERTS),
++            ("join_points", &JOIN_POINTS), ("bevel_points", &BEVEL_POINTS), ("convex_fills", &CONVEX_FILLS),
++            ("flush_verts", &FLUSH_VERTS), ("flushes", &FLUSHES), ("max_flush_verts", &MAX_FLUSH_VERTS),
++            ("drawables", &DRAWABLES), ("max_cache_points", &MAX_CACHE_POINTS),
++        ];
++        let mut line = String::from("PROBE");
++        for (name, c) in all {
++            line += &format!(" {name}={}", c.load(Relaxed));
++        }
++        line += &format!(
++            " size_point={} size_contour={} size_vertex={} size_pathcache={} size_drawable={} size_command={}",
++            std::mem::size_of::<super::Point>(),
++            std::mem::size_of::<super::Contour>(),
++            std::mem::size_of::<crate::renderer::Vertex>(),
++            std::mem::size_of::<super::PathCache>(),
++            std::mem::size_of::<crate::renderer::Drawable>(),
++            std::mem::size_of::<crate::renderer::Command>(),
++        );
++        eprintln!("{line}");
++    }
++}
++
+ bitflags! {
+     #[derive(Default, Clone, Copy, Debug, PartialEq, Eq, Hash)]
+     pub struct PointFlags: u8 {
+@@ -203,6 +265,7 @@ impl PathCache {
+                     cache.add_point(x, y, PointFlags::CORNER, dist_tol);
+                 }
+                 Verb::BezierTo(c1x, c1y, c2x, c2y, x, y) => {
++                    probe::add(&probe::BEZIERS, 1);
+                     if let Some(last) = cache.points.last().copied() {
+                         let (c1x, c1y) = transform.transform_point(c1x, c1y);
+                         let (c2x, c2y) = transform.transform_point(c2x, c2y);
+@@ -256,6 +319,14 @@ impl PathCache {
+             }
+         }
+ 
++        probe::add(&probe::CACHES, 1);
++        probe::add(&probe::POINTS, cache.points.len());
++        probe::add(&probe::CONTOURS, cache.contours.len());
++        probe::max(&probe::MAX_CACHE_POINTS, cache.points.len());
++        probe::add(
++            &probe::DUP_POINTS,
++            cache.points.windows(2).filter(|w| w[0].approx_eq(&w[1], dist_tol)).count(),
++        );
+         let all_points = &mut cache.points;
+         let bounds = &mut cache.bounds;
+ 
+@@ -388,6 +459,7 @@ impl PathCache {
+         tess_tol: f32,
+         dist_tol: f32,
+     ) {
++        probe::add(&probe::TESS_CALLS, 1);
+         if level > 10 {
+             return;
+         }
+@@ -646,6 +718,7 @@ impl PathCache {
+                         if j == i || !boxes[j].contains(x, y) {
+                             continue;
+                         }
++                        probe::add(&probe::SIDES_POINTS, contour.point_count());
+                         for (p0, p1) in contour.point_pairs(&self.points) {
+                             if p0.pos.y <= y {
+                                 if p1.pos.y > y && Point::is_left(p0, p1, x, y) > 0.0 {
+@@ -719,11 +792,15 @@ impl PathCache {
+             let points = &mut self.points[contour.point_range.clone()];
+             contour.reversed = !contour.degenerate && (Contour::polygon_area(points) < 0.0) != is_hole;
+             if contour.reversed {
++                probe::add(&probe::REVERSED_POINTS, points.len());
+                 points.reverse();
+                 Contour::recompute_directions(points);
+             }
+         }
+ 
++        probe::add(&probe::FILLS, 1);
++        probe::add(&probe::FILL_POINTS, self.points.len());
++        probe::add(&probe::FILL_CONTOURS, self.contours.len());
+         self.calculate_joins(fringe_width, line_join, miter_limit);
+ 
+         // Calculate max vertex usage.
+@@ -779,6 +856,7 @@ impl PathCache {
+                 }
+             }
+ 
++            probe::add(&probe::FAN_VERTS, triangle_fan_fill.len());
+             // convert fill triangle fan to triangles, to eliminate requirement for GL_TRIANGLE_FAN
+             // from the renderer.
+             if triangle_fan_fill.len() > 2 {
+@@ -830,6 +908,13 @@ impl PathCache {
+             }
+         }
+ 
++        if convex {
++            probe::add(&probe::CONVEX_FILLS, 1);
++        }
++        for contour in &self.contours {
++            probe::add(&probe::FILL_VERTS, contour.fill.len());
++            probe::add(&probe::FRINGE_VERTS, contour.stroke.len());
++        }
+         // The cache outlives this call; a stroke of the same path reads these
+         // same points, so give them back exactly as they arrived.
+         for contour in &mut self.contours {
+@@ -860,6 +945,8 @@ impl PathCache {
+         let (u0, u1) = if fringe_width == 0.0 { (0.5, 0.5) } else { (0.0, 1.0) };
+ 
+         self.calculate_joins(stroke_width, line_join, miter_limit);
++        probe::add(&probe::STROKES, 1);
++        probe::add(&probe::STROKE_POINTS, self.points.len());
+ 
+         for contour in &mut self.contours {
+             contour.stroke.clear();
+@@ -959,10 +1046,14 @@ impl PathCache {
+                     .push(Vertex::new(contour.stroke[1].x, contour.stroke[1].y, u1, 1.0));
+             }
+         }
++        for contour in &self.contours {
++            probe::add(&probe::STROKE_VERTS, contour.stroke.len());
++        }
+     }
+ 
+     fn calculate_joins(&mut self, stroke_width: f32, line_join: LineJoin, miter_limit: f32) {
+         let inv_stroke_width = if stroke_width > 0.0 { 1.0 / stroke_width } else { 0.0 };
++        probe::add(&probe::JOIN_POINTS, self.points.len());
+ 
+         for contour in &mut self.contours {
+             let points = &mut self.points[contour.point_range.clone()];
+@@ -1079,6 +1170,7 @@ impl PathCache {
+ 
+                 if p1.flags.contains(PointFlags::BEVEL | PointFlags::INNERBEVEL) {
+                     contour.bevel += 1;
++                    probe::add(&probe::BEVEL_POINTS, 1);
+                 }
+             }
+ 

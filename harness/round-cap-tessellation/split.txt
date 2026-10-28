@@ -1,0 +1,8 @@
+caps.svg, px off exact: total (past the end / sides)
+  z1: mstc 156 (149 / 7), caps 10 (3 / 7), chr 125 (97 / 28), ff 125 (97 / 28), wk 8 (3 / 5)
+  z2: mstc 334 (334 / 0), caps 0 (0 / 0), chr 272 (241 / 31), ff 271 (241 / 30), wk 3 (2 / 1)
+  hd: mstc 936 (936 / 0), caps 1 (1 / 0), chr 519 (485 / 34), ff 549 (515 / 34), wk 0 (0 / 0)
+joins.svg, px off exact: total (the arc / the rest)
+  z1: mstc 25 (22 / 3), caps 3 (0 / 3), chr 29 (9 / 20), ff 28 (9 / 19), wk 0 (0 / 0)
+  z2: mstc 46 (42 / 4), caps 4 (0 / 4), chr 60 (40 / 20), ff 59 (39 / 20), wk 0 (0 / 0)
+  hd: mstc 119 (119 / 0), caps 0 (0 / 0), chr 82 (61 / 21), ff 83 (61 / 22), wk 0 (0 / 0)

@@ -1,0 +1,85 @@
+base {'ok': 1781, 'mem': 98, 'timeout': 49, 'outsized': 39, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/r': 8, 'rc -6 memory allocation of 22816561694310400 b': 1, 'rc -6 memory allocation of 6985342307431488 by': 1, 'rc -6 memory allocation of 1184605363101588 by': 1, 'rc -6 memory allocation of 1974932990810112 by': 1, 'rc -6 memory allocation of 162670159377600 byt': 1, 'rc -6 memory allocation of 857647829438336 byt': 1, 'rc -6 memory allocation of 234068830945280 byt': 1, 'rc -6 memory allocation of 1018645658636672 by': 1, 'rc -6 memory allocation of 15733765478832640 b': 1, 'rc -6 memory allocation of 579003574945792 byt': 1, 'rc -6 memory allocation of 4255608823981576 by': 1, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/s': 1, 'rc -6 memory allocation of 72057456599040000 b': 1, 'rc -6 memory allocation of 3735501455691264 by': 1, 'rc -6 memory allocation of 142285314834816 byt': 1, 'rc -6 memory allocation of 897222324387840 byt': 1, 'rc -6 memory allocation of 10995001187866368 b': 1, 'rc -6 memory allocation of 14336624406102016 b': 1, 'rc -6 memory allocation of 49054061582032896 b': 1, 'rc -6 memory allocation of 62027015822100 byte': 1, 'rc -6 memory allocation of 114798255186032 byt': 1, 'rc -6 memory allocation of 412891711070592 byt': 1, 'rc -6 memory allocation of 351236778695424 byt': 1, 'rc -6 memory allocation of 180466612511264 byt': 1, 'rc -6 memory allocation of 7544920415107968 by': 1}
+both {'ok': 1903, 'timeout': 65, 'outsized': 26, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/s': 4, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-0.12.0/src/alpha_': 2}
+
+patched worse: 41
+   ('c7_00049.svg', 'rc -6 memory allocation of 6985342307431488 by', 0.0, 2.9, 'timeout', 10.039, 27)
+   ('c7_00085.svg', 'mem', 0.194, 3032, 'outsized', 1.16, 72.1)
+   ('c7_00090.svg', 'ok', 0.0, 3.7, 'timeout', 10.033, 51)
+   ('c7_00171.svg', 'mem', 0.289, 2536, 'timeout', 10.085, 5)
+   ('c7_00422.svg', 'mem', 0.212, 3298, 'timeout', 10.085, 36)
+   ('c7_00526.svg', 'mem', 0.203, 3184, 'timeout', 10.053, 8)
+   ('c7_00558.svg', 'mem', 0.209, 3369, 'timeout', 10.045, 51)
+   ('c7_00623.svg', 'ok', 0.0, 3.7, 'outsized', 4.53, 4.5)
+   ('c7_00672.svg', 'ok', 0.0, 3.7, 'timeout', 10.02, 8)
+   ('c7_00678.svg', 'mem', 0.193, 2242, 'outsized', 2.38, 84.2)
+   ('c7_00681.svg', 'mem', 0.2, 2142, 'outsized', 3.16, 151.6)
+   ('c7_00715.svg', 'mem', 0.313, 2687, 'timeout', 10.048, 51)
+   ('c7_00735.svg', 'mem', 0.316, 2609, 'timeout', 10.071, 67)
+   ('c7_00750.svg', 'mem', 0.495, 3366, 'timeout', 10.011, 6)
+   ('c7_00929.svg', 'mem', 0.19, 2915, 'timeout', 10.084, 51)
+   ('c7_00935.svg', 'mem', 0.233, 2948, 'timeout', 10.085, 25)
+   ('c7_00964.svg', 'ok', 0.0, 3.6, 'timeout', 10.024, 67)
+   ('c7_00967.svg', 'ok', 0.0, 3.7, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-0.12.0/src/alpha_', 0.18, 99.7)
+   ('c7_00974.svg', 'mem', 0.212, 3376, 'timeout', 10.019, 90)
+   ('c7_00985.svg', 'ok', 0.0, 3.6, 'timeout', 10.041, 51)
+   ('c7_01077.svg', 'ok', 0.0, 3.7, 'outsized', 9.43, 68.1)
+   ('c7_01182.svg', 'mem', 0.225, 2845, 'timeout', 10.012, 67)
+   ('c7_01255.svg', 'ok', 0.0, 3.7, 'timeout', 10.006, 3)
+   ('c7_01306.svg', 'mem', 0.187, 3029, 'outsized', 1.33, 20.8)
+   ('c7_01360.svg', 'ok', 0.0, 3.6, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/s', 0.0, 3.5)
+   ('c7_01425.svg', 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/r', 0.2, 1384.8, 'timeout', 10.065, 28)
+   ('c7_01432.svg', 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/r', 0.0, 3.2, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/s', 6.8, 99.9)
+   ('c7_01450.svg', 'mem', 1.84, 2082, 'outsized', 5.32, 212.7)
+   ('c7_01484.svg', 'ok', 0.0, 3.9, 'timeout', 10.01, 5)
+   ('c7_01521.svg', 'mem', 0.256, 2219, 'timeout', 10.031, 26)
+   ('c7_01538.svg', 'mem', 0.43, 2264, 'timeout', 10.068, 12)
+   ('c7_01546.svg', 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/r', 0.0, 3.3, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/s', 0.41, 148.0)
+   ('c7_01613.svg', 'mem', 0.359, 2429, 'timeout', 10.087, 12)
+   ('c7_01617.svg', 'mem', 0.209, 3134, 'timeout', 10.026, 51)
+   ('c7_01645.svg', 'ok', 0.0, 3.7, 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-0.12.0/src/alpha_', 0.0, 24.3)
+   ('c7_01781.svg', 'mem', 0.493, 3218, 'timeout', 10.016, 20)
+   ('c7_01830.svg', 'mem', 0.215, 3484, 'outsized', 0.77, 306.2)
+   ('c7_01848.svg', 'mem', 0.276, 2528, 'timeout', 10.082, 15)
+   ('c7_01895.svg', 'ok', 0.01, 4.3, 'outsized', 8.92, 52.5)
+   ('c7_01915.svg', 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/r', 0.1, 815.2, 'timeout', 10.045, 23)
+patched better: 134
+   ('c7_00007.svg', 'rc -6 memory allocation of 22816561694310400 b', 0.0, 2.9, 'ok', 0.0, 3.7)
+   ('c7_00013.svg', 'outsized', 1.15, 1684.1, 'ok', 0.01, 18.1)
+   ('c7_00019.svg', 'mem', 0.221, 3137, 'ok', 0.0, 3.9)
+   ('c7_00048.svg', 'mem', 1.035, 2068, 'ok', 0.64, 25.9)
+   ('c7_00053.svg', 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/r', 0.21, 2216.3, 'ok', 0.09, 71.3)
+   ('c7_00067.svg', 'rc -6 memory allocation of 1184605363101588 by', 0.0, 2.9, 'ok', 0.0, 7.5)
+   ('c7_00079.svg', 'rc -6 memory allocation of 1974932990810112 by', 0.0, 2.9, 'ok', 0.01, 37.5)
+   ('c7_00110.svg', 'outsized', 1.06, 1923.9, 'ok', 0.01, 36.0)
+   ('c7_00148.svg', 'mem', 0.21, 3016, 'ok', 0.04, 36.0)
+   ('c7_00161.svg', 'rc -6 memory allocation of 162670159377600 byt', 0.0, 2.9, 'ok', 0.27, 104.6)
+   ('c7_00200.svg', 'mem', 0.484, 2246, 'ok', 0.53, 5.7)
+   ('c7_00211.svg', 'mem', 0.202, 2357, 'ok', 0.03, 14.9)
+   ('c7_00229.svg', 'timeout', 10.082, 434, 'ok', 0.85, 84.3)
+   ('c7_00235.svg', 'panic index.crates.io-1949cf8c6b5b557f/tiny-skia-path-0.12.0/src/r', 0.0, 3.6, 'ok', 0.0, 4.1)
+   ('c7_00242.svg', 'mem', 0.21, 3086, 'ok', 0.02, 21.7)
+
+primitive: share of bad cases holding it (bad / all holding it)
+  nearskew                115 /  907   12.7 %
+  feTurbulence            114 /  940   12.1 %
+  feColorMatrix            79 /  709   11.1 %
+  feMorphology            101 /  948   10.7 %
+  feGaussianBlur           96 /  904   10.6 %
+  feBlend                  77 /  730   10.5 %
+  feDiffuseLighting        69 /  670   10.3 %
+  feOffset                 72 /  705   10.2 %
+  feFuncA                  72 /  720   10.0 %
+  feComponentTransfer      72 /  720   10.0 %
+  feSpotLight              57 /  570   10.0 %
+  fePointLight             55 /  572    9.6 %
+  feDropShadow             65 /  682    9.5 %
+  feConvolveMatrix         62 /  659    9.4 %
+  feDisplacementMap        63 /  672    9.4 %
+  feFlood                  65 /  706    9.2 %
+  feTile                   65 /  707    9.2 %
+  feSpecularLighting       65 /  708    9.2 %
+  feMergeNode              61 /  687    8.9 %
+  feMerge                  61 /  687    8.9 %
+  feComposite              58 /  668    8.7 %
+  feDistantLight           47 /  581    8.1 %
+  feImage                  53 /  679    7.8 %

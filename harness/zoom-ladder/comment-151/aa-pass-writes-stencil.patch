@@ -1,0 +1,33 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 46a03a04..608d42bd 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -1934,6 +1934,8 @@ fn stencil_stroke(
+     }
+ 
+     // Draw anti-aliased pixels.
++    // TRIAGE EXPERIMENT: FV_AA_ONCE=1 counts each fringe pixel in the stencil, so overlapping fringe blends once.
++    let aa_op = if std::env::var("FV_AA_ONCE").is_ok() { wgpu::StencilOperation::IncrementClamp } else { wgpu::StencilOperation::Keep };
+ 
+     pipeline_and_bindgroup_mapper.update_renderpass(
+         render_pass_builder,
+@@ -1945,16 +1947,16 @@ fn stencil_stroke(
+                     compare: wgpu::CompareFunction::Equal,
+                     fail_op: wgpu::StencilOperation::Keep,
+                     depth_fail_op: wgpu::StencilOperation::Keep,
+-                    pass_op: wgpu::StencilOperation::Keep,
++                    pass_op: aa_op,
+                 },
+                 back: wgpu::StencilFaceState {
+                     compare: wgpu::CompareFunction::Equal,
+                     fail_op: wgpu::StencilOperation::Keep,
+                     depth_fail_op: wgpu::StencilOperation::Keep,
+-                    pass_op: wgpu::StencilOperation::Keep,
++                    pass_op: aa_op,
+                 },
+                 read_mask: !0,
+-                write_mask: !0,
++                write_mask: if command.clip_active { 0x7f } else { !0 },
+             },
+             stencil_reference: if command.clip_active { 0x80 } else { 0 },
+         },

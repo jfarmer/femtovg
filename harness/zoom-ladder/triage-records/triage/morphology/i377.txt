@@ -1,0 +1,18 @@
+## Problem
+
+A `clipPath` with several children clips to their union, each child under its own `clip-rule` (CSS Masking, [clipping paths](https://drafts.fxtf.org/css-masking-1/#ClipPathElement)). `Canvas::clip_path` takes one path under one fill rule, so a consumer has to concatenate the children into one path and pick one rule, and the rule then runs across children: two concentric circles under `clip-rule="evenodd"` cut a hole where the browsers fill the disc.
+
+[clip-path-concentric-circles-evenodd](https://raw.githubusercontent.com/rebeckerspecialties/femtovg/demo-assets/corpus/wpt-clip-path-reftests/clip-path-concentric-circles-evenodd.svg) ([ref](https://raw.githubusercontent.com/rebeckerspecialties/femtovg/demo-assets/corpus/wpt-clip-path-reftests/clip-path-concentric-circles-evenodd-ref.svg)): Chromium 131 and Firefox render the full disc (they agree to 0.06 %); femtovg through the harness renders the ring, 38 % of the 4x frame. The suite's own reference draws the ring, so it is wrong by the spec and both browsers; the defect on our side is that the union cannot be expressed.
+
+![clip-path-concentric-circles-evenodd at 1x: femtovg cuts the inner circle out, Chromium 131 and Firefox fill the disc](https://raw.githubusercontent.com/rebeckerspecialties/femtovg/demo-assets/issue377-clip-union.png)
+
+It only shows when children overlap under even-odd or opposite windings; the rest of the 50-pair clip-path group is unaffected.
+
+## Proposal
+
+Let a clip be the union of several paths: `clip_path` accumulating into the current clip level with OR semantics (a stencil bit set by any child, the level then intersected with the parent as now), or a `clip_paths(&[(&Path, FillRule)])` that resolves the union in one stencil pass. The per-child rule is then natural, and nesting stays one compare.
+
+## Tests
+
+The pair above pixel-exact; two overlapping children under even-odd clip to the union; a child with reversed winding under nonzero does not subtract; the stencil nesting and even-odd tests of #324 unchanged.
+

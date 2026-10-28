@@ -1,0 +1,84 @@
+# Regression sweep: variants.patch at SV_V=1..4 against master 06243b80, every file of the zoom ladder's comparison
+# (zoomcmp_zm_svg.jsonl, 1,025 files) at its 11 zooms = 11,275 frames. A moved frame is scored against each browser:
+# pixels beyond 8/255, master -> variant; best = the nearest browser; FAIL above 24 px, the ladder's threshold.
+# 1 any-of on every fill; 2 uncapped inset only (convex BEVEL & !INNERBEVEL); 3 convex BEVEL takes bevel_join, capped;
+# 4 = 3 + uncapped inset = the prototype. Made by regsum.py from reg.py's output.
+== fix1: files 1025 rc!=0 0 missing 0 frames moved 47 in 11 files
+  further corpus__firefox__lists-empty-state-light                                             z0.5   moved=   5 max= 39 best 24->26 PASS->FAIL  chr:28->30 wk:24->26
+  further corpus__firefox__lists-empty-state-light                                             z0.33  moved=  27 max= 10 best 14->15  chr:19->20 wk:14->15
+  further corpus__firefox__lists-empty-state-light                                             z0.25  moved=  38 max= 36 best 37->40  chr:37->40 ff:37->40 wk:39->41
+  further svgenius__page_227_BI-OS_图表类型_18309_icon_40                                          z0.33  moved=   7 max= 14 best 0->4  chr:2->4 wk:0->6
+  same    svgenius__page_246_System_Icon_27849_icon_445                                        z1.25  moved=   2 max=  1 best 0->0  chr:0->0 wk:0->0
+  same    svgenius__page_246_System_Icon_27849_icon_445                                        z1.75  moved=   1 max=  1 best 0->0  chr:0->0 wk:0->0
+  same    svgenius__page_246_System_Icon_27849_icon_445                                        z0.75  moved=   1 max=  1 best 0->0  chr:0->0 wk:0->0
+  same    svgenius__page_246_System_Icon_27849_icon_445                                        z0.33  moved=   1 max=  1 best 0->0  chr:0->0 wk:0->0
+  same    svgenius__page_246_System_Icon_27849_icon_445                                        z0.25  moved=   2 max=  1 best 0->0  chr:0->0 wk:0->0
+  same    svgenius__page_275_化妆品装饰_25821_icon_24                                               z1     moved=   5 max=  6 best 3->3  chr:552->552 ff:473->473 wk:3->3
+  same    svgenius__page_275_化妆品装饰_25821_icon_24                                               z1.25  moved=   8 max= 22 best 5->5  chr:916->919 wk:5->5
+  further svgenius__page_275_化妆品装饰_25821_icon_24                                               z1.5   moved=   5 max=  5 best 4->5  chr:777->777 wk:4->5
+  further svgenius__page_275_化妆品装饰_25821_icon_24                                               z1.75  moved=   5 max= 25 best 2->3  chr:995->995 wk:2->3
+  further svgenius__page_275_化妆品装饰_25821_icon_24                                               z0.75  moved=  11 max= 28 best 5->9  chr:590->591 wk:5->9
+  further svgenius__page_275_化妆品装饰_25821_icon_24                                               z0.5   moved=   3 max=  9 best 4->5  chr:149->150 wk:4->5
+  further svgenius__page_275_化妆品装饰_25821_icon_24                                               z0.33  moved=   5 max=  7 best 496->497  chr:502->502 ff:496->497 wk:525->524
+  further svgenius__page_275_化妆品装饰_25821_icon_24                                               z0.25  moved=   6 max= 10 best 0->1  chr:172->173 wk:0->1
+  further svgenius__page_59_天气tianqi_42524_icon_12                                             z1     moved=  23 max= 12 best 3->8  chr:3->8 wk:4->8
+  further svgenius__page_59_天气tianqi_42524_icon_12                                             z1.25  moved=  38 max= 15 best 1->7  chr:1->9 wk:1->7
+  further svgenius__page_59_天气tianqi_42524_icon_12                                             z1.5   moved=  25 max= 16 best 0->6  chr:2->10 wk:0->6
+  further svgenius__page_59_天气tianqi_42524_icon_12                                             z1.75  moved=  20 max= 10 best 0->3  chr:0->5 wk:0->3
+  further svgenius__page_59_天气tianqi_42524_icon_12                                             z2     moved=   6 max= 17 best 1->2  chr:1->2 wk:1->2
+  same    svgenius__page_59_天气tianqi_42524_icon_12                                             z3     moved=   1 max=  1 best 0->0  chr:0->0 wk:0->0
+  same    svgenius__page_59_天气tianqi_42524_icon_12                                             z4     moved=   2 max=  2 best 0->0  chr:0->0 wk:0->0
+  further svgenius__page_59_天气tianqi_42524_icon_12                                             z0.75  moved=   2 max=  8 best 0->1  chr:0->1 wk:0->1
+  further svgenius__page_59_天气tianqi_42524_icon_12                                             z0.5   moved=   4 max= 12 best 0->2  chr:1->2 wk:0->2
+  same    svgenius__page_59_天气tianqi_42524_icon_12                                             z0.33  moved=   1 max=  2 best 0->0  chr:0->0 wk:0->0
+  same    svgenius__page_59_天气tianqi_42524_icon_12                                             z0.25  moved=   1 max=  2 best 0->0  chr:0->0 wk:0->0
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z1     moved=  16 max= 41 best 1->7  chr:4->10 wk:1->7
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z1.25  moved=  29 max= 44 best 2->14  chr:2->14 wk:2->15
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z1.5   moved=  15 max= 40 best 0->8  chr:24->33 wk:0->8
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z1.75  moved=   6 max= 40 best 0->4  chr:14->17 wk:0->4
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z2     moved=   1 max= 34 best 1->2  chr:28->29 wk:1->2
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z3     moved=   1 max= 35 best 0->1  chr:11->12 wk:0->1
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z0.75  moved=  27 max= 41 best 3->17  chr:6->19 wk:3->17
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z0.5   moved=  29 max= 43 best 12->16  chr:14->17 wk:12->16
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z0.33  moved=  25 max= 72 best 12->19  chr:13->21 wk:12->19
+  further svgenius__page_723_阿里小蜜图标库_252_icon_32                                               z0.25  moved=  27 max= 72 best 18->26 PASS->FAIL  chr:18->26 wk:18->27
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z3     moved= 242 max=202 best 397->299  chr:397->320 ff:397->320 wk:403->299
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z4     moved= 240 max=159 best 386->259  chr:386->311 ff:386->311 wk:393->259
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z3     moved= 242 max=202 best 397->299  chr:397->320 ff:397->320 wk:403->299
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z4     moved= 240 max=159 best 386->259  chr:386->311 ff:386->311 wk:393->259
+  further corpus__wpt__tests__mask-nested-clip-path-010                                        z0.25  moved=   1 max= 36 best 0->1  chr:0->1 wk:2->2
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref           z3     moved= 242 max=202 best 397->299  chr:397->320 ff:397->320 wk:403->299
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref           z4     moved= 240 max=159 best 386->259  chr:386->311 ff:386->311 wk:393->259
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control               z3     moved= 242 max=202 best 397->299  chr:397->320 ff:397->320 wk:403->299
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control               z4     moved= 240 max=159 best 386->259  chr:386->311 ff:386->311 wk:393->259
+  closer 8 further 28 same 11
+== fix2: files 1025 rc!=0 0 missing 0 frames moved 8 in 4 files
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z3     moved= 459 max=107 best 397->0 FAIL->PASS  chr:397->332 ff:397->332 wk:403->0
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z4     moved= 459 max= 83 best 386->0 FAIL->PASS  chr:386->332 ff:386->332 wk:393->0
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z3     moved= 459 max=107 best 397->0 FAIL->PASS  chr:397->332 ff:397->332 wk:403->0
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z4     moved= 459 max= 83 best 386->0 FAIL->PASS  chr:386->332 ff:386->332 wk:393->0
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref           z3     moved= 459 max=107 best 397->0 FAIL->PASS  chr:397->332 ff:397->332 wk:403->0
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref           z4     moved= 459 max= 83 best 386->0 FAIL->PASS  chr:386->332 ff:386->332 wk:393->0
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control               z3     moved= 459 max=107 best 397->0 FAIL->PASS  chr:397->332 ff:397->332 wk:403->0
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control               z4     moved= 459 max= 83 best 386->0 FAIL->PASS  chr:386->332 ff:386->332 wk:393->0
+  closer 8 further 0 same 0
+== fix3: files 1025 rc!=0 0 missing 0 frames moved 8 in 4 files
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z3     moved= 242 max=202 best 397->299  chr:397->320 ff:397->320 wk:403->299
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z4     moved= 240 max=159 best 386->259  chr:386->311 ff:386->311 wk:393->259
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z3     moved= 242 max=202 best 397->299  chr:397->320 ff:397->320 wk:403->299
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z4     moved= 240 max=159 best 386->259  chr:386->311 ff:386->311 wk:393->259
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref           z3     moved= 242 max=202 best 397->299  chr:397->320 ff:397->320 wk:403->299
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref           z4     moved= 240 max=159 best 386->259  chr:386->311 ff:386->311 wk:393->259
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control               z3     moved= 242 max=202 best 397->299  chr:397->320 ff:397->320 wk:403->299
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control               z4     moved= 240 max=159 best 386->259  chr:386->311 ff:386->311 wk:393->259
+  closer 8 further 0 same 0
+== fix4: files 1025 rc!=0 0 missing 0 frames moved 8 in 4 files
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z3     moved= 459 max=107 best 397->0 FAIL->PASS  chr:397->332 ff:397->332 wk:403->0
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z4     moved= 459 max= 83 best 386->0 FAIL->PASS  chr:386->332 ff:386->332 wk:393->0
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z3     moved= 459 max=107 best 397->0 FAIL->PASS  chr:397->332 ff:397->332 wk:403->0
+  closer  corpus__wpt-fill-blur-reftests__07-zero-area-collinear-fills__fill-path-subpixel-sli z4     moved= 459 max= 83 best 386->0 FAIL->PASS  chr:386->332 ff:386->332 wk:393->0
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref           z3     moved= 459 max=107 best 397->0 FAIL->PASS  chr:397->332 ff:397->332 wk:403->0
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control-ref           z4     moved= 459 max= 83 best 386->0 FAIL->PASS  chr:386->332 ff:386->332 wk:393->0
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control               z3     moved= 459 max=107 best 397->0 FAIL->PASS  chr:397->332 ff:397->332 wk:403->0
+  closer  wpt22__07-zero-area-collinear-fills__fill-path-subpixel-sliver-control               z4     moved= 459 max= 83 best 386->0 FAIL->PASS  chr:386->332 ff:386->332 wk:393->0
+  closer 8 further 0 same 0

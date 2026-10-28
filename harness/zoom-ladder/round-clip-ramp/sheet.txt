@@ -1,0 +1,13 @@
+clip-path-variation-28@1.5: frame, px > 8/255 (max): before vs WebKit 88 (17), after 70 (14); before vs area 24 (10), after 0 (1); WebKit vs area 70 (13)
+    in the window: before vs WebKit 88, after 70; before vs area 24, after 0; WebKit vs area 70
+    before and WebKit more than 8/255 apart: 88 px, 72 with errors from the area of opposite sign; inside the clip [0, 128, 0], outside [255, 255, 255]
+clip-path-variation-28@3: frame, px > 8/255 (max): before vs WebKit 48 (15), after 0 (7); before vs area 72 (11), after 0 (1); WebKit vs area 0 (7)
+    in the window: before vs WebKit 10, after 0; before vs area 16, after 0; WebKit vs area 0
+    before and WebKit more than 8/255 apart: 48 px, 48 with errors from the area of opposite sign; inside the clip [0, 128, 0], outside [255, 255, 255]
+clip-path-variation-28@4: frame, px > 8/255 (max): before vs WebKit 87 (12), after 8 (10); before vs area 108 (11), after 0 (1); WebKit vs area 8 (9)
+    in the window: before vs WebKit 18, after 2; before vs area 27, after 0; WebKit vs area 2
+    before and WebKit more than 8/255 apart: 87 px, 75 with errors from the area of opposite sign; inside the clip [0, 128, 0], outside [255, 255, 255]
+feblend-in-clipped-layer@3: frame, px > 8/255 (max): before vs WebKit 36 (12), after 4 (9); before vs area 0 (6), after 0 (1); WebKit vs area 4 (9)
+    in the window: before vs WebKit 8, after 1; before vs area 0, after 0; WebKit vs area 1
+    before and WebKit more than 8/255 apart: 36 px, 32 with errors from the area of opposite sign; inside the clip [138, 137, 0], outside [0, 128, 0]
+/Users/matt/src/femtovg-wt/runs/zoom/drafts/N6-round-clip-ramp/assets/zoom-ladder/round-clip-ramp/sheet.png (1188, 1311)

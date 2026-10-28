@@ -1,0 +1,6 @@
+<!-- Upstream source: wpt/svg/text/emoji-large-font-size-atlas-invariance | FemtoVG: PR #413 (large font-size=100 >92px color emoji outside atlas vs scale(2) of font-size=50 in atlas) -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" width="400" height="150" viewBox="0 0 400 150">
+  <title>Test: emoji-large-font-size-atlas-invariance</title>
+  <html:link rel="match" href="emoji-large-font-size-atlas-invariance-ref.svg"/>
+  <text x="30" y="110" font-family="Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="100">🦀🚀</text>
+</svg>

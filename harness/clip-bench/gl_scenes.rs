@@ -35,14 +35,48 @@ fn polygon(points: &[serde_json::Value]) -> Path {
     path
 }
 
+/// A path of several closed contours, each a list of points.
+fn contours(contours: &[serde_json::Value]) -> Path {
+    let mut path = Path::new();
+    for contour in contours {
+        for (i, p) in contour.as_array().unwrap().iter().enumerate() {
+            let (x, y) = (p[0].as_f64().unwrap() as f32, p[1].as_f64().unwrap() as f32);
+            if i == 0 {
+                path.move_to(x, y);
+            } else {
+                path.line_to(x, y);
+            }
+        }
+        path.close();
+    }
+    path
+}
+
+/// The fill rule an op names, as the argument of ctx.fill() and ctx.clip(): non-zero unless "evenodd".
+fn rule(name: Option<&serde_json::Value>) -> FillRule {
+    match name.and_then(|rule| rule.as_str()) {
+        Some("evenodd") => FillRule::EvenOdd,
+        _ => FillRule::NonZero,
+    }
+}
+
 fn operation(name: &str) -> CompositeOperation {
     match name {
-        "copy" => CompositeOperation::Copy,
+        "source-over" => CompositeOperation::SourceOver,
         "source-in" => CompositeOperation::SourceIn,
         "source-out" => CompositeOperation::SourceOut,
+        "source-atop" => CompositeOperation::Atop,
+        "destination-over" => CompositeOperation::DestinationOver,
         "destination-in" => CompositeOperation::DestinationIn,
+        "destination-out" => CompositeOperation::DestinationOut,
         "destination-atop" => CompositeOperation::DestinationAtop,
-        _ => CompositeOperation::SourceOver,
+        "lighter" => CompositeOperation::Lighter,
+        "copy" => CompositeOperation::Copy,
+        "xor" => CompositeOperation::Xor,
+        // Chromium's legacy `clear` keeps none of source or destination: for the opaque fills of the
+        // scenes that is destination-out.
+        "clear" => CompositeOperation::DestinationOut,
+        other => panic!("no composite operation {other}"),
     }
 }
 
@@ -59,7 +93,10 @@ impl ApplicationHandler for App {
         let args: Vec<String> = std::env::args().collect();
         let spec: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(&args[1]).unwrap()).unwrap();
         let out = args[2].clone();
-        let (w, h) = (spec["width"].as_u64().unwrap() as u32, spec["height"].as_u64().unwrap() as u32);
+        // SCENES_SCALE draws each scene that many device pixels a canvas pixel, as a canvas of that devicePixelRatio.
+        let scale: f32 = std::env::var("SCENES_SCALE").map_or(1.0, |s| s.parse().unwrap());
+        let (w, h) = (spec["width"].as_u64().unwrap() as f32, spec["height"].as_u64().unwrap() as f32);
+        let (w, h) = ((w * scale).round() as u32, (h * scale).round() as u32);
         let window_attrs = Window::default_attributes()
             .with_inner_size(winit::dpi::PhysicalSize::new(64, 64))
             .with_visible(false);
@@ -94,6 +131,8 @@ impl ApplicationHandler for App {
                 .unwrap();
             canvas.set_render_target(RenderTarget::Image(image));
             canvas.clear_rect(0, 0, w, h, Color::rgbaf(0.0, 0.0, 0.0, 0.0));
+            canvas.save();
+            canvas.scale(scale, scale);
             for op in scene["ops"].as_array().unwrap() {
                 match op[0].as_str().unwrap() {
                     "save" => canvas.save(),
@@ -104,24 +143,15 @@ impl ApplicationHandler for App {
                         &polygon(op[2].as_array().unwrap()),
                         &Paint::color(Color::hex(op[1].as_str().unwrap())),
                     ),
-                    "fillpath" => {
-                        let mut path = Path::new();
-                        for polygon in op[2].as_array().unwrap() {
-                            for (i, p) in polygon.as_array().unwrap().iter().enumerate() {
-                                let (x, y) = (p[0].as_f64().unwrap() as f32, p[1].as_f64().unwrap() as f32);
-                                if i == 0 {
-                                    path.move_to(x, y);
-                                } else {
-                                    path.line_to(x, y);
-                                }
-                            }
-                            path.close();
-                        }
-                        canvas.fill_path(&path, &Paint::color(Color::hex(op[1].as_str().unwrap())));
-                    }
+                    "fillpath" => canvas.fill_path(
+                        &contours(op[2].as_array().unwrap()),
+                        &Paint::color(Color::hex(op[1].as_str().unwrap())).with_fill_rule(rule(op.get(3))),
+                    ),
+                    "clippath" => canvas.clip_path(&contours(op[1].as_array().unwrap()), rule(op.get(2))),
                     other => panic!("unknown op {other}"),
                 }
             }
+            canvas.restore();
             canvas.flush_to_output(());
             let shot = canvas.screenshot().unwrap();
             // Premultiplied over white.

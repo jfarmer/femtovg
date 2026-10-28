@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200">
+  <linearGradient id="g" gradientTransform="rotate(90 0.5 0.5)">
+    <stop offset="0" stop-color="green"/>
+    <stop offset="1" stop-color="blue"/>
+  </linearGradient>
+  <linearGradient id="g-absent" href="#g"/>
+  <linearGradient id="g-empty" href="#g" gradientTransform=""/>
+  <linearGradient id="g-invalid" href="#g" gradientTransform="bogus"/>
+  <linearGradient id="g-whitespace" href="#g" gradientTransform=" "/>
+  <pattern id="p" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <rect width="10" height="10" fill="green"/>
+  </pattern>
+  <pattern id="p-absent" href="#p"/>
+  <pattern id="p-empty" href="#p" patternTransform=""/>
+  <pattern id="p-invalid" href="#p" patternTransform="bogus"/>
+  <pattern id="p-whitespace" href="#p" patternTransform=" "/>
+  <rect x="10" y="10" width="80" height="80" fill="url(#g-absent)"/>
+  <rect x="110" y="10" width="80" height="80" fill="url(#g-empty)"/>
+  <rect x="210" y="10" width="80" height="80" fill="url(#g-invalid)"/>
+  <rect x="310" y="10" width="80" height="80" fill="url(#g-whitespace)"/>
+  <rect x="10" y="110" width="80" height="80" fill="url(#p-absent)"/>
+  <rect x="110" y="110" width="80" height="80" fill="url(#p-empty)"/>
+  <rect x="210" y="110" width="80" height="80" fill="url(#p-invalid)"/>
+  <rect x="310" y="110" width="80" height="80" fill="url(#p-whitespace)"/>
+</svg>

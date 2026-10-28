@@ -1,0 +1,24 @@
+# instrumentation.patch switches over 70 still frames (0-69) of the Babylon file, 460x260: base = no switch (master's
+# frames), nocap = INV_MASKS_A_FRAME=100000000, keyfirst = INV_KEY_FIRST=1, draws = INV_COUNT_DRAWS=1 (Skia's rule).
+# settled = first frame equal to every later one; f00_/last_ = n8 (px beyond 8/255) of frames 00 and 69 vs Chromium /
+# WebKit; f01_vs_f00 = px changed from frame 00 to 01; mask_ms = time inside fill_mask, at load average 67-95 (rough).
+base {'z': '1', 'settled': 4, 'period2': False, 'f00_chr': 38921, 'f00_wk': 38974, 'last_chr': 1108, 'last_wk': 0, 'f01_vs_f00': 1400, 'mask_ms_f0': 0.455, 'mask_ms_max': 192.821}
+base {'z': '1.25', 'settled': 64, 'period2': False, 'f00_chr': 41372, 'f00_wk': 45377, 'last_chr': 2172, 'last_wk': 0, 'f01_vs_f00': 700, 'mask_ms_f0': 0.247, 'mask_ms_max': 126.138}
+base {'z': '1.5', 'settled': 16, 'period2': False, 'f00_chr': 36577, 'f00_wk': 38490, 'last_chr': 2206, 'last_wk': 0, 'f01_vs_f00': 1372, 'mask_ms_f0': 0.5, 'mask_ms_max': 34.353}
+base {'z': '1.75', 'settled': 66, 'period2': False, 'f00_chr': 31641, 'f00_wk': 33544, 'last_chr': 1724, 'last_wk': 0, 'f01_vs_f00': 808, 'mask_ms_f0': 0.23, 'mask_ms_max': 12.217}
+base {'z': '2', 'settled': 1, 'period2': False, 'f00_chr': 27123, 'f00_wk': 25627, 'last_chr': 2278, 'last_wk': 0, 'f01_vs_f00': 46468, 'mask_ms_f0': 0.822, 'mask_ms_max': 9.283}
+nocap {'z': '1', 'settled': 0, 'period2': False, 'f00_chr': 1108, 'f00_wk': 0, 'last_chr': 1108, 'last_wk': 0, 'f01_vs_f00': 0, 'mask_ms_f0': 10.23, 'mask_ms_max': 19.409}
+nocap {'z': '1.25', 'settled': 0, 'period2': False, 'f00_chr': 2172, 'f00_wk': 0, 'last_chr': 2172, 'last_wk': 0, 'f01_vs_f00': 0, 'mask_ms_f0': 22.159, 'mask_ms_max': 22.159}
+nocap {'z': '1.5', 'settled': 0, 'period2': False, 'f00_chr': 2206, 'f00_wk': 0, 'last_chr': 2206, 'last_wk': 0, 'f01_vs_f00': 0, 'mask_ms_f0': 11.04, 'mask_ms_max': 16.277}
+nocap {'z': '1.75', 'settled': 0, 'period2': False, 'f00_chr': 1724, 'f00_wk': 0, 'last_chr': 1724, 'last_wk': 0, 'f01_vs_f00': 0, 'mask_ms_f0': 21.213, 'mask_ms_max': 21.213}
+nocap {'z': '2', 'settled': 0, 'period2': False, 'f00_chr': 2278, 'f00_wk': 0, 'last_chr': 2278, 'last_wk': 0, 'f01_vs_f00': 0, 'mask_ms_f0': 6.406, 'mask_ms_max': 9.278}
+keyfirst {'z': '1', 'settled': 3, 'period2': False, 'f00_chr': 30356, 'f00_wk': 30400, 'last_chr': 1108, 'last_wk': 0, 'f01_vs_f00': 11200, 'mask_ms_f0': 11.007, 'mask_ms_max': 13.365}
+keyfirst {'z': '1.25', 'settled': 63, 'period2': False, 'f00_chr': 41372, 'f00_wk': 45368, 'last_chr': 2172, 'last_wk': 0, 'f01_vs_f00': 1464, 'mask_ms_f0': 11.465, 'mask_ms_max': 17.242}
+keyfirst {'z': '1.5', 'settled': 16, 'period2': False, 'f00_chr': 34964, 'f00_wk': 36306, 'last_chr': 2206, 'last_wk': 0, 'f01_vs_f00': 5444, 'mask_ms_f0': 9.679, 'mask_ms_max': 12.126}
+keyfirst {'z': '1.75', 'settled': 65, 'period2': False, 'f00_chr': 31642, 'f00_wk': 33478, 'last_chr': 1724, 'last_wk': 0, 'f01_vs_f00': 1656, 'mask_ms_f0': 7.536, 'mask_ms_max': 16.356}
+keyfirst {'z': '2', 'settled': 1, 'period2': False, 'f00_chr': 5444, 'f00_wk': 4988, 'last_chr': 2278, 'last_wk': 0, 'f01_vs_f00': 9790, 'mask_ms_f0': 6.502, 'mask_ms_max': 7.254}
+draws {'z': '1', 'settled': 0, 'period2': False, 'f00_chr': 39848, 'f00_wk': 39888, 'last_chr': 39848, 'last_wk': 39888, 'f01_vs_f00': 0, 'mask_ms_f0': 0.163, 'mask_ms_max': 0.163}
+draws {'z': '1.25', 'settled': 0, 'period2': False, 'f00_chr': 41372, 'f00_wk': 45380, 'last_chr': 41372, 'last_wk': 45380, 'f01_vs_f00': 0, 'mask_ms_f0': 0.223, 'mask_ms_max': 0.223}
+draws {'z': '1.5', 'settled': 0, 'period2': False, 'f00_chr': 36856, 'f00_wk': 38830, 'last_chr': 36856, 'last_wk': 38830, 'f01_vs_f00': 0, 'mask_ms_f0': 0.255, 'mask_ms_max': 0.255}
+draws {'z': '1.75', 'settled': 0, 'period2': False, 'f00_chr': 31640, 'f00_wk': 33610, 'last_chr': 31640, 'last_wk': 33610, 'f01_vs_f00': 0, 'mask_ms_f0': 0.226, 'mask_ms_max': 0.226}
+draws {'z': '2', 'settled': 0, 'period2': False, 'f00_chr': 29228, 'f00_wk': 27800, 'last_chr': 29228, 'last_wk': 27800, 'f01_vs_f00': 0, 'mask_ms_f0': 0.196, 'mask_ms_max': 0.196}

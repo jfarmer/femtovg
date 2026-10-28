@@ -1,0 +1,479 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 7371308..4065d56 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -352,6 +352,7 @@ impl WGPURenderer {
+ 
+     /// Creates a new renderer for the device.
+     pub fn new(device: wgpu::Device, queue: wgpu::Queue) -> Self {
++        xtrace::init(&device, &queue);
+         let module = wgpu::ShaderModuleDescriptor {
+             label: Some("femtovg"),
+             source: wgpu::ShaderSource::Wgsl(
+@@ -581,6 +582,7 @@ impl Renderer for WGPURenderer {
+         let mut encoder = self
+             .device
+             .create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
++        let x_query = xtrace::frame_begin(&self.device);
+ 
+         let mut render_pass_builder = RenderPassBuilder::new(
+             self.device.clone(),
+@@ -593,6 +595,7 @@ impl Renderer for WGPURenderer {
+             stencil_buffer.clone(),
+             vertex_buffer,
+         );
++        render_pass_builder.x_query = x_query.clone();
+         // Ensure that we have one initial render pass, in case the first command is not SetRenderTarget
+         render_pass_builder.set_render_target_screen();
+ 
+@@ -740,6 +743,7 @@ impl Renderer for WGPURenderer {
+         }
+ 
+         drop(render_pass_builder);
++        xtrace::frame_end(&self.device, &mut encoder, x_query.as_ref());
+ 
+         // write_buffer is ordered ahead of the caller's submit.
+         let uniform_staging = &pipeline_and_bindgroup_mapper.uniform_staging;
+@@ -761,8 +765,7 @@ impl Renderer for WGPURenderer {
+     }
+ 
+     fn alloc_image(&mut self, info: crate::ImageInfo) -> Result<Self::Image, crate::ErrorKind> {
+-        Ok(Image {
+-            texture: Texture::Internal(self.device.create_texture(&wgpu::TextureDescriptor {
++        let x_texture = self.device.create_texture(&wgpu::TextureDescriptor {
+                 label: None,
+                 size: wgpu::Extent3d {
+                     width: info.width() as u32,
+@@ -781,7 +784,16 @@ impl Renderer for WGPURenderer {
+                     | wgpu::TextureUsages::COPY_DST
+                     | wgpu::TextureUsages::RENDER_ATTACHMENT,
+                 view_formats: &[],
+-            })),
++            });
++        xtrace::event(format!(
++            "alloc {:x} {}x{} flags={:#x}",
++            xtrace::tex_id(&x_texture),
++            info.width(),
++            info.height(),
++            info.flags().bits()
++        ));
++        Ok(Image {
++            texture: Texture::Internal(x_texture),
+             info,
+         })
+     }
+@@ -880,6 +892,7 @@ impl Renderer for WGPURenderer {
+ 
+     fn delete_image(&mut self, image: Self::Image, _image_id: crate::ImageId) {
+         if let Texture::Internal(texture) = &image.texture {
++            xtrace::event(format!("delete {:x}", xtrace::tex_id(texture)));
+             self.stencil_buffer_for_textures.remove(texture);
+         }
+         drop(image);
+@@ -2030,6 +2043,8 @@ struct RenderPassBuilder<'a> {
+     current_pipeline_state: Option<PipelineState>,
+     current_stencil_reference: Option<u32>,
+     current_bound_offset: Option<u32>,
++    x_query: Option<wgpu::QuerySet>,
++    x_tex: u64,
+ }
+ 
+ impl<'a> RenderPassBuilder<'a> {
+@@ -2065,6 +2080,8 @@ impl<'a> RenderPassBuilder<'a> {
+             current_pipeline_state: None,
+             current_stencil_reference: None,
+             current_bound_offset: None,
++            x_query: None,
++            x_tex: 0,
+         }
+     }
+ 
+@@ -2164,6 +2181,7 @@ impl<'a> RenderPassBuilder<'a> {
+         load: wgpu::LoadOp<wgpu::Color>,
+     ) {
+         self.texture_view = texture.create_view(&Default::default());
++        self.x_tex = xtrace::tex_id(texture);
+         self.set_viewport([texture.width() as f32, texture.height() as f32]);
+         self.stencil_buffer = stencil_buffer;
+         self.surface_format = texture.format();
+@@ -2185,6 +2203,7 @@ impl<'a> RenderPassBuilder<'a> {
+                 .stencil_buffer_for_textures
+                 .entry(texture.clone())
+                 .or_insert_with(|| {
++                    xtrace::event(format!("stencil {:x}", xtrace::tex_id(texture)));
+                     self.device.create_texture(&wgpu::TextureDescriptor {
+                         label: Some("Stencil buffer"),
+                         size: wgpu::Extent3d {
+@@ -2220,6 +2239,7 @@ impl<'a> RenderPassBuilder<'a> {
+ 
+     fn set_render_target_screen(&mut self) {
+         self.texture_view = self.surface_view.clone();
++        self.x_tex = 0;
+         self.stencil_buffer = Some(self.screen_stencil_buffer.clone());
+         self.set_viewport(self.screen_view);
+         self.surface_format = self.screen_surface_format;
+@@ -2234,6 +2254,35 @@ impl<'a> RenderPassBuilder<'a> {
+         self.current_stencil_reference = None;
+         self.current_bound_offset = None;
+         drop(self.rpass.take());
++        if xtrace::slice_due() {
++            let finished = std::mem::replace(
++                self.encoder,
++                self.device
++                    .create_command_encoder(&wgpu::CommandEncoderDescriptor::default()),
++            );
++            xtrace::submit_slice(finished);
++        }
++        let x_index = xtrace::begin_pass(
++            if !self.rendering_to_texture {
++                0
++            } else if self.stencil_buffer.is_some() {
++                1
++            } else {
++                2
++            },
++            self.x_tex,
++            self.viewport,
++            matches!(load, wgpu::LoadOp::Clear(_)),
++            self.stencil_buffer.is_some(),
++        );
++        let x_writes = match (&self.x_query, x_index) {
++            (Some(query_set), Some(index)) if index < xtrace::MAX_PASSES => Some(wgpu::RenderPassTimestampWrites {
++                query_set,
++                beginning_of_pass_write_index: Some(2 * index),
++                end_of_pass_write_index: Some(2 * index + 1),
++            }),
++            _ => None,
++        };
+         let stencil_view = self
+             .stencil_buffer
+             .as_ref()
+@@ -2260,7 +2309,7 @@ impl<'a> RenderPassBuilder<'a> {
+                         store: wgpu::StoreOp::Store,
+                     }),
+                 }),
+-            timestamp_writes: None,
++            timestamp_writes: x_writes,
+             occlusion_query_set: None,
+             multiview_mask: None,
+         });
+@@ -2271,6 +2320,7 @@ impl<'a> RenderPassBuilder<'a> {
+     }
+ 
+     fn draw(&mut self, vertices: std::ops::Range<u32>) {
++        xtrace::draw(vertices.end - vertices.start);
+         self.rpass.as_mut().unwrap().draw(vertices, 0..1);
+     }
+ }
+@@ -2344,6 +2394,17 @@ impl CommandToPipelineAndBindGroupMapper {
+             render_pass_builder.current_stencil_reference = Some(stencil_reference);
+         }
+ 
++        if xtrace::on() {
++            for id in [image, glyph_texture.image_id()].into_iter().flatten() {
++                if let Some(Image {
++                    texture: Texture::Internal(texture),
++                    ..
++                }) = images.get(id)
++                {
++                    xtrace::read(xtrace::tex_id(texture));
++                }
++            }
++        }
+         let bind_group_state = BindGroupState { image, glyph_texture };
+ 
+         let bind_group_changed = self.current_bind_group_state != Some(bind_group_state.clone());
+@@ -2433,3 +2494,293 @@ fn blend_factor(factor: BlendFactor) -> wgpu::BlendFactor {
+         BlendFactor::SrcAlphaSaturate => wgpu::BlendFactor::SrcAlphaSaturated,
+     }
+ }
++
++// ---- experiment only, never committed: per-pass trace ----
++#[allow(dead_code)]
++pub(crate) mod xtrace {
++    use std::hash::{Hash, Hasher};
++    use std::io::Write;
++    use std::sync::{Mutex, OnceLock};
++
++    pub const MAX_PASSES: u32 = 2048;
++
++    #[derive(Default, Clone)]
++    pub struct Pass {
++        pub kind: u8,
++        pub tex: u64,
++        pub w: u32,
++        pub h: u32,
++        pub clear: bool,
++        pub stencil: bool,
++        pub draws: u32,
++        pub verts: u32,
++        pub reads: Vec<u64>,
++        /// Slice mode: the slice this pass was submitted in.
++        pub slice: u32,
++    }
++
++    #[derive(Default)]
++    pub struct State {
++        pub frame: usize,
++        pub passes: Vec<Pass>,
++        pub events: Vec<String>,
++        /// Slice mode: per slice (submit ns, wait ns, passes, page faults).
++        pub slices: Vec<(u64, u64, u32, i64)>,
++        pub faults_at_frame: i64,
++        pub since_slice: u32,
++        pub pending: Option<(wgpu::Buffer, u32)>,
++        pub device: Option<wgpu::Device>,
++        pub queue: Option<wgpu::Queue>,
++    }
++
++    static STATE: Mutex<Option<State>> = Mutex::new(None);
++
++    fn path() -> Option<&'static str> {
++        static PATH: OnceLock<Option<String>> = OnceLock::new();
++        PATH.get_or_init(|| std::env::var("PASS_TRACE").ok()).as_deref()
++    }
++
++    fn slice_every() -> Option<u32> {
++        static EVERY: OnceLock<Option<u32>> = OnceLock::new();
++        *EVERY.get_or_init(|| std::env::var("PASS_SLICE").ok().and_then(|v| v.parse().ok()))
++    }
++
++    pub fn on() -> bool {
++        path().is_some()
++    }
++
++    #[repr(C)]
++    struct RUsage {
++        times: [i64; 4],
++        longs: [i64; 14],
++    }
++    extern "C" {
++        fn getrusage(who: i32, usage: *mut RUsage) -> i32;
++    }
++    /// The process's minor page faults so far (ru_minflt).
++    pub fn minor_faults() -> i64 {
++        let mut usage = RUsage {
++            times: [0; 4],
++            longs: [0; 14],
++        };
++        unsafe { getrusage(0, &mut usage) };
++        usage.longs[4]
++    }
++
++    pub fn tex_id(texture: &wgpu::Texture) -> u64 {
++        let mut hasher = std::collections::hash_map::DefaultHasher::new();
++        texture.hash(&mut hasher);
++        hasher.finish() & 0xffff_ffff
++    }
++
++    fn with<R>(f: impl FnOnce(&mut State) -> R) -> Option<R> {
++        if !on() {
++            return None;
++        }
++        let mut guard = STATE.lock().unwrap();
++        Some(f(guard.get_or_insert_with(State::default)))
++    }
++
++    pub fn init(device: &wgpu::Device, queue: &wgpu::Queue) {
++        with(|state| {
++            state.device = Some(device.clone());
++            state.queue = Some(queue.clone());
++        });
++    }
++
++    pub fn event(text: String) {
++        with(|state| {
++            let at = state.passes.len();
++            state.events.push(format!("{at} {text}"));
++        });
++    }
++
++    /// Dumps the previous frame (its timestamps are resolved by now) and
++    /// starts a new one; the query set for this frame's passes.
++    pub fn frame_begin(device: &wgpu::Device) -> Option<wgpu::QuerySet> {
++        if !on() {
++            return None;
++        }
++        dump(device);
++        if slice_every().is_some() || !device.features().contains(wgpu::Features::TIMESTAMP_QUERY) {
++            return None;
++        }
++        Some(device.create_query_set(&wgpu::QuerySetDescriptor {
++            label: None,
++            ty: wgpu::QueryType::Timestamp,
++            count: 2 * MAX_PASSES,
++        }))
++    }
++
++    pub fn begin_pass(kind: u8, tex: u64, viewport: [f32; 2], clear: bool, stencil: bool) -> Option<u32> {
++        with(|state| {
++            state.since_slice += 1;
++            let slice = state.slices.len() as u32;
++            state.passes.push(Pass {
++                kind,
++                tex,
++                w: viewport[0] as u32,
++                h: viewport[1] as u32,
++                clear,
++                stencil,
++                slice,
++                ..Default::default()
++            });
++            state.passes.len() as u32 - 1
++        })
++    }
++
++    pub fn draw(verts: u32) {
++        with(|state| {
++            if let Some(pass) = state.passes.last_mut() {
++                pass.draws += 1;
++                pass.verts += verts;
++            }
++        });
++    }
++
++    pub fn read(tex: u64) {
++        with(|state| {
++            if let Some(pass) = state.passes.last_mut() {
++                if !pass.reads.contains(&tex) {
++                    pass.reads.push(tex);
++                }
++            }
++        });
++    }
++
++    pub fn slice_due() -> bool {
++        let Some(every) = slice_every() else {
++            return false;
++        };
++        with(|state| state.since_slice >= every).unwrap_or(false)
++    }
++
++    /// Submits the passes encoded so far and waits for the GPU.
++    pub fn submit_slice(encoder: wgpu::CommandEncoder) {
++        let (device, queue) = {
++            let guard = STATE.lock().unwrap();
++            let state = guard.as_ref().unwrap();
++            (state.device.clone().unwrap(), state.queue.clone().unwrap())
++        };
++        let faults = minor_faults();
++        let started = std::time::Instant::now();
++        queue.submit(Some(encoder.finish()));
++        let submitted = started.elapsed();
++        device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
++        let waited = started.elapsed() - submitted;
++        with(|state| {
++            state.slices.push((
++                submitted.as_nanos() as u64,
++                waited.as_nanos() as u64,
++                state.since_slice,
++                minor_faults() - faults,
++            ));
++            state.since_slice = 0;
++        });
++    }
++
++    pub fn frame_end(device: &wgpu::Device, encoder: &mut wgpu::CommandEncoder, query_set: Option<&wgpu::QuerySet>) {
++        let Some(query_set) = query_set else {
++            return;
++        };
++        let count = with(|state| (state.passes.len() as u32).min(MAX_PASSES) * 2).unwrap_or(0);
++        if count == 0 {
++            return;
++        }
++        let size = u64::from(count) * 8;
++        let resolve = device.create_buffer(&wgpu::BufferDescriptor {
++            label: None,
++            size,
++            usage: wgpu::BufferUsages::QUERY_RESOLVE | wgpu::BufferUsages::COPY_SRC,
++            mapped_at_creation: false,
++        });
++        let read = device.create_buffer(&wgpu::BufferDescriptor {
++            label: None,
++            size,
++            usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
++            mapped_at_creation: false,
++        });
++        encoder.resolve_query_set(query_set, 0..count, &resolve, 0);
++        encoder.copy_buffer_to_buffer(&resolve, 0, &read, 0, size);
++        with(|state| state.pending = Some((read, count)));
++    }
++
++    fn dump(device: &wgpu::Device) {
++        let Some((passes, events, slices, pending, frame, queue)) = with(|state| {
++            let frame = state.frame;
++            state.frame += 1;
++            state.since_slice = 0;
++            (
++                std::mem::take(&mut state.passes),
++                std::mem::take(&mut state.events),
++                std::mem::take(&mut state.slices),
++                state.pending.take(),
++                frame,
++                state.queue.clone(),
++            )
++        }) else {
++            return;
++        };
++        if passes.is_empty() && events.is_empty() {
++            return;
++        }
++        let mut stamps: Vec<u64> = Vec::new();
++        if let Some((buffer, count)) = pending {
++            let slice = buffer.slice(..);
++            slice.map_async(wgpu::MapMode::Read, |_| {});
++            device.poll(wgpu::PollType::wait_indefinitely()).unwrap();
++            let mapped = slice.get_mapped_range().unwrap();
++            let period = queue.map_or(1.0, |queue| f64::from(queue.get_timestamp_period()));
++            stamps = mapped
++                .chunks_exact(8)
++                .take(count as usize)
++                .map(|bytes| (u64::from_le_bytes(bytes.try_into().unwrap()) as f64 * period) as u64)
++                .collect();
++        }
++        let mut out = String::new();
++        let faults_now = minor_faults();
++        let frame_faults = with(|state| {
++            let delta = faults_now - state.faults_at_frame;
++            state.faults_at_frame = faults_now;
++            delta
++        })
++        .unwrap_or(0);
++        out.push_str(&format!(
++            "F {frame} passes={} slices={} faults={frame_faults}\n",
++            passes.len(),
++            slices.len()
++        ));
++        for event in &events {
++            out.push_str(&format!("E {event}\n"));
++        }
++        for (index, (submit, wait, count, faults)) in slices.iter().enumerate() {
++            out.push_str(&format!("S {index} submit={submit} wait={wait} passes={count} faults={faults}\n"));
++        }
++        for (index, pass) in passes.iter().enumerate() {
++            let reads: Vec<String> = pass.reads.iter().map(|tex| format!("{tex:x}")).collect();
++            let (t0, t1) = (
++                stamps.get(2 * index).copied().unwrap_or(0),
++                stamps.get(2 * index + 1).copied().unwrap_or(0),
++            );
++            out.push_str(&format!(
++                "P {index} k={} t={:x} {}x{} clear={} st={} d={} v={} r={} t0={t0} t1={t1} sl={}\n",
++                pass.kind,
++                pass.tex,
++                pass.w,
++                pass.h,
++                u8::from(pass.clear),
++                u8::from(pass.stencil),
++                pass.draws,
++                pass.verts,
++                reads.join(","),
++                pass.slice,
++            ));
++        }
++        if let Some(path) = path() {
++            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open(path) {
++                let _ = file.write_all(out.as_bytes());
++            }
++        }
++    }
++}

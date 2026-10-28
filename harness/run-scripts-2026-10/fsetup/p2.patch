@@ -1,0 +1,58 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 79170d93..619e4366 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -374,6 +374,7 @@ pub struct WGPURenderer {
+     sampler_cache: SamplerCache,
+     uniform_buffer: wgpu::Buffer,
+     uniform_stride: u64,
++    uniform_staging: Vec<u8>,
+     vertex_buffer: wgpu::Buffer,
+     fan_indices: FanIndices,
+     fan_index_buffer: wgpu::Buffer,
+@@ -553,6 +554,7 @@ impl WGPURenderer {
+             sampler_cache: Rc::new(RefCell::new(HashMap::new())),
+             uniform_buffer,
+             uniform_stride,
++            uniform_staging: Vec::new(),
+             vertex_buffer,
+             fan_indices: FanIndices::default(),
+             fan_index_buffer,
+@@ -852,6 +854,7 @@ impl Renderer for WGPURenderer {
+             self.sampler_cache.clone(),
+             self.uniform_buffer.clone(),
+             self.uniform_stride,
++            std::mem::take(&mut self.uniform_staging),
+             self.shader_module.clone(),
+             self.draw_layouts.clone(),
+             self.pipeline_cache.clone(),
+@@ -1003,6 +1006,7 @@ impl Renderer for WGPURenderer {
+         if !uniform_staging.is_empty() {
+             self.queue.write_buffer(&self.uniform_buffer, 0, uniform_staging);
+         }
++        self.uniform_staging = std::mem::take(&mut pipeline_and_bindgroup_mapper.uniform_staging);
+ 
+         let command_buffer = encoder.finish();
+ 
+@@ -2737,18 +2741,20 @@ impl CommandToPipelineAndBindGroupMapper {
+         sampler_cache: SamplerCache,
+         uniform_buffer: wgpu::Buffer,
+         uniform_stride: u64,
++        mut uniform_staging: Vec<u8>,
+         shader_module: Rc<wgpu::ShaderModule>,
+         draw_layouts: [DrawLayout; 2],
+         pipeline_cache: Rc<RefCell<HashMap<PipelineState, CachedPipeline>>>,
+         flush_count: u64,
+     ) -> Self {
++        uniform_staging.clear();
+         Self {
+             device: device.clone(),
+             empty_texture_view,
+             sampler_cache,
+             uniform_buffer,
+             uniform_stride,
+-            uniform_staging: Vec::new(),
++            uniform_staging,
+             current_uniforms: None,
+             shader_module,
+             current_bind_group_state: None,

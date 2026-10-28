@@ -1,0 +1,72 @@
+#![cfg(feature = "wgpu")]
+use femtovg::{Color, FillRule, ImageFlags, ImageSource, Paint, Path, Transform2D};
+use imgref::Img;
+use rgb::RGBA8;
+mod common;
+use common::{headless_device, render_rgba};
+
+const W: u32 = 64;
+const H: u32 = 64;
+
+// kind: 0 = rect, no clip (blit shortcut); 1 = rect under a big clip_path; 2 = pentagon (general fill)
+fn run(kind: u8, t: Transform2D, aa: bool) -> Vec<u8> {
+    let (device, queue) = headless_device().unwrap();
+    render_rgba(&device, &queue, W, H, Color::rgba(0, 0, 0, 0), |canvas| {
+        let tex: Vec<RGBA8> = [[255, 0, 0, 255], [0, 255, 0, 255], [0, 0, 255, 255], [255, 255, 255, 255]]
+            .iter()
+            .map(|c| RGBA8::new(c[0], c[1], c[2], c[3]))
+            .collect();
+        let image = canvas
+            .create_image(
+                ImageSource::Rgba(Img::new(&tex[..], 2, 2)),
+                ImageFlags::NEAREST | ImageFlags::REPEAT_X | ImageFlags::REPEAT_Y,
+            )
+            .unwrap();
+        let mut paint = Paint::image(image, 0.0, 0.0, 8.0, 8.0, 0.0, 1.0).with_anti_alias(aa);
+        paint.set_image_transform(t);
+        if kind == 1 {
+            let mut c = Path::new();
+            c.rect(-100.0, -100.0, 400.0, 400.0);
+            canvas.clip_path(&c, FillRule::NonZero);
+        }
+        let mut path = Path::new();
+        if kind == 2 {
+            for (i, (x, y)) in [(8.0, 8.0), (56.0, 8.0), (56.0, 46.0), (46.0, 56.0), (8.0, 56.0)].iter().enumerate() {
+                if i == 0 { path.move_to(*x, *y) } else { path.line_to(*x, *y) }
+            }
+            path.close();
+        } else {
+            path.rect(8.0, 8.0, 48.0, 48.0);
+        }
+        canvas.fill_path(&path, &paint);
+    })
+}
+
+fn px(r: &[u8], x: u32, y: u32) -> [u8; 3] { let i = ((y * W + x) * 4) as usize; [r[i], r[i + 1], r[i + 2]] }
+
+fn compare(a: &[u8], b: &[u8]) -> usize {
+    let mut n = 0;
+    for y in 10..44 { for x in 10..44 { if px(a, x, y) != px(b, x, y) { n += 1; } } }
+    n
+}
+
+#[test]
+fn review_345b() {
+    if headless_device().is_none() { return; }
+    let cases: [(&str, Transform2D); 4] = [
+        ("identity", Transform2D::identity()),
+        ("scale", Transform2D([3.0, 0.0, 0.0, 2.0, 0.0, 0.0])),
+        ("shear", Transform2D([2.0, 0.0, 1.0, 2.0, 0.0, 0.0])),
+        ("rotate", Transform2D::rotation(0.5)),
+    ];
+    for aa in [false, true] {
+        for (name, t) in cases {
+            let general = run(2, t, aa);
+            eprintln!(
+                "REVIEW aa={aa:5} {name:8}: interior px (34x34) differing from the general fill - rect blit: {:4}, rect under clip_path: {:4}",
+                compare(&run(0, t, aa), &general),
+                compare(&run(1, t, aa), &general)
+            );
+        }
+    }
+}

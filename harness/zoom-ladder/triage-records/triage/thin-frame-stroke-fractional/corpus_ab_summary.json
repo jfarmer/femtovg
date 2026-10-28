@@ -1,0 +1,44 @@
+{
+ "newly_pass": [
+  "corpus__blend-probes__blend-in-opacity-and-clip",
+  "corpus__blend-probes__blend-nested",
+  "corpus__blend-probes__blend-with-filter",
+  "corpus__blend-probes__feblend-after-blur",
+  "corpus__resvg-feblend__mode=color-burn",
+  "corpus__resvg-feblend__mode=darken",
+  "corpus__resvg-feblend__mode=hue",
+  "corpus__resvg-feblend__mode=lighten",
+  "corpus__resvg-feblend__mode=multiply",
+  "corpus__resvg-feblend__mode=normal",
+  "corpus__resvg-feblend__mode=screen",
+  "corpus__resvg-mix-blend__darken",
+  "corpus__resvg-mix-blend__filter-multiple-primitives-4",
+  "corpus__resvg-mix-blend__isolation-isolate",
+  "corpus__resvg-mix-blend__multiply",
+  "corpus__resvg-mix-blend__opacity-on-group",
+  "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-region-outside-canvas-ref",
+  "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-region-outside-canvas",
+  "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-with-subregion-1",
+  "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-with-subregion-2-ref",
+  "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-with-subregion-2",
+  "wpt22__22-gradient-stops-and-recursion-guards__resvg-radialgradient-negative-r-guard"
+ ],
+ "newly_fail": [
+  "corpus__zero-area-fill",
+  "wpt22__20-clippath-unions-and-masks__resvg-mask-with-clip-path-ref",
+  "wpt22__20-clippath-unions-and-masks__resvg-mask-with-clip-path"
+ ],
+ "still": [
+  "corpus__blend-probes__feblend-in-clipped-layer",
+  "corpus__firefox__lists-empty-state-light",
+  "corpus__resvg-feblend__empty",
+  "wpt22__19-filter-subregions-and-offcanvas__resvg-filter-with-subregion-1-ref",
+  "wpt22__20-clippath-unions-and-masks__resvg-clippath-multiple-children",
+  "wpt22__21-degenerate-paths-dashes-and-joins__resvg-dasharray-0-n-square-caps-ref",
+  "wpt22__21-degenerate-paths-dashes-and-joins__resvg-dasharray-n-0-solid",
+  "wpt22__22-gradient-stops-and-recursion-guards__resvg-stop-with-smaller-offset-monotonic",
+  "wpt22__22-gradient-stops-and-recursion-guards__resvg-stop-zero-offset-in-the-middle",
+  "wpt22__22-gradient-stops-and-recursion-guards__resvg-stops-with-equal-offset-1",
+  "wpt22__22-gradient-stops-and-recursion-guards__resvg-stops-with-equal-offset-2"
+ ]
+}

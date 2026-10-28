@@ -1,0 +1,88 @@
+1. One crab (Apple Color Emoji) at (40, 150), 200x200 at 1:1, fill_glyph_run. Pixels beyond 20/255 off Chromium 131; ink box width and top edge against Chromium's (24/255 ink threshold).
+Switches of prototype.patch per row (master: none): padding kept EMOJI_NOPAD=1; drop EMOJI_DROP=0.125; padding kept + drop both; + rounded size adds EMOJI_ROUNDSIZE=1; + CatmullRom adds EMOJI_FILTER=catmullrom (+ Lanczos3: EMOJI_FILTER=lanczos3); prototype (atlas changes) = EMOJI_NOPAD=1 EMOJI_DROP=0.125 EMOJI_ROUNDSIZE=1 EMOJI_FILTER=catmullrom EMOJI_QUARTERX=1 EMOJI_SNAPBL=1 EMOJI_CEILSTRIKE=1; + EMOJI_CTSMALL adds EMOJI_CTSMALL=1 to the CatmullRom row.
+                                              16            20            24            30            36            40            48            50            60            64            72            80            90
+master 06243b80                       296 -2w-1y    364 +0w-3y    476 +2w-4y    726 +3w-5y    934 +2w-5y   1196 +2w-6y   1666 +2w-7y   1786 +2w-7y   2487 +3w-8y   2830 +2w-9y  3489 +2w-10y  4255 +2w-11y  5307 +2w-12y
+padding kept                          270 -4w+0y    334 -2w-2y    434 +0w-3y    671 +1w-4y    883 +0w-4y   1106 +0w-5y   1571 +0w-6y   1687 +0w-6y   2403 +1w-7y   2702 +0w-8y   3356 +0w-9y  4134 +0w-10y  5196 +0w-11y
+1/8 em drop                           269 -2w+1y    287 +0w-1y    278 +2w-1y    577 +3w-1y    505 +2w-1y    574 +2w-1y    742 +2w-1y    748 +2w-1y   1114 +3w-1y   1043 +2w-1y   1165 +2w-1y   1275 +2w-1y   1527 +2w-1y
+padding kept + drop                   244 -4w+2y    256 -2w+0y    169 +0w+0y    369 +1w+0y    285 +0w+0y      0 +0w+0y      0 +0w+0y    427 +0w+0y    947 +1w+0y      0 +0w+0y    578 +0w+0y    567 +0w+0y    711 +0w+0y
++ rounded size, Nearest               244 -4w+2y    256 -2w+0y    169 +0w+0y    245 +0w+0y    285 +0w+0y      0 +0w+0y      0 +0w+0y    427 +0w+0y    509 +0w+0y      0 +0w+0y    578 +0w+0y    567 +0w+0y    711 +0w+0y
++ CatmullRom                          251 -4w+2y    256 -2w+0y      0 +0w+0y     14 +0w+0y     19 +0w+0y      0 +0w+0y      0 +0w+0y     12 +0w+0y     30 +0w-1y      0 +0w+0y     78 +0w+0y     41 +0w+0y     32 +0w+0y
++ Lanczos3 instead                    254 -4w+2y    256 -2w+0y     14 +0w+0y     35 +0w+0y     30 +0w+0y      0 +0w+0y      0 +0w+0y     23 +0w+0y     55 +0w-1y      0 +0w+0y    102 +0w+0y     62 +0w+0y     53 +0w+0y
+prototype (atlas changes)             251 -4w+2y    256 -2w+0y      0 +0w+0y     14 +0w+0y     19 +0w+0y      0 +0w+0y      0 +0w+0y     12 +0w+0y     30 +0w-1y      0 +0w+0y     78 +0w+0y     41 +0w+0y     32 +0w+0y
++ CatmullRom + EMOJI_CTSMALL            0 +0w+0y     82 +0w-1y      0 +0w+0y     14 +0w+0y     19 +0w+0y      0 +0w+0y      0 +0w+0y     12 +0w+0y     30 +0w-1y      0 +0w+0y     78 +0w+0y     41 +0w+0y     32 +0w+0y
+swash route (swash feature)           260 -4w+3y    298 -2w+1y     75 +0w+0y     91 +0w+0y    608 +0w+1y      0 +0w+0y      0 +0w+0y    967 +0w+1y   1232 +0w+0y      0 +0w+0y    240 +0w+0y    221 +0w+0y   2018 +0w+0y
+CoreText CTFontDrawGlyphs               0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y
+WebKit                                  0 +0w+0y    285 +0w+1y      0 +0w+0y      0 +0w+0y    626 +0w+1y      0 +0w+0y      0 +0w+0y      0 +0w+0y   1200 +0w+1y      0 +0w+0y      0 +0w+0y      0 +0w+0y      0 +0w+0y
+crab50 ink box, master: x 39-91, y 101-150
+crab50 ink box, Chromium: x 40-90, y 108-155
+crab50 ink box, WebKit: x 40-90, y 108-155
+crab50 ink box, CoreText: x 40-90, y 108-155
+
+2. Group 28 (28-color-emoji-and-png-glyphs), 460x260 framing, through fill_glyph_run. Pixels beyond 20/255 off Chromium 131 at each of the 21 ladder steps, master (base) and prototype (fin: the atlas changes and the direct-route bake at the device scale, sampled linearly: EMOJI_NOPAD=1 EMOJI_DROP=0.125 EMOJI_ROUNDSIZE=1 EMOJI_FILTER=catmullrom EMOJI_QUARTERX=1 EMOJI_SNAPBL=1 EMOJI_CEILSTRIKE=1 EMOJI_DIRECT_SCALE=1 EMOJI_LINEAR=1); then the step against a fresh frame of its zoom.
+steps: 1 1.25 1.5 1.75 2 3 4 3 2 1.75 1.5 1.25 1 0.75 0.5 0.33 0.25 0.33 0.5 0.75 1
+emoji-clipping-path-mask
+  base zoom 1   1438  worst   3165 at 1.5  vs WebKit at zoom 1   1436  step-vs-fresh max 0  | 1438 2230 3165 3056 2497 0 0 0 2497 3056 3165 2230 1438 809 578 268 161 268 578 809 1438
+  fin  zoom 1      8  worst    504 at 0.5  vs WebKit at zoom 1      3  step-vs-fresh max 0  | 8 339 31 26 56 0 0 0 56 26 31 339 8 0 504 236 139 236 504 0 8
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 3 952 4 9 5 0 0 190 167 89 58
+emoji-large-font-size-atlas-invariance
+  base zoom 1   3361  worst   6649 at 1.5  vs WebKit at zoom 1   3361  step-vs-fresh max 0  | 3361 5306 6649 6596 5351 425 0 425 5351 6596 6649 5306 3361 2099 970 591 415 591 970 2099 3361
+  fin  zoom 1     42  worst   1138 at 1.25  vs WebKit at zoom 1     42  step-vs-fresh max 0  | 42 1138 76 58 163 7 0 7 163 58 76 1138 42 33 5 496 338 496 5 33 42
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 0 0 0 0 2153 0 0 0 304 213 152
+emoji-mixed-latin-text-run
+  base zoom 1   1446  worst   1954 at 1.25  vs WebKit at zoom 1   1445  step-vs-fresh max 0  | 1446 1954 1900 592 0 0 0 0 0 592 1900 1954 1446 892 434 242 133 242 434 892 1446
+  fin  zoom 1   1383  worst   1799 at 1.25  vs WebKit at zoom 1   1382  step-vs-fresh max 0  | 1383 1799 1466 432 0 0 0 0 0 432 1466 1799 1383 834 408 218 117 218 408 834 1383
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 974 1577 2089 216 0 0 0 614 135 14 41
+emoji-multi-tspan-run
+  base zoom 1   1518  worst   2483 at 1.5  vs WebKit at zoom 1   1803  step-vs-fresh max 0  | 1518 1664 2483 1186 0 0 0 0 0 1186 2483 1664 1518 1401 654 326 186 326 654 1401 1518
+  fin  zoom 1   1401  worst   1401 at 1  vs WebKit at zoom 1   1668  step-vs-fresh max 0  | 1401 984 851 790 0 0 0 0 0 790 851 984 1401 1274 585 273 155 273 585 1274 1401
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 1240 0 0 0 0 0 0 741 494 0 0
+emoji-stroked-color-glyph
+  base zoom 1   2098  worst   4338 at 1.5  vs WebKit at zoom 1   2098  step-vs-fresh max 0  | 2098 3377 4338 3159 1404 0 0 0 1404 3159 4338 3377 2098 1319 909 355 252 355 909 1319 2098
+  fin  zoom 1    126  worst   1314 at 1.25  vs WebKit at zoom 1    126  step-vs-fresh max 0  | 126 1314 144 654 68 0 0 0 68 654 144 1314 126 314 792 329 200 329 792 314 126
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 0 0 0 0 807 0 0 1007 500 359 140
+emoji-stroked-large-glyph
+  base zoom 1   2206  worst   4084 at 1.5  vs WebKit at zoom 1   2206  step-vs-fresh max 0  | 2206 3241 4084 3730 2565 0 0 0 2565 3730 4084 3241 2206 1295 684 444 259 444 684 1295 2206
+  fin  zoom 1     86  worst    659 at 1.5  vs WebKit at zoom 1     86  step-vs-fresh max 0  | 86 129 659 137 58 0 0 0 58 137 659 129 86 53 145 384 221 384 145 53 86
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 0 0 0 1794 0 0 0 0 132 320 194
+emoji-subpixel-positioning
+  base zoom 1    688  worst   1562 at 1.5  vs WebKit at zoom 1    687  step-vs-fresh max 0  | 688 1036 1562 971 358 0 0 0 358 971 1562 1036 688 543 313 118 88 118 313 543 688
+  fin  zoom 1     12  worst    511 at 1.5  vs WebKit at zoom 1    286  step-vs-fresh max 0  | 12 31 511 13 3 0 0 0 3 13 511 31 12 414 282 91 72 91 282 414 12
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 280 598 830 704 0 0 0 197 122 120 0
+emoji-under-fe-drop-shadow
+  base zoom 1   2709  worst   5693 at 1.5  vs WebKit at zoom 1   2698  step-vs-fresh max 0  | 2709 4168 5693 4946 3610 0 0 0 3610 4946 5693 4168 2709 1575 1026 461 303 461 1026 1575 2709
+  fin  zoom 1      0  worst    927 at 0.5  vs WebKit at zoom 1      2  step-vs-fresh max 0  | 0 0 0 61 0 0 0 0 0 61 0 0 0 41 927 424 243 424 927 41 0
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 2 37 0 27 0 0 0 1265 700 313 193
+emoji-under-gaussian-blur
+  base zoom 1   1892  worst   4012 at 1.5  vs WebKit at zoom 1   1893  step-vs-fresh max 0  | 1892 2915 4012 3348 2050 0 0 0 2050 3348 4012 2915 1892 1079 737 326 201 326 737 1079 1892
+  fin  zoom 1      0  worst    633 at 0.5  vs WebKit at zoom 1      0  step-vs-fresh max 0  | 0 12 0 0 0 0 0 0 0 0 0 12 0 0 633 275 174 275 633 0 0
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 0 12 17 0 0 0 0 749 666 297 189
+emoji-under-scale-and-rotate
+  base zoom 1   2541  worst  28648 at 4  vs WebKit at zoom 1   2486  step-vs-fresh max 0  | 2541 3861 5491 7414 9640 19092 28648 19092 9640 7414 5491 3861 2541 1481 737 457 281 457 737 1481 2541
+  fin  zoom 1    851  worst   4708 at 4  vs WebKit at zoom 1   1308  step-vs-fresh max 0  | 851 936 1345 1449 850 3948 4708 3948 850 1449 1345 936 851 987 494 436 284 436 494 987 851
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 811 874 1255 1353 733 2874 857 494 525 319 197
+resvg-compound-emojis-coordinates-list
+  base zoom 1   2815  worst  27326 at 4  vs WebKit at zoom 1   3238  step-vs-fresh max 0  | 2815 4188 5955 7709 10145 21866 27326 21866 10145 7709 5955 4188 2815 1602 1216 575 338 575 1216 1602 2815
+  fin  zoom 1      8  worst   1116 at 0.5  vs WebKit at zoom 1   1204  step-vs-fresh max 0  | 8 8 0 90 0 0 35 0 0 90 0 8 8 6 1116 503 292 503 1116 6 8
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 1204 1853 2652 3539 4616 6746 2441 1070 723 481 201
+resvg-compound-emojis-rainbow-flag
+  base zoom 1    766  worst  11880 at 4  vs WebKit at zoom 1    766  step-vs-fresh max 0  | 766 1114 1596 2061 2742 6700 11880 6700 2742 2061 1596 1114 766 428 254 142 85 142 254 428 766
+  fin  zoom 1      8  worst    210 at 0.5  vs WebKit at zoom 1      8  step-vs-fresh max 0  | 8 8 0 75 0 0 0 0 0 75 0 8 8 32 210 94 54 94 210 32 8
+  Chromium vs WebKit per zoom (1, 1.25, 1.5, 1.75, 2, 3, 4, 0.75, 0.5, 0.33, 0.25): 8 0 0 0 0 0 0 4 2 104 2
+all 12 files, base: zoom 1 summed 23478, worst steps summed 101794
+all 12 files, fin: zoom 1 summed 3925, worst steps summed 14920
+
+3. The browsers among themselves at zoom 1 (pixels beyond 20/255 off Chromium 131): Firefox (refs of the wpt-text run), WebKit re-shot.
+  emoji-clipping-path-mask                   Firefox      4  WebKit      3
+  emoji-large-font-size-atlas-invariance     Firefox      0  WebKit      0
+  emoji-mixed-latin-text-run                 Firefox   1242  WebKit    974
+  emoji-multi-tspan-run                      Firefox    595  WebKit   1240
+  emoji-stroked-color-glyph                  Firefox   1738  WebKit      0
+  emoji-stroked-large-glyph                  Firefox   1612  WebKit      0
+  emoji-subpixel-positioning                 Firefox    280  WebKit    280
+  emoji-under-fe-drop-shadow                 Firefox      0  WebKit      2
+  emoji-under-gaussian-blur                  Firefox      0  WebKit      0
+  emoji-under-scale-and-rotate               Firefox      0  WebKit    811
+  resvg-compound-emojis-coordinates-list     Firefox   2723  WebKit   1204
+  resvg-compound-emojis-rainbow-flag         Firefox      0  WebKit      8
+
+4. fill_text (FEMTOVG_TEXT=shape) and fill_glyph_run frames of the crab probe identical at all 13 sizes: True

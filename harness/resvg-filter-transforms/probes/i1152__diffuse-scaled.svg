@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 68 68">
+<defs><filter id="f" x="-0.3" y="-0.3" width="1.6" height="1.6" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="6.1463" result="b"/>
+  <feDiffuseLighting in="b" surfaceScale="5" diffuseConstant="1" lighting-color="#ffffff" result="l"><feDistantLight azimuth="225" elevation="45"/></feDiffuseLighting>
+  <feBlend in="l" in2="SourceGraphic" mode="multiply" result="m"/>
+  <feComposite in="m" in2="SourceAlpha" operator="in"/>
+</filter></defs>
+<circle r="53.2678" fill="#3366cc" transform="translate(34 34) scale(0.4876 0.4887)" filter="url(#f)"/>
+</svg>

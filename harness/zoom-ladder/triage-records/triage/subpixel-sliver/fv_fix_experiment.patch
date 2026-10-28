@@ -1,0 +1,81 @@
+diff --git a/src/path/cache.rs b/src/path/cache.rs
+index 05737d8a..ee0c9a91 100644
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -946,8 +946,24 @@ impl PathCache {
+             let woff = 0.5 * fringe_width;
+             //let woff = 0.0; // Makes everything thicker
+ 
++            // Experiment (FV_FIX): 1 = nanovg's any-of bevel test; 2 = convex
++            // contours only: a beveled corner takes bevel_join, its inset at
++            // the uncapped miter unless INNERBEVEL; 3 = as 2 with the capped miter.
++            let fix = fv_fix();
++            let uncapped = |p0: &Point, p1: &Point| -> Point {
++                let mut q = *p1;
++                if matches!(fix, 2 | 4 | 5) && convex && p1.flags.contains(PointFlags::BEVEL) && !p1.flags.contains(PointFlags::INNERBEVEL) {
++                    let dm = (p0.dpos.orthogonal() + p1.dpos.orthogonal()) * 0.5;
++                    let r2 = dm.mag2();
++                    if r2 > 1e-12 {
++                        q.dmpos = dm * (1.0 / r2);
++                    }
++                }
++                q
++            };
+             if has_fringe {
+                 for (p0, p1) in contour.point_pairs(&self.points) {
++                    let p1 = &uncapped(p0, p1);
+                     if p1.flags.contains(PointFlags::BEVEL) {
+                         if p1.flags.contains(PointFlags::LEFT) {
+                             let lpos = p1.pos + p1.dmpos * woff;
+@@ -995,7 +1011,15 @@ impl PathCache {
+                 };
+ 
+                 for (p0, p1) in contour.point_pairs(&self.points) {
+-                    if p1.flags.contains(PointFlags::BEVEL | PointFlags::INNERBEVEL) {
++                    let p1 = &uncapped(p0, p1);
++                    let beveled = match fix {
++                        1 => p1.flags.intersects(PointFlags::BEVEL | PointFlags::INNERBEVEL),
++                        2 | 3 if convex => p1.flags.intersects(PointFlags::BEVEL | PointFlags::INNERBEVEL),
++                        4 if convex => p1.flags.contains(PointFlags::BEVEL),
++                        5 => p1.flags.contains(PointFlags::BEVEL),
++                        _ => p1.flags.contains(PointFlags::BEVEL | PointFlags::INNERBEVEL),
++                    };
++                    if beveled {
+                         bevel_join(&mut contour.stroke, p0, p1, lw, rw, lu, ru);
+                     } else {
+                         contour.stroke.push(Vertex::pos(p1.pos + p1.dmpos * lw, lu, 1.0));
+@@ -1011,6 +1035,22 @@ impl PathCache {
+             }
+         }
+ 
++        if std::env::var_os("FV_DUMP").is_some() {
++            for contour in &self.contours {
++                let pts = &self.points[contour.point_range.clone()];
++                eprintln!("DUMP contour convex={:?} reversed={} fringe={}", contour.convexity, contour.reversed, fringe_width);
++                for p in pts {
++                    eprintln!("DUMP pt {:?} {:?} dpos {:?} len {} dm {:?}", p.pos, p.flags, p.dpos, p.len, p.dmpos);
++                }
++                for v in &contour.fill {
++                    eprintln!("DUMP fill {} {} {} {}", v.x, v.y, v.u, v.v);
++                }
++                for v in &contour.stroke {
++                    eprintln!("DUMP stroke {} {} {} {}", v.x, v.y, v.u, v.v);
++                }
++            }
++        }
++
+         // The cache outlives this call; a stroke of the same path reads these
+         // same points, so give them back exactly as they arrived.
+         for contour in &mut self.contours {
+@@ -1320,6 +1360,11 @@ fn round_cap_end(verts: &mut Vec<Vertex>, p0: &Point, p1: &Point, w: f32, ncap:
+     }
+ }
+ 
++fn fv_fix() -> u8 {
++    static FIX: std::sync::OnceLock<u8> = std::sync::OnceLock::new();
++    *FIX.get_or_init(|| std::env::var("FV_FIX").ok().and_then(|v| v.parse().ok()).unwrap_or(0))
++}
++
+ fn choose_bevel(bevel: bool, p0: &Point, p1: &Point, w: f32) -> (Position, Position) {
+     if bevel {
+         (p1.pos + p0.dpos.orthogonal() * w, p1.pos + p1.dpos.orthogonal() * w)

@@ -22,9 +22,10 @@ for (const op of ops) {{
   if (op[0] === 'save') ctx.save();
   else if (op[0] === 'restore') ctx.restore();
   else if (op[0] === 'clip') {{ poly(op[1]); ctx.clip(); }}
+  else if (op[0] === 'clippath') {{ ctx.beginPath(); for (const p of op[1]) {{ ctx.moveTo(p[0][0], p[0][1]); for (const q of p.slice(1)) ctx.lineTo(q[0], q[1]); ctx.closePath(); }} ctx.clip(op[2] || 'nonzero'); }}
   else if (op[0] === 'composite') ctx.globalCompositeOperation = op[1];
   else if (op[0] === 'fill') {{ ctx.fillStyle = op[1]; poly(op[2]); ctx.fill(); }}
-  else if (op[0] === 'fillpath') {{ ctx.fillStyle = op[1]; ctx.beginPath(); for (const p of op[2]) {{ ctx.moveTo(p[0][0], p[0][1]); for (const q of p.slice(1)) ctx.lineTo(q[0], q[1]); ctx.closePath(); }} ctx.fill(); }}
+  else if (op[0] === 'fillpath') {{ ctx.fillStyle = op[1]; ctx.beginPath(); for (const p of op[2]) {{ ctx.moveTo(p[0][0], p[0][1]); for (const q of p.slice(1)) ctx.lineTo(q[0], q[1]); ctx.closePath(); }} ctx.fill(op[3] || 'nonzero'); }}
 }}
 </script></body></html>'''
     page = f'{out}/{i}.html'

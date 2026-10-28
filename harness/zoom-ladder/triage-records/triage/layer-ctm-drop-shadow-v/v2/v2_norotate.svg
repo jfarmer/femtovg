@@ -1,0 +1,25 @@
+<!-- Upstream source: wpt/html/canvas/element/layers/2d.layer.ctm.ctx-filter.html | FemtoVG: PR #353, PR #383, PR #400 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:html="http://www.w3.org/1999/xhtml" width="200" height="200" viewBox="0 0 200 200">
+  <title>WPT 2d.layer.ctm.ctx-filter</title>
+  <html:link rel="match" href="wpt-2d-layer-ctm-drop-shadow-filter-ref.svg"/>
+  <defs>
+    <filter id="dsRed" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="5" dy="5" stdDeviation="0" flood-color="red" flood-opacity="1"/>
+    </filter>
+    <filter id="dsGreen" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="5" dy="5" stdDeviation="0" flood-color="green" flood-opacity="1"/>
+    </filter>
+    <filter id="dsBlue" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="2.5" dy="2.5" stdDeviation="0" flood-color="blue" flood-opacity="1"/>
+    </filter>
+  </defs>
+  <g transform="translate(30, 90) scale(2, 2)">
+    <rect x="-5" y="-30" width="10" height="60" fill="grey" filter="url(#dsRed)"/>
+    <g filter="url(#dsGreen)">
+      <rect x="15" y="-30" width="10" height="60" fill="grey"/>
+    </g>
+    <g>
+      <rect x="35" y="-30" width="10" height="60" fill="grey" filter="url(#dsBlue)"/>
+    </g>
+  </g>
+</svg>

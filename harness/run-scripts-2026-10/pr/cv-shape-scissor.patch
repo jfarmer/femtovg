@@ -1,0 +1,400 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index b408077..d32efde 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -1511,6 +1511,77 @@ fn a_shape_clip_gates_only_draws_into_its_target() {
+     assert_eq!(canvas.clip_stack.len(), 1, "only the screen's circle is left");
+ }
+ 
++/// A command whose draws carry a shape is bounded by the pixels the shape
++/// reaches - its fringe included, cut to the target, and never less than a
++/// pixel of it; a draw that carries none, or a coverage of one everywhere,
++/// is not bounded.
++#[test]
++fn a_draw_under_a_shape_is_bounded_by_the_pixels_the_shape_reaches() {
++    let renderer = RecordingRenderer::default();
++    let recorded = renderer.last_commands.clone();
++    let mut canvas = Canvas::new(renderer).unwrap();
++    canvas.set_size(100, 80, 1.0);
++    let paint = Paint::color(Color::black());
++    let mut clip = Path::new();
++    clip.rounded_rect(20.25, 30.5, 40.5, 20.0, 5.0);
++    let mut dented = Path::new();
++    dented.move_to(-8.0, -8.0);
++    dented.line_to(108.0, -8.0);
++    dented.line_to(108.0, 88.0);
++    dented.line_to(-8.0, 88.0);
++    dented.line_to(30.0, 40.0);
++    dented.close();
++    let mut triangle = Path::new();
++    triangle.move_to(0.0, 0.0);
++    triangle.line_to(90.0, 40.0);
++    triangle.line_to(0.0, 70.0);
++    triangle.close();
++    let mut held = Path::new();
++    held.rect(30.0, 35.0, 10.0, 10.0);
++    let mut line = Path::new();
++    line.move_to(0.0, 40.0);
++    line.line_to(100.0, 40.0);
++
++    canvas.fill_path(&dented, &paint); // before the clip
++    canvas.clip_path(&clip, FillRule::NonZero);
++    canvas.fill_path(&dented, &paint); // concave
++    canvas.fill_path(&triangle, &paint); // convex
++    canvas.stroke_path(&line, &paint.clone().with_line_width(3.0));
++    canvas.fill_path(&held, &paint); // carries a coverage of one everywhere
++    canvas.flush_to_output(());
++
++    let commands = recorded.borrow();
++    let bounds: Vec<_> = commands
++        .iter()
++        .filter(|cmd| {
++            !matches!(
++                cmd.cmd_type,
++                CommandType::SetRenderTarget(_) | CommandType::ClearRect { .. }
++            )
++        })
++        .map(|cmd| cmd.clip_bounds([100, 80]))
++        .collect();
++    // The clip spans 20.25 to 60.75 and 30.5 to 50.5, and half a pixel of ramp.
++    let reached = Some([19, 30, 43, 21]);
++    assert_eq!(bounds, [None, reached, reached, reached, None]);
++    let concave = commands
++        .iter()
++        .find(|cmd| cmd.clip_bounds([100, 80]).is_some())
++        .unwrap();
++    assert!(matches!(concave.cmd_type, CommandType::ConcaveFill { .. }));
++    assert_eq!(
++        concave.clip_bounds([40, 40]),
++        Some([19, 30, 21, 10]),
++        "cut to the target"
++    );
++    assert_eq!(
++        concave.clip_bounds([10, 10]),
++        Some([9, 9, 1, 1]),
++        "a pixel of a target it misses"
++    );
++    assert_eq!(concave.clip_bounds([0, 0]), None);
++}
++
+ /// The unclipped image blit would bypass a shape as it would the stencil.
+ #[test]
+ fn an_image_blit_under_a_shape_clip_takes_the_masked_path() {
+diff --git a/src/clip/shape.rs b/src/clip/shape.rs
+index 9769dd5..0e288ae 100644
+--- a/src/clip/shape.rs
++++ b/src/clip/shape.rs
+@@ -561,6 +561,34 @@ impl ClipCoverage {
+         }
+     }
+ 
++    /// The device rectangle outside which the coverage is zero - the box out
++    /// to where its sides' ramps end - or `None` for a coverage of one
++    /// everywhere.
++    pub(crate) fn reach(&self) -> Option<Bounds> {
++        let [a, b, c, d] = self.linear;
++        let determinant = a * d - b * c;
++        if determinant == 0.0 {
++            return None;
++        }
++        // The inverse of the linear part takes the box's half sides, each
++        // with its half fringe, back to device pixels.
++        let outer = [self.extent[0] + 0.5, self.extent[1] + 0.5];
++        let half = [
++            (d.abs() * outer[0] + b.abs() * outer[1]) / determinant.abs(),
++            (c.abs() * outer[0] + a.abs() * outer[1]) / determinant.abs(),
++        ];
++        let center = [
++            (b * self.offset[1] - d * self.offset[0]) / determinant,
++            (c * self.offset[0] - a * self.offset[1]) / determinant,
++        ];
++        Some(Bounds {
++            minx: center[0] - half[0],
++            miny: center[1] - half[1],
++            maxx: center[0] + half[0],
++            maxy: center[1] + half[1],
++        })
++    }
++
+     /// Whether the box holds a rectangle of device pixels whole, within
+     /// [`DRAW_SLACK`]: a draw that stays inside it has nothing clipped, and
+     /// along an edge it shares with the box its own antialiasing is its
+@@ -657,6 +685,48 @@ mod tests {
+         path
+     }
+ 
++    /// A coverage is zero outside its reach, and the reach is no wider than
++    /// that: the box grown by the half fringe its sides' ramps run past it.
++    #[test]
++    fn a_coverage_reaches_as_far_as_its_ramps_and_no_further() {
++        let mut turned = Transform2D::identity();
++        turned.rotate(0.4);
++        turned.translate(31.0, 47.5);
++        let mut skewed = Transform2D::new(3.0, 0.5, -1.25, 0.75, 0.0, 0.0);
++        skewed.translate(40.25, 52.0);
++        for frame in [Transform2D::translation(40.25, 30.5), turned, skewed] {
++            for radius in [0.0, 6.0] {
++                let shape = RoundedBox {
++                    frame,
++                    extent: [20.0, 12.5],
++                    radii: [radius; 2],
++                };
++                let coverage = shape.coverage(1.0).unwrap();
++                let reach = coverage.reach().unwrap();
++                let per_fringe = shape.per_fringe(1.0);
++                let ramps = RoundedBox {
++                    extent: [20.0 + 0.5 * per_fringe[0], 12.5 + 0.5 * per_fringe[1]],
++                    radii: [0.0; 2],
++                    ..shape
++                }
++                .corners();
++                let pick = |f: fn(f32, f32) -> f32, axis: usize| ramps.iter().map(|c| c[axis]).reduce(f).unwrap();
++                assert_close([reach.minx, reach.miny], [pick(f32::min, 0), pick(f32::min, 1)]);
++                assert_close([reach.maxx, reach.maxy], [pick(f32::max, 0), pick(f32::max, 1)]);
++                for step in 0..(200 * 200) {
++                    let at = [(step % 200) as f32 * 0.75 - 40.0, (step / 200) as f32 * 0.75 - 40.0];
++                    let inside =
++                        reach.minx <= at[0] && at[0] <= reach.maxx && reach.miny <= at[1] && at[1] <= reach.maxy;
++                    assert!(
++                        inside || coverage.distance(at) >= 0.5,
++                        "{at:?} is covered outside {reach:?}"
++                    );
++                }
++            }
++        }
++        assert!(ClipCoverage::EVERYWHERE.reach().is_none());
++    }
++
+     #[test]
+     fn a_rect_and_any_parallelogram_fit_with_their_own_frame() {
+         let mut rect = Path::new();
+diff --git a/src/renderer.rs b/src/renderer.rs
+index ecfeb8f..0599258 100644
+--- a/src/renderer.rs
++++ b/src/renderer.rs
+@@ -149,6 +149,36 @@ impl Command {
+             composite_operation: CompositeOperationState::default(),
+         }
+     }
++
++    /// The pixels of a target of `size` that the clip shape leaves the
++    /// command's draws - x, y, width and height from the top left - when
++    /// they carry a shape that ends somewhere. Outside them its coverage is
++    /// zero, so the renderer scissors every draw of the command to them,
++    /// the ones that only write the stencil too: no fragment is shaded out
++    /// there and a tiler leaves its tiles alone, as under a clip on the
++    /// stencil. Never less than a pixel: Metal takes no empty scissor.
++    pub(crate) fn clip_bounds(&self, [width, height]: [u32; 2]) -> Option<[u32; 4]> {
++        let params = match &self.cmd_type {
++            CommandType::ConvexFill { params }
++            | CommandType::Stroke { params }
++            | CommandType::Triangles { params }
++            | CommandType::ConcaveFill {
++                fill_params: params, ..
++            }
++            | CommandType::StencilStroke { params1: params, .. } => params,
++            _ => return None,
++        };
++        let reach = params.clip?.reach()?;
++        if width == 0 || height == 0 {
++            return None;
++        }
++        // A float past either end saturates, and one that is no number is zero.
++        let left = (reach.minx.floor() as u32).min(width - 1);
++        let top = (reach.miny.floor() as u32).min(height - 1);
++        let right = (reach.maxx.ceil() as u32).clamp(left + 1, width);
++        let bottom = (reach.maxy.ceil() as u32).clamp(top + 1, height);
++        Some([left, top, right - left, bottom - top])
++    }
+ }
+ 
+ /// Represents different render targets (screen or image).
+diff --git a/src/renderer/opengl.rs b/src/renderer/opengl.rs
+index 41f2277..95f7c52 100644
+--- a/src/renderer/opengl.rs
++++ b/src/renderer/opengl.rs
+@@ -48,6 +48,8 @@ pub struct OpenGl {
+     // The programs of draws under a clip shape, by shader type and glyph texture use, each built when first drawn
+     // with (None if that failed): no other program evaluates a shape, and few of them are ever drawn under one.
+     clip_shape_programs: FnvHashMap<(u8, bool), Option<MainProgram>>,
++    // The scissor rect of the draws under a clip shape; none is no scissor.
++    current_clip_bounds: Option<[u32; 4]>,
+     current_program: u8,
+     current_program_needs_glyph_texture: bool,
+     current_program_clips: bool,
+@@ -294,6 +296,7 @@ impl OpenGl {
+             main_programs_with_glyph_texture,
+             main_programs_without_glyph_texture,
+             clip_shape_programs,
++            current_clip_bounds: None,
+             current_program: 0,
+             current_program_needs_glyph_texture: true,
+             current_program_clips: false,
+@@ -1041,6 +1044,29 @@ impl OpenGl {
+         });
+     }
+ 
++    /// Scissors the draws that follow to `bounds` - x, y, width and height
++    /// from the target's top left - or lifts the scissor.
++    fn set_clip_bounds(&mut self, bounds: Option<[u32; 4]>) {
++        if self.current_clip_bounds == bounds {
++            return;
++        }
++        self.current_clip_bounds = bounds;
++        unsafe {
++            match bounds {
++                Some([x, y, width, height]) => {
++                    self.context.enable(glow::SCISSOR_TEST);
++                    self.context.scissor(
++                        x as i32,
++                        self.view[1] as i32 - (y + height) as i32,
++                        width as i32,
++                        height as i32,
++                    );
++                }
++                None => self.context.disable(glow::SCISSOR_TEST),
++            }
++        }
++    }
++
+     fn main_program(&self) -> &MainProgram {
+         if self.current_program_clips {
+             return self
+@@ -1179,6 +1205,7 @@ impl Renderer for OpenGl {
+         self.check_error("render prepare");
+ 
+         for cmd in commands {
++            self.set_clip_bounds(cmd.clip_bounds([self.view[0] as u32, self.view[1] as u32]));
+             self.set_composite_operation(cmd.composite_operation);
+ 
+             match cmd.cmd_type {
+@@ -1220,6 +1247,9 @@ impl Renderer for OpenGl {
+             }
+         }
+ 
++        // No scissor of a clipped draw outlives the frame.
++        self.set_clip_bounds(None);
++
+         unsafe {
+             self.context.disable_vertex_attrib_array(0);
+             self.context.disable_vertex_attrib_array(1);
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index c1ff3ac..fbd1779 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -616,6 +616,7 @@ impl Renderer for WGPURenderer {
+ 
+         let mut current_render_target = RenderTarget::Screen;
+         for command in commands {
++            render_pass_builder.set_clip_bounds(&command);
+             match command.cmd_type {
+                 super::CommandType::SetRenderTarget(render_target) => {
+                     current_render_target = render_target;
+@@ -2041,6 +2042,8 @@ struct RenderPassBuilder<'a> {
+     current_pipeline_state: Option<PipelineState>,
+     current_stencil_reference: Option<u32>,
+     current_bound_offset: Option<u32>,
++    // The scissor rect set on the open pass; none is the whole target.
++    current_clip_bounds: Option<[u32; 4]>,
+ }
+ 
+ impl<'a> RenderPassBuilder<'a> {
+@@ -2076,9 +2079,25 @@ impl<'a> RenderPassBuilder<'a> {
+             current_pipeline_state: None,
+             current_stencil_reference: None,
+             current_bound_offset: None,
++            current_clip_bounds: None,
+         }
+     }
+ 
++    /// Scissors the open pass's draws to the pixels `command`'s clip
++    /// leaves them, or to the whole target again.
++    fn set_clip_bounds(&mut self, command: &super::Command) {
++        let (width, height) = (self.viewport[0] as u32, self.viewport[1] as u32);
++        let bounds = command.clip_bounds([width, height]);
++        if self.current_clip_bounds == bounds {
++            return;
++        }
++        self.current_clip_bounds = bounds;
++        let [x, y, w, h] = bounds.unwrap_or([0, 0, width, height]);
++        // An image target stores its rows bottom up.
++        let y = if self.rendering_to_texture { height - (y + h) } else { y };
++        self.rpass.as_mut().unwrap().set_scissor_rect(x, y, w, h);
++    }
++
+     fn set_viewport(&mut self, viewport: [f32; 2]) {
+         if self.viewport == viewport {
+             return;
+@@ -2244,6 +2263,7 @@ impl<'a> RenderPassBuilder<'a> {
+         self.current_pipeline_state = None;
+         self.current_stencil_reference = None;
+         self.current_bound_offset = None;
++        self.current_clip_bounds = None;
+         drop(self.rpass.take());
+         let stencil_view = self
+             .stencil_buffer
+diff --git a/tests/clip_shape_wgpu.rs b/tests/clip_shape_wgpu.rs
+index 4c8b0f3..aa75a0b 100644
+--- a/tests/clip_shape_wgpu.rs
++++ b/tests/clip_shape_wgpu.rs
+@@ -872,6 +872,60 @@ fn a_shape_clip_belongs_to_the_target_it_was_taken_on() {
+     assert_eq!(px(&on_image, 4, 4), RED, "the image's clip does not gate the screen");
+ }
+ 
++/// A draw under a small shape is scissored to the pixels the shape reaches,
++/// its stencil draws with it: a concave fill that spans the target leaves
++/// no winding outside the shape for the next fill to take as its own, and
++/// the scissor ends with the draw. On the screen and in a layer, whose
++/// image is stored bottom up.
++#[test]
++fn a_fill_under_a_small_shape_leaves_the_rest_of_the_target_alone() {
++    let Some((device, queue)) = headless_device() else {
++        eprintln!("skipping: no wgpu adapter available");
++        return;
++    };
++    let scene = |canvas: &mut Canvas<WGPURenderer>| {
++        let mut clip = Path::new();
++        clip.rounded_rect(8.0, 10.0, 30.0, 20.0, 6.0);
++        let mut dented = Path::new();
++        dented.move_to(-8.0, -8.0);
++        dented.line_to(104.0, -8.0);
++        dented.line_to(104.0, 104.0);
++        dented.line_to(-8.0, 104.0);
++        dented.line_to(4.0, 48.0);
++        dented.close();
++        let mut ring = Path::new();
++        ring.rect(44.0, 34.0, 48.0, 58.0);
++        ring.rect(54.0, 44.0, 28.0, 38.0);
++        canvas.save();
++        canvas.clip_path(&clip, FillRule::NonZero);
++        canvas.fill_path(&dented, &red());
++        canvas.restore();
++        canvas.fill_path(
++            &ring,
++            &Paint::color(Color::rgb(0, 0, 255)).with_fill_rule(FillRule::EvenOdd),
++        );
++    };
++    let check = |frame: &[u8], red: [u8; 3], blue: [u8; 3], on: &str| {
++        assert_eq!(px(frame, 22, 20), red, "{on}: the fill, inside the shape");
++        assert_eq!(px(frame, 22, 60), WHITE, "{on}: nothing of it below the shape");
++        assert_eq!(px(frame, 48, 60), blue, "{on}: the ring, drawn whole after it");
++        assert_eq!(px(frame, 88, 88), blue, "{on}: the ring's far corner");
++        for y in 46..80 {
++            for x in 56..80 {
++                assert_eq!(px(frame, x, y), WHITE, "{on}: the ring's hole at {x},{y}");
++            }
++        }
++    };
++    let on_screen = render(&device, &queue, scene);
++    check(&on_screen, RED, [0, 0, 255], "screen");
++    let in_layer = render(&device, &queue, |canvas| {
++        assert!(canvas.begin_layer(&LayerEffects::new().with_opacity(0.5)));
++        scene(canvas);
++        canvas.end_layer();
++    });
++    check(&in_layer, [255, 128, 128], [128, 128, 255], "layer");
++}
++
+ /// `Copy` replaces what it covers, transparent source included, so coverage
+ /// cannot hold it to a shape: under one the shape is cut on the stencil,
+ /// nothing outside it changes, and the winding a concave fill leaves there

@@ -1,0 +1,109 @@
+diff --git a/src/path/cache.rs b/src/path/cache.rs
+index f907585..ce47d22 100644
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -1,5 +1,16 @@
+ use std::{cmp::Ordering, f32::consts::PI, ops::Range};
+ 
++fn rv_diag() -> bool {
++    static ON: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
++    *ON.get_or_init(|| std::env::var_os("RV_DIAG").is_some())
++}
++
++fn rv_bbox(points: &[Point]) -> (f32, f32, f32, f32) {
++    points.iter().fold((f32::MAX, f32::MAX, f32::MIN, f32::MIN), |b, p| {
++        (b.0.min(p.pos.x), b.1.min(p.pos.y), b.2.max(p.pos.x), b.3.max(p.pos.y))
++    })
++}
++
+ use bitflags::bitflags;
+ 
+ use crate::{
+@@ -72,6 +83,7 @@ pub struct Contour {
+     pub(crate) fill: Vec<Vertex>,
+     pub(crate) stroke: Vec<Vertex>,
+     pub(crate) convexity: Convexity,
++    merged: u32,
+ }
+ 
+ impl Default for Contour {
+@@ -86,6 +98,7 @@ impl Default for Contour {
+             fill: Vec::new(),
+             stroke: Vec::new(),
+             convexity: Convexity::default(),
++            merged: 0,
+         }
+     }
+ }
+@@ -315,6 +328,10 @@ impl PathCache {
+             contour.degenerate = Contour::collinear(&cache.points[contour.point_range.clone()]);
+         }
+ 
++        if rv_diag() {
++            eprintln!("RVPOINTS {}", cache.points.len());
++        }
++
+         cache
+     }
+ 
+@@ -373,6 +390,17 @@ impl PathCache {
+             // If the contour's last point equals this new point just OR the flags and ignore the new point
+             if let Some(last_point) = self.points[contour.point_range.clone()].last_mut() {
+                 if last_point.approx_eq(&new_point, dist_tol) {
++                    if rv_diag() {
++                        eprintln!(
++                            "RVMERGE {} {} {} {} {}",
++                            x,
++                            y,
++                            if flags.contains(PointFlags::CORNER) { "corner" } else { "interior" },
++                            if last_point.flags.contains(PointFlags::CORNER) { "ontocorner" } else { "ontointerior" },
++                            if last_point.pos.x == x && last_point.pos.y == y { "exact" } else { "near" }
++                        );
++                    }
++                    contour.merged += 1;
+                     last_point.flags |= new_point.flags;
+                     return;
+                 }
+@@ -737,6 +765,23 @@ impl PathCache {
+ 
+         self.calculate_joins(fringe_width, line_join, miter_limit);
+ 
++        if rv_diag() {
++            let single = self.contours.len() == 1;
++            for c in &self.contours {
++                if c.merged > 0 {
++                    let b = rv_bbox(&self.points[c.point_range.clone()]);
++                    eprintln!(
++                        "RVFILL merged={} convex={} contours={} points={} bbox={} {} {} {}",
++                        c.merged,
++                        single && c.convexity == Convexity::Convex,
++                        self.contours.len(),
++                        c.point_count(),
++                        b.0, b.1, b.2, b.3
++                    );
++                }
++            }
++        }
++
+         // Calculate max vertex usage.
+         for contour in &mut self.contours {
+             let point_count = contour.point_count();
+@@ -872,6 +917,18 @@ impl PathCache {
+ 
+         self.calculate_joins(stroke_width, line_join, miter_limit);
+ 
++        if rv_diag() {
++            for c in &self.contours {
++                if c.merged > 0 {
++                    let b = rv_bbox(&self.points[c.point_range.clone()]);
++                    eprintln!(
++                        "RVSTROKE merged={} width={} join={:?} closed={} points={} bbox={} {} {} {}",
++                        c.merged, stroke_width, line_join, c.closed, c.point_count(), b.0, b.1, b.2, b.3
++                    );
++                }
++            }
++        }
++
+         for contour in &mut self.contours {
+             contour.stroke.clear();
+ 

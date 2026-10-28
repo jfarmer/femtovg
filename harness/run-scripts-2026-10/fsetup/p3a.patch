@@ -1,0 +1,68 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 79170d93..35419303 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -377,6 +377,7 @@ pub struct WGPURenderer {
+     vertex_buffer: wgpu::Buffer,
+     fan_indices: FanIndices,
+     fan_index_buffer: wgpu::Buffer,
++    staging_belt: wgpu::util::StagingBelt,
+     stencil_buffer: Option<wgpu::Texture>,
+     stencil_buffer_for_textures: HashMap<wgpu::Texture, wgpu::Texture>,
+     viewport_bind_group_layout: wgpu::BindGroupLayout,
+@@ -542,6 +543,7 @@ impl WGPURenderer {
+         });
+ 
+         Self {
++            staging_belt: wgpu::util::StagingBelt::new(device.clone(), 1 << 20),
+             device,
+             queue,
+ 
+@@ -784,8 +786,13 @@ impl Renderer for WGPURenderer {
+             VERTEX_BUFFER_LABEL,
+             VERTEX_BUFFER_USAGE,
+         );
+-        if !vertex_bytes.is_empty() {
+-            self.queue.write_buffer(&self.vertex_buffer, 0, vertex_bytes);
++        let mut encoder = self
++            .device
++            .create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
++        if let Some(size) = wgpu::BufferSize::new(vertex_bytes.len() as u64) {
++            self.staging_belt
++                .write_buffer(&mut encoder, &self.vertex_buffer, 0, size)
++                .copy_from_slice(vertex_bytes);
+         }
+         let vertex_buffer = self.vertex_buffer.clone();
+         self.fan_indices.build(&commands);
+@@ -797,8 +804,10 @@ impl Renderer for WGPURenderer {
+             FAN_INDEX_LABEL,
+             FAN_INDEX_USAGE,
+         );
+-        if !fan_index_bytes.is_empty() {
+-            self.queue.write_buffer(&self.fan_index_buffer, 0, fan_index_bytes);
++        if let Some(size) = wgpu::BufferSize::new(fan_index_bytes.len() as u64) {
++            self.staging_belt
++                .write_buffer(&mut encoder, &self.fan_index_buffer, 0, size)
++                .copy_from_slice(fan_index_bytes);
+         }
+ 
+         if let Some(stencil_buffer) = &self.stencil_buffer {
+@@ -827,10 +836,6 @@ impl Renderer for WGPURenderer {
+             })
+             .clone();
+ 
+-        let mut encoder = self
+-            .device
+-            .create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
+-
+         let mut render_pass_builder = RenderPassBuilder::new(
+             self.device.clone(),
+             &mut encoder,
+@@ -1004,6 +1009,7 @@ impl Renderer for WGPURenderer {
+             self.queue.write_buffer(&self.uniform_buffer, 0, uniform_staging);
+         }
+ 
++        self.staging_belt.finish_and_recall_on_submit(&encoder);
+         let command_buffer = encoder.finish();
+ 
+         evict_least_recently_used(

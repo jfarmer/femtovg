@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="150" viewBox="0 0 400 150">
+  <title>Gradient pads: sRGB and linearRGB two-stop ramps from x = 120 to x = 280</title>
+  <linearGradient id="srgb" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="280" y2="0">
+    <stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/>
+  </linearGradient>
+  <linearGradient id="linear" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="280" y2="0" color-interpolation="linearRGB">
+    <stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/>
+  </linearGradient>
+  <linearGradient id="linear-rb" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="280" y2="0" color-interpolation="linearRGB">
+    <stop offset="0" stop-color="#f00"/><stop offset="1" stop-color="#00f"/>
+  </linearGradient>
+  <rect width="400" height="50" fill="url(#srgb)"/>
+  <rect y="50" width="400" height="50" fill="url(#linear)"/>
+  <rect y="100" width="400" height="50" fill="url(#linear-rb)"/>
+</svg>

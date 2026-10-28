@@ -1,0 +1,63 @@
+diff --git a/src/gradient_store.rs b/src/gradient_store.rs
+index cdab515a..7fccc858 100644
+--- a/src/gradient_store.rs
++++ b/src/gradient_store.rs
+@@ -45,7 +45,13 @@ impl GradientStore {
+             Ok(*gradient_image_id)
+         } else {
+             // We need to allocate a texture and synthesize the gradient image.
+-            let info = ImageInfo::new(ImageFlags::REPEAT_Y, 256, 1, crate::PixelFormat::Rgba8);
++            // Probe: FEMTOVG_GRADIENT_LUT=N texels (default 256), FEMTOVG_GRADIENT_NEAREST for an unfiltered sampler.
++            let n = lut_n();
++            let mut flags = ImageFlags::REPEAT_Y;
++            if std::env::var("FEMTOVG_GRADIENT_NEAREST").is_ok() {
++                flags |= ImageFlags::NEAREST;
++            }
++            let info = ImageInfo::new(flags, n, 1, crate::PixelFormat::Rgba8);
+             let gradient_image_id = images.alloc(renderer, info)?;
+             let image = linear_gradient_stops(colors);
+             images.update(renderer, gradient_image_id, ImageSource::Rgba(image.as_ref()), 0, 0)?;
+@@ -70,7 +76,11 @@ impl GradientStore {
+ 
+ #[allow(clippy::many_single_char_names)]
+ // Gradient filling, adapted from https://github.com/lieff/lvg/blob/master/render/common.c#L147
+-fn gradient_span(dest: &mut [rgb::RGBA8; 256], color0: Color, color1: Color, offset0: f32, offset1: f32) {
++fn lut_n() -> usize {
++    std::env::var("FEMTOVG_GRADIENT_LUT").ok().and_then(|v| v.parse().ok()).unwrap_or(256)
++}
++
++fn gradient_span(dest: &mut [rgb::RGBA8], color0: Color, color1: Color, offset0: f32, offset1: f32) {
+     let s0o = offset0.clamp(0.0, 1.0);
+     let s1o = offset1.clamp(0.0, 1.0);
+ 
+@@ -78,8 +88,9 @@ fn gradient_span(dest: &mut [rgb::RGBA8; 256], color0: Color, color1: Color, off
+         return;
+     }
+ 
+-    let s = (s0o * 256.0) as usize;
+-    let e = (s1o * 256.0) as usize;
++    let nf = dest.len() as f32;
++    let s = (s0o * nf) as usize;
++    let e = (s1o * nf) as usize;
+ 
+     let mut r = color0.r;
+     let mut g = color0.g;
+@@ -114,7 +125,8 @@ fn gradient_span(dest: &mut [rgb::RGBA8; 256], color0: Color, color1: Color, off
+     }
+ }
+ fn linear_gradient_stops(gradient: &MultiStopGradient) -> imgref::Img<Vec<rgb::RGBA8>> {
+-    let mut dest = [rgb::RGBA8::new(0, 0, 0, 0); 256];
++    let n = lut_n();
++    let mut dest = vec![rgb::RGBA8::new(0, 0, 0, 0); n];
+ 
+     // Fill the gradient up to the first stop.
+     let first_stop = gradient.get(0);
+@@ -151,7 +163,7 @@ fn linear_gradient_stops(gradient: &MultiStopGradient) -> imgref::Img<Vec<rgb::R
+     if last_stop.0 < 1.0 {
+         gradient_span(&mut dest, last_stop.1, last_stop.1, last_stop.0, 1.0);
+     }
+-    imgref::Img::new(dest.to_vec(), 256, 1)
++    imgref::Img::new(dest, n, 1)
+ }
+ 
+ #[cfg(test)]

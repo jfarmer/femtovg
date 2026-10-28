@@ -1,0 +1,44 @@
+--- a/harness/make_ref.py
++++ b/harness/make_ref.py
+@@ -26,6 +26,9 @@
+     t = t[t.index("<svg"):t.rindex("</svg>") + 6]
+ m = re.search(r"<svg\b([^>]*)>", t)
+ attrs, inner = m.group(1), t[m.end():t.rindex("</svg>")]
++# usvg runs no script (and the harness has no DOM); in the page a script would act on the page's own svg, as the
++# WPT panning tests' currentTranslate does on the frame. Drop scripts so both render the same document.
++inner = re.sub(r"<script\b.*?</script>", "", inner, flags=re.S)
+ vb = re.search(r'viewBox="([^"]*)"', attrs)
+ vb = vb.group(1) if vb else None
+ vbw, vbh = [float(v) for v in vb.replace(",", " ").split()[2:4]] if vb else (None, None)
+@@ -46,6 +49,11 @@
+ 
+ w = length("width", None)
+ h = length("height", None)
++# Neither width, height nor viewBox: usvg (converter::convert_doc, restore_viewbox) renders the content at user
++# scale 1 and sizes the root to the content's bounding box, its right and bottom edges - not the 100 x 100 of
++# Options::default_size, which only holds while the tree is converted. The page measures the same box and sizes
++# the nested svg from it before the first paint.
++sizeless = w is None and h is None and not vb
+ # One missing: usvg derives it from the other through the viewBox aspect; both missing: the viewBox
+ # (100 x 100 without one).
+ if w is None and h is None:
+@@ -67,8 +75,17 @@
+ # The pivot of the zoom: the frame centre, or PIVOT=x,y as the harness reads it.
+ PX, PY_ = (float(v) for v in os.environ["PIVOT"].split(",")) if os.environ.get("PIVOT") else (float(FW) / 2, float(FH) / 2)
+ fit = float(BOX) / max(w, h)
++measure = ""
++if sizeless:
++    measure = f'''<script>(function () {{
++  const s = document.getElementById("usvg-root"), b = s.getBBox();
++  const w = b.x + b.width, h = b.y + b.height, fit = {float(BOX)} / Math.max(w, h);
++  s.setAttribute("viewBox", `0 0 ${{w}} ${{h}}`);
++  s.setAttribute("width", w * fit);
++  s.setAttribute("height", h * fit);
++}})();</script>'''
+ print(f'''<!doctype html><body style="margin:0;background:#fff">
+ <svg width="{FW}" height="{FH}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+-<g transform="translate({PX:g},{PY_:g}) scale({scale}) translate({-PX:g},{-PY_:g})"><svg x="{BX}" y="{BY}" width="{w * fit:.6g}" height="{h * fit:.6g}" viewBox="{vb}" preserveAspectRatio="{par}" {keep}>
++<g transform="translate({PX:g},{PY_:g}) scale({scale}) translate({-PX:g},{-PY_:g})"><svg {'id="usvg-root" ' if sizeless else ''}x="{BX}" y="{BY}" width="{w * fit:.6g}" height="{h * fit:.6g}" viewBox="{vb}" preserveAspectRatio="{par}" {keep}>
+ {inner}
+-</svg></g></svg>''')
++</svg></g></svg>{measure}''')

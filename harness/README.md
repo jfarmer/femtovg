@@ -318,7 +318,16 @@ opacity-scaled group and showed through a translucent one. Now the noise
 measures 8.45, between the browsers. The 13 feTurbulence files at 4x go from
 3.57 % to 2.82 % px > 8 against Chromium and from 2.80 % to 1.71 % against
 Firefox. `SRGB_SHADOW_MERGE=1` merges in sRGB with the same layers, and
-`SINGLE_SHADOW_LAYER=1` restores the previous mapping bit for bit. The proof
+`SINGLE_SHADOW_LAYER=1` restores the previous mapping bit for bit. Since 2026-10-19 rule 4a is
+what a corpus run uses by default (`corpus_run/common.py`: a build without an entry runs with the harness's own
+defaults; `<build>_single` runs it with `SINGLE_SHADOW_LAYER=1`), now that the library runs a lone colour-space
+conversion in the layer composite (#400): over the 36 BuseyBench portraits the pixels more than 20/255 off all three
+browsers go from 0.102 % to 0.036 % of the frame at 2x and from 0.034 % to 0.006 % at 1080p (master 06243b80, gpt-6-astra's references made after the `make_ref.py` fix of the same day). The
+same day `shadow_chain` stopped reading an `feColorMatrix`'s linearRGB constants as sRGB on the paths outside the
+merge (one shadow layer, a group that draws only its shadow): gpt-5-6-terra-pro's 0/.03/.06 is rgb(0, 48, 69), as
+the browsers draw it, not rgb(0, 8, 15). Across the corpus that moves exactly the two files with such a matrix
+(`shadow-merge/matrix-colour-linear` 4.56 % -> 1.25 % px > 20 against Chromium at 2x with one shadow layer,
+gpt-5-6-terra-pro 1.21 % -> 0.30 %). The proof
 (isolation, per-pixel models, the browsers forced to sRGB), the corpus A/B
 and the residuals are in `shadow-merge-2026-10-04.md`, the tools in
 `shadow_merge/`, the probes in `corpus/shadow-merge/`.
@@ -661,6 +670,13 @@ that stops at an `feBlend` counts as run, as the mapping section's rule 1
 set out. `PARTIAL_CHAINS=1` restores the earlier policy for comparison.
 
 ## Text as glyph runs (2026-10-12)
+
+The current harness also supports Matt's `FEMTOVG_TEXT=glyphs|shape` modes:
+`glyphs` uses usvg's positioned glyphs, and `shape` uses femtovg's text
+layout. An explicit mode overrides the `harness_text` build default;
+`TEXT_AS_PATHS=1` forces usvg's outlines. Without a mode or that build cfg,
+text is drawn as usvg's outlines. The measurements below describe the
+original glyph-run harness.
 
 Before this the harness drew no text: `draw_nodes` had no arm for
 `usvg::Node::Text`. 55 corpus files have a `<text>` element (49 of the 66

@@ -1,0 +1,114 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 79170d93..6d3c8c04 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -63,6 +63,33 @@ use super::Params;
+ use super::Vertex;
+ use crate::clip::{ClipCoverage, MaskCoverage};
+ 
++// TEMPORARY instrumentation (never committed): nanoseconds spent in the per-frame setup calls.
++pub(crate) mod fs_time {
++    use std::sync::atomic::{AtomicU64, Ordering::Relaxed};
++    pub static RENDER: AtomicU64 = AtomicU64::new(0);
++    pub static VIEWPORT: AtomicU64 = AtomicU64::new(0);
++    pub static VIEWPORT_N: AtomicU64 = AtomicU64::new(0);
++    pub static WRITE_VERTEX: AtomicU64 = AtomicU64::new(0);
++    pub static WRITE_INDEX: AtomicU64 = AtomicU64::new(0);
++    pub static WRITE_UNIFORM: AtomicU64 = AtomicU64::new(0);
++    pub static FINISH: AtomicU64 = AtomicU64::new(0);
++    pub static RENDERS: AtomicU64 = AtomicU64::new(0);
++    pub fn add(c: &AtomicU64, since: std::time::Instant) {
++        c.fetch_add(since.elapsed().as_nanos() as u64, Relaxed);
++    }
++    pub fn report() {
++        if std::env::var_os("FS_TIME").is_none() {
++            return;
++        }
++        let n = RENDERS.load(Relaxed).max(1) as f64;
++        let us = |c: &AtomicU64| c.load(Relaxed) as f64 / n / 1000.0;
++        eprintln!(
++            "FSTIME renders={} render_us={:.2} viewport_us={:.2} viewport_n={:.1} write_vertex_us={:.2} write_index_us={:.2} write_uniform_us={:.2} finish_us={:.2}",
++            n, us(&RENDER), us(&VIEWPORT), VIEWPORT_N.load(Relaxed) as f64 / n, us(&WRITE_VERTEX), us(&WRITE_INDEX), us(&WRITE_UNIFORM), us(&FINISH)
++        );
++    }
++}
++
+ const UNIFORMARRAY_SIZE: usize = 16;
+ const UNIFORM_BYTES: u64 = (UNIFORMARRAY_SIZE * 4 * 4) as u64;
+ // A concave fill and a stencil stroke record two sets of params, every other command one.
+@@ -755,6 +782,7 @@ impl Renderer for WGPURenderer {
+         if commands.is_empty() {
+             return None;
+         }
++        let render_started = std::time::Instant::now();
+         self.flush_count += 1;
+ 
+         // The bind groups recorded below hold this buffer, so it cannot grow mid-frame.
+@@ -785,7 +813,9 @@ impl Renderer for WGPURenderer {
+             VERTEX_BUFFER_USAGE,
+         );
+         if !vertex_bytes.is_empty() {
++            let t = std::time::Instant::now();
+             self.queue.write_buffer(&self.vertex_buffer, 0, vertex_bytes);
++            fs_time::add(&fs_time::WRITE_VERTEX, t);
+         }
+         let vertex_buffer = self.vertex_buffer.clone();
+         self.fan_indices.build(&commands);
+@@ -798,7 +828,9 @@ impl Renderer for WGPURenderer {
+             FAN_INDEX_USAGE,
+         );
+         if !fan_index_bytes.is_empty() {
++            let t = std::time::Instant::now();
+             self.queue.write_buffer(&self.fan_index_buffer, 0, fan_index_bytes);
++            fs_time::add(&fs_time::WRITE_INDEX, t);
+         }
+ 
+         if let Some(stencil_buffer) = &self.stencil_buffer {
+@@ -1001,10 +1033,14 @@ impl Renderer for WGPURenderer {
+             "a command recorded more than UNIFORM_SLOTS_PER_COMMAND uniform slots"
+         );
+         if !uniform_staging.is_empty() {
++            let t = std::time::Instant::now();
+             self.queue.write_buffer(&self.uniform_buffer, 0, uniform_staging);
++            fs_time::add(&fs_time::WRITE_UNIFORM, t);
+         }
+ 
++        let t = std::time::Instant::now();
+         let command_buffer = encoder.finish();
++        fs_time::add(&fs_time::FINISH, t);
+ 
+         evict_least_recently_used(
+             &mut self.pipeline_cache.borrow_mut(),
+@@ -1012,6 +1048,9 @@ impl Renderer for WGPURenderer {
+             |cached_pipeline| cached_pipeline.last_used,
+         );
+ 
++        fs_time::add(&fs_time::RENDER, render_started);
++        fs_time::RENDERS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
++        fs_time::report();
+         Some(command_buffer)
+     }
+ 
+@@ -2434,7 +2473,10 @@ impl<'a> RenderPassBuilder<'a> {
+         vertex_buffer: wgpu::Buffer,
+         fan_indices: wgpu::Buffer,
+     ) -> Self {
++        let t = std::time::Instant::now();
+         let viewport_bind_group = Self::create_viewport_bind_group(&device, &screen_view, &viewport_bind_group_layout);
++        fs_time::add(&fs_time::VIEWPORT, t);
++        fs_time::VIEWPORT_N.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+         Self {
+             device: device.clone(),
+             encoder,
+@@ -2480,8 +2522,11 @@ impl<'a> RenderPassBuilder<'a> {
+             return;
+         }
+         self.viewport = viewport;
++        let t = std::time::Instant::now();
+         self.viewport_bind_group =
+             Self::create_viewport_bind_group(&self.device, &self.viewport, &self.viewport_bind_group_layout);
++        fs_time::add(&fs_time::VIEWPORT, t);
++        fs_time::VIEWPORT_N.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+     }
+ 
+     fn create_viewport_bind_group(

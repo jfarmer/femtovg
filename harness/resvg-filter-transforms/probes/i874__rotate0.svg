@@ -1,0 +1,9 @@
+<svg height="1000" width="1000" transform="rotate(0)" xmlns="http://www.w3.org/2000/svg">
+   <rect x="400" y="100" width="200" height="100" fill="black" filter="url(#myFilter)" />
+   <defs>
+      <filter id="myFilter" x="0" y="0" width="800" height="600" filterUnits="userSpaceOnUse">
+         <feOffset in="SourceGraphic" dy="200" result="offsetImage" />
+         <feBlend in="SourceGraphic" in2="offsetImage" />
+      </filter>
+   </defs>
+</svg>

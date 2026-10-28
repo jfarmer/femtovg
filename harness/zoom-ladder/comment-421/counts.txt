@@ -1,0 +1,13 @@
+8 checkboxes
+zoom  | master: wk corner inner other best | prototype: wk corner inner other best | WebKit, Chromium vs area
+0.25  |   39    6    4   33   37 chr |   40    6    4   34   37 chr |   32   34
+0.33  |   14    7    3    7   14 wk  |   11    4    3    7   11 wk  |    5    7
+0.5   |   24   10    5   14   24 wk  |   19    5    5   14   19 wk  |    7    6
+0.75  |   32   15    2   17   32 wk  |   19    2    2   17   19 wk  |    0   14
+1     |   19    3    3   16   19 wk  |   19    3    3   16   19 wk  |    1   20
+1.25  |   26    5    0   21   26 wk  |   21    0    0   21   21 wk  |    2   39
+1.5   |   45   16    4   29   45 wk  |   33    4    4   29   33 wk  |    2   45
+1.75  |   60   23    2   37   60 wk  |   39    2    2   37   39 wk  |    1   78
+2     |   12    2    2   10   12 wk  |   12    2    2   10   12 wk  |    4   65
+3     |   26   26    2    0   26 wk  |    2    2    2    0    2 wk  |    0   40
+4     |    2    2    1    0    2 wk  |    1    1    1    0    1 wk  |    0   47

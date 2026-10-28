@@ -1,0 +1,17 @@
+diff --git a/src/path/cache.rs b/src/path/cache.rs
+index 05737d8..d5463f1 100644
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -505,7 +505,11 @@ impl PathCache {
+         } else {
+             f32::INFINITY
+         };
+-        let width = OutlineWidth { mean, convex };
++        // Only a fill of one convex contour is drawn as a ConvexFill, with half
++        // a fringe; a fill of several is a ConcaveFill, whose full fringe
++        // over-inks walls under two pixels wide whether or not each contour is
++        // convex.
++        let width = OutlineWidth { mean, convex: convex && self.contours.len() == 1 };
+         self.mean_width = Some((fill_rule, width));
+         width
+     }

@@ -1,0 +1,15 @@
+diff --git a/src/path.rs b/src/path.rs
+index 33f2839..913e93d 100644
+--- a/src/path.rs
++++ b/src/path.rs
+@@ -284,6 +284,10 @@ impl Path {
+ 
+     /// Adds a line segment from the last point in the path to the specified point.
+     pub fn line_to(&mut self, x: f32, y: f32) {
++        // experiment: drop a line to exactly the current point
++        if !self.verbs.is_empty() && self.last_pos.x == x && self.last_pos.y == y {
++            return;
++        }
+         self.append(&[PackedVerb::LineTo], &[Position { x, y }]);
+     }
+ 

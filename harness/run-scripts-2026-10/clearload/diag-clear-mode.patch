@@ -1,0 +1,31 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index e54a8cf..050c6a9 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -2160,8 +2160,24 @@ fn clear_rect(
+         // as the color instead of being read from memory and painted over.
+         // Keeping a clip plane takes the quad, which zeroes the winding bits
+         // only; a stencil load op clears all of them or none.
+-        if !keep_clip && render_pass_builder.clear_on_load(&verts[start..start + count], params.inner_col) {
+-            return;
++        // DIAGNOSTIC (not for merge): FEMTOVG_CLEAR_MODE = fold (default) | quad (#368: load + quad) |
++        // load (load, no quad: wrong pixels, the load's cost) | clearquad (clear on load and the quad too).
++        static MODE: std::sync::OnceLock<String> = std::sync::OnceLock::new();
++        let mode = MODE.get_or_init(|| std::env::var("FEMTOVG_CLEAR_MODE").unwrap_or_else(|_| "fold".into()));
++        match mode.as_str() {
++            "quad" => {}
++            "load" => {
++                render_pass_builder.ensure_pass();
++                return;
++            }
++            "clearquad" => {
++                let _ = !keep_clip && render_pass_builder.clear_on_load(&verts[start..start + count], params.inner_col);
++            }
++            _ => {
++                if !keep_clip && render_pass_builder.clear_on_load(&verts[start..start + count], params.inner_col) {
++                    return;
++                }
++            }
+         }
+         // Zero the stencil under the cleared rect, as the GL backend's
+         // stencil clear does: a winding count a cover pass missed must not

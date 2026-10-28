@@ -1,0 +1,137 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index 45703734..1f852bb5 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -505,6 +505,10 @@ where
+         request.extend(transform.0.map(f32::to_bits));
+         request.extend([self.tess_tol.to_bits(), self.dist_tol.to_bits()]);
+         request.extend(within.map(|side| side as u32));
++        fill::inv2::inc(&fill::inv2::THIN);
++        if fill::inv2::count_draws() && fill::inv2::DRAWN.load(std::sync::atomic::Ordering::Relaxed) >= fill::inv2::cap() {
++            return false;
++        }
+         let mut mask = self.fill_masks.asked(&request);
+         if self.fill_masks.image.is_none() {
+             self.fill_masks.limit(self.renderer.max_texture_size());
+@@ -514,7 +518,10 @@ where
+         let b = path_cache.bounds;
+         let r = mask::pixel_rect([b.minx, b.miny, b.maxx, b.maxy], within);
+         let size = [(r[2] - r[0]) as usize, (r[3] - r[1]) as usize];
+-        if mask.is_none() && self.fill_masks.may_make(size) {
++        if mask.is_none() && !self.fill_masks.may_make(size) {
++            fill::inv2::inc(&fill::inv2::REFUSED);
++        }
++        if mask.is_none() && (self.fill_masks.may_make(size) || fill::inv2::key_first()) {
+             mask = self.fill_mask(path_cache, fill_rule, within);
+             if let Some(mask) = mask {
+                 self.fill_masks.remember(request.clone(), mask);
+@@ -550,6 +557,7 @@ where
+             Vertex::new(x1, y1, s1, t1),
+         ];
+         self.render_triangles(&verts, paint_transform, paint_flavor, GlyphTexture::AlphaMask(image));
++        fill::inv2::inc(&fill::inv2::DRAWN);
+         true
+     }
+ 
+diff --git a/src/clip/fill.rs b/src/clip/fill.rs
+index 71540354..ef4d2dab 100644
+--- a/src/clip/fill.rs
++++ b/src/clip/fill.rs
+@@ -8,6 +8,41 @@
+ //! same for small paths (`RasterPathAtlas`, at most 256 of them a flush).
+ 
+ use super::mask::{MaskKey, WordMap};
++
++pub(crate) mod inv2 {
++    use std::sync::atomic::{AtomicUsize, Ordering::Relaxed};
++    use std::sync::OnceLock;
++    pub static THIN: AtomicUsize = AtomicUsize::new(0);
++    pub static ASKED_HIT: AtomicUsize = AtomicUsize::new(0);
++    pub static KEY_HIT: AtomicUsize = AtomicUsize::new(0);
++    pub static MADE: AtomicUsize = AtomicUsize::new(0);
++    pub static REFUSED: AtomicUsize = AtomicUsize::new(0);
++    pub static FRAME: AtomicUsize = AtomicUsize::new(0);
++    pub fn cap() -> usize {
++        static C: OnceLock<usize> = OnceLock::new();
++        *C.get_or_init(|| std::env::var("INV2_CAP").ok().and_then(|v| v.parse().ok()).unwrap_or(super::MASKS_A_FRAME))
++    }
++    pub fn no_motion() -> bool {
++        static C: OnceLock<bool> = OnceLock::new();
++        *C.get_or_init(|| std::env::var_os("INV2_NO_MOTION").is_some())
++    }
++    pub static DRAWN: AtomicUsize = AtomicUsize::new(0);
++    pub fn key_first() -> bool {
++        static C: OnceLock<bool> = OnceLock::new();
++        *C.get_or_init(|| std::env::var_os("INV2_KEY_FIRST").is_some())
++    }
++    pub fn count_draws() -> bool {
++        static C: OnceLock<bool> = OnceLock::new();
++        *C.get_or_init(|| std::env::var_os("INV2_COUNT_DRAWS").is_some())
++    }
++    pub fn stats() -> bool {
++        static C: OnceLock<bool> = OnceLock::new();
++        *C.get_or_init(|| std::env::var_os("INV2_STATS").is_some())
++    }
++    pub fn take(c: &AtomicUsize) -> usize { c.swap(0, Relaxed) }
++    pub fn inc(c: &AtomicUsize) { c.fetch_add(1, Relaxed); }
++}
++
+ use crate::{path::OutlineWidth, text::Atlas, ImageId};
+ 
+ /// Whether a fill is thin: its mean width - twice its area over its
+@@ -175,6 +210,7 @@ impl FillMasks {
+     pub(crate) fn asked(&mut self, request: &[u32]) -> Option<PlacedMask> {
+         let mask = self.asked.get(request).copied().filter(|_| !self.failed);
+         self.found += usize::from(mask.is_some());
++        if mask.is_some() { inv2::inc(&inv2::ASKED_HIT); }
+         mask
+     }
+ 
+@@ -190,6 +226,7 @@ impl FillMasks {
+     pub(crate) fn get(&mut self, key: &MaskKey) -> Option<[u32; 2]> {
+         let at = self.masks.get(key).copied().filter(|_| !self.failed);
+         self.found += usize::from(at.is_some());
++        if at.is_some() { inv2::inc(&inv2::KEY_HIT); }
+         at
+     }
+ 
+@@ -198,7 +235,7 @@ impl FillMasks {
+     /// largest holds it. Asked before a fill's outline is built, so that the
+     /// fills past the frame's share cost no more than a fringe.
+     pub(crate) fn may_make(&self, size: [usize; 2]) -> bool {
+-        !self.failed && self.made < MASKS_A_FRAME && size[0] <= self.most && size[1] <= self.most
++        !self.failed && self.made < inv2::cap() && size[0] <= self.most && size[1] <= self.most
+     }
+ 
+     /// The atlas's image could not be made or written: the frame finds and
+@@ -227,6 +264,7 @@ impl FillMasks {
+             return Placement::Refused;
+         };
+         self.made += 1;
++        inv2::inc(&inv2::MADE);
+         self.reach = [self.reach[0].max(x + size[0]), self.reach[1].max(y + size[1])];
+         #[cfg(test)]
+         {
+@@ -326,9 +364,21 @@ impl FillMasks {
+     /// does not grow to pack them frame after frame. Returns the images of
+     /// the atlases the frame outgrew, to be freed.
+     pub(crate) fn end_frame(&mut self) -> Vec<ImageId> {
+-        if self.made > 0 && self.made_before > 0 && self.made >= self.found {
++        let was_full = self.full;
++        inv2::DRAWN.store(0, std::sync::atomic::Ordering::Relaxed);
++        let motion = self.made > 0 && self.made_before > 0 && self.made >= self.found;
++        if motion && !inv2::no_motion() {
+             self.full = true;
+         }
++        if inv2::stats() {
++            eprintln!(
++                "INV2 frame={} thin={} asked_hit={} key_hit={} made={} refused={} found={} made_before={} full_before={} motion={} masks={} asked={} size={:?}",
++                inv2::FRAME.fetch_add(1, std::sync::atomic::Ordering::Relaxed),
++                inv2::take(&inv2::THIN), inv2::take(&inv2::ASKED_HIT), inv2::take(&inv2::KEY_HIT),
++                inv2::take(&inv2::MADE), inv2::take(&inv2::REFUSED), self.found, self.made_before,
++                was_full, motion, self.masks.len(), self.asked.len(), self.size
++            );
++        }
+         self.made_before = self.made;
+         self.made = 0;
+         self.found = 0;

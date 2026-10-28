@@ -1,0 +1,9 @@
+[package]
+name = "cap"
+version = "0.1.0"
+edition = "2021"
+[dependencies]
+# A femtovg checkout with ../void-dump.patch applied. The binary behind the README's numbers was built from
+# 09f5174c, whose src/path, src/clip and src/renderer/void.rs are those of 06243b80; the patch applies to either.
+femtovg = { path = "../femtovg", default-features = false }
+[workspace]

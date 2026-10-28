@@ -1,0 +1,141 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 79170d93..e5b3c392 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -377,6 +377,7 @@ pub struct WGPURenderer {
+     vertex_buffer: wgpu::Buffer,
+     fan_indices: FanIndices,
+     fan_index_buffer: wgpu::Buffer,
++    staging_belt: wgpu::util::StagingBelt,
+     stencil_buffer: Option<wgpu::Texture>,
+     stencil_buffer_for_textures: HashMap<wgpu::Texture, wgpu::Texture>,
+     viewport_bind_group_layout: wgpu::BindGroupLayout,
+@@ -542,6 +543,7 @@ impl WGPURenderer {
+         });
+ 
+         Self {
++            staging_belt: wgpu::util::StagingBelt::new(device.clone(), 1 << 20),
+             device,
+             queue,
+ 
+@@ -784,8 +786,13 @@ impl Renderer for WGPURenderer {
+             VERTEX_BUFFER_LABEL,
+             VERTEX_BUFFER_USAGE,
+         );
+-        if !vertex_bytes.is_empty() {
+-            self.queue.write_buffer(&self.vertex_buffer, 0, vertex_bytes);
++        let mut encoder = self
++            .device
++            .create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
++        if let Some(size) = wgpu::BufferSize::new(vertex_bytes.len() as u64) {
++            self.staging_belt
++                .write_buffer(&mut encoder, &self.vertex_buffer, 0, size)
++                .copy_from_slice(vertex_bytes);
+         }
+         let vertex_buffer = self.vertex_buffer.clone();
+         self.fan_indices.build(&commands);
+@@ -797,8 +804,10 @@ impl Renderer for WGPURenderer {
+             FAN_INDEX_LABEL,
+             FAN_INDEX_USAGE,
+         );
+-        if !fan_index_bytes.is_empty() {
+-            self.queue.write_buffer(&self.fan_index_buffer, 0, fan_index_bytes);
++        if let Some(size) = wgpu::BufferSize::new(fan_index_bytes.len() as u64) {
++            self.staging_belt
++                .write_buffer(&mut encoder, &self.fan_index_buffer, 0, size)
++                .copy_from_slice(fan_index_bytes);
+         }
+ 
+         if let Some(stencil_buffer) = &self.stencil_buffer {
+@@ -827,9 +836,12 @@ impl Renderer for WGPURenderer {
+             })
+             .clone();
+ 
+-        let mut encoder = self
+-            .device
+-            .create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
++        let uniform_view = self.staging_belt.write_buffer(
++            &mut encoder,
++            &self.uniform_buffer,
++            0,
++            wgpu::BufferSize::new(needed_slots * self.uniform_stride).unwrap(),
++        );
+ 
+         let mut render_pass_builder = RenderPassBuilder::new(
+             self.device.clone(),
+@@ -852,6 +864,7 @@ impl Renderer for WGPURenderer {
+             self.sampler_cache.clone(),
+             self.uniform_buffer.clone(),
+             self.uniform_stride,
++            uniform_view,
+             self.shader_module.clone(),
+             self.draw_layouts.clone(),
+             self.pipeline_cache.clone(),
+@@ -994,16 +1007,9 @@ impl Renderer for WGPURenderer {
+ 
+         drop(render_pass_builder);
+ 
+-        // write_buffer is ordered ahead of the caller's submit.
+-        let uniform_staging = &pipeline_and_bindgroup_mapper.uniform_staging;
+-        debug_assert!(
+-            uniform_staging.len() as u64 <= self.uniform_buffer.size(),
+-            "a command recorded more than UNIFORM_SLOTS_PER_COMMAND uniform slots"
+-        );
+-        if !uniform_staging.is_empty() {
+-            self.queue.write_buffer(&self.uniform_buffer, 0, uniform_staging);
+-        }
++        drop(pipeline_and_bindgroup_mapper);
+ 
++        self.staging_belt.finish_and_recall_on_submit(&encoder);
+         let command_buffer = encoder.finish();
+ 
+         evict_least_recently_used(
+@@ -2718,7 +2724,8 @@ struct CommandToPipelineAndBindGroupMapper {
+     sampler_cache: SamplerCache,
+     uniform_buffer: wgpu::Buffer,
+     uniform_stride: u64,
+-    uniform_staging: Vec<u8>,
++    uniform_view: wgpu::BufferViewMut,
++    uniform_len: usize,
+     current_uniforms: Option<UniformArray>,
+     shader_module: Rc<wgpu::ShaderModule>,
+ 
+@@ -2737,6 +2744,7 @@ impl CommandToPipelineAndBindGroupMapper {
+         sampler_cache: SamplerCache,
+         uniform_buffer: wgpu::Buffer,
+         uniform_stride: u64,
++        uniform_view: wgpu::BufferViewMut,
+         shader_module: Rc<wgpu::ShaderModule>,
+         draw_layouts: [DrawLayout; 2],
+         pipeline_cache: Rc<RefCell<HashMap<PipelineState, CachedPipeline>>>,
+@@ -2748,7 +2756,8 @@ impl CommandToPipelineAndBindGroupMapper {
+             sampler_cache,
+             uniform_buffer,
+             uniform_stride,
+-            uniform_staging: Vec::new(),
++            uniform_view,
++            uniform_len: 0,
+             current_uniforms: None,
+             shader_module,
+             current_bind_group_state: None,
+@@ -2805,14 +2814,15 @@ impl CommandToPipelineAndBindGroupMapper {
+ 
+         let uniforms = UniformArray::from(params);
+         if self.current_uniforms.as_ref() != Some(&uniforms) {
+-            let end = self.uniform_staging.len() + self.uniform_stride as usize;
+-            self.uniform_staging
+-                .extend_from_slice(bytemuck::cast_slice(uniforms.as_slice()));
+-            self.uniform_staging.resize(end, 0);
++            let bytes: &[u8] = bytemuck::cast_slice(uniforms.as_slice());
++            self.uniform_view
++                .slice(self.uniform_len..self.uniform_len + bytes.len())
++                .copy_from_slice(bytes);
++            self.uniform_len += self.uniform_stride as usize;
+             self.current_uniforms = Some(uniforms);
+         }
+         // The current command's slot is the last one staged.
+-        let offset = (self.uniform_staging.len() - self.uniform_stride as usize) as u32;
++        let offset = (self.uniform_len - self.uniform_stride as usize) as u32;
+         if bind_group_changed || render_pass_builder.current_bound_offset != Some(offset) {
+             render_pass.set_bind_group(1, self.current_bind_group.as_ref().unwrap(), &[offset]);
+             render_pass_builder.current_bound_offset = Some(offset);

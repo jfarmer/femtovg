@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <filter id="f" primitiveUnits="objectBoundingBox" y="-2.68491" height="60.0252">
+    <feMorphology in="r0" operator="dilate" radius="2.42035e+06 -0.143817" y="0.710945" result="r1"/>
+  </filter>
+  <g id="grp" filter="url(#f)" transform=""><rect id="shape" x="40" y="50" width="120" height="80" fill="seagreen"/></g>
+</svg>

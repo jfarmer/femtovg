@@ -60,14 +60,23 @@ par = re.search(r'preserveAspectRatio="([^"]*)"', attrs)
 par = par.group(1) if par else "xMidYMid meet"
 # Carry root presentation attributes (fill="none" etc.) onto the nested svg -
 # dropping them once produced a 48% false diff.
-keep = " ".join(a for a in re.findall(r'\b(?:fill|stroke|fill-rule|opacity|style)="[^"]*"', attrs))
+# Every presentation attribute the root can carry, by its full name: `\b` let `fill-opacity` match as `opacity`, and
+# five names dropped the rest (gpt-6-astra's root round caps and joins: 785 of its 815 px off all three at 1080p were
+# the reference pages' butt caps).
+PRES = ("fill|fill-opacity|fill-rule|stroke|stroke-width|stroke-linecap|stroke-linejoin|stroke-miterlimit|stroke-dasharray|"
+        "stroke-dashoffset|stroke-opacity|opacity|style|color|clip-rule|color-interpolation|color-interpolation-filters|"
+        "paint-order|shape-rendering|text-rendering|image-rendering|visibility|direction|writing-mode|dominant-baseline|"
+        "font|font-family|font-size|font-style|font-weight|font-variant|font-stretch|text-anchor|letter-spacing|word-spacing|"
+        "marker|marker-start|marker-mid|marker-end|stop-color|stop-opacity|flood-color|flood-opacity|lighting-color")
+keep = " ".join(m.group(0) for m in re.finditer(r'(?<![\w:-])(?:' + PRES + r')="[^"]*"', attrs))
 import os
 FW = os.environ.get("FRAME_W", "460"); FH = os.environ.get("FRAME_H", "260")
 BOX = os.environ.get("BOX", "200"); BX = os.environ.get("BOX_X", "130"); BY = os.environ.get("BOX_Y", "30")
 # The pivot of the zoom: the frame centre, or PIVOT=x,y as the harness reads it.
 PX, PY_ = (float(v) for v in os.environ["PIVOT"].split(",")) if os.environ.get("PIVOT") else (float(FW) / 2, float(FH) / 2)
 fit = float(BOX) / max(w, h)
-print(f'''<!doctype html><body style="margin:0;background:#fff">
+# The charset: WebKit reads a file page without one as windows-1252 (emoji and CJK text came out as mojibake).
+print(f'''<!doctype html><meta charset="utf-8"><body style="margin:0;background:#fff">
 <svg width="{FW}" height="{FH}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g transform="translate({PX:g},{PY_:g}) scale({scale}) translate({-PX:g},{-PY_:g})"><svg x="{BX}" y="{BY}" width="{w * fit:.6g}" height="{h * fit:.6g}" viewBox="{vb}" preserveAspectRatio="{par}" {keep}>
 {inner}

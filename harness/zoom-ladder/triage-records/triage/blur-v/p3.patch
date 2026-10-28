@@ -1,0 +1,13 @@
+diff --git a/src/renderer/wgpu/shader.wgsl b/src/renderer/wgpu/shader.wgsl
+index 7cbf5331..e64491bc 100644
+--- a/src/renderer/wgpu/shader.wgsl
++++ b/src/renderer/wgpu/shader.wgsl
+@@ -553,7 +553,7 @@ fn renderFilteredImage(vertex: VertexOutput, params: Params) -> vec4<f32> {
+         // breaking here. Each pass's sigma is bounded to 8 on the Rust side (a larger
+         // blur is split into passes that compose to it) and the kernel reaches
+         // +/-3*sigma, so the tap count never exceeds this 24-iteration bound.
+-        if (i >= sampleCount) {
++        if (i > sampleCount) {
+             break;
+         }
+         color_sum += blurTap(center - i * params.image_blur_filter_direction, params) * gaussian_coeff.x;

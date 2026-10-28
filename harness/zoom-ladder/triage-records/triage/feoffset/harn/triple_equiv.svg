@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- offset-triple-chain-rgb-shadow as three filtered draws: feMerge(s2, s1, SourceGraphic) of opaque
+       copies, each cropped to the same filter region (the rect's bbox), in merge order -->
+  <filter id="s2" filterUnits="userSpaceOnUse" x="20" y="20" width="50" height="50"><feOffset dx="20" dy="20"/></filter>
+  <filter id="s1" filterUnits="userSpaceOnUse" x="20" y="20" width="50" height="50"><feOffset dx="10" dy="10"/></filter>
+  <rect x="20" y="20" width="50" height="50" fill="green" filter="url(#s2)"/>
+  <rect x="20" y="20" width="50" height="50" fill="green" filter="url(#s1)"/>
+  <rect x="20" y="20" width="50" height="50" fill="green"/>
+</svg>

@@ -47,6 +47,7 @@ default_src() {
 cfgs_for() {
   local src=$1/src flags=()
   has() { grep -rqF -- "$1" "$src"; }
+  has 'pub fn begin_layer(' || flags+=(--cfg harness_no_layers)
   has 'pub fn clip_path(' && flags+=(--cfg harness_clip)
   has 'TurbulenceKind' && flags+=(--cfg harness_turbulence)
   has 'Blend {' && flags+=(--cfg harness_blend)
@@ -58,7 +59,11 @@ cfgs_for() {
   has 'fn set_submission_slicing' && flags+=(--cfg harness_slices)
   has 'fn debug_image_count' && flags+=(--cfg harness_image_count)
   has 'normalized_coords: &[i16]' && flags+=(--cfg harness_text)
-  echo "${flags[@]}"
+  has 'pub fn set_thin_fill_masks' && flags+=(--cfg harness_thin_fill_masks)
+  has 'PlusLighter,' && flags+=(--cfg harness_plus_lighter)
+  # usvg 0.49 added BlendMode::PlusLighter and CompositeOperator::Lighter.
+  grep -qE '^usvg = \{ version = "0\.(49|[5-9][0-9])' "$1/Cargo.toml" && flags+=(--cfg harness_usvg49)
+  echo "${flags[@]+"${flags[@]}"}"
 }
 
 for spec in "$@"; do

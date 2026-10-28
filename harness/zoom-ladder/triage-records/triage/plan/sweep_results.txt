@@ -1,0 +1,17 @@
+sweepA.py: clip-edges-v/bin/_logos_full_area_v (48b9284 corner area on 06243b80) vs ladder frames,
+every failing (file, zoom) of the 12 other clusters. Only moved pairs (best-of-three px beyond 8/255):
+thin-frame-stroke-fractional corpus__blend-probes__feblend-in-clipped-layer 0.33 44 -> 44 (116 px changed)
+thin-frame-stroke-fractional corpus__blend-probes__feblend-in-clipped-layer 0.75 43 -> 12
+thin-frame-stroke-fractional corpus__blend-probes__feblend-in-clipped-layer 3 36 -> 4
+thin-frame-stroke-fractional corpus__blend-probes__feblend-in-clipped-layer 4 53 -> 5
+(vs chr/ff/wk at 0.75: 1332/1303/43 -> 1320/1285/12; z3 208/102/36 -> 189/79/4; z4 148/65/53 -> 129/47/5)
+moved 4
+
+clip-edges-v/ab.py (same binary, clip-edges cluster): 95 failing pairs -> 60; group A 74 -> 39.
+
+sweepB.py: mask-thin-stroke-3x/bin/_logos_cull vs _logos_cull_aa1 (AA pass IncrementClamp proof, not a fix),
+every failing (file, zoom) of all 13 clusters. Moved pairs (best-of-three):
+firefox-artwork corpus__firefox__lists-empty-state-light 0.25 37->33, 0.75 32->15, 1.25 26->11, 1.5 45->27, 1.75 60->35
+mask-thin-stroke-3x (5 files) 1.25 26->2, 1.75 38->2
+dasharray wpt22__...__resvg-dasharray-n-0-solid 0.33 60->76 (worse: the abutting-seam case)
+moved 16

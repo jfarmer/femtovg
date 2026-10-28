@@ -1,0 +1,16 @@
+E-cores, all                 instr  23762.22 M  cycles   9225.68 M  IPC 2.58  L1D ld miss 153034.8 k ( 6.44/ki)  st miss 112687.9 k (4.74/ki)  mispred  1056.1 k ( 0.76/kbr)  TLB 6225.6 k  L1I   77.8 k
+    self  48.9 % cycles  instr  10604.2 M  mispred   404.3 k  L1D ld 68613.8 k  tiny_skia::pipeline
+    self   6.3 % cycles  instr   1507.7 M  mispred    27.5 k  L1D ld 12559.3 k  resvg::filter::demultiply_alpha
+    self   5.6 % cycles  instr   1501.1 M  mispred     5.9 k  L1D ld 8072.8 k  resvg::filter::multiply_alpha
+    self   4.7 % cycles  instr   1120.1 M  mispred    14.5 k  L1D ld 6073.9 k  resvg::filter::into_linear_rgb
+    self   4.1 % cycles  instr   1623.5 M  mispred    92.0 k  L1D ld 13235.4 k  resvg::filter::box_blur::box_blur_vert
+    self   4.1 % cycles  instr   1689.5 M  mispred    92.9 k  L1D ld 7503.2 k  resvg::filter::box_blur::box_blur_horz
+    self   3.2 % cycles  instr    717.2 M  mispred    25.4 k  L1D ld 2899.4 k  core::core_arch::arm_shared::neon::generated::vmaxq_f32
+    self   2.8 % cycles  instr    361.5 M  mispred    24.2 k  L1D ld 1076.3 k  r$LT$T$GT$$u20$as$u20$core..iter..traits..iterator..Iterator$GT$::fold
+    self   2.5 % cycles  instr    563.7 M  mispred    22.7 k  L1D ld 3005.3 k  tiny_skia::color::PremultipliedColorU8::from_rgba_unchecked
+    self   2.5 % cycles  instr    556.9 M  mispred    19.3 k  L1D ld 2325.1 k  core::core_arch::aarch64::neon::generated::vcvtnq_s32_f32
+    self   2.2 % cycles  instr    529.5 M  mispred     2.3 k  L1D ld 2740.3 k  resvg::filter::from_linear_rgb
+    self   2.1 % cycles  instr    470.0 M  mispred    17.5 k  L1D ld 2984.4 k  core::core_arch::arm_shared::neon::generated::vmulq_f32
+    self   1.6 % cycles  instr    257.7 M  mispred    28.3 k  L1D ld 6016.7 k  _platform_memmove
+    self   1.0 % cycles  instr    222.5 M  mispred    14.2 k  L1D ld 1651.1 k  core::core_arch::arm_shared::neon::generated::vaddq_f32
+P-cores, all                 instr     10.87 M  cycles      4.23 M  IPC 2.57  L1D ld miss     40.6 k ( 3.73/ki)  st miss    19.9 k (1.83/ki)  mispred    18.4 k (23.45/kbr)  TLB   16.8 k  L1I    4.5 k

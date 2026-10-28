@@ -1,0 +1,19 @@
+usvg::Tree::from_str on the PR branch + 2acf581 (Noto Sans 16 px, text on one path, 30 reps, M4 Max E-cores via taskpolicy -c background,
+thread_selfcounts around from_str; variants switched at run time in one binary; "resume" = suggested-resume.patch logic)
+straight-1000: 999 glyphs; cached vs plain0.001: max position diff 0.00000, max rotation-matrix diff 0.000000
+straight-1000: 999 glyphs; resume vs plain0.001: max position diff 0.00098, max rotation-matrix diff 0.000000
+straight-1000: 999 glyphs; plain0.5 vs plain0.001: max position diff 0.48193, max rotation-matrix diff 0.000000
+straight-1000 plain0.001   from_str instr median    59907845 (min 59651054 max 60474505)  cycles median    27554788 (min 26003616 max 33179419)
+straight-1000 cached0.001  from_str instr median    59629710 (min 59383929 max 60286186)  cycles median    27306757 (min 26008306 max 32620343)
+straight-1000 resume0.001  from_str instr median    57007217 (min 56732783 max 57335457)  cycles median    26592465 (min 24469660 max 28182043)
+straight-1000 plain0.5     from_str instr median    59444451 (min 59086849 max 60283664)  cycles median    27542468 (min 25817488 max 29809018)
+cubic-1000 plain0.001   from_str instr median    60170790 (min 59995861 max 61501267)  cycles median    27689890 (min 25534528 max 31290618)
+cubic-1000 cached0.001  from_str instr median    59846748 (min 59704853 max 60334569)  cycles median    27356714 (min 25982668 max 31629482)
+cubic-1000 resume0.001  from_str instr median    57663543 (min 57429578 max 58052926)  cycles median    26234391 (min 24732463 max 28520834)
+cubic-1000 plain0.5     from_str instr median    59665270 (min 59433998 max 60087824)  cycles median    27464638 (min 25783842 max 29944357)
+straight-100 plain0.001   from_str instr median    26024940 (min 25828203 max 26546462)  cycles median    12496950 (min 11076896 max 15052914)
+straight-100 cached0.001  from_str instr median    25915800 (min 25802238 max 28168483)  cycles median    12180701 (min 11070426 max 13827312)
+straight-100 resume0.001  from_str instr median    25712840 (min 25597748 max 25997229)  cycles median    11900250 (min 10830831 max 13928126)
+straight-100 plain0.5     from_str instr median    25986305 (min 25784003 max 26213499)  cycles median    12166106 (min 11366000 max 14216089)
+43 text-path fixtures (resvg tests: text/textPath/*.svg + 3 others + transform-origin/on-text-path), 671 glyphs:
+worst resume-vs-plain0.001 glyph position 0.00102 user units, rotation/scale matrix 0.000001; worst plain0.5-vs-plain0.001 position 0.4932

@@ -25,20 +25,36 @@ FRAMINGS = {'z1': (DEFAULT, 1.0), 'z2': (DEFAULT, 2.0), 'z4': (DEFAULT, 4.0), 'h
 # Below the fit: the 200-unit box at a tenth, a quarter and half its size - natural size for a 20 px icon and
 # up - looked up by name; the corpus scripts iterate DEFAULT_FRAMINGS unless asked for more.
 FRAMINGS.update({'z01': (DEFAULT, 0.1), 'z025': (DEFAULT, 0.25), 'z05': (DEFAULT, 0.5)})
+# The zooms of zoom_ladder.py's gesture that no framing above has: display scale factors (1.25, 1.5, 1.75) and
+# the steps between the fit and 4x and between the fit and a quarter.
+FRAMINGS.update({f'z{n}': (DEFAULT, z) for n, z in {'033': 0.33, '075': 0.75, '125': 1.25, '15': 1.5, '175': 1.75, '3': 3.0}.items()})
 # Zooms about the top-centre band of the box (PIVOT at frame 230,48) for wide artwork that the centre pivot zooms past.
 FRAMINGS.update({'zt2': ({**DEFAULT, 'PIVOT': '230,48'}, 2.0), 'zt4': ({**DEFAULT, 'PIVOT': '230,48'}, 4.0)})
+# 240p: the box the frame's height, centred, as at 1080p.
+FRAMINGS['p240'] = ({'FRAME_W': '426', 'FRAME_H': '240', 'BOX': '240', 'BOX_X': '93', 'BOX_Y': '0'}, 1.0)
 DEFAULT_FRAMINGS = ['z1', 'z2', 'z4', 'hd']
 
 
 class Builds(dict):
     """build -> (binary, extra env). A name with no entry below is the binary harness/build.sh writes for it,
-    HARNESS_BIN/_logos_full_<name>, run as every build since the shadow merge is: with one shadow layer."""
+    HARNESS_BIN/_logos_full_<name>, run with the harness's own defaults: since 2026-10-19 that is rule 4a's
+    shadow merge in linearRGB, as the browsers merge (the library runs its lone colour-space conversions in the
+    layer composite since #400). Suffixes, in this order: <name>_single runs it with one shadow layer
+    (SINGLE_SHADOW_LAYER, the merge in sRGB, every build's default before 2026-10-19, which the entries below
+    keep); <name>_off with the thin-fill masks off (NO_THIN_FILL_MASKS)."""
 
     def __missing__(self, name):
-        binary = f'{BIN}/_logos_full_{name}'
+        base, extra = name, {}
+        if base.endswith('_off'):
+            base = base.removesuffix('_off')
+            extra['NO_THIN_FILL_MASKS'] = '1'
+        if base.endswith('_single'):
+            base = base.removesuffix('_single')
+            extra['SINGLE_SHADOW_LAYER'] = '1'
+        binary = f'{BIN}/_logos_full_{base}'
         if not os.path.exists(binary):
-            raise KeyError(f'no build {name!r}: build {binary} with harness/build.sh {name}:<femtovg checkout>')
-        return (binary, {'SINGLE_SHADOW_LAYER': '1'})
+            raise KeyError(f'no build {name!r}: build {binary} with harness/build.sh {base}:<femtovg checkout>')
+        return (binary, extra)
 
 
 # Builds of past runs, kept for what each tag meant. Every binary is the harness built with all the cfgs its tree
@@ -197,6 +213,27 @@ BUILDS['m7pad'] = (f'{BIN}/_logos_full_m7pad', {'SINGLE_SHADOW_LAYER': '1'})  # 
 # 2026-10-08, on master cc0d841: fb = flatten-straddle da5e537 (chords straddle each curve, CHORD_SHIFT 3/8, curve ends
 # on the curve; holds_outline gets the straddle as slack at a round corner), fc = flatten-straddle-half 297bf9a (fb at
 # tolerance 0.125). No debug info, as m7/m7f.
+# 2026-10-15, thin fills through coverage masks in the library (branch thin-fill-masks): one binary, masks on and
+# off (NO_THIN_FILL_MASKS), so the A/B is the switch alone.
+BUILDS['tfm'] = (f'{BIN}/_logos_full_tfm', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['tfm_off'] = (f'{BIN}/_logos_full_tfm', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfme: the branch rebuilt on 153e3f0 (an even-odd hole wound against its fill in every mask, clip masks included),
+# with the mean width taken under the fill's rule (f0e94ff).
+BUILDS['tfme_off'] = (f'{BIN}/_logos_full_tfme', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmp: the perimeter from the points' edge lengths, no hole question for one contour (bbd09d5).
+BUILDS['tfmp_off'] = (f'{BIN}/_logos_full_tfmp', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmq: the masks a frame makes uploaded as the rectangle they span, not the atlas's whole rows (uncommitted on 731531a).
+BUILDS['tfmq_off'] = (f'{BIN}/_logos_full_tfmq', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfms: coverage masks resolved row by row from the edges crossing each (b2c4f40 on tfmq).
+BUILDS['tfms_off'] = (f'{BIN}/_logos_full_tfms', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmg: the fill-mask atlas starts at 512 and doubles in the frame a mask finds no room (uncommitted on b2c4f40).
+BUILDS['tfmg_off'] = (f'{BIN}/_logos_full_tfmg', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmc: #408 at 8849a84 (atlas held within max_texture_size); tfmb: tfmc with wgpu-frame-setup (ea98ca1) merged in,
+# its staging belt for vertices, fan indices and uniforms.
+BUILDS['tfmc_off'] = (f'{BIN}/_logos_full_tfmc', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+BUILDS['tfmb_off'] = (f'{BIN}/_logos_full_tfmb', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmt: tfmb with small image uploads staged in the belt too, copied at the start of the next frame (uncommitted).
+BUILDS['tfmt_off'] = (f'{BIN}/_logos_full_tfmt', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
 BUILDS['fb'] = (f'{BIN}/_logos_full_fb', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['fc'] = (f'{BIN}/_logos_full_fc', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['pp1'] = (f'{BIN}/_logos_full_pp1', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs: the fill's triangle list in a sized loop
@@ -230,3 +267,28 @@ BUILDS['m9'] = (f'{BIN}/_logos_full_m9', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['sab'] = (f'{BIN}/_logos_full_sab', {'SINGLE_SHADOW_LAYER': '1'})
 BUILDS['m9_lsm'] = (f'{BIN}/_logos_full_m9', {})
 BUILDS['sab_lsm'] = (f'{BIN}/_logos_full_sab', {})
+
+# Snapping experiment (femtovg branch thin-fill-snap 57008ac5, on #408 420f070a): the fill masks' positions snapped to
+# 1/n of a pixel by FEMTOVG_MASK_SNAP=n; snp0 is the same binary exact.
+for _n in (0, 2, 4, 8, 16):
+    BUILDS[f'snp{_n}'] = (f'{BIN}/_logos_full_snp', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_MASK_SNAP': str(_n)})
+# The same on #408 + #409 with snapped masks kept while a scene moves (femtovg branch snap-final 6f03873f): snpf<n>,
+# and snpf_off with the masks off.
+for _n in (0, 4, 8, 16):
+    BUILDS[f'snpf{_n}'] = (f'{BIN}/_logos_full_snpf', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_MASK_SNAP': str(_n)})
+
+# #408 at 420f070a and the memory experiment on it (femtovg branch thin-fill-masks-mem 599fcdb1: no CPU copy of the
+# fill mask atlas, each mask uploaded on its own, the atlas started over smaller), built from one harness revision.
+BUILDS['t408'] = (f'{BIN}/_logos_full_t408', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['mem'] = (f'{BIN}/_logos_full_mem', {'SINGLE_SHADOW_LAYER': '1'})
+# The thin-fill gate widened (femtovg branch thin-fill-gate 8106c327, on #408 420f070a): gate<w> draws fills whose
+# mean width is under w/10 px through masks (gate10 = #408).
+for _w in (10, 15, 20, 30):
+    BUILDS[f'gate{_w}'] = (f'{BIN}/_logos_full_gate', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_THIN_WIDTH': str(_w / 10)})
+BUILDS['mem2'] = (f'{BIN}/_logos_full_mem2', {'SINGLE_SHADOW_LAYER': '1'})
+# #408 as pushed with the 2 px gate for concave fills and the row-limited atlas (thin-fill-masks, local until pushed),
+# and master 9f5ad261, built from one harness revision on 2026-10-17.
+BUILDS['f408'] = (f'{BIN}/_logos_full_f408', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m0'] = (f'{BIN}/_logos_full_m0', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['no407'] = (f'{BIN}/_logos_full_no407', {'SINGLE_SHADOW_LAYER': '1'})  # #408 0928ad1b without #407's hole winding (experiment)
+BUILDS['e407'] = (f'{BIN}/_logos_full_e407', {'SINGLE_SHADOW_LAYER': '1'})  # #407 alone, 153e3f0c

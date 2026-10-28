@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- offset-sourcealpha-flood as two draws: the navy silhouette offset and cropped to the filter region, then the source -->
+  <filter id="sh" filterUnits="userSpaceOnUse" x="20" y="20" width="60" height="60"><feOffset dx="25" dy="25"/></filter>
+  <rect x="20" y="20" width="60" height="60" fill="navy" filter="url(#sh)"/>
+  <rect x="20" y="20" width="60" height="60" fill="green"/>
+</svg>

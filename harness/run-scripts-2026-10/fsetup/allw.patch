@@ -1,0 +1,14 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 927a677c..171d8218 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -1013,6 +1013,9 @@ impl Renderer for WGPURenderer {
+ 
+         drop(render_pass_builder);
+ 
++        // EXPERIMENT (never committed): one queue write a frame, so the queue submits its pending-writes
++        // command buffer ahead of the frame's as master does; the frame's own copy overwrites these bytes.
++        self.queue.write_buffer(&self.uniform_buffer, 0, &[0; 4]);
+         // The chunks are mapped again for reuse once the command buffer has been submitted and run.
+         drop(pipeline_and_bindgroup_mapper);
+         self.staging_belt.finish_and_recall_on_submit(&encoder);

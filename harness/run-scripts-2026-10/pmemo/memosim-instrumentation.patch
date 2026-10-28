@@ -1,0 +1,127 @@
+diff --git a/src/renderer/wgpu.rs b/src/renderer/wgpu.rs
+index 7371308..2d4d385 100644
+--- a/src/renderer/wgpu.rs
++++ b/src/renderer/wgpu.rs
+@@ -752,6 +752,7 @@ impl Renderer for WGPURenderer {
+         }
+ 
+         let command_buffer = encoder.finish();
++        pipeline_and_bindgroup_mapper.sim.report();
+ 
+         self.pipeline_cache
+             .borrow_mut()
+@@ -2275,6 +2276,79 @@ impl<'a> RenderPassBuilder<'a> {
+     }
+ }
+ 
++// TEMPORARY instrumentation (never committed): what memos of several sizes and policies would catch.
++struct MemoSim {
++    calls: usize,
++    lookups: usize,
++    distinct: Vec<PipelineState>,
++    fifo: Vec<(usize, Vec<PipelineState>, usize, usize)>,
++    lru: Vec<(usize, Vec<PipelineState>, usize)>,
++    uniform_builds: usize,
++    uniform_stages: usize,
++}
++
++impl MemoSim {
++    fn new() -> Self {
++        let sizes = [1usize, 2, 3, 4, 6, 8, 12, 16];
++        Self {
++            calls: 0,
++            lookups: 0,
++            distinct: Vec::new(),
++            fifo: sizes.iter().map(|&n| (n, Vec::new(), 0, 0)).collect(),
++            lru: sizes.iter().map(|&n| (n, Vec::new(), 0)).collect(),
++            uniform_builds: 0,
++            uniform_stages: 0,
++        }
++    }
++
++    fn lookup(&mut self, s: &PipelineState) {
++        self.lookups += 1;
++        if !self.distinct.contains(s) {
++            self.distinct.push(s.clone());
++        }
++        for (n, entries, next, hits) in &mut self.fifo {
++            if entries.contains(s) {
++                *hits += 1;
++            } else if entries.len() < *n {
++                entries.push(s.clone());
++            } else {
++                entries[*next] = s.clone();
++                *next = (*next + 1) % *n;
++            }
++        }
++        for (n, entries, hits) in &mut self.lru {
++            if let Some(i) = entries.iter().position(|e| e == s) {
++                *hits += 1;
++                let e = entries.remove(i);
++                entries.insert(0, e);
++            } else {
++                if entries.len() == *n {
++                    entries.pop();
++                }
++                entries.insert(0, s.clone());
++            }
++        }
++    }
++
++    fn report(&self) {
++        if std::env::var_os("PIPELINE_MEMO_STATS").is_none() {
++            return;
++        }
++        let fifo: Vec<String> = self.fifo.iter().map(|(n, _, _, h)| format!("{n}:{h}")).collect();
++        let lru: Vec<String> = self.lru.iter().map(|(n, _, h)| format!("{n}:{h}")).collect();
++        eprintln!(
++            "MEMOSIM calls={} lookups={} distinct={} uniform_builds={} uniform_stages={} fifo={} lru={}",
++            self.calls,
++            self.lookups,
++            self.distinct.len(),
++            self.uniform_builds,
++            self.uniform_stages,
++            fifo.join(","),
++            lru.join(",")
++        );
++    }
++}
++
+ struct CommandToPipelineAndBindGroupMapper {
+     device: wgpu::Device,
+     empty_texture_view: wgpu::TextureView,
+@@ -2290,6 +2364,7 @@ struct CommandToPipelineAndBindGroupMapper {
+     bind_group_layout: wgpu::BindGroupLayout,
+     pipeline_cache: Rc<RefCell<HashMap<PipelineState, CachedPipeline>>>,
+     pipeline_layout: wgpu::PipelineLayout,
++    sim: MemoSim,
+ }
+ 
+ impl CommandToPipelineAndBindGroupMapper {
+@@ -2318,6 +2393,7 @@ impl CommandToPipelineAndBindGroupMapper {
+             bind_group_layout,
+             pipeline_cache,
+             pipeline_layout,
++            sim: MemoSim::new(),
+         }
+     }
+ 
+@@ -2362,7 +2438,10 @@ impl CommandToPipelineAndBindGroupMapper {
+         }
+ 
+         let uniforms = UniformArray::from(params);
++        self.sim.calls += 1;
++        self.sim.uniform_builds += 1;
+         if self.current_uniforms.as_ref() != Some(&uniforms) {
++            self.sim.uniform_stages += 1;
+             let end = self.uniform_staging.len() + self.uniform_stride as usize;
+             self.uniform_staging
+                 .extend_from_slice(bytemuck::cast_slice(uniforms.as_slice()));
+@@ -2388,6 +2467,7 @@ impl CommandToPipelineAndBindGroupMapper {
+ 
+         // An unchanged pipeline was looked up, and marked accessed, when it was bound.
+         if render_pass_builder.current_pipeline_state.as_ref() != Some(&pipeline_state) {
++            self.sim.lookup(&pipeline_state);
+             let mut pipeline_cache = self.pipeline_cache.borrow_mut();
+             let render_pipeline = pipeline_cache.entry(pipeline_state.clone()).or_insert_with(|| {
+                 let pipeline = pipeline_state.materialize(&self.device, &self.pipeline_layout, &self.shader_module);

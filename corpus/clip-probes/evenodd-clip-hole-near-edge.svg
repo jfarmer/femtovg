@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="96" viewBox="0 0 120 96">
+  <title>An even-odd clip to a disc whose hole, wound alike, comes within a fifth of a unit of its edge</title>
+  <clipPath id="disc">
+    <path clip-rule="evenodd" d="M90 48A30 30 0 1 1 30 48A30 30 0 1 1 90 48ZM89.8 48A10 10 0 1 1 69.8 48A10 10 0 1 1 89.8 48Z"/>
+  </clipPath>
+  <rect width="120" height="96" fill="navy" clip-path="url(#disc)"/>
+</svg>

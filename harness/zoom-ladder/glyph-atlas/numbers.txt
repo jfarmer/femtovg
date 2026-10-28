@@ -1,0 +1,72 @@
+Glyph atlas: a frame depends on what the canvas drew before. Numbers behind the issue; femtovg master 06243b80,
+Apple M4 Max. "prototype" = prototype.patch with GLYPH_DEVICE_GRID=1 GLYPH_SUBPIXEL_MASK=1 ("device grid" = the first
+alone). Pixel counts are pixels whose largest channel difference is beyond 8/255 unless "any" is said.
+
+1. Minimal repro: glyph_atlas_history_wgpu.rs (put in tests/) and gl_glyph_history.rs (put in examples/, Apple
+OpenGL). RobotoFlex 20 px, the three lines of text-subpixel-negative-x-offsets.svg, 460 x 260. Each case draws frame
+A then frame B on one canvas and B alone on a fresh canvas; pixels that differ at all / largest difference.
+fill_glyph_run and fill_text give the same numbers. wgpu: two independent runs agree. OpenGL: counted from the saved
+frames.
+
+  A (scale, tx, ty)  ->  B                                   wgpu       OpenGL
+  0.5, 180, 30  ->  0.625, 167.5, 5                          37 / 194   37 / 194
+      B at tx 167, 167.25 or 167.75                          0          0 (167, 167.25)
+      B at tx 167.499 or 167.501                             37
+      B at tx 167.498, 167.502, 167.496, 167.504, 167.49     0
+      B at tx 10.5                                           32         18 / 194
+      B at tx 100.5                                          0
+      B at tx 167, ty 5.5                                    45         0
+  0.25, 180, 30  ->  0.625, 167.5, 5                         83 / 221   83 / 221
+  1.0 or 0.5625  ->  0.625, 167.5, 5                         37
+  0.5, 180, 30  ->  1.0, 100.5, 5 (unscaled atlas)           148 / 221  148 / 221
+  1.0, 100, 5  ->  1.0, 100.5, 5 (the same cells reused)     0
+  0.5  ->  0.55 or 0.6 at a half pixel (residual scale)      4-8 / 83
+  0.5  ->  0.98 or 1.02, integral translation                1 / 28
+  outlines (a one-colour gradient at scale 0.625)            0
+  revisits: [0.625@167.5, 0.5@180, 1@100.5, 0.625@167.5] vs [0.625@167.5]: 0;
+            [1@100.5, 0.5, 0.625, 1@100.5] vs [1@100.5]: 0
+  device grid or prototype: every case 0, wgpu and OpenGL, both calls.
+  Probes (probes.patch, on 06243b80): a dummy rect reserved in a fresh atlas (GLYPH_SKIP=N, no history) flips the
+  same 37 px at tx 167.5 and nothing at 167 or 167.25; GLYPH_LINEAR (bilinear atlas) and GLYPH_ROUND_T (rounded
+  translation) take every half-pixel case to 0.
+
+2. Glyph positions: ink centroid per glyph cluster (cent.py) against the same text drawn as outlines, harness frame
+at zoom 1.25 (frames/): master fresh canvas -0.84 px, master after zoom 1 -0.68 px (mean |e| 0.90), prototype
++0.01 px. Outline text against Chromium 131: -0.02 px. Per glyph in the minimal repro (14 glyphs x 3 lines, scale
+0.625, tx 167.5), three methods: master -0.87 / -0.95 px (fresh / after A, max 1.52), -0.80 / -0.82 (max 1.50),
+-0.58 / -0.60 (max 1.43); device grid alone about -0.3 to -0.5 px; prototype -0.008 px (max 0.12).
+
+3. Zoom ladder, harness (zoom_ladder.py framing), text-subpixel-negative-x-offsets.svg, FEMTOVG_TEXT=glyphs
+(FEMTOVG_TEXT=shape, which calls fill_text, gives the same ladder-vs-fresh numbers on master).
+  step zoom | before vs fresh canvas | after vs fresh canvas | vs Chromium 131: before, after, outline text
+   1 1     |   0 | 0 |   753   605   584
+   2 1.25  |  43 | 0 |  1116   726   727
+   3 1.5   |   0 | 0 |  1256   941   936
+   4 1.75  |   0 | 0 |  1171   791   774
+   5 2     |   0 | 0 |  1249   889   854
+   6 3     |   0 | 0 |   561   473   477
+   7 4     |   0 | 0 |     0     0     0
+   8 3     |   0 | 0 |   561   473   477
+   9 2     |   0 | 0 |  1249   889   854
+  10 1.75  |   0 | 0 |  1171   791   774
+  11 1.5   |   0 | 0 |  1256   941   936
+  12 1.25  |  43 | 0 |  1116   726   727
+  13 1     |   0 | 0 |   753   605   584
+  14 0.75  |   0 | 0 |   491   365   307
+  15 0.5   |   0 | 0 |   229   203   137
+  16 0.33  |   0 | 0 |   113   106   108
+  17 0.25  |   8 | 0 |    82    66    21
+  18 0.33  |   0 | 0 |   113   106   108
+  19 0.5   |   0 | 0 |   229   203   137
+  20 0.75  |   0 | 0 |   491   365   307
+  21 1     |   0 | 0 |   753   605   584
+
+4. Corpus: ladder_glyphs.jsonl, the zoom ladder over 203 corpus and reftest files with text drawn by femtovg
+(FEMTOVG_TEXT=glyphs): 34 have a ladder step beyond 8/255 of a fresh canvas, none at a zoom-1 visit. Those 34 (corpus34.jsonl, corpus_ladder.py),
+every step summed: files, pixels, largest difference.
+  master        34  2,629  255
+  device grid    5     22  96  loading-gltf-model-with-ktx2-textures, text-clipping-path-with-drop-shadow, text-clipping-path-with-drop-shadow-ref, text-middle-aligned-subpixel-width, text-middle-aligned-subpixel-width-ref
+  prototype      4     11  90  framegraph-gui-bloom, gui-text-block-with-resizetofit-and-forceresizewidth, loading-gltf-model-with-ktx2-textures, native-canvas
+  swash build (corpus34_swash.jsonl): master 28 files 2,672 px; device grid 1 file 10 px (loading-gltf-model-with-ktx2-textures, stroked text)
+FEMTOVG_TEXT=shape (fill_text) on master (ladder_shape.jsonl): the same 34 files, 2,587 px.
+In the OpenGL minimal-repro frames every differing pixel is more than 20/255 off.

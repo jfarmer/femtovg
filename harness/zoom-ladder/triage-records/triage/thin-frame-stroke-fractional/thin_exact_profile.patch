@@ -1,0 +1,70 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index 64fe538c..754f4dde 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1619,6 +1619,7 @@ where
+         // introduced a bug by removing the upper bound.
+         //paint.set_stroke_width((paint.stroke_width() * transform.average_scale()).max(0.0).min(200.0));
+         let mut line_width = (stroke.line_width * transform.average_scale()).max(0.0);
++        let mut thin_mult: Option<f32> = None;
+ 
+         if line_width < self.fringe_width {
+             // A stroke thinner than the fringe is drawn at fringe width with its
+@@ -1631,13 +1632,20 @@ where
+             let alpha = (line_width / self.fringe_width).clamp(0.0, 1.0);
+ 
+             paint_flavor.mul_alpha(alpha);
+-            line_width = self.fringe_width;
++            // EXPERIMENT (thin-frame-stroke-fractional): keep the true width for the
++            // geometry and flatten the ramp to a plateau, so the profile is the
++            // box-filtered w-wide band (min(w, (w+f)/2 - |d|)) instead of a 2f tent.
++            if anti_alias && line_width > 1e-4 && thin_exact() {
++                thin_mult = Some((line_width * 0.5 + self.fringe_width * 0.5) / line_width);
++            } else {
++                line_width = self.fringe_width;
++            }
+         }
+ 
+         // Apply global alpha
+         paint_flavor.mul_alpha(self.state().alpha);
+ 
+-        let reach = stroke.reach(line_width);
++        let reach = stroke.reach(line_width.max(self.fringe_width));
+         let clip = self.draw_clip(
+             || Bounds {
+                 minx: path_cache.bounds.minx - reach,
+@@ -1673,9 +1681,13 @@ where
+             -1.0,
+         )
+         .with_clip(&clip);
++        let mut params = params;
++        if let Some(m) = thin_mult {
++            params.stroke_mult = m;
++        }
+ 
+         let flavor = if stroke.stencil_strokes {
+-            let params2 = Params::new(
++            let mut params2 = Params::new(
+                 &self.images,
+                 &paint_transform,
+                 &paint_flavor,
+@@ -1686,6 +1698,9 @@ where
+                 1.0 - 0.5 / 255.0,
+             )
+             .with_clip(&clip);
++            if let Some(m) = thin_mult {
++                params2.stroke_mult = m;
++            }
+ 
+             CommandType::StencilStroke {
+                 params1: params,
+@@ -5376,3 +5391,9 @@ fn random_api_sequences_keep_one_consistent_stack() {
+         canvas.flush_to_output(());
+     }
+ }
++
++/// EXPERIMENT gate: FEMTOVG_THIN_STROKE_EXACT=1 draws sub-fringe strokes at their own width.
++fn thin_exact() -> bool {
++    static ON: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
++    *ON.get_or_init(|| std::env::var_os("FEMTOVG_THIN_STROKE_EXACT").is_some_and(|v| v == "1"))
++}

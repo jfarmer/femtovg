@@ -1,0 +1,26 @@
+--- a/src/path/cache.rs
++++ b/src/path/cache.rs
+@@ -1196,7 +1196,7 @@
+                 // Calculate if we should use bevel or miter for inner join.
+                 let limit = (p0.len.min(p1.len) * inv_stroke_width).max(1.01);
+ 
+-                if (dmr2 * limit * limit) < 1.0 {
++                if (dmr2 * limit * limit) < 1.0 && std::env::var_os("FV_NO_INNERBEVEL").is_none() {
+                     p1.flags |= PointFlags::INNERBEVEL;
+                 }
+ 
+--- a/src/renderer/void.rs
++++ b/src/renderer/void.rs
+@@ -27,6 +27,12 @@
+         verts: &[Vertex],
+         commands: Vec<Command>,
+     ) {
++        use std::io::Write;
++        let mut s = String::new();
++        s.push_str(&format!("VERTS {}\n", verts.len()));
++        for v in verts { s.push_str(&format!("{} {} {} {}\n", v.x, v.y, v.u, v.v)); }
++        for c in &commands { s.push_str(&format!("CMD {:?}\n", c)); }
++        std::io::stdout().write_all(s.as_bytes()).unwrap();
+     }
+ 
+     fn alloc_image(&mut self, info: ImageInfo) -> Result<Self::Image, ErrorKind> {

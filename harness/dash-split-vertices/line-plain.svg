@@ -1,0 +1,23 @@
+<svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+<rect width="200" height="200" fill="#000"/>
+<path d="M20 28 L180 28" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M20.1875 36.0625 L180.1875 36.0625" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M20.375 44.125 L180.375 44.125" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M20.5625 52.1875 L180.5625 52.1875" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M20.75 60.25 L180.75 60.25" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M20.9375 68.3125 L180.9375 68.3125" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M21.125 76.375 L181.125 76.375" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M21.3125 84.4375 L181.3125 84.4375" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M21.5 92.5 L181.5 92.5" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M21.6875 100.5625 L181.6875 100.5625" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M21.875 108.625 L181.875 108.625" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M22.0625 116.6875 L182.0625 116.6875" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M22.25 124.75 L182.25 124.75" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M22.4375 132.8125 L182.4375 132.8125" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M22.625 140.875 L182.625 140.875" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M22.8125 148.9375 L182.8125 148.9375" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M23 157 L183 157" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M23.1875 165.0625 L183.1875 165.0625" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M23.375 173.125 L183.375 173.125" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+<path d="M23.5625 181.1875 L183.5625 181.1875" stroke="#fff" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+</svg>

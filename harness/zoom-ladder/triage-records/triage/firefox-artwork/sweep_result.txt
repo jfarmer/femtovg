@@ -1,0 +1,12 @@
+corpus__firefox__lists-empty-state-light z175 133 60 28 113 95
+corpus__firefox__lists-empty-state-light z1 66 19 4 39 29
+wpttext__23-text-gradients-and-runs__resvg-text-stroke-linear-gradient-ref z1 29 1755 1757 674 668
+wpttext__23-text-gradients-and-runs__text-gradient-both-fill-and-stroke-ref z1 27 1586 1586 2128 2126
+wpttext__23-text-gradients-and-runs__text-gradient-both-fill-and-stroke z1 27 1586 1586 2128 2126
+corpus__babylon__show-multiple-guis__1 z175 23 575 576 379 377
+wpttext__23-text-gradients-and-runs__text-gradient-both-fill-and-stroke-ref z175 22 2185 2185 2963 2961
+wpttext__23-text-gradients-and-runs__text-gradient-both-fill-and-stroke z175 22 2185 2185 2963 2961
+wpttext__23-text-gradients-and-runs__resvg-text-stroke-linear-gradient-ref z175 19 4517 4517 1747 1749
+corpus__babylon__show-multiple-guis__1 z1 2 328 328 268 267
+corpus__babylon__default-render-pipeline z175 1 609 609 902 902
+{'moved': 11, 'toward_wk': 2, 'away_wk': 2, 'toward_chr': 9, 'away_chr': 1}

@@ -1,0 +1,111 @@
+diff --git a/src/gradient_store.rs b/src/gradient_store.rs
+index e5074d8c..2fd539a6 100644
+--- a/src/gradient_store.rs
++++ b/src/gradient_store.rs
+@@ -87,8 +87,10 @@ fn gradient_span(
+         return;
+     }
+ 
+-    let s = (s0o * 256.0) as usize;
+-    let e = (s1o * 256.0) as usize;
++    // Texel i holds the colour at i / 255 (the shaders sample at d * 255/256 + 0.5/256);
++    // a span takes the texels at or after its start and before its end, the last one included.
++    let s = (s0o * 255.0).ceil() as usize;
++    let e = if s1o >= 1.0 { 256 } else { (s1o * 255.0).ceil() as usize };
+ 
+     let (c0, c1) = resolve_hue_arc(
+         to_space_components(color0, space),
+@@ -101,7 +103,7 @@ fn gradient_span(
+     for i in s..e {
+         // The shaders sample at `d` with linear filtering, so texel `i` must hold
+         // the color at its centre, not its left edge.
+-        let t = (((i as f32 + 0.5) / 256.0 - s0o) / len).clamp(0.0, 1.0);
++        let t = ((i as f32 / 255.0 - s0o) / len).clamp(0.0, 1.0);
+         let c = [0, 1, 2].map(|k| c0[k] + (c1[k] - c0[k]) * t);
+         let a = color0.a + (color1.a - color0.a) * t;
+ 
+diff --git a/src/renderer/opengl/main-fs.glsl b/src/renderer/opengl/main-fs.glsl
+index a310ffe2..5b4ec554 100644
+--- a/src/renderer/opengl/main-fs.glsl
++++ b/src/renderer/opengl/main-fs.glsl
+@@ -165,12 +165,18 @@ vec4 renderGradient() {
+ }
+ 
+ // Image-based Gradient; sample a texture using the gradient position.
++// Texel i of the 256-texel gradient LUT holds the colour at i/255, so d = 0 and
++// d = 1 land on the centres of the end texels instead of half a texel inside.
++vec2 lutCoord(float d) {
++    return vec2(d * (255.0 / 256.0) + 0.5 / 256.0, 0.0);
++}
++
+ vec4 renderImageGradient() {
+     // Calculate gradient color using box gradient
+     vec2 pt = (paintMat * vec3(fpos, 1.0)).xy;
+ 
+     float d = clamp((sdroundrect(pt, extent, radius) + feather*0.5) / feather, 0.0, 1.0);
+-    return ditherGradient(texture2D(tex, vec2(d, 0.0)));
++    return ditherGradient(texture2D(tex, lutCoord(d)));
+ }
+ 
+ float conicAngleFraction() {
+@@ -192,7 +198,7 @@ vec4 renderGradientConic() {
+ 
+ vec4 renderImageGradientConic() {
+     float d = conicAngleFraction();
+-    return ditherGradient(texture2D(tex, vec2(d, 0.0)));
++    return ditherGradient(texture2D(tex, lutCoord(d)));
+ }
+ 
+ // Two-point (independently centered) radial gradient: the general Canvas
+@@ -277,7 +283,7 @@ vec4 renderImageGradientTwoPointRadial() {
+     bool covered;
+     float d = radialTwoPointT(covered);
+     if (!covered) return vec4(0.0);
+-    return ditherGradient(texture2D(tex, vec2(d, 0.0)));
++    return ditherGradient(texture2D(tex, lutCoord(d)));
+ }
+ 
+ // The sRGB transfer curve (IEC 61966-2-1) on a premultiplied color, run on
+diff --git a/src/renderer/wgpu/shader.wgsl b/src/renderer/wgpu/shader.wgsl
+index d1fd205b..07144ad7 100644
+--- a/src/renderer/wgpu/shader.wgsl
++++ b/src/renderer/wgpu/shader.wgsl
+@@ -204,7 +204,7 @@ fn shade(vertex: VertexOutput, clip: f32) -> vec4<f32> {
+         }
+         case SHADER_TYPE_FillImageGradientConic: {
+             let d = conicAngleFraction(vertex, params);
+-            result = ditherGradient(textureSample(image_texture, image_sampler, vec2<f32>(d, 0.0)), vertex.position.xy);
++            result = ditherGradient(textureSample(image_texture, image_sampler, lutCoord(d)), vertex.position.xy);
+         }
+         case SHADER_TYPE_FilterImageColorMatrix: {
+             return renderColorMatrix(vertex, params);
+@@ -364,7 +364,7 @@ fn renderImageGradientTwoPointRadial(vertex: VertexOutput, params: Params) -> ve
+     // textureSample() has to come before the early return: WGSL allows it
+     // only in uniform control flow, and r.covered differs between fragments.
+     // Chrome rejects the shader module otherwise; naga accepts it either way.
+-    let color: vec4<f32> = textureSample(image_texture, image_sampler, vec2<f32>(r.t, 0.0));
++    let color: vec4<f32> = textureSample(image_texture, image_sampler, lutCoord(r.t));
+     if (!r.covered) {
+         return vec4<f32>(0.0);
+     }
+@@ -460,13 +460,19 @@ fn renderGradient(vertex: VertexOutput, params: Params) -> vec4<f32> {
+     return vec4<f32>(color.rgb * color.a, color.a);
+ }
+ 
++// Texel i of the 256-texel gradient LUT holds the colour at i/255, so d = 0 and
++// d = 1 land on the centres of the end texels instead of half a texel inside.
++fn lutCoord(d: f32) -> vec2<f32> {
++    return vec2<f32>(d * (255.0 / 256.0) + 0.5 / 256.0, 0.0);
++}
++
+ // Image-based Gradient; sample a texture using the gradient position.
+ fn renderImageGradient(vertex: VertexOutput, params: Params) -> vec4<f32> {
+     // Calculate gradient color using box gradient
+     let pt: vec2<f32> = (params.paint_mat * vec3<f32>(vertex.fpos, 1.0)).xy;
+ 
+     let d: f32 = clamp((sdroundrect(pt, params.extent, params.radius) + params.feather*0.5) / params.feather, 0.0, 1.0);
+-    return ditherGradient(textureSample(image_texture, image_sampler, vec2<f32>(d, 0.0)), vertex.position.xy);
++    return ditherGradient(textureSample(image_texture, image_sampler, lutCoord(d)), vertex.position.xy);
+ }
+ 
+ // The sRGB transfer curve (IEC 61966-2-1) on a premultiplied color, run on

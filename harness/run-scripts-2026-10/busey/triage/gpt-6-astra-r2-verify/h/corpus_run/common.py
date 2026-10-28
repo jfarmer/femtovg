@@ -1,0 +1,283 @@
+"""Shared pieces of the full-corpus run: paths, the file list, the four framings and the builds.
+
+Environment:
+  CORPUS_RUN_OUT  where results, references and temporaries go (default ./corpus-run)
+  HARNESS_BIN     directory holding the harness binaries named _logos_full_<build> (default: bin/ beside this
+                  checkout, where harness/build.sh puts them)
+  CHROMIUM, FIREFOX  the reference browsers
+"""
+import json, os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+HARN = os.path.dirname(HERE)
+DA = os.path.dirname(HARN)
+OUT = os.environ.get('CORPUS_RUN_OUT', os.path.join(os.getcwd(), 'corpus-run'))
+REFS = f'{OUT}/refs'
+BIN = os.environ.get('HARNESS_BIN', os.path.join(os.path.dirname(DA), 'bin'))
+CHR = os.environ.get('CHROMIUM', os.path.expanduser(
+    '~/.cache/puppeteer/chrome-headless-shell/mac_arm-131.0.6778.204/chrome-headless-shell-mac-arm64/chrome-headless-shell'))
+FF = os.environ.get('FIREFOX', '/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox')
+
+DEFAULT = {'FRAME_W': '460', 'FRAME_H': '260', 'BOX': '200', 'BOX_X': '130', 'BOX_Y': '30'}
+HD = {'FRAME_W': '1920', 'FRAME_H': '1080', 'BOX': '1080', 'BOX_X': '420', 'BOX_Y': '0'}
+# name -> (frame env, pivot zoom)
+FRAMINGS = {'z1': (DEFAULT, 1.0), 'z2': (DEFAULT, 2.0), 'z4': (DEFAULT, 4.0), 'hd': (HD, 1.0)}
+# Below the fit: the 200-unit box at a tenth, a quarter and half its size - natural size for a 20 px icon and
+# up - looked up by name; the corpus scripts iterate DEFAULT_FRAMINGS unless asked for more.
+FRAMINGS.update({'z01': (DEFAULT, 0.1), 'z025': (DEFAULT, 0.25), 'z05': (DEFAULT, 0.5)})
+# Zooms about the top-centre band of the box (PIVOT at frame 230,48) for wide artwork that the centre pivot zooms past.
+FRAMINGS.update({'zt2': ({**DEFAULT, 'PIVOT': '230,48'}, 2.0), 'zt4': ({**DEFAULT, 'PIVOT': '230,48'}, 4.0)})
+# 240p: the box the frame's height, centred, as at 1080p.
+FRAMINGS['p240'] = ({'FRAME_W': '426', 'FRAME_H': '240', 'BOX': '240', 'BOX_X': '93', 'BOX_Y': '0'}, 1.0)
+DEFAULT_FRAMINGS = ['z1', 'z2', 'z4', 'hd']
+
+
+class Builds(dict):
+    """build -> (binary, extra env). A name with no entry below is the binary harness/build.sh writes for it,
+    HARNESS_BIN/_logos_full_<name>, run with the harness's own defaults: since 2026-10-19 that is rule 4a's
+    shadow merge in linearRGB, as the browsers merge (the library runs its lone colour-space conversions in the
+    layer composite since #400). Suffixes, in this order: <name>_single runs it with one shadow layer
+    (SINGLE_SHADOW_LAYER, the merge in sRGB, every build's default before 2026-10-19, which the entries below
+    keep); <name>_off with the thin-fill masks off (NO_THIN_FILL_MASKS)."""
+
+    def __missing__(self, name):
+        base, extra = name, {}
+        if base.endswith('_off'):
+            base = base.removesuffix('_off')
+            extra['NO_THIN_FILL_MASKS'] = '1'
+        if base.endswith('_single'):
+            base = base.removesuffix('_single')
+            extra['SINGLE_SHADOW_LAYER'] = '1'
+        binary = f'{BIN}/_logos_full_{base}'
+        if not os.path.exists(binary):
+            raise KeyError(f'no build {name!r}: build {binary} with harness/build.sh {base}:<femtovg checkout>')
+        return (binary, extra)
+
+
+# Builds of past runs, kept for what each tag meant. Every binary is the harness built with all the cfgs its tree
+# supports (harness/build.sh works them out).
+BUILDS = Builds({
+    'pre369': (f'{BIN}/_logos_full_pre369', {}),    # master before the Canvas split (#369)
+    'base': (f'{BIN}/_logos_full_base', {}),        # master
+    'slices': (f'{BIN}/_logos_full_slices', {}),    # #368 before lazy passes, slicing on
+    'noslices': (f'{BIN}/_logos_full_slices', {'NO_SLICES': '1'}),
+    'lazy': (f'{BIN}/_logos_full_lazy', {'NO_SLICES': '1'}),  # the lazy-pass experiment build
+    'lazy_slices': (f'{BIN}/_logos_full_lazy', {}),
+    # reference only: the opt-in in-flight wait that was removed from #368 (commit 4353a15)
+    'wait2': (f'{BIN}/_logos_full_wait', {'SLICE_WAIT_PAST': '2'}),
+    # #368 as pushed: a pass begins with its first draw; slicing on and off
+    'final': (f'{BIN}/_logos_full_final', {}),
+    'final_noslices': (f'{BIN}/_logos_full_final', {'NO_SLICES': '1'}),
+})
+BUILDS['mm'] = (f'{BIN}/_logos_full_mm', {})  # #370, mipmaps on wgpu, on its own base
+BUILDS['ab'] = (f'{BIN}/_logos_full_ab', {})  # #362 aniso-blur branch, --cfg harness_blur_xy
+BUILDS['bd'] = (f'{BIN}/_logos_full_bd', {})  # #325 blur-downsample branch
+BUILDS['pyr'] = (f'{BIN}/_logos_full_pyr', {})  # #325 pyramid, rebased on #372 (--cfg harness_blur_xy)
+BUILDS['mo'] = (f'{BIN}/_logos_full_mo', {})  # feMorphology + feOffset, on the pyramid (--cfg harness_blur_xy --cfg harness_morph)
+BUILDS['cp'] = (f'{BIN}/_logos_full_cp', {})  # chain-passes: no parity pass, fused matrices, on mo (same cfgs)
+BUILDS['ca'] = (f'{BIN}/_logos_full_ca', {})  # #380: box and ellipse clips as fragment-shader coverage, a draw clipped only where the shape cuts it (clip-analytic, on master 9d574e0)
+BUILDS['ca0'] = (f'{BIN}/_logos_full_ca0', {})  # #380 at f6c76d0, before the cover rule
+BUILDS['cv'] = (f'{BIN}/_logos_full_cv', {})  # clip-coverage: the scissor meets a draw as a clip shape does (on #380)
+BUILDS['cvf'] = (f'{BIN}/_logos_full_cvf', {'SINGLE_SHADOW_LAYER': '1'})  # #380 as extended on 2026-10-05 (ca9b192): cover rule, scissor rules, draws under a shape scissored to its reach
+# filter-crop (on #375): ImageFilter::Crop after each primitive's pass (--cfg harness_crop). sr_nocrop is the same
+# binary leaving the intermediate results whole, and cp_h is #375 with the same harness.
+BUILDS['sr'] = (f'{BIN}/_logos_full_sr', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['sr_nocrop'] = (f'{BIN}/_logos_full_sr', {'SINGLE_SHADOW_LAYER': '1', 'NO_CROP': '1'})
+BUILDS['cp_h'] = (f'{BIN}/_logos_full_cp_h', {'SINGLE_SHADOW_LAYER': '1'})
+# Experiment: cvf with the flattening tolerance from FEMTOVG_TESS_TOL (0.25 is the library's): the sum of a cubic's
+# control distances from its chord is kept under the tolerance's square root, in device pixels.
+for _t in ('0.25', '0.0625', '0.015625'):
+    BUILDS[f'tt_{_t}'] = (f'{BIN}/_logos_full_tt', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_TESS_TOL': _t})
+# #380 with every clipped group drawn into a layer that the clip cuts once (CLIP_GROUP_LAYERS), sized to the group.
+BUILDS['cgl'] = (f'{BIN}/_logos_full_cgl', {'SINGLE_SHADOW_LAYER': '1', 'CLIP_GROUP_LAYERS': '1', 'LAYER_BBOX_SCISSOR': '1'})
+BUILDS['cgl_off'] = (f'{BIN}/_logos_full_cgl', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['cvh'] = (f'{BIN}/_logos_full_cvh', {'SINGLE_SHADOW_LAYER': '1'})  # experiment (branch clip-twins): #380 and a draw held by the points of its outline (a rounded or turned twin of the clip is not clipped)
+BUILDS['cvg'] = (f'{BIN}/_logos_full_cvg', {'SINGLE_SHADOW_LAYER': '1'})  # experiment (branch clip-corner-area): #380 with a round corner's coverage as the area a slanted edge leaves of the pixel
+BUILDS['all'] = (f'{BIN}/_logos_full_all', {'SINGLE_SHADOW_LAYER': '1'})  # the trial merge of clip-coverage (masks, on #380) and filter-crop (on #375), every cfg
+# Builds with corpus_run/pass_count.py applied to the tree (--cfg harness_pass_count): `passes=` counts render passes.
+BUILDS['pc_cp'] = (f'{BIN}/_logos_full_pc_cp', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['pc_sr'] = (f'{BIN}/_logos_full_pc_sr', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['pc_sr_nocrop'] = (f'{BIN}/_logos_full_pc_sr', {'SINGLE_SHADOW_LAYER': '1', 'NO_CROP': '1'})
+BUILDS['cve'] = (f'{BIN}/_logos_full_cve', {'SINGLE_SHADOW_LAYER': '1'})  # #380 as pushed on 2026-10-05 (131597f); renders as cvf, whose frames stand for it
+BUILDS['flat'] = (f'{BIN}/_logos_full_flat', {'SINGLE_SHADOW_LAYER': '1'})  # branch finer-flattening (on master 9d574e0): curves flattened four times finer. Not `ff`: that prefix is Firefox's frames
+BUILDS['master_h'] = (f'{BIN}/_logos_full_master_h', {'SINGLE_SHADOW_LAYER': '1'})  # upstream master 9d574e0 with the harness the cv* builds of 2026-10-05 were made with
+# clip-coverage with masks: path clips as CPU-rasterized coverage masks, clipPath children unioned (Canvas::clip_paths,
+# --cfg harness_clip_paths). cm_stencil is the same binary with no mask budget and the children joined: the scissor
+# rules alone. SINGLE_SHADOW_LAYER keeps the group-shadow mapping the earlier builds were made with.
+BUILDS['cm'] = (f'{BIN}/_logos_full_cm', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['cm_stencil'] = (f'{BIN}/_logos_full_cm', {'SINGLE_SHADOW_LAYER': '1', 'CLIP_MASK_BUDGET_MB': '0', 'CLIP_JOINED': '1'})
+BUILDS['cmn'] = (f'{BIN}/_logos_full_cmn', {'SINGLE_SHADOW_LAYER': '1'})  # masks without the scissor to a mask's bounds (e936fe0)
+BUILDS['tf'] = (f'{BIN}/_logos_full_tf', {})  # #358 draft: exact-coverage fills on wgpu (thin-fills ec67485, on #356; clip/turbulence/blend cfgs)
+BUILDS['master'] = (f'{BIN}/_logos_full_master', {})  # upstream master 9d574e0 (#372, #373, #374 merged), harness of 2026-10-04 (noise clamp fix)
+BUILDS['master_128'] = (f'{BIN}/_logos_full_master', {'TRANSIENT_BUDGET_MB': '128'})  # master at the library's default transient-image budget
+BUILDS['master_lsm'] = (f'{BIN}/_logos_full_master_lsm', {})  # upstream master 9d574e0, harness merging a group shadow in linearRGB (shadow-merge-2026-10-04.md)
+BUILDS['master_lsm_single'] = (f'{BIN}/_logos_full_master_lsm', {'SINGLE_SHADOW_LAYER': '1'})  # the same binary with the previous shadow mapping, as 'master'
+BUILDS['master_lsm_128'] = (f'{BIN}/_logos_full_master_lsm', {'TRANSIENT_BUDGET_MB': '128'})  # master_lsm at the library's default transient budget
+# master 9d574e0 with shadow_merge/library.patch (a shadow coloured after its blur, a lone colour-space conversion run
+# in the layer composite) and the harness of 2026-10-05 (rule 4b): shadow-merge-library-2026-10-05.md
+BUILDS['master_sab'] = (f'{BIN}/_logos_full_master_sab', {})
+BUILDS['master_sab_128'] = (f'{BIN}/_logos_full_master_sab', {'TRANSIENT_BUDGET_MB': '128'})  # master_sab at the default budget
+BUILDS['master_sab_exact'] = (f'{BIN}/_logos_full_master_sab', {'EXACT_DROP_SHADOW': '1'})  # every shadow colour unrounded (no rule 4b)
+BUILDS['cp_128'] = (f'{BIN}/_logos_full_cp', {'TRANSIENT_BUDGET_MB': '128'})  # #375 at the default budget
+BUILDS['moh'] = (f'{BIN}/_logos_full_moh', {})  # mo with the 2026-10-03 harness: filter parameters through the element transform, all-or-nothing chains, offset-first shadows
+BUILDS['moh_partial'] = (f'{BIN}/_logos_full_moh', {'PARTIAL_CHAINS': '1'})  # the same binary with the partial-chain policy of before
+# "build#n" repeats a build under its own label, for run-to-run spread.
+# #368 with corpus_run/pass_report.patch applied: one PASSREPORT line per frame
+BUILDS['report'] = (f'{BIN}/_logos_full_report', {'FEMTOVG_PASS_REPORT': '1', 'NO_SLICES': '1'})
+# femtovg against a local wgpu checkout: trunk dd033bfb7, and gfx-rs/wgpu#10506 (aedebc002) merged with it
+BUILDS['wgpu_trunk'] = (f'{BIN}/_logos_full_wt_master', {})           # femtovg master
+BUILDS['wgpu_pr'] = (f'{BIN}/_logos_full_wp_master', {})              # femtovg master
+BUILDS['wgpu_trunk_368'] = (f'{BIN}/_logos_full_wt_pr368', {})        # femtovg #368, slicing on
+BUILDS['wgpu_pr_368'] = (f'{BIN}/_logos_full_wp_pr368', {})           # femtovg #368, slicing on
+BUILDS['wgpu_pr_368_noslices'] = (f'{BIN}/_logos_full_wp_pr368', {'NO_SLICES': '1'})
+# Experiment (harness FILL_MASKS, femtovg/femtovg#327): fills whose mean width on the target is under T pixels drawn as
+# their bounds under the path as a clip, which clip-coverage takes as a coverage mask. cmx is clip-coverage with the
+# harness that has the switch (renders as cm without it); cmf the same tree with curves flattened four times finer.
+BUILDS['cmx'] = (f'{BIN}/_logos_full_cmx', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['cmf'] = (f'{BIN}/_logos_full_cmf', {'SINGLE_SHADOW_LAYER': '1'})
+for _t in ('0.5', '1', '1.5', '2', '3'):
+    BUILDS[f'fm{_t}'] = (f'{BIN}/_logos_full_cmx', {'SINGLE_SHADOW_LAYER': '1', 'FILL_MASKS': _t})
+    BUILDS[f'fmf{_t}'] = (f'{BIN}/_logos_full_cmf', {'SINGLE_SHADOW_LAYER': '1', 'FILL_MASKS': _t})
+# The same switch gating on size alone, as Skia Graphite's small-path atlas does (Device::chooseRenderer: "Small paths
+# are rasterized on the CPU for higher quality"): every fill whose bounds span at most N x N pixels.
+for _n in (32, 64, 128):
+    BUILDS[f'fms{_n}'] = (f'{BIN}/_logos_full_cmx', {'SINGLE_SHADOW_LAYER': '1', 'FILL_MASKS': '1e9', 'FILL_MASKS_MAX': str(_n * _n)})
+    BUILDS[f'fmfs{_n}'] = (f'{BIN}/_logos_full_cmf', {'SINGLE_SHADOW_LAYER': '1', 'FILL_MASKS': '1e9', 'FILL_MASKS_MAX': str(_n * _n)})
+
+# The crop PR against the master it now sits on: mstr is upstream master 485c665 (#375 and #370 merged), crp the
+# merged filter-crop branch (5b6e8e3, --cfg harness_crop); pc_* the same trees with pass_count.py applied.
+BUILDS['mstr'] = (f'{BIN}/_logos_full_mstr', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['crp'] = (f'{BIN}/_logos_full_crp', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['crp_nocrop'] = (f'{BIN}/_logos_full_crp', {'SINGLE_SHADOW_LAYER': '1', 'NO_CROP': '1'})
+BUILDS['pc_mstr'] = (f'{BIN}/_logos_full_pc_mstr', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['pc_crp'] = (f'{BIN}/_logos_full_pc_crp', {'SINGLE_SHADOW_LAYER': '1'})
+
+# 2026-10-06: #380 at 74776e0 (master 485c665 merged in by Matt); m6 is master 6dd5543, whose library is 485c665's.
+# Both built without debug info (CARGO_PROFILE_RELEASE_DEBUG=0), as a pair for timing.
+BUILDS['c380'] = (f'{BIN}/_logos_full_c380', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m6'] = (f'{BIN}/_logos_full_m6', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m6f'] = (f'{BIN}/_logos_full_m6f', {'SINGLE_SHADOW_LAYER': '1'})  # finer-flattening (7f59edb, master 6dd5543 merged in)
+BUILDS['c380f'] = (f'{BIN}/_logos_full_c380f', {'SINGLE_SHADOW_LAYER': '1'})  # c380 and the finer-flattening commit (e66f057)
+BUILDS['c380x'] = (f'{BIN}/_logos_full_c380x', {'SINGLE_SHADOW_LAYER': '1'})  # experiment: c380 with cuts (a rect clip that cuts a rounded shape, and paths rounded on one side, clip beside it in the scissor's place)
+
+# 2026-10-07, on master cc0d841 (#380, #385 merged): m7 master, m7f finer flattening rebased (08d020f), cm7 coverage
+# masks and clip_paths for #377 (038a549, --cfg harness_clip_paths). No debug info, as a set for timing.
+BUILDS['m7'] = (f'{BIN}/_logos_full_m7', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m7f'] = (f'{BIN}/_logos_full_m7f', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['cm7'] = (f'{BIN}/_logos_full_cm7', {'SINGLE_SHADOW_LAYER': '1'})
+
+# A build's frames are kept as TAG_KEY_FRAMING.png, the references as PREFIX_KEY_FRAMING.png: a tag must not be a prefix.
+assert not set(BUILDS) & {'chr', 'chg', 'ff', 'wk', 'id'}, 'a build is named as a reference'
+for _b in list(BUILDS):
+    for _i in (2, 3):
+        BUILDS[f'{_b}#{_i}'] = BUILDS[_b]
+# TRANSIENT_BUDGET_MB lifts the library's 128 MiB default: a conformance run measures rendering, and at 1080p the
+# layer-heavy portraits need up to 179 MiB (about 23 frames' worth at any size), so under the default seven frames
+# lost layers. The *_128 builds below keep the default, for what it costs.
+SWEEP_ENV = {'SKIP_UNSUPPORTED_FILTERS': '1', 'VIEWPORT_CLIP': '1', 'LAYER_STATS': '1', 'TRANSIENT_BUDGET_MB': '1024'}
+
+
+def files():
+    return json.load(open(f'{OUT}/files.json'))
+
+
+def ref_png(browser, key, framing):
+    return f'{REFS}/{browser}_{key}_{framing}.png'
+# Flattening experiment (2026-10-07): one binary (finer-flattening-rebased 08d020f + an n-way split switched by
+# FEMTOVG_FLAT_DEV) emulating master (fx_m, bit-identical to m7), the PR (fx_p, = m7f) and n-way deviations.
+for _n, _e in {'fx_m': {'FEMTOVG_TESS_TOL': '0.25', 'FEMTOVG_JOIN_TOL': '0.25'}, 'fx_p': {},
+               'nw10': {'FEMTOVG_FLAT_DEV': '0.10', 'FEMTOVG_JOIN_TOL': '0.10'},
+               'nw08': {'FEMTOVG_FLAT_DEV': '0.08', 'FEMTOVG_JOIN_TOL': '0.08'},
+               'nw06': {'FEMTOVG_FLAT_DEV': '0.06', 'FEMTOVG_JOIN_TOL': '0.06'}}.items():
+    BUILDS[_n] = (f'{BIN}/_logos_full_fx', {'SINGLE_SHADOW_LAYER': '1', **_e})
+for _n, _e in {'s25': {'FEMTOVG_TESS_TOL': '0.25', 'FEMTOVG_STRADDLE': '0.5', 'FEMTOVG_JOIN_TOL': '0.25'},
+               's25m': {'FEMTOVG_TESS_TOL': '0.25', 'FEMTOVG_STRADDLE': '0.375', 'FEMTOVG_JOIN_TOL': '0.25'},
+               's125': {'FEMTOVG_TESS_TOL': '0.125', 'FEMTOVG_STRADDLE': '0.5', 'FEMTOVG_JOIN_TOL': '0.125'},
+               'fxs_m': {'FEMTOVG_TESS_TOL': '0.25', 'FEMTOVG_JOIN_TOL': '0.25'}}.items():
+    BUILDS[_n] = (f'{BIN}/_logos_full_fxs', {'SINGLE_SHADOW_LAYER': '1', **_e})
+# The masks tree (038a549) built with master's cfgs (no harness_clip_paths), to tell the library's cost from the harness's.
+BUILDS['cm7n'] = (f'{BIN}/_logos_full_cm7n', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['cm7x'] = (f'{BIN}/_logos_full_cm7x', {'SINGLE_SHADOW_LAYER': '1'})  # cm7n without the mask texture binding (experiment)
+# Masks with the mask texture bound only under a mask (separate draw layouts): cm8 = all cfgs, cm8n = master's cfgs.
+BUILDS['cm8'] = (f'{BIN}/_logos_full_cm8', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['cm8n'] = (f'{BIN}/_logos_full_cm8n', {'SINGLE_SHADOW_LAYER': '1'})
+# The lean straddle (one pending vertex; bit-identical to s25m at k=0.375 and to master at k=0).
+for _n, _k in {'l25m': '0.375', 'l25z': '0'}.items():
+    BUILDS[_n] = (f'{BIN}/_logos_full_fxl', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_TESS_TOL': '0.25', 'FEMTOVG_JOIN_TOL': '0.25', 'FEMTOVG_STRADDLE2': _k})
+BUILDS['cm8_stencil'] = (f'{BIN}/_logos_full_cm8', {'SINGLE_SHADOW_LAYER': '1', 'CLIP_MASK_BUDGET_MB': '0', 'CLIP_JOINED': '1'})  # the masks build on the stencil, as master
+BUILDS['cm8b'] = (f'{BIN}/_logos_full_cm8b', {'SINGLE_SHADOW_LAYER': '1'})  # experiment: cm8n with the per-draw mask boxed (Params 264 bytes)
+BUILDS['m7pad'] = (f'{BIN}/_logos_full_m7pad', {'SINGLE_SHADOW_LAYER': '1'})  # experiment: master with Params padded to the masks' size (292 bytes)
+# 2026-10-08, on master cc0d841: fb = flatten-straddle da5e537 (chords straddle each curve, CHORD_SHIFT 3/8, curve ends
+# on the curve; holds_outline gets the straddle as slack at a round corner), fc = flatten-straddle-half 297bf9a (fb at
+# tolerance 0.125). No debug info, as m7/m7f.
+# 2026-10-15, thin fills through coverage masks in the library (branch thin-fill-masks): one binary, masks on and
+# off (NO_THIN_FILL_MASKS), so the A/B is the switch alone.
+BUILDS['tfm'] = (f'{BIN}/_logos_full_tfm', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['tfm_off'] = (f'{BIN}/_logos_full_tfm', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfme: the branch rebuilt on 153e3f0 (an even-odd hole wound against its fill in every mask, clip masks included),
+# with the mean width taken under the fill's rule (f0e94ff).
+BUILDS['tfme_off'] = (f'{BIN}/_logos_full_tfme', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmp: the perimeter from the points' edge lengths, no hole question for one contour (bbd09d5).
+BUILDS['tfmp_off'] = (f'{BIN}/_logos_full_tfmp', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmq: the masks a frame makes uploaded as the rectangle they span, not the atlas's whole rows (uncommitted on 731531a).
+BUILDS['tfmq_off'] = (f'{BIN}/_logos_full_tfmq', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfms: coverage masks resolved row by row from the edges crossing each (b2c4f40 on tfmq).
+BUILDS['tfms_off'] = (f'{BIN}/_logos_full_tfms', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmg: the fill-mask atlas starts at 512 and doubles in the frame a mask finds no room (uncommitted on b2c4f40).
+BUILDS['tfmg_off'] = (f'{BIN}/_logos_full_tfmg', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmc: #408 at 8849a84 (atlas held within max_texture_size); tfmb: tfmc with wgpu-frame-setup (ea98ca1) merged in,
+# its staging belt for vertices, fan indices and uniforms.
+BUILDS['tfmc_off'] = (f'{BIN}/_logos_full_tfmc', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+BUILDS['tfmb_off'] = (f'{BIN}/_logos_full_tfmb', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+# tfmt: tfmb with small image uploads staged in the belt too, copied at the start of the next frame (uncommitted).
+BUILDS['tfmt_off'] = (f'{BIN}/_logos_full_tfmt', {'SINGLE_SHADOW_LAYER': '1', 'NO_THIN_FILL_MASKS': '1'})
+BUILDS['fb'] = (f'{BIN}/_logos_full_fb', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['fc'] = (f'{BIN}/_logos_full_fc', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['pp1'] = (f'{BIN}/_logos_full_pp1', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs: the fill's triangle list in a sized loop
+BUILDS['pp2'] = (f'{BIN}/_logos_full_pp2', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs: + the flattener as a loop
+BUILDS['pp3'] = (f'{BIN}/_logos_full_pp3', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs: + exact reversal, contour pass in registers
+BUILDS['pc'] = (f'{BIN}/_logos_full_pc', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs + straddle + tolerance 0.125 (option C on the savings)
+BUILDS['pp4'] = (f'{BIN}/_logos_full_pp4', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs: + fills drawn as fans (uncommitted when built)
+BUILDS['pp5'] = (f'{BIN}/_logos_full_pp5', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs-2 ba0d8a9 (savings + fans, final)
+BUILDS['pc2'] = (f'{BIN}/_logos_full_pc2', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs-2-straddle e7a2973 (option C on savings + fans)
+BUILDS['pp6'] = (f'{BIN}/_logos_full_pp6', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs-2 + base vertex for fans off wgpu's GL backend (uncommitted)
+BUILDS['pc3'] = (f'{BIN}/_logos_full_pc3', {'SINGLE_SHADOW_LAYER': '1'})  # option C on savings + base-vertex fans (pd worktree)
+BUILDS['c2'] = (f'{BIN}/_logos_full_c2', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs-3-straddle 36f8a18: option C with per-point straddle + grown gate, on savings v3
+BUILDS['pf'] = (f'{BIN}/_logos_full_pf', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs-3-fans (uncommitted): fans via per-frame indices, GLES2 fans, long fans split
+BUILDS['pfc'] = (f'{BIN}/_logos_full_pfc', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs-3-fans-straddle 02e6d79: option C v2 on savings v3 + fans v2
+BUILDS['pf2'] = (f'{BIN}/_logos_full_pf', {'SINGLE_SHADOW_LAYER': '1'})  # point-costs-3-fans 00af849 (pf binary after round-2 fixes)
+BUILDS['m8'] = (f'{BIN}/_logos_full_m8', {'SINGLE_SHADOW_LAYER': '1'})  # upstream master d70ffeb (#390), all cfgs incl crop + clip_paths
+BUILDS['pr1'] = (f'{BIN}/_logos_full_pr1', {'SINGLE_SHADOW_LAYER': '1'})  # fill-point-costs on d70ffeb, all cfgs incl crop + clip_paths
+BUILDS['pr2'] = (f'{BIN}/_logos_full_pr2', {'SINGLE_SHADOW_LAYER': '1'})  # straddled-chords on fill-point-costs (d70ffeb), all cfgs
+# 2026-10-14, the shadow-after-blur PR on upstream master 9f5ad26 (#386), all cfgs incl crop + clip_paths:
+# m9 = master, sab = shadow-after-blur 6ad8709. The _lsm builds keep rule 4a's merge layers, which shadow_merge/ab.py
+# and cost.py run by binary name (shadow-merge-library-2026-10-05.md, "Upstream").
+BUILDS['m9'] = (f'{BIN}/_logos_full_m9', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['sab'] = (f'{BIN}/_logos_full_sab', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m9_lsm'] = (f'{BIN}/_logos_full_m9', {})
+BUILDS['sab_lsm'] = (f'{BIN}/_logos_full_sab', {})
+
+# Snapping experiment (femtovg branch thin-fill-snap 57008ac5, on #408 420f070a): the fill masks' positions snapped to
+# 1/n of a pixel by FEMTOVG_MASK_SNAP=n; snp0 is the same binary exact.
+for _n in (0, 2, 4, 8, 16):
+    BUILDS[f'snp{_n}'] = (f'{BIN}/_logos_full_snp', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_MASK_SNAP': str(_n)})
+# The same on #408 + #409 with snapped masks kept while a scene moves (femtovg branch snap-final 6f03873f): snpf<n>,
+# and snpf_off with the masks off.
+for _n in (0, 4, 8, 16):
+    BUILDS[f'snpf{_n}'] = (f'{BIN}/_logos_full_snpf', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_MASK_SNAP': str(_n)})
+
+# #408 at 420f070a and the memory experiment on it (femtovg branch thin-fill-masks-mem 599fcdb1: no CPU copy of the
+# fill mask atlas, each mask uploaded on its own, the atlas started over smaller), built from one harness revision.
+BUILDS['t408'] = (f'{BIN}/_logos_full_t408', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['mem'] = (f'{BIN}/_logos_full_mem', {'SINGLE_SHADOW_LAYER': '1'})
+# The thin-fill gate widened (femtovg branch thin-fill-gate 8106c327, on #408 420f070a): gate<w> draws fills whose
+# mean width is under w/10 px through masks (gate10 = #408).
+for _w in (10, 15, 20, 30):
+    BUILDS[f'gate{_w}'] = (f'{BIN}/_logos_full_gate', {'SINGLE_SHADOW_LAYER': '1', 'FEMTOVG_THIN_WIDTH': str(_w / 10)})
+BUILDS['mem2'] = (f'{BIN}/_logos_full_mem2', {'SINGLE_SHADOW_LAYER': '1'})
+# #408 as pushed with the 2 px gate for concave fills and the row-limited atlas (thin-fill-masks, local until pushed),
+# and master 9f5ad261, built from one harness revision on 2026-10-17.
+BUILDS['f408'] = (f'{BIN}/_logos_full_f408', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['m0'] = (f'{BIN}/_logos_full_m0', {'SINGLE_SHADOW_LAYER': '1'})
+BUILDS['no407'] = (f'{BIN}/_logos_full_no407', {'SINGLE_SHADOW_LAYER': '1'})  # #408 0928ad1b without #407's hole winding (experiment)
+BUILDS['e407'] = (f'{BIN}/_logos_full_e407', {'SINGLE_SHADOW_LAYER': '1'})  # #407 alone, 153e3f0c

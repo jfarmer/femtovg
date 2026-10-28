@@ -1,0 +1,931 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index 6b4f170..f11de35 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -8,6 +8,8 @@ use crate::path::PathCache;
+ use rgb::FromSlice;
+ 
+ mod coverage;
++#[cfg(test)]
++mod coverage_old;
+ mod fill;
+ mod mask;
+ mod shape;
+@@ -428,6 +430,11 @@ where
+                     self.images.remove(&mut self.renderer, image);
+                 }
+                 let mut pixels = key.rasterize(&mut self.clip_masks.coverage);
++                if let Some(path) = std::env::var_os("CLIP_MASK_DUMP") {
++                    use std::io::Write;
++                    let mut f = std::fs::OpenOptions::new().create(true).append(true).open(path).unwrap();
++                    f.write_all(&key.dump()).unwrap();
++                }
+                 if let (Some((parent, _)), Some((_, offset))) = (&parent, inside) {
+                     parent.cut(&mut pixels, key.size(), offset);
+                 }
+@@ -509,8 +516,7 @@ where
+                         let Some(at) = self.fill_masks.place(key.size()) else {
+                             return false;
+                         };
+-                        let pixels = key.rasterize(&mut self.fill_masks.coverage);
+-                        self.fill_masks.keep(key, at, &pixels);
++                        self.fill_masks.make(key, at);
+                         at
+                     }
+                 };
+diff --git a/src/clip/coverage.rs b/src/clip/coverage.rs
+index 051b4a3..5406f63 100644
+--- a/src/clip/coverage.rs
++++ b/src/clip/coverage.rs
+@@ -1,11 +1,14 @@
+ //! The share of each pixel that outlines cover, worked out on the CPU: what
+-//! a clip that is no box takes its edge from.
++//! a clip that is no box, or a fill thinner than a pixel, takes its edge
++//! from.
+ //!
+ //! Each edge adds, row by row, the signed area it sweeps to its right into
+ //! the cells it crosses, so that a cell's winding is the sum of what the
+ //! cells up to it in its row hold - the accumulation of font-rs and of
+-//! FreeType's smooth rasterizer, kept as a sparse list so that the cells
+-//! between two edges cost a fill and no arithmetic. An edge pixel gets the
++//! FreeType's smooth rasterizer. The rows are resolved top to bottom from
++//! the edges that cross each, into one row of cells and a bit for each cell
++//! an edge touched: the touched cells are summed in order, and the cells
++//! between two of them cost a fill and no arithmetic. An edge pixel gets the
+ //! exact area of the polygon inside it; where two contours cross in one
+ //! pixel their areas add before the fill rule folds them.
+ 
+@@ -16,96 +19,64 @@ use crate::FillRule;
+ /// from another by its points.
+ pub(crate) const SUBPIXELS: f32 = 256.0;
+ 
+-/// Area swept into cells: `(row, cell, area)`, in no order until resolved.
+-/// The buffers are kept from one mask to the next.
+-#[derive(Debug, Default)]
+-pub(crate) struct Coverage {
+-    width: usize,
+-    height: usize,
+-    cells: Vec<(u32, u32, f32)>,
+-    // Resolving: where each row's cells end once they are gathered by row.
+-    row_ends: Vec<u32>,
+-    by_row: Vec<(u32, f32)>,
++/// An edge from its top to its bottom: `x` and `y` at the top, the change
++/// in x a unit of y, and 1 if it was drawn downwards, -1 if upwards.
++#[derive(Clone, Copy, Debug)]
++struct Edge {
++    x: f32,
++    y: f32,
++    bottom: f32,
++    slope: f32,
++    down: f32,
+ }
+ 
+-impl Coverage {
+-    #[cfg(test)]
+-    pub(crate) fn new(width: usize, height: usize) -> Self {
+-        let mut coverage = Self::default();
+-        coverage.reset(width, height);
+-        coverage
+-    }
+-
+-    /// Starts a mask of another size, with nothing added.
+-    pub(crate) fn reset(&mut self, width: usize, height: usize) {
+-        self.width = width;
+-        self.height = height;
+-        self.cells.clear();
+-    }
++impl Edge {
++    const NONE: Self = Self {
++        x: 0.0,
++        y: 0.0,
++        bottom: 0.0,
++        slope: 0.0,
++        down: 0.0,
++    };
+ 
+-    /// Adds a closed contour, its points in pixels from the mask's corner.
+-    pub(crate) fn contour(&mut self, points: &[[f32; 2]]) {
+-        let Some(&last) = points.last() else {
+-            return;
+-        };
+-        let mut from = last;
+-        for &to in points {
+-            self.edge(from, to);
+-            from = to;
+-        }
++    fn at(&self, y: f32) -> f32 {
++        self.x + (y - self.y) * self.slope
+     }
++}
+ 
+-    /// Adds one edge: rows above and below the mask take nothing from it.
+-    fn edge(&mut self, [x0, y0]: [f32; 2], [x1, y1]: [f32; 2]) {
+-        if y0 == y1 || !(x0.is_finite() && y0.is_finite() && x1.is_finite() && y1.is_finite()) {
+-            return;
+-        }
+-        // Downwards the edge has what is inside to its right counted up.
+-        let (down, (xa, ya), (xb, yb)) = if y0 < y1 {
+-            (1.0, (x0, y0), (x1, y1))
+-        } else {
+-            (-1.0, (x1, y1), (x0, y0))
+-        };
+-        let height = self.height as f32;
+-        if yb <= 0.0 || ya >= height {
+-            return;
+-        }
+-        let slope = (xb - xa) / (yb - ya);
+-        let at = |y: f32| xa + (y - ya) * slope;
+-        let (top, bottom) = (ya.max(0.0), yb.min(height));
+-        let mut row = top as usize;
+-        let mut y = top;
+-        while y < bottom {
+-            let next = ((row + 1) as f32).min(bottom);
+-            self.span(row, at(y), at(next), (next - y) * down);
+-            y = next;
+-            row += 1;
+-        }
+-    }
++/// One row being resolved: its area by cell, which cells hold any, and the
++/// first and last word of `touched` set.
++struct Row<'a> {
++    width: usize,
++    area: &'a mut [f32],
++    touched: &'a mut [u64],
++    words: [usize; 2],
++}
+ 
+-    /// Adds the piece of an edge inside one row: from `xa` at its top to
++impl Row<'_> {
++    /// Adds the piece of an edge inside the row: from `xa` at its top to
+     /// `xb` at its bottom, `area` the height it spans there, signed. What
+     /// lies left of the mask counts for every cell of the row, what lies
+     /// right of it for none.
+-    fn span(&mut self, row: usize, xa: f32, xb: f32, area: f32) {
++    fn span(&mut self, xa: f32, xb: f32, area: f32) {
+         let width = self.width as f32;
+         let (lo, hi) = if xa <= xb { (xa, xb) } else { (xb, xa) };
+         if lo >= width {
+             return;
+         }
+         if hi <= 0.0 {
+-            return self.add(row, 0, area);
++            return self.add(0, area);
+         }
+         if lo < 0.0 {
+             let outside = lo / (lo - hi);
+-            self.add(row, 0, area * outside);
++            self.add(0, area * outside);
+             let (xa, xb) = if xa < xb { (0.0, xb) } else { (xa, 0.0) };
+-            return self.span(row, xa, xb, area * (1.0 - outside));
++            return self.span(xa, xb, area * (1.0 - outside));
+         }
+         if hi > width {
+             let inside = (width - lo) / (hi - lo);
+             let (xa, xb) = if xa < xb { (xa, width) } else { (width, xb) };
+-            return self.span(row, xa, xb, area * inside);
++            return self.span(xa, xb, area * inside);
+         }
+         let first = lo.floor();
+         let end = hi.ceil();
+@@ -113,8 +84,8 @@ impl Coverage {
+         if last <= cell + 1 {
+             // Inside one cell: what is right of the edge's middle is the cell's.
+             let middle = 0.5 * (lo + hi) - first;
+-            self.add(row, cell, area * (1.0 - middle));
+-            self.add(row, cell + 1, area * middle);
++            self.add(cell, area * (1.0 - middle));
++            self.add(cell + 1, area * middle);
+             return;
+         }
+         // Across cells the edge's height is spread evenly along x: a
+@@ -124,25 +95,102 @@ impl Coverage {
+         let leaves = hi - (end - 1.0);
+         let head = 0.5 * per_cell * enters * enters;
+         let tail = 0.5 * per_cell * leaves * leaves;
+-        self.add(row, cell, area * head);
++        self.add(cell, area * head);
+         if last == cell + 2 {
+-            self.add(row, cell + 1, area * (1.0 - head - tail));
++            self.add(cell + 1, area * (1.0 - head - tail));
+         } else {
+             let second = per_cell * (enters + 0.5);
+-            self.add(row, cell + 1, area * (second - head));
++            self.add(cell + 1, area * (second - head));
+             for between in cell + 2..last - 1 {
+-                self.add(row, between, area * per_cell);
++                self.add(between, area * per_cell);
+             }
+             let before_last = second + (last - cell - 3) as f32 * per_cell;
+-            self.add(row, last - 1, area * (1.0 - before_last - tail));
++            self.add(last - 1, area * (1.0 - before_last - tail));
+         }
+-        self.add(row, last, area * tail);
++        self.add(last, area * tail);
+     }
+ 
+-    fn add(&mut self, row: usize, cell: usize, area: f32) {
++    fn add(&mut self, cell: usize, area: f32) {
+         if cell < self.width && area != 0.0 {
+-            self.cells.push((row as u32, cell as u32, area));
++            self.area[cell] += area;
++            let word = cell / 64;
++            self.touched[word] |= 1 << (cell % 64);
++            self.words = [self.words[0].min(word), self.words[1].max(word)];
++        }
++    }
++}
++
++/// The edges added, and what resolving them reuses: the edges crossing the
++/// row, the row's area by cell and which cells hold any. The buffers are
++/// kept from one mask to the next.
++#[derive(Debug, Default)]
++pub(crate) struct Coverage {
++    width: usize,
++    height: usize,
++    edges: Vec<Edge>,
++    // Resolving: the edges by the row they start in, and those crossing it.
++    starts: Vec<u32>,
++    order: Vec<Edge>,
++    active: Vec<Edge>,
++    area: Vec<f32>,
++    touched: Vec<u64>,
++    /// A contour's points on their way in, kept for the next.
++    pub(crate) points: Vec<[f32; 2]>,
++}
++
++impl Coverage {
++    #[cfg(test)]
++    pub(crate) fn new(width: usize, height: usize) -> Self {
++        let mut coverage = Self::default();
++        coverage.reset(width, height);
++        coverage
++    }
++
++    /// Starts a mask of another size, with nothing added.
++    pub(crate) fn reset(&mut self, width: usize, height: usize) {
++        self.width = width;
++        self.height = height;
++        self.edges.clear();
++        // Resolving leaves every cell and bit as it found them: clear.
++        if self.area.len() < width {
++            self.area.resize(width, 0.0);
++            self.touched.resize(width.div_ceil(64), 0);
++        }
++    }
++
++    /// Adds a closed contour, its points in pixels from the mask's corner.
++    pub(crate) fn contour(&mut self, points: &[[f32; 2]]) {
++        let Some(&last) = points.last() else {
++            return;
++        };
++        let mut from = last;
++        for &to in points {
++            self.edge(from, to);
++            from = to;
++        }
++    }
++
++    /// Adds one edge: rows above and below the mask take nothing from it.
++    fn edge(&mut self, [x0, y0]: [f32; 2], [x1, y1]: [f32; 2]) {
++        if y0 == y1 || !(x0.is_finite() && y0.is_finite() && x1.is_finite() && y1.is_finite()) {
++            return;
++        }
++        // Downwards the edge has what is inside to its right counted up.
++        let (down, (xa, ya), (xb, yb)) = if y0 < y1 {
++            (1.0, (x0, y0), (x1, y1))
++        } else {
++            (-1.0, (x1, y1), (x0, y0))
++        };
++        if yb <= 0.0 || ya >= self.height as f32 {
++            return;
+         }
++        self.edges.push(Edge {
++            x: xa,
++            y: ya,
++            bottom: yb,
++            slope: (xb - xa) / (yb - ya),
++            down,
++        });
+     }
+ 
+     /// Folds what was added by `rule` into coverage and adds it to `mask`,
+@@ -151,25 +199,6 @@ impl Coverage {
+     /// edge leave no seam along it. Leaves nothing added.
+     pub(crate) fn resolve(&mut self, rule: FillRule, mask: &mut [u8]) {
+         debug_assert_eq!(mask.len(), self.width * self.height);
+-        // Gathered by row with a counting sort - a row has few cells, the
+-        // mask many - and ordered within each row as it is swept.
+-        self.row_ends.clear();
+-        self.row_ends.resize(self.height + 1, 0);
+-        for &(row, _, _) in &self.cells {
+-            self.row_ends[row as usize + 1] += 1;
+-        }
+-        for row in 0..self.height {
+-            self.row_ends[row + 1] += self.row_ends[row];
+-        }
+-        self.by_row.clear();
+-        self.by_row.resize(self.cells.len(), (0, 0.0));
+-        for &(row, cell, area) in &self.cells {
+-            let at = &mut self.row_ends[row as usize];
+-            self.by_row[*at as usize] = (cell, area);
+-            *at += 1;
+-        }
+-        self.cells.clear();
+-
+         let covered = |winding: f32| -> u8 {
+             let winding = winding.abs();
+             let share = match rule {
+@@ -190,29 +219,75 @@ impl Coverage {
+             255 => cells.fill(255),
+             _ => cells.iter_mut().for_each(|cell| *cell = cell.saturating_add(coverage)),
+         };
+-        let mut begin = 0;
++        // Top to bottom, an edge joining the rows it crosses as they come:
++        // gathered by the row it starts in with a counting sort.
++        let row_of = |edge: &Edge| edge.y.max(0.0) as usize;
++        self.starts.clear();
++        self.starts.resize(self.height + 1, 0);
++        for edge in &self.edges {
++            self.starts[row_of(edge) + 1] += 1;
++        }
++        for row in 0..self.height {
++            self.starts[row + 1] += self.starts[row];
++        }
++        self.order.clear();
++        self.order
++            .resize(self.edges.len(), self.edges.first().copied().unwrap_or(Edge::NONE));
++        for edge in &self.edges {
++            let at = &mut self.starts[row_of(edge)];
++            self.order[*at as usize] = *edge;
++            *at += 1;
++        }
++        // Each row's start moved to the next's: its edges end there.
++        let height = self.height as f32;
++        let mut next = 0;
+         for (row, line) in mask.chunks_exact_mut(self.width.max(1)).enumerate() {
+-            let end = self.row_ends[row] as usize;
+-            if end == begin {
++            let end = self.starts[row] as usize;
++            self.active.extend_from_slice(&self.order[next..end]);
++            next = end;
++            if self.active.is_empty() {
+                 continue;
+             }
+-            let cells = &mut self.by_row[begin..end];
+-            begin = end;
+-            cells.sort_unstable_by_key(|&(cell, _)| cell);
+-            let (mut winding, mut from, mut next) = (0.0, 0, 0);
+-            while next < cells.len() {
+-                let cell = cells[next].0 as usize;
+-                fill(&mut line[from..cell], covered(winding));
+-                while next < cells.len() && cells[next].0 as usize == cell {
+-                    winding += cells[next].1;
+-                    next += 1;
++            let width = self.width;
++            let mut cells = Row {
++                width,
++                area: &mut self.area[..width],
++                touched: &mut self.touched[..width.div_ceil(64)],
++                words: [usize::MAX, 0],
++            };
++            let (top, bottom) = (row as f32, (row + 1) as f32);
++            let mut kept = 0;
++            for index in 0..self.active.len() {
++                let edge = self.active[index];
++                let (y, next) = (edge.y.max(top), bottom.min(edge.bottom).min(height));
++                cells.span(edge.at(y), edge.at(next), (next - y) * edge.down);
++                if edge.bottom > bottom {
++                    self.active[kept] = edge;
++                    kept += 1;
++                }
++            }
++            self.active.truncate(kept);
++
++            let (mut winding, mut from) = (0.0, 0);
++            let words = cells.words;
++            for word in words[0]..=words[1].min(cells.touched.len().saturating_sub(1)) {
++                let mut bits = std::mem::take(&mut cells.touched[word]);
++                while bits != 0 {
++                    let cell = word * 64 + bits.trailing_zeros() as usize;
++                    bits &= bits - 1;
++                    if cell > from {
++                        fill(&mut line[from..cell], covered(winding));
++                    }
++                    winding += std::mem::take(&mut cells.area[cell]);
++                    line[cell] = line[cell].saturating_add(covered(winding));
++                    from = cell + 1;
+                 }
+-                line[cell] = line[cell].saturating_add(covered(winding));
+-                from = cell + 1;
+             }
+             // Past the last edge the winding is what the mask's right side cut off.
+             fill(&mut line[from..], covered(winding));
+         }
++        self.edges.clear();
++        self.active.clear();
+     }
+ }
+ 
+diff --git a/src/clip/coverage_old.rs b/src/clip/coverage_old.rs
+new file mode 100644
+index 0000000..a38276f
+--- /dev/null
++++ b/src/clip/coverage_old.rs
+@@ -0,0 +1,251 @@
++#![allow(dead_code)]
++// Scratch (not for commit): the rasterizer before the row sweep, for the bench.
++//! The share of each pixel that outlines cover, worked out on the CPU: what
++//! a clip that is no box takes its edge from.
++//!
++//! Each edge adds, row by row, the signed area it sweeps to its right into
++//! the cells it crosses, so that a cell's winding is the sum of what the
++//! cells up to it in its row hold - the accumulation of font-rs and of
++//! FreeType's smooth rasterizer, kept as a sparse list so that the cells
++//! between two edges cost a fill and no arithmetic. An edge pixel gets the
++//! exact area of the polygon inside it; where two contours cross in one
++//! pixel their areas add before the fill rule folds them.
++
++use crate::FillRule;
++
++/// One part in this many of a pixel is what an outline's points are
++/// rounded to before they are rasterized, so that an outline can be told
++/// from another by its points.
++pub(crate) const SUBPIXELS: f32 = 256.0;
++
++/// Area swept into cells: `(row, cell, area)`, in no order until resolved.
++/// The buffers are kept from one mask to the next.
++#[derive(Debug, Default)]
++pub(crate) struct Coverage {
++    width: usize,
++    height: usize,
++    cells: Vec<(u32, u32, f32)>,
++    // Resolving: where each row's cells end once they are gathered by row.
++    row_ends: Vec<u32>,
++    by_row: Vec<(u32, f32)>,
++}
++
++impl Coverage {
++    #[cfg(test)]
++    pub(crate) fn new(width: usize, height: usize) -> Self {
++        let mut coverage = Self::default();
++        coverage.reset(width, height);
++        coverage
++    }
++
++    /// Starts a mask of another size, with nothing added.
++    pub(crate) fn reset(&mut self, width: usize, height: usize) {
++        self.width = width;
++        self.height = height;
++        self.cells.clear();
++    }
++
++    /// Adds a closed contour, its points in pixels from the mask's corner.
++    pub(crate) fn contour(&mut self, points: &[[f32; 2]]) {
++        let Some(&last) = points.last() else {
++            return;
++        };
++        let mut from = last;
++        for &to in points {
++            self.edge(from, to);
++            from = to;
++        }
++    }
++
++    /// Adds one edge: rows above and below the mask take nothing from it.
++    fn edge(&mut self, [x0, y0]: [f32; 2], [x1, y1]: [f32; 2]) {
++        if y0 == y1 || !(x0.is_finite() && y0.is_finite() && x1.is_finite() && y1.is_finite()) {
++            return;
++        }
++        // Downwards the edge has what is inside to its right counted up.
++        let (down, (xa, ya), (xb, yb)) = if y0 < y1 {
++            (1.0, (x0, y0), (x1, y1))
++        } else {
++            (-1.0, (x1, y1), (x0, y0))
++        };
++        let height = self.height as f32;
++        if yb <= 0.0 || ya >= height {
++            return;
++        }
++        let slope = (xb - xa) / (yb - ya);
++        let at = |y: f32| xa + (y - ya) * slope;
++        let (top, bottom) = (ya.max(0.0), yb.min(height));
++        let mut row = top as usize;
++        let mut y = top;
++        while y < bottom {
++            let next = ((row + 1) as f32).min(bottom);
++            self.span(row, at(y), at(next), (next - y) * down);
++            y = next;
++            row += 1;
++        }
++    }
++
++    /// Adds the piece of an edge inside one row: from `xa` at its top to
++    /// `xb` at its bottom, `area` the height it spans there, signed. What
++    /// lies left of the mask counts for every cell of the row, what lies
++    /// right of it for none.
++    fn span(&mut self, row: usize, xa: f32, xb: f32, area: f32) {
++        let width = self.width as f32;
++        let (lo, hi) = if xa <= xb { (xa, xb) } else { (xb, xa) };
++        if lo >= width {
++            return;
++        }
++        if hi <= 0.0 {
++            return self.add(row, 0, area);
++        }
++        if lo < 0.0 {
++            let outside = lo / (lo - hi);
++            self.add(row, 0, area * outside);
++            let (xa, xb) = if xa < xb { (0.0, xb) } else { (xa, 0.0) };
++            return self.span(row, xa, xb, area * (1.0 - outside));
++        }
++        if hi > width {
++            let inside = (width - lo) / (hi - lo);
++            let (xa, xb) = if xa < xb { (xa, width) } else { (width, xb) };
++            return self.span(row, xa, xb, area * inside);
++        }
++        let first = lo.floor();
++        let end = hi.ceil();
++        let (cell, last) = (first as usize, end as usize);
++        if last <= cell + 1 {
++            // Inside one cell: what is right of the edge's middle is the cell's.
++            let middle = 0.5 * (lo + hi) - first;
++            self.add(row, cell, area * (1.0 - middle));
++            self.add(row, cell + 1, area * middle);
++            return;
++        }
++        // Across cells the edge's height is spread evenly along x: a
++        // triangle in the first and the last cell, a trapezoid in between.
++        let per_cell = (hi - lo).recip();
++        let enters = 1.0 - (lo - first);
++        let leaves = hi - (end - 1.0);
++        let head = 0.5 * per_cell * enters * enters;
++        let tail = 0.5 * per_cell * leaves * leaves;
++        self.add(row, cell, area * head);
++        if last == cell + 2 {
++            self.add(row, cell + 1, area * (1.0 - head - tail));
++        } else {
++            let second = per_cell * (enters + 0.5);
++            self.add(row, cell + 1, area * (second - head));
++            for between in cell + 2..last - 1 {
++                self.add(row, between, area * per_cell);
++            }
++            let before_last = second + (last - cell - 3) as f32 * per_cell;
++            self.add(row, last - 1, area * (1.0 - before_last - tail));
++        }
++        self.add(row, last, area * tail);
++    }
++
++    fn add(&mut self, row: usize, cell: usize, area: f32) {
++        if cell < self.width && area != 0.0 {
++            self.cells.push((row as u32, cell as u32, area));
++        }
++    }
++
++    /// Folds what was added by `rule` into coverage and adds it to `mask`,
++    /// `width` bytes a row, up to full: outlines resolved one after another
++    /// come to their union, each under its own rule, and two that share an
++    /// edge leave no seam along it. Leaves nothing added.
++    pub(crate) fn resolve(&mut self, rule: FillRule, mask: &mut [u8]) {
++        debug_assert_eq!(mask.len(), self.width * self.height);
++        // Gathered by row with a counting sort - a row has few cells, the
++        // mask many - and ordered within each row as it is swept.
++        self.row_ends.clear();
++        self.row_ends.resize(self.height + 1, 0);
++        for &(row, _, _) in &self.cells {
++            self.row_ends[row as usize + 1] += 1;
++        }
++        for row in 0..self.height {
++            self.row_ends[row + 1] += self.row_ends[row];
++        }
++        self.by_row.clear();
++        self.by_row.resize(self.cells.len(), (0, 0.0));
++        for &(row, cell, area) in &self.cells {
++            let at = &mut self.row_ends[row as usize];
++            self.by_row[*at as usize] = (cell, area);
++            *at += 1;
++        }
++        self.cells.clear();
++
++        let covered = |winding: f32| -> u8 {
++            let winding = winding.abs();
++            let share = match rule {
++                FillRule::NonZero => winding.min(1.0),
++                FillRule::EvenOdd => {
++                    let folded = winding % 2.0;
++                    if folded > 1.0 {
++                        2.0 - folded
++                    } else {
++                        folded
++                    }
++                }
++            };
++            (share * 255.0 + 0.5) as u8
++        };
++        let fill = |cells: &mut [u8], coverage: u8| match coverage {
++            0 => {}
++            255 => cells.fill(255),
++            _ => cells.iter_mut().for_each(|cell| *cell = cell.saturating_add(coverage)),
++        };
++        let mut begin = 0;
++        for (row, line) in mask.chunks_exact_mut(self.width.max(1)).enumerate() {
++            let end = self.row_ends[row] as usize;
++            if end == begin {
++                continue;
++            }
++            let cells = &mut self.by_row[begin..end];
++            begin = end;
++            cells.sort_unstable_by_key(|&(cell, _)| cell);
++            let (mut winding, mut from, mut next) = (0.0, 0, 0);
++            while next < cells.len() {
++                let cell = cells[next].0 as usize;
++                fill(&mut line[from..cell], covered(winding));
++                while next < cells.len() && cells[next].0 as usize == cell {
++                    winding += cells[next].1;
++                    next += 1;
++                }
++                line[cell] = line[cell].saturating_add(covered(winding));
++                from = cell + 1;
++            }
++            // Past the last edge the winding is what the mask's right side cut off.
++            fill(&mut line[from..], covered(winding));
++        }
++    }
++}
++
++/// Multiplies `mask` by `other` where the two overlap, and clears it
++/// elsewhere: the coverage of what both cover, as a product. `offset` is
++/// where `mask`'s corner lies in `other`.
++#[allow(dead_code)]
++pub(crate) fn intersect(mask: &mut [u8], size: [usize; 2], other: &[u8], other_size: [usize; 2], offset: [i32; 2]) {
++    let [width, height] = size;
++    let [other_width, other_height] = other_size;
++    for row in 0..height {
++        let line = &mut mask[row * width..][..width];
++        let other_row = row as i64 + i64::from(offset[1]);
++        if other_row < 0 || other_row >= other_height as i64 {
++            line.fill(0);
++            continue;
++        }
++        // The columns of this row that lie inside `other`.
++        let start = (-i64::from(offset[0])).clamp(0, width as i64) as usize;
++        let end = (other_width as i64 - i64::from(offset[0])).clamp(0, width as i64) as usize;
++        line[..start].fill(0);
++        line[end.max(start)..].fill(0);
++        if start >= end {
++            continue;
++        }
++        let other_start = (start as i64 + i64::from(offset[0])) as usize;
++        let other_line = &other[other_row as usize * other_width + other_start..][..end - start];
++        for (cell, &by) in line[start..end].iter_mut().zip(other_line) {
++            if by != 255 && *cell != 0 {
++                *cell = ((u16::from(*cell) * u16::from(by) + 127) / 255) as u8;
++            }
++        }
++    }
++}
+diff --git a/src/clip/fill.rs b/src/clip/fill.rs
+index 82ec4ff..df3f526 100644
+--- a/src/clip/fill.rs
++++ b/src/clip/fill.rs
+@@ -54,7 +54,9 @@ pub(crate) struct FillMasks {
+     /// Masks the frame before made that the atlas still holds.
+     made_before: usize,
+     full: bool,
+-    pub(crate) coverage: super::coverage::Coverage,
++    coverage: super::coverage::Coverage,
++    // A mask's pixels on their way into the atlas, kept for the next.
++    scratch: Vec<u8>,
+     /// The atlas's pixels, which the masks a frame makes are written into
+     /// and uploaded from once, as the rectangle they span, when it is drawn.
+     pub(crate) pixels: Vec<u8>,
+@@ -79,6 +81,7 @@ impl Default for FillMasks {
+             made_before: 0,
+             full: false,
+             coverage: Default::default(),
++            scratch: Vec::new(),
+             pixels: Vec::new(),
+             dirty: None,
+             upload: Vec::new(),
+@@ -137,8 +140,16 @@ impl FillMasks {
+         Some([x as u32, y as u32])
+     }
+ 
++    /// Rasterizes the mask of `key` and keeps it at `at`.
++    pub(crate) fn make(&mut self, key: MaskKey, at: [u32; 2]) {
++        let mut pixels = std::mem::take(&mut self.scratch);
++        key.rasterize_into(&mut self.coverage, &mut pixels);
++        self.keep(key, at, &pixels);
++        self.scratch = pixels;
++    }
++
+     /// Keeps the mask of `key`, its rows `pixels`, at `at`.
+-    pub(crate) fn keep(&mut self, key: MaskKey, at: [u32; 2], pixels: &[u8]) {
++    fn keep(&mut self, key: MaskKey, at: [u32; 2], pixels: &[u8]) {
+         let [width, height] = key.size();
+         let [x, y] = at.map(|side| side as usize);
+         for (row, line) in pixels.chunks_exact(width).enumerate() {
+diff --git a/src/clip/mask.rs b/src/clip/mask.rs
+index 05b5487..6b2f091 100644
+--- a/src/clip/mask.rs
++++ b/src/clip/mask.rs
+@@ -123,13 +123,62 @@ impl MaskKey {
+         self.size == other.size && self.outline == other.outline
+     }
+ 
++    /// The key as bytes: width, height, word count and words, little-endian.
++    pub(crate) fn dump(&self) -> Vec<u8> {
++        let mut out = Vec::new();
++        for v in [self.size[0], self.size[1], self.outline.len() as u32] {
++            out.extend(v.to_le_bytes());
++        }
++        for w in &self.outline {
++            out.extend(w.to_le_bytes());
++        }
++        out
++    }
++
++    /// A key read back from `dump`'s bytes, and the bytes after it.
++    pub(crate) fn undump(bytes: &[u8]) -> Option<(Self, &[u8])> {
++        let word = |i: usize| {
++            bytes
++                .get(4 * i..4 * i + 4)
++                .map(|b| u32::from_le_bytes(b.try_into().unwrap()))
++        };
++        let (w, h, n) = (word(0)?, word(1)?, word(2)? as usize);
++        let outline = (0..n)
++            .map(|i| word(3 + i).map(|v| v as i32))
++            .collect::<Option<Vec<_>>>()?;
++        Some((
++            Self {
++                size: [w, h],
++                parent: None,
++                outline,
++            },
++            &bytes[4 * (3 + n)..],
++        ))
++    }
++
+     /// Rasterizes the outline the key was made of: each child's coverage
+     /// under its rule, added up to the children's union.
+     pub(crate) fn rasterize(&self, coverage: &mut Coverage) -> Vec<u8> {
+         let [width, height] = self.size();
+         let mut mask = vec![0; width * height];
++        self.rasterize_onto(coverage, &mut mask);
++        mask
++    }
++
++    /// Rasterizes the outline into `mask`, which it resizes to the key's.
++    pub(crate) fn rasterize_into(&self, coverage: &mut Coverage, mask: &mut Vec<u8>) {
++        let [width, height] = self.size();
++        // Zeroed as a slice, which is a memset, and grown only past its length.
++        mask.truncate(width * height);
++        mask.fill(0);
++        mask.resize(width * height, 0);
++        self.rasterize_onto(coverage, mask);
++    }
++
++    fn rasterize_onto(&self, coverage: &mut Coverage, mask: &mut [u8]) {
++        let [width, height] = self.size();
+         coverage.reset(width, height);
+-        let mut contour = Vec::new();
++        let mut contour = std::mem::take(&mut coverage.points);
+         let mut words = self.outline.iter().copied();
+         while let (Some(rule), Some(contours)) = (words.next(), words.next()) {
+             for _ in 0..contours {
+@@ -147,9 +196,9 @@ impl MaskKey {
+             } else {
+                 FillRule::EvenOdd
+             };
+-            coverage.resolve(rule, &mut mask);
++            coverage.resolve(rule, mask);
+         }
+-        mask
++        coverage.points = contour;
+     }
+ }
+ 
+@@ -581,4 +630,124 @@ mod tests {
+         let let_go = masks.end_frame();
+         assert_eq!(let_go.len(), 2, "the spare images no mask came for");
+     }
++
++    /// Scratch benchmark (not for commit): RASTER_BENCH=dump rasterizes every
++    /// key of a FILL_MASK_DUMP capture RASTER_ITERS times; RASTER_HASHES=file
++    /// writes each mask's hash there, or checks against it if it exists.
++    #[test]
++    #[ignore]
++    fn zz_raster_bench() {
++        let Ok(path) = std::env::var("RASTER_BENCH") else {
++            return;
++        };
++        let bytes = std::fs::read(path).unwrap();
++        let mut keys = Vec::new();
++        let mut rest = &bytes[..];
++        while let Some((key, r)) = MaskKey::undump(rest) {
++            keys.push(key);
++            rest = r;
++        }
++        let fnv = |m: &[u8]| {
++            m.iter().fold(0xcbf29ce484222325u64, |h, &b| {
++                (h ^ u64::from(b)).wrapping_mul(0x100000001b3)
++            })
++        };
++        let mut coverage = Coverage::default();
++        let masks: Vec<Vec<u8>> = keys.iter().map(|k| k.rasterize(&mut coverage)).collect();
++        if let Ok(out) = std::env::var("RASTER_OUT") {
++            std::fs::write(out, masks.concat()).unwrap();
++        }
++        let hashes: Vec<u64> = masks.iter().map(|m| fnv(m)).collect();
++        let area: usize = keys.iter().map(|k| k.size()[0] * k.size()[1]).sum();
++        let points: usize = keys.iter().map(|k| k.outline.len().saturating_sub(2) / 2).sum();
++        if let Ok(file) = std::env::var("RASTER_HASHES") {
++            if let Ok(old) = std::fs::read_to_string(&file) {
++                let old: Vec<u64> = old.lines().map(|l| u64::from_str_radix(l, 16).unwrap()).collect();
++                let differ = old.iter().zip(&hashes).filter(|(a, b)| a != b).count();
++                eprintln!("RASTER masks differing from {file}: {differ} of {}", hashes.len());
++            } else {
++                std::fs::write(&file, hashes.iter().map(|h| format!("{h:016x}\n")).collect::<String>()).unwrap();
++            }
++        }
++        let iters: usize = std::env::var("RASTER_ITERS")
++            .ok()
++            .and_then(|v| v.parse().ok())
++            .unwrap_or(100);
++        // The thread's own instructions and cycles per CPU kind (0 = P, 1 = E).
++        extern "C" {
++            fn dlsym(handle: *mut std::ffi::c_void, symbol: *const std::ffi::c_char) -> *mut std::ffi::c_void;
++        }
++        type Thsc = unsafe extern "C" fn(i32, *mut std::ffi::c_void, usize) -> i32;
++        let thsc = unsafe { dlsym(-2isize as *mut _, c"thread_selfcounts".as_ptr()) };
++        let counts = || -> [[u64; 4]; 4] {
++            let mut buf = [[0u64; 4]; 4];
++            if !thsc.is_null() {
++                let f: Thsc = unsafe { std::mem::transmute(thsc) };
++                unsafe { f(4, buf.as_mut_ptr() as *mut _, std::mem::size_of_val(&buf)) };
++            }
++            buf
++        };
++        let old_impl = std::env::var("RASTER_IMPL").as_deref() == Ok("old");
++        let mut old_coverage = super::super::coverage_old::Coverage::default();
++        let rasterize_old = |key: &MaskKey, coverage: &mut super::super::coverage_old::Coverage, mask: &mut Vec<u8>| {
++            let [width, height] = key.size();
++            mask.truncate(width * height);
++            mask.fill(0);
++            mask.resize(width * height, 0);
++            coverage.reset(width, height);
++            let mut contour = Vec::new();
++            let mut words = key.outline.iter().copied();
++            while let (Some(rule), Some(contours)) = (words.next(), words.next()) {
++                for _ in 0..contours {
++                    let points = words.next().unwrap_or(0);
++                    contour.clear();
++                    for _ in 0..points {
++                        if let (Some(x), Some(y)) = (words.next(), words.next()) {
++                            contour.push([x as f32 / SUBPIXELS, y as f32 / SUBPIXELS]);
++                        }
++                    }
++                    coverage.contour(&contour);
++                }
++                let rule = if rule == 0 {
++                    FillRule::NonZero
++                } else {
++                    FillRule::EvenOdd
++                };
++                coverage.resolve(rule, mask);
++            }
++        };
++        let mut scratch = Vec::new();
++        let c0 = counts();
++        let started = std::time::Instant::now();
++        for _ in 0..iters {
++            for key in &keys {
++                if old_impl {
++                    rasterize_old(key, &mut old_coverage, &mut scratch);
++                } else {
++                    key.rasterize_into(&mut coverage, &mut scratch);
++                }
++                std::hint::black_box(&scratch);
++            }
++        }
++        let ns = started.elapsed().as_nanos() as f64 / iters as f64;
++        let c1 = counts();
++        let per = |kind: usize, i: usize| (c1[kind][i] - c0[kind][i]) as f64 / iters as f64 / 1e6;
++        eprintln!(
++            "RASTER COUNTS a pass: E {:.3} M instr {:.3} M cycles, P {:.3} M instr {:.3} M cycles",
++            per(1, 0),
++            per(1, 1),
++            per(0, 0),
++            per(0, 1)
++        );
++        eprintln!(
++            "RASTER {} masks, {} px, {} points: {:.1} us a pass, {:.0} ns a mask, {:.2} ns a px, {:.1} ns a point",
++            keys.len(),
++            area,
++            points,
++            ns / 1e3,
++            ns / keys.len() as f64,
++            ns / area as f64,
++            ns / points as f64
++        );
++    }
+ }

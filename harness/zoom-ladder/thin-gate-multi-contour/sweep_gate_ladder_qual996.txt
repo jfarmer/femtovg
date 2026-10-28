@@ -1,0 +1,47 @@
+== z033
+same 994 moved 2 missing 0
+best-browser n8: better 2 worse 0 equal 0
+of moved: failing(>24) base 2 gate 0
+  496 ->     0  px moved   941  svgenius__page_275_化妆品装饰_25821_icon_24 {'chr': (502, 289), 'ff': (496, 209), 'wk': (525, 0)}
+  136 ->     0  px moved   478  svgenius__page_70_像素鞋子图标_40194_icon_17 {'chr': (165, 40), 'ff': (164, 40), 'wk': (136, 0)}
+== z1
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+== z125
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+== z15
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+== z175
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+== z2
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+== z3
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+== z4
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+== z075
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+== z05
+same 995 moved 1 missing 0
+best-browser n8: better 1 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0
+    4 ->     0  px moved   917  svgenius__page_275_化妆品装饰_25821_icon_24 {'chr': (149, 184), 'wk': (4, 0)}
+== z025
+same 996 moved 0 missing 0
+best-browser n8: better 0 worse 0 equal 0
+of moved: failing(>24) base 0 gate 0

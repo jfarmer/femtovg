@@ -1,0 +1,121 @@
+diff --git a/crates/usvg/src/lib.rs b/crates/usvg/src/lib.rs
+index 1987daa..2e80d18 100644
+--- a/crates/usvg/src/lib.rs
++++ b/crates/usvg/src/lib.rs
+@@ -54,6 +54,11 @@ and can focus just on the rendering part.
+ mod parser;
+ #[cfg(feature = "text")]
+ mod text;
++
++#[doc(hidden)]
++pub fn __set_arc_variant(v: u8) {
++    text::layout::ARC_VARIANT.store(v, std::sync::atomic::Ordering::Relaxed)
++}
+ mod tree;
+ #[cfg(feature = "writer")]
+ mod writer;
+diff --git a/crates/usvg/src/text/layout.rs b/crates/usvg/src/text/layout.rs
+index 263318c..2f43eba 100644
+--- a/crates/usvg/src/text/layout.rs
++++ b/crates/usvg/src/text/layout.rs
+@@ -766,6 +766,8 @@ pub(crate) struct PathNormal {
+ 
+ // Let Kurbo's inverse arc-length solver reuse the length already measured for
+ // this segment, without caching lengths of the subsegments it creates.
++pub static ARC_VARIANT: std::sync::atomic::AtomicU8 = std::sync::atomic::AtomicU8::new(2);
++
+ struct CurveWithLength {
+     curve: kurbo::CubicBez,
+     // The accuracy and length of this entire segment.
+@@ -794,6 +796,47 @@ impl ParamCurveArclen for CurveWithLength {
+     }
+ }
+ 
++
++/// Finds the parameter at which `curve` has covered `target` arc length, resuming from a point behind it,
++/// `(t0, s0)`: the arc length `s0` measured at `t0`. Glyph offsets normally ascend, so the previous glyph
++/// is such a point. Newton's method on the arc length of the short piece `t0..t`, with the speed
++/// `|B'(t)|` as the derivative, converges in a step or two and never measures the whole curve again.
++/// Returns the parameter and the arc length there, or `None` (target behind `t0`, zero speed, no
++/// convergence) so the caller can use `inv_arclen`.
++fn inv_arclen_resume(
++    curve: &kurbo::CubicBez,
++    t0: f64,
++    s0: f64,
++    target: f64,
++    accuracy: f64,
++) -> Option<(f64, f64)> {
++    let wanted = target - s0;
++    if wanted < 0.0 {
++        return None;
++    }
++    let deriv = curve.deriv();
++    let inner = accuracy * 0.25;
++    let (mut t, mut piece) = (t0, 0.0);
++    for _ in 0..6 {
++        let d = deriv.eval(t);
++        let speed = d.x.hypot(d.y);
++        if !(speed > 1.0e-9) {
++            return None;
++        }
++        let err = piece - wanted;
++        if err.abs() <= inner {
++            return Some((t, s0 + piece));
++        }
++        let next = t - err / speed;
++        if !(t0..=1.0).contains(&next) {
++            return None;
++        }
++        t = next;
++        piece = curve.subsegment(t0..t).arclen(inner);
++    }
++    ((piece - wanted).abs() <= inner).then_some((t, s0 + piece))
++}
++
+ fn collect_normals(
+     text: &Text,
+     clusters: &[GlyphCluster],
+@@ -874,7 +917,8 @@ fn collect_normals(
+         let arclen_accuracy = {
+             // Inverse arc length positions each glyph. Half a user unit is
+             // visible even on straight paths with non-uniform parameterization.
+-            let base_arclen_accuracy = 0.001;
++            let variant = ARC_VARIANT.load(std::sync::atomic::Ordering::Relaxed);
++            let base_arclen_accuracy = if variant == 3 { 0.5 } else { 0.001 };
+             // Accuracy depends on a current scale.
+             // When we have a tiny path scaled by a large value,
+             // we have to increase our accuracy accordingly.
+@@ -889,9 +933,32 @@ fn collect_normals(
+             cached_length: Some((arclen_accuracy as f64, curve_len)),
+         };
+ 
++        // The previous glyph on this segment: parameter, arc length there, glyphs since it was re-measured.
++        let mut resume = (0.0f64, 0.0f64, 0u32);
+         for offset in &offsets[normals.len()..] {
+             if *offset >= length && *offset <= length + curve_len {
+-                let mut offset = measured_curve.inv_arclen(offset - length, arclen_accuracy as f64);
++                let variant = ARC_VARIANT.load(std::sync::atomic::Ordering::Relaxed);
++                let acc = arclen_accuracy as f64;
++                let target = offset - length;
++                let mut offset = match variant {
++                    1 => measured_curve.inv_arclen(target, acc),
++                    2 => match inv_arclen_resume(&curve, resume.0, resume.1, target, acc) {
++                        Some((t, s)) => {
++                            resume = (t, s, resume.2 + 1);
++                            // Keep the sum of piece errors from drifting: measure from the start now and then.
++                            if resume.2 >= 16 {
++                                resume = (t, curve.subsegment(0.0..t).arclen(acc * 0.25), 0);
++                            }
++                            t
++                        }
++                        None => {
++                            let t = curve.inv_arclen(target, acc);
++                            resume = (t, curve.subsegment(0.0..t).arclen(acc * 0.25), 0);
++                            t
++                        }
++                    },
++                    _ => curve.inv_arclen(target, acc),
++                };
+                 // some rounding error may occur, so we give offset a little tolerance
+                 debug_assert!((-1.0e-3..=1.0 + 1.0e-3).contains(&offset));
+                 offset = offset.clamp(0.0, 1.0);

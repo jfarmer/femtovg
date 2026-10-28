@@ -1,0 +1,147 @@
+diff --git a/src/clip.rs b/src/clip.rs
+index 45703734..f704afc2 100644
+--- a/src/clip.rs
++++ b/src/clip.rs
+@@ -505,7 +505,15 @@ where
+         request.extend(transform.0.map(f32::to_bits));
+         request.extend([self.tess_tol.to_bits(), self.dist_tol.to_bits()]);
+         request.extend(within.map(|side| side as u32));
++        if !self.fill_masks.inv.init {
++            self.fill_masks.inv.init = true;
++            self.fill_masks.inv.key_first = fill::inv_flag("INV_KEY_FIRST");
++            self.fill_masks.inv.count_draws = fill::inv_flag("INV_COUNT_DRAWS");
++            self.fill_masks.inv.no_motion_restart = fill::inv_flag("INV_NO_MOTION_RESTART");
++        }
+         let mut mask = self.fill_masks.asked(&request);
++        self.fill_masks.inv.thin += 1;
++        if mask.is_some() { self.fill_masks.inv.asked_hit += 1; }
+         if self.fill_masks.image.is_none() {
+             self.fill_masks.limit(self.renderer.max_texture_size());
+         }
+@@ -514,11 +522,17 @@ where
+         let b = path_cache.bounds;
+         let r = mask::pixel_rect([b.minx, b.miny, b.maxx, b.maxy], within);
+         let size = [(r[2] - r[0]) as usize, (r[3] - r[1]) as usize];
+-        if mask.is_none() && self.fill_masks.may_make(size) {
++        if mask.is_none() && (self.fill_masks.may_make(size) || (self.fill_masks.inv.key_first && !self.fill_masks.inv.count_draws)) {
++            let t0 = std::time::Instant::now();
+             mask = self.fill_mask(path_cache, fill_rule, within);
++            self.fill_masks.inv.mask_ns += t0.elapsed().as_nanos();
+             if let Some(mask) = mask {
+                 self.fill_masks.remember(request.clone(), mask);
++            } else {
++                self.fill_masks.inv.refused_other += 1;
+             }
++        } else if mask.is_none() {
++            self.fill_masks.inv.refused_share += 1;
+         }
+         self.fill_masks.request = request;
+         let (Some(mask), Some(image)) = (mask, self.fill_masks.image) else {
+@@ -577,6 +591,7 @@ where
+             self.fill_masks.keyed += 1;
+         }
+         if let Some(atlas) = self.fill_masks.get(&key) {
++            self.fill_masks.inv.key_hit += 1;
+             return Some(PlacedMask {
+                 atlas,
+                 rect,
+@@ -605,6 +620,7 @@ where
+             return None;
+         }
+         self.fill_masks.make(key, atlas);
++        self.fill_masks.inv.made += 1;
+         Some(PlacedMask {
+             atlas,
+             rect,
+diff --git a/src/clip/fill.rs b/src/clip/fill.rs
+index 71540354..9880ce6d 100644
+--- a/src/clip/fill.rs
++++ b/src/clip/fill.rs
+@@ -36,6 +36,39 @@ const ATLAS_MOST: usize = 2048;
+ /// every frame does not rasterize and upload them all again each time.
+ const MASKS_A_FRAME: usize = 256;
+ 
++fn masks_a_frame() -> usize {
++    use std::sync::OnceLock;
++    static N: OnceLock<usize> = OnceLock::new();
++    *N.get_or_init(|| std::env::var("INV_MASKS_A_FRAME").ok().and_then(|v| v.parse().ok()).unwrap_or(MASKS_A_FRAME))
++}
++
++pub(crate) fn inv_flag(name: &str) -> bool {
++    std::env::var_os(name).is_some()
++}
++
++pub(crate) fn inv_stats() -> bool {
++    use std::sync::OnceLock;
++    static N: OnceLock<bool> = OnceLock::new();
++    *N.get_or_init(|| std::env::var_os("INV_MASK_STATS").is_some())
++}
++
++#[derive(Debug, Default, Clone, Copy)]
++pub(crate) struct InvStats {
++    pub thin: usize,
++    pub asked_hit: usize,
++    pub key_hit: usize,
++    pub made: usize,
++    pub refused_share: usize,
++    pub refused_other: usize,
++    pub frame: usize,
++    pub mask_ns: u128,
++    pub key_first: bool,
++    pub count_draws: bool,
++    pub no_motion_restart: bool,
++    pub init: bool,
++    pub last_end: Option<std::time::Instant>,
++}
++
+ /// The most requests remembered bit for bit.
+ const ASKED_KEPT: usize = 4096;
+ 
+@@ -114,6 +147,7 @@ pub(crate) struct FillMasks {
+     /// Every outline keyed to be found or made, for the tests.
+     #[cfg(test)]
+     pub(crate) keyed: usize,
++    pub(crate) inv: InvStats,
+ }
+ 
+ impl Default for FillMasks {
+@@ -144,6 +178,7 @@ impl Default for FillMasks {
+             rasterized: 0,
+             #[cfg(test)]
+             keyed: 0,
++            inv: InvStats::default(),
+         }
+     }
+ }
+@@ -198,7 +233,8 @@ impl FillMasks {
+     /// largest holds it. Asked before a fill's outline is built, so that the
+     /// fills past the frame's share cost no more than a fringe.
+     pub(crate) fn may_make(&self, size: [usize; 2]) -> bool {
+-        !self.failed && self.made < MASKS_A_FRAME && size[0] <= self.most && size[1] <= self.most
++        let used = if self.inv.count_draws { self.made + self.found } else { self.made };
++        !self.failed && used < masks_a_frame() && size[0] <= self.most && size[1] <= self.most
+     }
+ 
+     /// The atlas's image could not be made or written: the frame finds and
+@@ -326,7 +362,20 @@ impl FillMasks {
+     /// does not grow to pack them frame after frame. Returns the images of
+     /// the atlases the frame outgrew, to be freed.
+     pub(crate) fn end_frame(&mut self) -> Vec<ImageId> {
+-        if self.made > 0 && self.made_before > 0 && self.made >= self.found {
++        if inv_stats() {
++            let restart = self.full || (self.made > 0 && self.made_before > 0 && self.made >= self.found);
++            eprintln!(
++                "INV frame {} thin {} asked_hit {} key_hit {} made {} refused_share {} refused_other {} | found {} made_before {} full {} -> restart {} | masks held {} asked held {} atlas {:?}",
++                self.inv.frame, self.inv.thin, self.inv.asked_hit, self.inv.key_hit, self.inv.made, self.inv.refused_share, self.inv.refused_other,
++                self.found, self.made_before, self.full, restart, self.masks.len(), self.asked.len(), self.size
++            );
++            let now = std::time::Instant::now();
++            let wall = self.inv.last_end.map(|t| (now - t).as_secs_f64() * 1e3).unwrap_or(f64::NAN);
++            eprintln!("INVT frame {} mask_ms {:.3} since_last_end_ms {:.3}", self.inv.frame, self.inv.mask_ns as f64 / 1e6, wall);
++            let f = self.inv.frame + 1;
++            self.inv = InvStats { frame: f, key_first: self.inv.key_first, count_draws: self.inv.count_draws, no_motion_restart: self.inv.no_motion_restart, init: true, last_end: Some(now), ..Default::default() };
++        }
++        if !self.inv.no_motion_restart && self.made > 0 && self.made_before > 0 && self.made >= self.found {
+             self.full = true;
+         }
+         self.made_before = self.made;
