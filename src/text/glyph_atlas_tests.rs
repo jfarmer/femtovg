@@ -746,3 +746,47 @@ fn a_skewed_color_layer_glyph_is_drawn_as_an_image() {
         .collect();
     assert_eq!(cached, [true]);
 }
+
+/// Filled glyph masks do not depend on `line_width`, so reusing a paint across
+/// stroke widths shares one atlas entry per glyph.
+#[test]
+fn filled_glyphs_ignore_line_width_in_atlas_key() {
+    let (mut canvas, font) = canvas();
+    let mut paint = Paint::color(Color::black()).with_font_size(24.0);
+
+    for line_width in [1.0, 4.0] {
+        paint.set_line_width(line_width);
+        canvas.fill_glyph_run(font, &[], glyphs("A"), &paint).unwrap();
+    }
+
+    assert_eq!(canvas.glyph_atlas.rendered_glyphs.borrow().len(), 1);
+}
+
+/// Stroked glyph masks are rasterized at whole pixels, so drawing the same glyph
+/// at different subpixel x offsets shares one atlas entry.
+#[test]
+fn stroked_glyphs_ignore_subpixel_offset_in_atlas_key() {
+    let (mut canvas, font) = canvas();
+    let paint = stroke_paint();
+    let glyph_id = glyphs("A")[0].glyph_id;
+
+    let run = [10.0, 10.3, 10.7, -10.3].map(|x| PositionedGlyph { x, y: 70.0, glyph_id });
+    canvas.stroke_glyph_run(font, &[], run, &paint).unwrap();
+
+    assert_eq!(canvas.glyph_atlas.rendered_glyphs.borrow().len(), 1);
+}
+
+/// Without `swash`, filled glyph masks are rasterized at whole pixels, so drawing
+/// the same glyph at different subpixel x offsets shares one atlas entry.
+#[cfg(not(feature = "swash"))]
+#[test]
+fn filled_glyphs_without_swash_ignore_subpixel_offset_in_atlas_key() {
+    let (mut canvas, font) = canvas();
+    let paint = Paint::color(Color::black()).with_font_size(24.0);
+    let glyph_id = glyphs("A")[0].glyph_id;
+
+    let run = [10.0, 10.3, 10.7, -10.3].map(|x| PositionedGlyph { x, y: 70.0, glyph_id });
+    canvas.fill_glyph_run(font, &[], run, &paint).unwrap();
+
+    assert_eq!(canvas.glyph_atlas.rendered_glyphs.borrow().len(), 1);
+}

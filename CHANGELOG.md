@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- Glyph atlas: filled glyphs no longer duplicate atlas entries across `line_width`
+  changes, and stroked glyphs (plus filled glyphs without `swash`) no longer
+  duplicate atlas entries across subpixel x offsets that their rasterizers ignore.
 - OpenGL: `Canvas::create_image` and `Canvas::update_image` upload a strided
   source (such as `ImgRef::sub_image`) correctly; its rows were read the image's
   width apart instead of the stride apart, which skewed the image.
