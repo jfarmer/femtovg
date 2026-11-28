@@ -23,10 +23,12 @@ vec4 colorMatrixOn(vec4 premultiplied) {
     return outc;
 }
 
+#if SELECT_SHADER == SHADER_TYPE_FilterImageColorMatrix
 vec4 renderColorMatrix() {
     return colorMatrixOn(texture2D(tex, fpos.xy / extent));
 }
 
+#elif SELECT_SHADER == SHADER_TYPE_FilterImageTurbulence
 // SVG feTurbulence (SVG 1.1 section 15.19), all four channels at once. `tex`
 // is the lattice texture built by src/turbulence.rs: texel (bx, by) of the
 // left 256 columns holds the unit gradient vectors of channels 0 and 1 at
@@ -108,6 +110,7 @@ vec4 renderTurbulence() {
     return vec4(c.rgb * c.a, c.a);
 }
 
+#elif SELECT_SHADER == SHADER_TYPE_FilterImageTransfer
 // The sRGB transfer curve as a pass (see transferColor): frag[0].x > 0.5
 // converts linearRGB to sRGB, otherwise the reverse.
 vec4 renderTransfer() {
@@ -115,6 +118,7 @@ vec4 renderTransfer() {
 }
 
 
+#elif SELECT_SHADER == SHADER_TYPE_FilterImageBlend
 // SVG feBlend: the image over the backdrop in `glyphtex`. frag[0].x is the
 // BlendMode index, frag[0].y whether the backdrop is stored the other way up
 // from the image at this pass. Both textures are premultiplied; the blend
@@ -255,6 +259,7 @@ vec4 renderBlend() {
     return vec4(contribution + bd.rgb * (1.0 - src.a), src.a + bd.a - src.a * bd.a);
 }
 
+#elif SELECT_SHADER == SHADER_TYPE_FilterImageMorphology
 // SVG feMorphology, one axis per draw like the blur: each pixel takes the
 // per-channel maximum (dilate) or minimum (erode) of the premultiplied
 // pixels within the radius along imageBlurFilterDirection, every tap
@@ -285,8 +290,10 @@ vec4 renderMorphology() {
     return acc;
 }
 
+#elif SELECT_SHADER == SHADER_TYPE_FilterImageOffset
 // SVG feOffset: the image shifted by the (dx, dy) in the first two
 // parameter slots; what shifts in from beyond the image is transparent.
 vec4 renderOffset() {
     return blurTap(fpos.xy - frag[0].xy);
 }
+#endif
